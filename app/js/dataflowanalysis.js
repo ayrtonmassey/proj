@@ -39,59 +39,10 @@ function DFAFramework (kwargs) {
                 return graph.postorder().reverse();
         }
     })(kwargs.order);
-
-    /* Find the value set for definitions */
-    graph.nodes.map(function(node) {
-        if(node.constructor.name == "Assignment") {
-            node.definition.index = node.index;
-        }
-    });
     
-    this.v_def = new ValueSet(this.graph.nodes.filter(function(node) {
-        if(node.constructor.name == "Assignment") {
-            return true;
-        }
-    }).map(function(node) {
-        if(node.constructor.name == "Assignment") {
-            return node.definition;
-        }
-    }));
+    this.transfer_value_set = kwargs.transfer_value_set;
     
-    this.v_use = new ValueSet([]);
-    for(n of graph.nodes) {
-        for(u of n.uses.values()) {
-            this.v_use.add(u);
-        }
-    }    
-    
-    switch(kwargs.transfer_value_set) {
-        case "definitions":
-            this.transfer_value_set = this.v_def;
-            break;
-        case "uses":
-            this.transfer_value_set = this.v_use;
-            break;
-        default:
-            throw new ReferenceError("Expected 'definitions', 'uses'; got " + top);
-            break;
-    }
-
-    this.top = (function(top) {
-        switch(top) {
-            case 'empty':
-                return new ValueSet([]);
-                break;
-            case 'all_def':
-                return this.v_def;
-                break;
-            case 'all_use':
-                return this.v_use;
-                break;
-            default:
-                throw new ReferenceError("Expected 'all', 'all_def', 'all_use'; got " + top);
-                break;
-        }
-    })(kwargs.top);
+    this.top = kwargs.top;
     
 }
 

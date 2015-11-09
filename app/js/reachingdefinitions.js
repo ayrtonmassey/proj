@@ -55,6 +55,15 @@ graph.add_edge(graph.nodes[2],graph.nodes[3]);
 graph.add_edge(graph.nodes[3],graph.nodes[4]);
 graph.add_edge(graph.nodes[4],graph.nodes[5]);
 
+
+/* Find the value set for definitions */
+graph.nodes.map(function(node) {
+    if(node.constructor.name == "Assignment") {
+        node.definition.index = node.index;
+    }
+});
+
+
 var defgen = function (node,v_def) {
     switch(node.constructor.name) {
     case "Assignment":
@@ -88,6 +97,16 @@ var defkill = function (node, v_def) {
         break;
     }
 };
+    
+var v_def = new ValueSet(this.graph.nodes.filter(function(node) {
+    if(node.constructor.name == "Assignment") {
+        return true;
+    }
+}).map(function(node) {
+    if(node.constructor.name == "Assignment") {
+        return node.definition;
+    }
+}));
 
 var reaching_definitions = new DFAFramework({
     graph: graph,
@@ -122,9 +141,9 @@ var reaching_definitions = new DFAFramework({
     },
     meet_latex: "\\[\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)\\]",
     transfer_latex: "\\[\\text{Out}(n) = \\text{DefGen}(n) \\cup \\big{(}\\text{In}(n) \\setminus \\text{DefKill}(n)\\big{)}\\]",
-    transfer_value_set: "definitions",
+    transfer_value_set: v_def,
     order: DFA.REVERSE_POSTORDER,
     direction: DFA.FORWARD,
-    top: "empty",
+    top: new ValueSet([]),
     name: "Reaching Definitions",
 });

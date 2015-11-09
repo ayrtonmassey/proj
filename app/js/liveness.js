@@ -83,6 +83,14 @@ var uses = function (node, v_def) {
     }
 };
 
+var v_use = new ValueSet([]);
+for(n of graph.nodes) {
+    for(u of n.uses.values()) {
+        this.v_use.add(u);
+    }
+}    
+
+
 var liveness = new DFAFramework({
     graph: graph,
     meet: function(node, graph) {
@@ -116,9 +124,9 @@ var liveness = new DFAFramework({
     },
     meet_latex: "\\[\\text{Out}(n) = \\bigcup_{s \\in succ} \\text{In}(s)\\]",
     transfer_latex: "\\[\\text{In}(n) = \\text{Use}(n) \\cup \\big{(}\\text{Out}(n) \\setminus \\text{Def}(n)\\big{)}\\]",
-    transfer_value_set: "uses",
+    transfer_value_set: v_use,
     order: DFA.POSTORDER,
     direction: DFA.BACKWARD,
-    top: "empty",
+    top: new ValueSet([]),
     name: "Liveness Analysis",
 });
