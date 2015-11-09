@@ -55,10 +55,10 @@ graph.add_edge(graph.nodes[2],graph.nodes[3]);
 graph.add_edge(graph.nodes[3],graph.nodes[4]);
 graph.add_edge(graph.nodes[4],graph.nodes[5]);
 
-var defgen = function (node,v_def) {
+var defs = function (node,v_def) {
     switch(node.constructor.name) {
     case "Assignment":
-        return new ValueSet([node.definition]);
+        return new ValueSet([new Use({name: node.definition.name})]);
         break;
     case "Branch":
         return new ValueSet([]);
@@ -69,64 +69,58 @@ var defgen = function (node,v_def) {
     }
 };
 
-var defkill = function (node, v_def) {
+var uses = function (node, v_def) {
     switch(node.constructor.name) {
-    case "Assignment":
-        out_set = new ValueSet([]);
-        for (v of v_def.values()) {
-            if(v.name == node.definition.name && v.index != node.definition.index) {
-                out_set.add(v)
-            }
-        };
-        return out_set;
-        break;
-    case "Branch":
-        return new ValueSet([]);
-        break;
-    default:
-        throw new ReferenceError("Expected a subclass of Node, received an " + (node.constructor.name));
-        break;
+        case "Assignment":
+            return node.uses;
+            break;
+        case "Branch":
+            return node.uses;
+            break;
+        default:
+            throw new ReferenceError("Expected a subclass of Node, received an " + (node.constructor.name));
+            break;
     }
 };
 
 var dfa = new DFAFramework({
     graph: graph,
     meet: function(node, graph) {
-        var in_set = new ValueSet([]);
-        var preds  = graph.nodes.filter(function(p) {
-            if(graph.adjacency[p.index][node.index] == 1) {
+        var out_set = new ValueSet([]);
+        var succ  = graph.nodes.filter(function(s) {
+            if(graph.adjacency[node.index][s.index] == 1) {
                 return true;
             }
         })
-        for(p of preds) {
-            for(def of p.out_set.values()) {
-                in_set.add(def);
+        for(s of succ) {
+            for(use of s.in_set.values()) {
+                out_set.add(use);
             }
         };
-        return in_set;
+        return out_set;
     },
-    transfer: function(node, in_set, value_set) {
-        var set1 = defgen(node, value_set); // set1 = gen[B]
+    transfer: function(node, out_set, value_set) {
+        var set1 = uses(node, value_set); // set1 = use[B]
 
-        var set2 = new ValueSet(in_set.values()); // set2 = in[B]
+        var set2 = new ValueSet(out_set.values()); // set2 = in[B]
         
-        for(v of defkill(node, value_set).values()) {
+        for(v of defs(node, value_set).values()) {
             set2.delete(v);
-        } // set2 = in[B] - kill[B]
+        } // set2 = in[B] - def[B]
         
         for(v of set2.values()) {
-            set1.add(v); // set1 = gen[B] U (in[B] - kill[B])
+            set1.add(v); // set1 = use[B] U (in[B] - def[B])
         }
         
         return set1;
     },
-    meet_latex: "\\[\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)\\]",
-    transfer_latex: "\\[\\text{Out}(n) = \\text{DefGen}(n) \\cup \\big{(}\\text{In}(n) \\setminus \\text{DefKill}(n)\\big{)}\\]",
-    transfer_value_set: "definitions",
-    order: "reverse postorder",
-    flow: "forward",
+    meet_latex: "\\[\\text{Out}(n) = \\bigcup_{s \\in succ} \\text{In}(s)\\]",
+    transfer_latex: "\\[\\text{In}(n) = \\text{Use}(n) \\cup \\big{(}\\text{Out}(n) \\setminus \\text{Def}(n)\\big{)}\\]",
+    transfer_value_set: "uses",
+    order: "postorder",
+    flow: "backward",
     top: "empty",
-    name: "Reaching Definitions",
+    name: "Liveness Analysis",
 });
 
 dfa.run();
