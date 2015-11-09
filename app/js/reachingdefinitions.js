@@ -89,12 +89,12 @@ var defkill = function (node, v_def) {
     }
 };
 
-var dfa = new DFAFramework({
+var reaching_definitions = new DFAFramework({
     graph: graph,
     meet: function(node, graph) {
         var in_set = new ValueSet([]);
-        var preds  = graph.nodes.filter(function(p) {
-            if(graph.adjacency[p.index][node.index] == 1) {
+        var preds  = this.graph.nodes.filter(function(p) {
+            if(this.graph.adjacency[p.index][node.index] == 1) {
                 return true;
             }
         })
@@ -123,10 +123,8 @@ var dfa = new DFAFramework({
     meet_latex: "\\[\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)\\]",
     transfer_latex: "\\[\\text{Out}(n) = \\text{DefGen}(n) \\cup \\big{(}\\text{In}(n) \\setminus \\text{DefKill}(n)\\big{)}\\]",
     transfer_value_set: "definitions",
-    order: "reverse postorder",
-    flow: "forward",
+    order: DFA.REVERSE_POSTORDER,
+    direction: DFA.FORWARD,
     top: "empty",
     name: "Reaching Definitions",
 });
-
-dfa.run();

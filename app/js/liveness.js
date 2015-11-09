@@ -83,12 +83,12 @@ var uses = function (node, v_def) {
     }
 };
 
-var dfa = new DFAFramework({
+var liveness = new DFAFramework({
     graph: graph,
     meet: function(node, graph) {
         var out_set = new ValueSet([]);
-        var succ  = graph.nodes.filter(function(s) {
-            if(graph.adjacency[node.index][s.index] == 1) {
+        var succ  = this.graph.nodes.filter(function(s) {
+            if(this.graph.adjacency[node.index][s.index] == 1) {
                 return true;
             }
         })
@@ -117,10 +117,8 @@ var dfa = new DFAFramework({
     meet_latex: "\\[\\text{Out}(n) = \\bigcup_{s \\in succ} \\text{In}(s)\\]",
     transfer_latex: "\\[\\text{In}(n) = \\text{Use}(n) \\cup \\big{(}\\text{Out}(n) \\setminus \\text{Def}(n)\\big{)}\\]",
     transfer_value_set: "uses",
-    order: "postorder",
-    flow: "backward",
+    order: DFA.POSTORDER,
+    direction: DFA.BACKWARD,
     top: "empty",
     name: "Liveness Analysis",
 });
-
-dfa.run();
