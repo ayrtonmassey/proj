@@ -3,3 +3,9 @@
     top: 2em;
     left: 2em;
 }
+
+.highlight {
+    background-color: #428bca;
+    color: #FFF;
+    font-weight: bold;
+}

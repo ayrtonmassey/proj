@@ -56,6 +56,48 @@ function RoundRobinIterator (kwargs) {
     this.canvas.html("<table id=\"dataFlowTable\" class=\"table\"><thead></thead><tbody></tbody></table>");
 
     this.table = $('#dataFlowTable');
+
+    // Iteration variables
+    this.round=0;
+    this.order_index=0;
+    this.order=this.framework.order;
+    this.changed=false;
+    this.finished=false;
+
+    /*
+     *  Reset the play controls.
+     */
+    this.reset_controls = function() {
+        $("#fast-backward").off("click").click({dfa:this}, function(event) {
+            event.data.dfa.reset();
+        });
+        $("#step-forward").off("click").click({dfa:this}, function(event) {
+            event.data.dfa.step_forward();
+        });
+        $("#play").off("click").click({dfa:this}, function(event) {
+            event.data.dfa.play();
+        });
+        $("#fast-forward").off("click").click({dfa:this}, function(event) {
+            event.data.dfa.fast_forward();
+        });
+    }
+
+    /*
+     *  Reset state variables.
+     */
+    this.reset_state = function() {
+        // Reset data sets.
+        for(var i = 0; i < this.framework.graph.nodes.length; i++) {
+            this.framework.graph.nodes[i].in_set = ValueSet([]);
+            this.framework.graph.nodes[i].out_set = ValueSet([]);
+        }
+
+        // Reset variables.
+        this.order_index = 0;
+        this.round = 0;
+        this.changed = false;
+        this.finished = false;
+    }
     
     /*
      *  Reset the table of results.
@@ -86,7 +128,7 @@ function RoundRobinIterator (kwargs) {
     this.reset_code = function() {
         $("#code").html("");
         for(var i = 0; i < this.framework.graph.nodes.length; i++) {
-            $("#code").append("I"+i+": "+this.framework.graph.nodes[i].instruction+"\n");
+            $("#code").append("<span id=\"instruction-{0}\" class=\"instruction\">I".format(i)+i+": "+this.framework.graph.nodes[i].instruction+"\n");
         }
     }
 
@@ -95,89 +137,152 @@ function RoundRobinIterator (kwargs) {
      */
     this.reset_equations = function() {
         $("#meet").html(this.framework.meet_latex);
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub,"meet"]);
         $("#transfer").html(this.framework.transfer_latex);
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub,"transfer"]);
     }
 
     /*
-     *  reset the UI.
+     *  Reset the UI.
      */
     this.reset = function() {
+        this.reset_state();
         this.reset_equations();
         this.reset_title();
         this.reset_table();
         this.reset_code();
+        this.reset_controls();
+        this.init();
     }
     
-    this.print_result_row = function(label) {
+    this.print_result_row_template = function(label) {
         // Update the table of results
-        var row_string = "<tr>";
+        var row_string = "<tr id=\"round-{0}\">".format(this.round);
         row_string = row_string.concat("<td rowspan=\"2\">" + label + "</td>")
             row_string = row_string.concat("<td>In</td>");
         for(var i = 0; i < graph.nodes.length; i++) {
-            row_string = row_string.concat("<td>" + this.framework.graph.nodes[i].in_set + "</td>");
+            row_string = row_string.concat("<td id=\"round-{0}-in-{1}\" class=\"in result\"></td>".format(this.round, i));
         }
         row_string = row_string.concat("</tr>");
         row_string = row_string.concat("<tr>");
         row_string = row_string.concat("<td>Out</td>");
         for(var i = 0; i < graph.nodes.length; i++) {
-            row_string = row_string.concat("<td>" + this.framework.graph.nodes[i].out_set + "</td>");
+            row_string = row_string.concat("<td id=\"round-{0}-out-{1}\" class=\"out result\"></td>".format(this.round, i));
         }
         row_string = row_string.concat("</tr>");
         
         this.table_body.append(row_string);
     }
+
+    this.fill_in_result = function(round,i) {
+        $(".in.highlight").each(function() {
+            $(this).removeClass("highlight")
+        });
+        $(".instruction.highlight").each(function() {
+            $(this).removeClass("highlight")
+        });
+        $("#round-{0}-in-{1}".format(round, i)).html(this.framework.graph.nodes[i].in_set.toString());
+        $("#round-{0}-in-{1}".format(round, i)).addClass("highlight");
+        $("#instruction-{0}".format(i)).addClass("highlight");
+    }
     
+    this.fill_out_result = function(round,i) {
+        $(".out.highlight").each(function() {
+            $(this).removeClass("highlight")
+        });
+        $(".instruction.highlight").each(function() {
+            $(this).removeClass("highlight")
+        });
+        $("#round-{0}-out-{1}".format(round, i)).html(this.framework.graph.nodes[i].out_set.toString());
+        $("#round-{0}-out-{1}".format(round, i)).addClass("highlight");
+        $("#instruction-{0}".format(i)).addClass("highlight");
+    }
+
+    this.new_round = function() {
+        this.round++;
+        this.order_index=0;
+        this.changed=false;
+        this.print_result_row_template(this.round);
+    }
     
-    this.round_robin = function(order) {
-        for(var i = 0; i < order.length; i++) {
-            var node = this.framework.graph.nodes[order[i]];
-            if(this.framework.direction==DFA.BACKWARD) {
-                node.out_set = this.framework.top;
-                node.in_set  = this.framework.transfer(node, node.out_set, this.framework.transfer_value_set);
+    this.step_forward = function() {
+        if (this.finished) return;
+        if(this.order_index >= this.framework.order.length) {
+            if (!this.changed) {
+                this.finished=true;
+                return;
             } else {
-                node.in_set  = this.framework.top;
-                node.out_set = this.framework.transfer(node, node.in_set, this.framework.transfer_value_set);
+                this.new_round();
             }
         }
-        this.print_result_row("Initial");
+        this.iterate();
+        this.order_index++;
+    }
+
+    this.iterate = function() {
+        if(this.framework.direction==DFA.BACKWARD) {
+            var node = this.framework.graph.nodes[this.framework.order[this.order_index]];
+            
+            var old_out  = new ValueSet(node.out_set.values());
+            node.out_set = this.framework.meet(node,this.framework.graph);
+            this.changed = this.changed || !compare_value_sets(node.out_set,old_out);
+            this.fill_out_result(this.round,this.framework.order[this.order_index]);
+            
+            var old_in = new ValueSet(node.in_set.values());
+            node.in_set = this.framework.transfer(node, node.out_set, this.framework.transfer_value_set);
+            this.changed = this.changed || !compare_value_sets(node.in_set,old_in);
+            this.fill_in_result(this.round,this.framework.order[this.order_index]);
+        } else {
+            var node = this.framework.graph.nodes[this.framework.order[this.order_index]];
+            
+            var old_in = new ValueSet(node.in_set.values());
+            node.in_set  = this.framework.meet(node,this.framework.graph);
+            this.changed = this.changed || !compare_value_sets(node.in_set,old_in);
+            this.fill_out_result(this.round,this.framework.order[this.order_index]);
+            
+            var old_out = new ValueSet(node.out_set.values());
+            node.out_set = this.framework.transfer(node, node.in_set, this.framework.transfer_value_set);
+            this.changed = this.changed || !compare_value_sets(node.out_set,old_out);
+            this.fill_in_result(this.round,this.framework.order[this.order_index]);
+        }
+    }
+    
+    this.init = function() {
+        this.print_result_row_template("Initial");
         
-        var r = 1;
-        do {
-            var changed = false;
-            for(var i = 0; i < order.length; i++) {
-                if(this.framework.direction==DFA.BACKWARD) {
-                    var node = this.framework.graph.nodes[order[i]];
-
-                    var old_out  = new ValueSet(node.out_set.values());
-                    node.out_set = this.framework.meet(node,this.framework.graph);
-                    changed = changed || !compare_value_sets(node.out_set,old_out);
-                    
-                    var old_in = new ValueSet(node.in_set.values());
-                    node.in_set = this.framework.transfer(node, node.out_set, this.framework.transfer_value_set);
-                    changed = changed || !compare_value_sets(node.in_set,old_in);
-                } else {
-                    var node = this.framework.graph.nodes[order[i]];
-                    
-                    var old_in = new ValueSet(node.in_set.values());
-                    node.in_set  = this.framework.meet(node,this.framework.graph);
-                    changed = changed || !compare_value_sets(node.in_set,old_in);
-                    
-                    var old_out = new ValueSet(node.out_set.values());
-                    node.out_set = this.framework.transfer(node, node.in_set, this.framework.transfer_value_set);
-                    changed = changed || !compare_value_sets(node.out_set,old_out);
-                }
+        for(; this.order_index < this.framework.order.length; this.order_index++) {
+            var node = this.framework.graph.nodes[this.framework.order[this.order_index]];
+            if(this.framework.direction==DFA.BACKWARD) {
+                node.out_set = this.framework.top;
+                this.fill_out_result(this.round,this.framework.order[this.order_index]);
+                node.in_set  = this.framework.transfer(node, node.out_set, this.framework.transfer_value_set);
+                this.fill_in_result(this.round,this.framework.order[this.order_index]);
+            } else {
+                node.in_set  = this.framework.top;
+                this.fill_in_result(this.round,this.framework.order[this.order_index]);
+                node.out_set = this.framework.transfer(node, node.in_set, this.framework.transfer_value_set);
+                this.fill_out_result(this.round,this.framework.order[this.order_index]);
             }
+        }
 
-            this.print_result_row(""+r);
-            
-            r++;
-            
-        } while(changed);
+        this.changed=true;
+    }
+
+    this.play = function() {
+        if (this.finished) return;
+        _this = this;
+        setTimeout(function() { _this.step_forward(); _this.play() }, 500);
+    }
+    
+    this.fast_forward = function() {
+        if (this.finished) return;
+        do {
+            this.step_forward();
+        } while(!this.finished);
     }
 
     this.run = function() {
         this.reset();
-        this.round_robin(this.framework.order);
     }
 
 }

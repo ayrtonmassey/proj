@@ -1,32 +1,48 @@
 <!DOCTYPE html>
 <head>
     <title>Honours Project: s1208057</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha256-k2/8zcNbxVIh5mnQ52A0r3a6jAgMGxFJFE2707UxGCk= sha512-ZV9KawG2Legkwp3nAlxLIVFudTauWuBpC10uEafMHYL0Sarrz5A7G79kXh5+5+woxQ5HM559XX2UZjMJ36Wplg==" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
     <div class="container">
-        <div class="fixed col-sm-2">
-            <pre id="code" class="col-xs-12">
-            </pre>
-        </div>
-        <div "class="col-sm-10 col-sm-offset-2">
-            <h1>Data Flow: <span id="dataFlowName"></span></h1>
-            <p>Meet Function: <span id="meet"></span></p>
-            <p>Transfer Function: <span id="transfer"></span></p>
-            <p>Results:</p>
-            <div id="dataFlowCanvas">
-                <table id="dataFlowTable" class="table">
-                    <thead>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+        <div class="row">
+            <div class="col-xs-3" style="border-style: solid; border-width:0 1px 0 0; border-color:#CCC; box-shadow: inset -2px 0px #EEE;">
+                <h1>Code</h1>
+                <pre id="code">
+                </pre>
+                
+                <div class="text-center">
+                    <div id="controls" class="btn-group">
+                        <button id="fast-backward" class="btn btn-default">
+                            <span class="fa fa-fast-backward"></span>
+                        </button>
+                        <button id="step-forward" class="btn btn-default">
+                            <span class="fa fa-step-forward"></span>
+                        </button>
+                        <button id="play" class="btn btn-default">
+                            <span class="fa fa-play"></span>
+                        </button>
+                        <button id="fast-forward" class="btn btn-default">
+                            <span class="fa fa-fast-forward"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-9">
+                <h1>Data Flow: <span id="dataFlowName"></span></h1>
+                <p>Meet Function: <span id="meet"></span></p>
+                <p>Transfer Function: <span id="transfer"></span></p>
+                <p>Results:</p>
+                <div id="dataFlowCanvas">
+                </div>
             </div>
         </div>
     </div>
-    <script src="js/jquery-2.1.4.min.js" type="text/javascript"></script>
-    <script src="js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-git2.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+    <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML-full" type="text/javascript"></script>
     <script src="js/kludge.js" type="text/javascript"></script>
     <script src="js/values.js" type="text/javascript"></script>
     <script src="js/graph.js" type="text/javascript"></script>
@@ -34,5 +50,4 @@
     <script src="js/liveness.js" type="text/javascript"></script>
     <script src="js/reachingdefinitions.js" type="text/javascript"></script>
     <script src="js/main.js" type="text/javascript"></script>
-    <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML-full" type="text/javascript"></script>
 </body>
