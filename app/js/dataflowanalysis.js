@@ -238,12 +238,12 @@ function RoundRobinIterator (kwargs) {
             var old_in = new ValueSet(node.in_set.values());
             node.in_set  = this.framework.meet(node,this.framework.graph);
             this.changed = this.changed || !compare_value_sets(node.in_set,old_in);
-            this.fill_out_result(this.round,this.framework.order[this.order_index]);
+            this.fill_in_result(this.round,this.framework.order[this.order_index]);
             
             var old_out = new ValueSet(node.out_set.values());
             node.out_set = this.framework.transfer(node, node.in_set, this.framework.transfer_value_set);
             this.changed = this.changed || !compare_value_sets(node.out_set,old_out);
-            this.fill_in_result(this.round,this.framework.order[this.order_index]);
+            this.fill_out_result(this.round,this.framework.order[this.order_index]);
         }
     }
     
