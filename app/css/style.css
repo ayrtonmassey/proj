@@ -1,11 +1,45 @@
-.fixed {
-    position: fixed;
-    top: 2em;
-    left: 2em;
+th {
+    text-align: center;
+    padding: 5px;
 }
 
-.highlight {
+#meet {
+    color: #000 !important;
+    padding: 1px 0;
+    margin: 0px 0;
+}
+
+#transfer {
+    color: #000 !important;
+    padding: 1px 0;
+    margin: 0px 0;
+}
+
+.instruction {
+    display: block;
+    padding: 1px 1px;
+}
+
+.transfer-light-highlight {
+    background-color: #72BbFa;
+    color: #FFF;
+    font-weight: bold;
+}
+
+.transfer-dark-highlight {
     background-color: #428bca;
+    color: #FFF;
+    font-weight: bold;
+}
+
+.meet-light-highlight {
+    background-color: #7cD87c;
+    color: #FFF;
+    font-weight: bold;
+}
+
+.meet-dark-highlight {
+    background-color: #5cb85c;
     color: #FFF;
     font-weight: bold;
 }

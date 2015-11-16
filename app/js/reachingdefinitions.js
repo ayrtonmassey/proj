@@ -1,69 +1,3 @@
-graph = new Graph();
-
-graph.add_node(new Assignment({
-    instruction: "a = 2",
-    definition:  new Definition({name: "a"}),
-    expression:  new Expression({expression: "2"}),
-    uses:        new ValueSet([]),
-}));
-
-graph.add_node(new Assignment({
-    instruction: "b = x + 1",
-    definition:  new Definition({name: "b"}),
-    expression:  new Expression({expression: "x + 1"}),
-    uses:        new ValueSet([
-        new Use({name: "x"}),
-    ]),
-}));
-
-graph.add_node(new Assignment({
-    instruction: "c = a * 3",
-    definition:  new Definition({name: "c"}),
-    expression:  new Expression({expression: "a * 3"}),
-    uses:        new ValueSet([
-        new Use({name: "a"}),
-    ]),
-}));
-
-graph.add_node(new Assignment({
-    instruction: "a = 4",
-    definition:  new Definition({name: "a"}),
-    expression:  new Expression({expression: "4"}),
-    uses:        new ValueSet([]),
-}));
-
-graph.add_node(new Assignment({
-    instruction: "d = a",
-    definition:  new Definition({name: "d"}),
-    expression:  new Expression({expression: "a"}),
-    uses:        new ValueSet([
-        new Use({name: "a"})
-    ]),
-}));
-
-graph.add_node(new Branch({
-    instruction: "return d",
-    expression:  new Expression({expression: "d"}),
-    uses:        new ValueSet([
-        new Use({name: "d"})
-    ]),
-}));
-
-graph.add_edge(graph.nodes[0],graph.nodes[1]);
-graph.add_edge(graph.nodes[1],graph.nodes[2]);
-graph.add_edge(graph.nodes[2],graph.nodes[3]);
-graph.add_edge(graph.nodes[3],graph.nodes[4]);
-graph.add_edge(graph.nodes[4],graph.nodes[5]);
-
-
-/* Find the value set for definitions */
-graph.nodes.map(function(node) {
-    if(node.constructor.name == "Assignment") {
-        node.definition.index = node.index;
-    }
-});
-
-
 var defgen = function (node,v_def) {
     switch(node.constructor.name) {
     case "Assignment":
@@ -98,31 +32,32 @@ var defkill = function (node, v_def) {
     }
 };
     
-var v_def = new ValueSet(this.graph.nodes.filter(function(node) {
-    if(node.constructor.name == "Assignment") {
-        return true;
-    }
-}).map(function(node) {
-    if(node.constructor.name == "Assignment") {
-        return node.definition;
-    }
-}));
+var v_def = function(graph) {
+    return new ValueSet(graph.nodes.filter(function(node) {
+        if(node.constructor.name == "Assignment") {
+            return true;
+        }
+    }).map(function(node) {
+        if(node.constructor.name == "Assignment") {
+            return node.definition;
+        }
+    }));
+}
 
 var reaching_definitions = new DFAFramework({
-    graph: graph,
-    meet: function(node, graph) {
+    meet: function(node, graph, highlight) {
         var in_set = new ValueSet([]);
-        var preds  = this.graph.nodes.filter(function(p) {
-            if(this.graph.adjacency[p.index][node.index] == 1) {
+        var preds  = graph.nodes.filter(function(p) {
+            if(graph.adjacency[p.index][node.index] == 1) {
                 return true;
             }
-        })
+        });
         for(p of preds) {
             for(def of p.out_set.values()) {
                 in_set.add(def);
             }
         };
-        return in_set;
+        return [in_set,preds];
     },
     transfer: function(node, in_set, value_set) {
         var set1 = defgen(node, value_set); // set1 = gen[B]
@@ -137,12 +72,11 @@ var reaching_definitions = new DFAFramework({
             set1.add(v); // set1 = gen[B] U (in[B] - kill[B])
         }
         
-        return set1;
+        return [set1,[node]];
     },
     meet_latex: "\\[\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)\\]",
     transfer_latex: "\\[\\text{Out}(n) = \\text{DefGen}(n) \\cup \\big{(}\\text{In}(n) \\setminus \\text{DefKill}(n)\\big{)}\\]",
     transfer_value_set: v_def,
-    order: DFA.REVERSE_POSTORDER,
     direction: DFA.FORWARD,
     top: new ValueSet([]),
     name: "Reaching Definitions",

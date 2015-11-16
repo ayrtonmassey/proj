@@ -1,60 +1,3 @@
-graph = new Graph();
-
-graph.add_node(new Assignment({
-    instruction: "a = 2",
-    definition:  new Definition({name: "a"}),
-    expression:  new Expression({expression: "2"}),
-    uses:        new ValueSet([]),
-}));
-
-graph.add_node(new Assignment({
-    instruction: "b = x + 1",
-    definition:  new Definition({name: "b"}),
-    expression:  new Expression({expression: "x + 1"}),
-    uses:        new ValueSet([
-        new Use({name: "x"}),
-    ]),
-}));
-
-graph.add_node(new Assignment({
-    instruction: "c = a * 3",
-    definition:  new Definition({name: "c"}),
-    expression:  new Expression({expression: "a * 3"}),
-    uses:        new ValueSet([
-        new Use({name: "a"}),
-    ]),
-}));
-
-graph.add_node(new Assignment({
-    instruction: "a = 4",
-    definition:  new Definition({name: "a"}),
-    expression:  new Expression({expression: "4"}),
-    uses:        new ValueSet([]),
-}));
-
-graph.add_node(new Assignment({
-    instruction: "d = a",
-    definition:  new Definition({name: "d"}),
-    expression:  new Expression({expression: "a"}),
-    uses:        new ValueSet([
-        new Use({name: "a"})
-    ]),
-}));
-
-graph.add_node(new Branch({
-    instruction: "return d",
-    expression:  new Expression({expression: "d"}),
-    uses:        new ValueSet([
-        new Use({name: "d"})
-    ]),
-}));
-
-graph.add_edge(graph.nodes[0],graph.nodes[1]);
-graph.add_edge(graph.nodes[1],graph.nodes[2]);
-graph.add_edge(graph.nodes[2],graph.nodes[3]);
-graph.add_edge(graph.nodes[3],graph.nodes[4]);
-graph.add_edge(graph.nodes[4],graph.nodes[5]);
-
 var defs = function (node,v_def) {
     switch(node.constructor.name) {
     case "Assignment":
@@ -72,10 +15,10 @@ var defs = function (node,v_def) {
 var uses = function (node, v_def) {
     switch(node.constructor.name) {
         case "Assignment":
-            return node.uses;
+            return new ValueSet(node.uses.values());
             break;
         case "Branch":
-            return node.uses;
+            return new ValueSet(node.uses.values());
             break;
         default:
             throw new ReferenceError("Expected a subclass of Node, received an " + (node.constructor.name));
@@ -83,20 +26,21 @@ var uses = function (node, v_def) {
     }
 };
 
-var v_use = new ValueSet([]);
-for(n of graph.nodes) {
-    for(u of n.uses.values()) {
-        this.v_use.add(u);
+var v_use = function(graph) {
+    var set = new ValueSet([]);
+    for(n of graph.nodes) {
+        for(u of n.uses.values()) {
+            set.add(u);
+        }
     }
-}    
-
+    return set;
+}
 
 var liveness = new DFAFramework({
-    graph: graph,
     meet: function(node, graph) {
         var out_set = new ValueSet([]);
-        var succ  = this.graph.nodes.filter(function(s) {
-            if(this.graph.adjacency[node.index][s.index] == 1) {
+        var succ  = graph.nodes.filter(function(s) {
+            if(graph.adjacency[node.index][s.index] == 1) {
                 return true;
             }
         })
@@ -105,7 +49,7 @@ var liveness = new DFAFramework({
                 out_set.add(use);
             }
         };
-        return out_set;
+        return [out_set, succ];
     },
     transfer: function(node, out_set, value_set) {
         var set1 = uses(node, value_set); // set1 = use[B]
@@ -120,12 +64,11 @@ var liveness = new DFAFramework({
             set1.add(v); // set1 = use[B] U (in[B] - def[B])
         }
         
-        return set1;
+        return [set1, [node]];
     },
     meet_latex: "\\[\\text{Out}(n) = \\bigcup_{s \\in succ} \\text{In}(s)\\]",
     transfer_latex: "\\[\\text{In}(n) = \\text{Use}(n) \\cup \\big{(}\\text{Out}(n) \\setminus \\text{Def}(n)\\big{)}\\]",
     transfer_value_set: v_use,
-    order: DFA.POSTORDER,
     direction: DFA.BACKWARD,
     top: new ValueSet([]),
     name: "Liveness Analysis",
