@@ -21,8 +21,9 @@ Operation \n\
 NormalOp = \n\
     _ oc:opcode _ s:OperandList _ "=>" _ t:OperandList _ { return new ILOC.NormalOperation({ opcode:oc, sources: s, targets: t, }); } \n\
  \n\
-ControlFlowOp = \n\
-    _ oc:opcode _ s:(s:OperandList _ "->" { return s; })? _ t:OperandList _ { console.log(oc); console.log(s); return new ILOC.ControlFlowOperation({opcode:oc, sources: s, targets: t, }); } \n\
+ControlFlowOp \n\
+    = _ oc:opcode _ s:(s:OperandList _ "->" { return s; })? _ t:OperandList _ { console.log(oc); console.log(s); return new ILOC.ControlFlowOperation({opcode:oc, sources: s, targets: t, }); } \n\
+    / _ oc: opcode _ { return new ILOC.ControlFlowOperation({opcode:oc}); } \n\
  \n\
 OperandList \n\
     = _ op:Operand _ "," _ op_list:OperandList _ { op_list.unshift(op); return op_list; }\n\

@@ -1,3 +1,6 @@
+/*
+ * ILOC Namespace
+ */
 var ILOC = {
     /*
      * Nodes for ILOC AST, based on the ILOC grammar from:
@@ -59,15 +62,16 @@ var ILOC = {
                 }
                 string += " " + this.operator_symbol + " ";
             }
-            for(t of this.targets) {
-                string += t.toString() + ",";
+            if (this.targets != null) {
+                for(t of this.targets) {
+                    string += t.toString() + ",";
+                }
             }
             return string;
         }
     },
 
     NORMAL_OPCODES: {
-        nop: 'nop',
         add: 'add',
         sub: 'sub',
         mult: 'mult',
@@ -112,8 +116,6 @@ var ILOC = {
         cmp_GT: 'cmp_GT',
         cmp_NE: 'cmp_NE',
         comp: 'comp',
-        jumpI: 'jumpI',
-        jump: 'jump',
         tbl: 'tbl',
     },
 
@@ -132,6 +134,7 @@ var ILOC = {
     },
 
     CONTROL_FLOW_OPCODES: {
+        nop: 'nop',
         cbr: 'cbr',
         jump: 'jump',
         jumpI: 'jumpI',
@@ -183,6 +186,9 @@ var ILOC = {
     
 }
 
+
+// Assign proper constructors to each class
+
 ILOC.IlocProgram.prototype = Object.create(Node.prototype);
 ILOC.IlocProgram.prototype.constructor = ILOC.IlocProgram;
 
@@ -201,6 +207,9 @@ ILOC.ControlFlowOperation.prototype.constructor = ILOC.ControlFlowOperation;
 ILOC.Operand.prototype = Object.create(Node.prototype);
 ILOC.Operand.prototype.constructor = ILOC.Operand;
 
+
+// Build a parser using peg.js
+
 try{
     ILOC.parser = PEG.buildParser(iloc_grammar);
 } catch (ex) {
@@ -209,7 +218,11 @@ try{
     console.log(ex.location);
 }
 
+
+// Test the parser
+
 iloc_code = "\
+L0: nop \n\
     loadI  2         => ra        \n\
     load   rb        => rx        \n\
     addI   ra   , 1  => ra        \n\
@@ -223,14 +236,13 @@ L2: addI   rb   , 1  => rc        \n\
 L3: add    ra   , rc => rd        \n\
 "
 
-// try{
+try{
     var parsed_ast = ILOC.parser.parse(iloc_code);
-// } catch (ex) {
-//     console.log(ex);
-//     console.log(ex.message);
-//     console.log(ex.location);
-// }
-// var parsed_ast = undefined;
+} catch (ex) {
+    console.log(ex);
+    console.log(ex.message);
+    console.log(ex.location);
+}
 
 var ast = new ILOC.IlocProgram({
     instructions: [
