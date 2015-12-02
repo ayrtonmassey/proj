@@ -42,7 +42,7 @@ function Graph (kwargs) {
      * visited. Calls itself recursively for each child.
      */ 
     this.traverse_postorder = function(index, order, visited) {
-        visited.push(i);
+        visited.push(index);
         var edges = this.adjacency[index];
         for (var i = 0; i < edges.length; i++) {
             if(visited.indexOf(i) == -1 && edges[i] == 1) {
@@ -63,7 +63,7 @@ function Graph (kwargs) {
      * visited. Calls itself recursively for each child.
      */ 
     this.traverse_preorder = function(index, order, visited) {
-        visited.push(i);
+        visited.push(index);
         order.push(index);
         var edges = this.adjacency[index];
         for (var i = 0; i < edges.length; i++) {

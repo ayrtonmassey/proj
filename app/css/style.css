@@ -20,6 +20,11 @@ th {
     padding: 1px 1px;
 }
 
+.visited-highlight {
+    background-color: #eee;
+    color: #666;
+}
+
 .transfer-light-highlight {
     background-color: #72BbFa;
     color: #FFF;

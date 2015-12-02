@@ -151,7 +151,7 @@ function RoundRobinIterator (kwargs) {
     this.reset_code = function() {
         $("#code").html("");
         for(var i = 0; i < this.graph.nodes.length; i++) {
-            $("#code").append("<span id=\"instruction-{0}\" class=\"instruction\">I".format(i)+i+": "+this.graph.nodes[i].instruction+"\n");
+            $("#code").append("<span id=\"instruction-{0}\" class=\"instruction\">I".format(i)+i+": "+this.graph.nodes[i].toString()+"\n");
         }
     }
 
@@ -185,13 +185,13 @@ function RoundRobinIterator (kwargs) {
         row_string = row_string.concat("<td rowspan=\"2\" style=\"text-align: center; vertical-align: middle;\">" + label + "</td>")
             row_string = row_string.concat("<td>In</td>");
         for(var i = 0; i < graph.nodes.length; i++) {
-            row_string = row_string.concat("<td id=\"round-{0}-in-{1}\" class=\"in result\"></td>".format(this.round, i));
+            row_string = row_string.concat("<td id=\"round-{0}-in-{1}\" class=\"in result\">{2}</td>".format(this.round, i, this.graph.nodes[i].in_set));
         }
         row_string = row_string.concat("</tr>");
         row_string = row_string.concat("<tr>");
         row_string = row_string.concat("<td>Out</td>");
         for(var i = 0; i < graph.nodes.length; i++) {
-            row_string = row_string.concat("<td id=\"round-{0}-out-{1}\" class=\"out result\"></td>".format(this.round, i));
+            row_string = row_string.concat("<td id=\"round-{0}-out-{1}\" class=\"out result\">{2}</td>".format(this.round, i, this.graph.nodes[i].out_set));
         }
         row_string = row_string.concat("</tr>");
         
@@ -206,6 +206,10 @@ function RoundRobinIterator (kwargs) {
         $("#round-{0}-out-{1}".format(round, i)).html(this.graph.nodes[i].out_set.toString());
     }
 
+    this.visited_highlight = function(node, set) {
+        $("#round-{0}-{1}-{2}".format(this.round,set,this.graph.nodes.indexOf(node))).addClass("visited-highlight");
+    }
+
     this.meet_highlight = function(dark_node,light_nodes) {
         $(".meet-light-highlight").each(function() {
             $(this).removeClass("meet-light-highlight")
@@ -214,7 +218,7 @@ function RoundRobinIterator (kwargs) {
             $(this).removeClass("meet-dark--highlight")
         });
         for(node of light_nodes) {
-            $("#round-{0}-{1}-{2}".format(this.round - 1,(this.framework.direction == DFA.FORWARD ? "out" : "in"),this.graph.nodes.indexOf(node))).addClass("meet-light-highlight");
+            $("#round-{0}-{1}-{2}".format(this.round,(this.framework.direction == DFA.FORWARD ? "out" : "in"),this.graph.nodes.indexOf(node))).addClass("meet-light-highlight");
             $("#instruction-{0}".format(this.graph.nodes.indexOf(node))).addClass("meet-light-highlight");
         }
         $("#round-{0}-{1}-{2}".format(this.round,(this.framework.direction == DFA.FORWARD ? "in" : "out"),this.graph.nodes.indexOf(dark_node))).addClass("meet-dark-highlight");
@@ -247,6 +251,7 @@ function RoundRobinIterator (kwargs) {
             node.out_set = result[0]
             modified_nodes = result[1]
             this.meet_highlight(node,modified_nodes);
+            this.visited_highlight(node,"out");
             this.changed = this.changed || !compare_value_sets(node.out_set,old_out);
             this.fill_out_result(this.round,this.order[this.order_index]);
         } else {
@@ -257,6 +262,7 @@ function RoundRobinIterator (kwargs) {
             node.in_set = result[0]
             modified_nodes = result[1]
             this.meet_highlight(node, modified_nodes);
+            this.visited_highlight(node,"in");
             this.changed = this.changed || !compare_value_sets(node.in_set,old_in);
             this.fill_in_result(this.round,this.order[this.order_index]);
         }
@@ -272,6 +278,7 @@ function RoundRobinIterator (kwargs) {
             node.in_set = result[0];
             modified_nodes = result[1];
             this.transfer_highlight(node,modified_nodes);
+            this.visited_highlight(node,"in");
             this.changed = this.changed || !compare_value_sets(node.in_set,old_in);
             this.fill_in_result(this.round,this.order[this.order_index]);
         } else {
@@ -282,6 +289,7 @@ function RoundRobinIterator (kwargs) {
             node.out_set = result[0];
             modified_nodes = result[1];
             this.transfer_highlight(node,modified_nodes);
+            this.visited_highlight(node,"out");
             this.changed = this.changed || !compare_value_sets(node.out_set,old_out);
             this.fill_out_result(this.round,this.order[this.order_index]);
         }
@@ -336,6 +344,8 @@ function RoundRobinIterator (kwargs) {
                 this.transfer();
                 this.fill_out_result(this.round,this.order[this.order_index]);
             }
+            this.visited_highlight(node,"in");
+            this.visited_highlight(node,"out");
             this.order_index++;
         }
 

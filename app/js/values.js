@@ -73,18 +73,7 @@ function ValueSet(iterable) {
     this.toString = function() {
         var string = "{ ";
         for(v of this.values()) {
-            switch(v.constructor.name) {
-                case "Definition":
-                    string += (v.name + "<sub>" + v.index + "</sub>");
-                    break;
-                case "Use":
-                    string += (v.name);
-                    break;
-                default:
-                    throw new ReferenceError("Expected a value, got " + v.constructor.name);
-                    break;
-            }
-            string += ", ";
+            string += v.toString() + ", ";
         }
         return string + " }";
     }
@@ -127,85 +116,18 @@ function compare_value_sets(v1,v2) {
 }
 
 /*
- *  A Value.
+ *  Mixin for a a Value.
  *
- *  All other Values should inherit from this base class.
+ *  All Values should inherit from this mixin using the following code:
+ *
+ *      ValueMixin.call(this, kwargs);
+ *
+ *  Note that this will not allow "instanceof ValueMixin" capability,
+ *  since you are not directly extending ValueMixin.
+ *
  */
-function Value(kwargs) {
+function ValueMixin(kwargs) {
     this.comparison_string=function(){
         throw new ReferenceError("Value comparison function for {0} undefined.".format(this.constructor.name))
     }
 }
-
-
-// Variable Definition
-function Definition(kwargs) {
-    Value.call(this, kwargs);
-    this.name = kwargs.name;
-    
-    this.comparison_string=function(){
-        return "{0}:{1}".format(this.constructor.name, this.name)
-    }
-}
-
-Definition.prototype = Object.create(Node.prototype);
-Definition.prototype.constructor = Definition
-
-
-// Arithmetic Expression e.g. (x + 2)
-function Expression(kwargs) {
-    Value.call(this, kwargs);
-    this.expression = kwargs.expression;
-
-    this.comparison_string=function(){
-        return "{0}:{1}".format(this.constructor.name, this.expression)
-    }
-}
-
-Expression.prototype = Object.create(Node.prototype);
-Expression.prototype.constructor = Expression
-
-
-// Variable Use
-function Use(kwargs) {
-    Value.call(this, kwargs);
-    this.name = kwargs.name;
-
-    this.comparison_string=function(){
-        return "{0}:{1}".format(this.constructor.name, this.name)
-    }
-}
-
-Use.prototype = Object.create(Node.prototype);
-Use.prototype.constructor = Use
-
-var v1 = new ValueSet([
-    new Use({name: "a"}),
-    new Use({name: "b"}),
-]);
-
-var v2 = new ValueSet([
-    new Use({name: "a"}),
-    new Use({name: "c"}),
-]);
-
-var v3 = new ValueSet([
-    new Use({name: "a"}),
-    new Use({name: "b"}),
-]);
-
-var v4 = new ValueSet([
-    new Use({name: "a"}),
-]);
-
-console.log(compare_value_sets(v1,v1));
-console.log(compare_value_sets(v1,v2));
-console.log(compare_value_sets(v2,v1));
-
-console.log('\n');
-console.log(compare_value_sets(v1,v3));
-console.log(compare_value_sets(v3,v1));
-
-console.log('\n');
-console.log(compare_value_sets(v1,v4));
-console.log(compare_value_sets(v4,v1));

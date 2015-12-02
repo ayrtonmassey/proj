@@ -3,16 +3,17 @@
  */
 var ILOC = {
     /*
-     * Nodes for ILOC AST, based on the ILOC grammar from:
+     * Nodes for the ILOC AST, based on the ILOC grammar from:
      *
-     * Engineering a Compiler, K. Cooper & L. Torczon, Appendix A, p. 727
+     * Engineering a Compiler, K. Cooper & L. Torczon, Appendix A,
+     * p. 727
      * 
      */
 
     /*
      * A IlocProgram.
      */
-    IlocProgram: function(kwargs) {
+    IlocProgram: function IlocProgram(kwargs) {
         Node.call(this, kwargs);
         this.instructions = kwargs.instructions;
         
@@ -28,7 +29,7 @@ var ILOC = {
     /*
      * An Instruction.
      */
-    Instruction: function(kwargs) {
+    Instruction: function Instruction(kwargs) {
         Node.call(this, kwargs);
         this.operations = kwargs.operations;
         this.label = kwargs.label;
@@ -39,7 +40,7 @@ var ILOC = {
                 string += this.label + ": ";
             }
             for(o of this.operations) {
-                string += o.toString() + "\n";
+                string += o.toString();
             }
             return string;
         }
@@ -48,7 +49,7 @@ var ILOC = {
     /*
      * An Operation
      */
-    Operation: function(kwargs) {
+    Operation: function Operation(kwargs) {
         Node.call(this, kwargs);
         this.opcode = kwargs.opcode;
         this.sources = kwargs.sources;
@@ -124,7 +125,7 @@ var ILOC = {
      *
      * Inherits from Operation.
      */
-    NormalOperation: function(kwargs) {
+    NormalOperation: function NormalOperation(kwargs) {
         ILOC.Operation.call(this, kwargs);
         
         this.operator_symbol = "=>";
@@ -151,7 +152,7 @@ var ILOC = {
      *
      * Inherits from Operation.
      */
-    ControlFlowOperation: function(kwargs) {
+    ControlFlowOperation: function ControlFlowOperation(kwargs) {
         ILOC.Operation.call(this, kwargs);
         
         this.operator_symbol = "->";
@@ -169,21 +170,72 @@ var ILOC = {
     /*
      * An Operand.
      */
-    Operand: function(kwargs) {
+    Operand: function Operand(kwargs) {
         Node.call(this, kwargs);
+        ValueMixin.call(this, kwargs);
         this.type = kwargs.type;
         this.name = kwargs.name;
 
         this.toString = function() {
             switch(this.type) {
             case ILOC.OPERAND_TYPES.register:
-                return "r"+this.name;
+                return "r"+this.name + (this.index != undefined ? "<sub>" + this.index + "</sub>" : "");
             default:
-                return this.name;
+                return this.name + (this.index != undefined ? "<sub>" + this.index + "</sub>" : "");
             }
         }
+
+        this.comparison_string=function() {
+            return ("Operand:{0}:{1}:{2}".format(this.type,this.name,(this.index != undefined ? this.index : "no_index")));
+        }
     },
-    
+
+    build_CFG: function build_CFG(iloc_program) {
+        if(!(iloc_program instanceof ILOC.IlocProgram)) {
+            throw TypeError("Must pass an instance of IlocProgram to build_CFG");
+        }
+
+        graph = new Graph();
+
+        labels = {}
+        for(i of iloc_program.instructions) {
+            graph.add_node(i);
+            if(i.label != undefined) {
+                labels[i.label] = i;
+            }
+        }
+        for(n of graph.nodes) {
+            // TODO: Handle branch from within middle of instruction.
+            for(o of n.operations) {
+                if(o instanceof ILOC.ControlFlowOperation) {
+                    // If the node is a nop:
+                    if(o.opcode == ILOC.CONTROL_FLOW_OPCODES.nop) {
+                        // If this node is not the last node:
+                        if(graph.nodes.indexOf(n) < graph.nodes.length - 1) {
+                            // Add an edge to the following node.
+                            graph.add_edge(n,graph.nodes[graph.nodes.indexOf(n)+1]);
+                        }
+                    } else {
+                        // This node branches, so
+                        for (t of o.targets) {
+                            // Add each branch target as an edge from this node.
+                            graph.add_edge(n,graph.nodes[graph.nodes.indexOf(labels[t])]);
+                        }
+                    }
+                }
+            }
+            if (n.operations[n.operations.length - 1] instanceof ILOC.NormalOperation) {
+                // NormalOperations do not branch, so
+                // If this node is not the last node:
+                if(graph.nodes.indexOf(n) < graph.nodes.length - 1) {
+                    // Add an edge to the following node.
+                    graph.add_edge(n,graph.nodes[graph.nodes.indexOf(n)+1]);
+                }
+            }
+        }
+        
+        return graph;
+    }
 }
 
 
@@ -218,255 +270,43 @@ try{
     console.log(ex.location);
 }
 
+//// Test ValueSets
 
-// Test the parser
+// vs1 = new ValueSet([
+//     new ILOC.Operand({
+//         type: ILOC.OPERAND_TYPES.num,
+//         name: '6',
+//     }),
+//     new ILOC.Operand({
+//         type: ILOC.OPERAND_TYPES.num,
+//         name: '7',
+//     }),
+// ]);
 
-iloc_code = "\
-L0: nop \n\
-    loadI  2         => ra        \n\
-    load   rb        => rx        \n\
-    addI   ra   , 1  => ra        \n\
-    loadI  0         => r0        \n\
-    cmp_GE rx   , r0 => rcomp     \n\
-    cbr    rcomp     -> L1   , L2 \n\
-L1: i2i    rx        => ra        \n\
-    add    ra   , rb => rc        \n\
-    jump   L3                     \n\
-L2: addI   rb   , 1  => rc        \n\
-L3: add    ra   , rc => rd        \n\
-"
+// vs2 = new ValueSet([
+//     new ILOC.Operand({
+//         type: ILOC.OPERAND_TYPES.num,
+//         name: '6',
+//     }),
+//     new ILOC.Operand({
+//         type: ILOC.OPERAND_TYPES.num,
+//         name: '7',
+//     }),
+// ]);
 
-try{
-    var parsed_ast = ILOC.parser.parse(iloc_code);
-} catch (ex) {
-    console.log(ex);
-    console.log(ex.message);
-    console.log(ex.location);
-}
+// vs3 = new ValueSet([
+//     new ILOC.Operand({
+//         type: ILOC.OPERAND_TYPES.num,
+//         name: '6',
+//     }),
+// ]);
 
-var ast = new ILOC.IlocProgram({
-    instructions: [
-        new ILOC.Instruction({
-            label: undefined,
-            operations: [
-                new ILOC.NormalOperation({
-                    opcode: ILOC.NORMAL_OPCODES.loadI,
-                    sources: [
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.num,
-                            name: '2',
-                        }),
-                    ],
-                    targets: [
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.register,
-                            name: 'a',
-                        }),
-                    ],
-                }),
-                new ILOC.NormalOperation({
-                    opcode: ILOC.NORMAL_OPCODES.load,
-                    sources: [
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.register,
-                            name: 'b',
-                        }),
-                    ],
-                    targets: [
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.register,
-                            name: 'x',
-                        }),
-                    ],
-                }),
-                new ILOC.NormalOperation({
-                    opcode: ILOC.NORMAL_OPCODES.addI,
-                    sources: [
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.register,
-                            name: 'a',
-                        }),
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.num,
-                            name: '1',
-                        }),
-                    ],
-                    targets: [
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.register,
-                            name: 'a',
-                        }),
-                    ],
-                }),
-                new ILOC.NormalOperation({
-                    opcode: ILOC.NORMAL_OPCODES.loadI,
-                    sources: [
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.num,
-                            name: '0',
-                        }),
-                    ],
-                    targets: [
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.register,
-                            name: '0',
-                        }),
-                    ],
-                }),
-                new ILOC.NormalOperation({
-                    opcode: ILOC.NORMAL_OPCODES.cmp_GE,
-                    sources: [
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.register,
-                            name: 'x',
-                        }),
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.register,
-                            name: '0',
-                        }),
-                    ],
-                    targets: [
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.register,
-                            name: 'comp',
-                        }),
-                    ],
-                }),
-                new ILOC.ControlFlowOperation({
-                    opcode: ILOC.CONTROL_FLOW_OPCODES.cbr,
-                    sources: [
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.register,
-                            name: 'comp',
-                        }),
-                    ],
-                    targets: [
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.label,
-                            name: 'L1',
-                        }),
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.label,
-                            name: 'L2',
-                        }),
-                    ],
-                }),
-            ],
-        }),
-        new ILOC.Instruction({
-            label: new ILOC.Operand({
-                type: ILOC.OPERAND_TYPES.label,
-                name: 'L1',
-            }),
-            operations: [
-                new ILOC.NormalOperation({
-                    opcode: ILOC.NORMAL_OPCODES.i2i,
-                    sources: [
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.register,
-                            name: 'x',
-                        }),
-                    ],
-                    targets: [
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.register,
-                            name: 'a',
-                        }),
-                    ],
-                }),
-                new ILOC.NormalOperation({
-                    opcode: ILOC.NORMAL_OPCODES.add,
-                    sources: [
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.register,
-                            name: 'a',
-                        }),
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.register,
-                            name: 'b',
-                        }),
-                    ],
-                    targets: [
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.register,
-                            name: 'c',
-                        }),
-                    ],
-                }),
-                new ILOC.ControlFlowOperation({
-                    opcode: ILOC.CONTROL_FLOW_OPCODES.jump,
-                    sources: [
-                    ],
-                    targets: [
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.label,
-                            name: 'L3',
-                        }),
-                    ],
-                }),
-            ],
-        }),
-        new ILOC.Instruction({
-            label: new ILOC.Operand({
-                type: ILOC.OPERAND_TYPES.label,
-                name: 'L2',
-            }),
-            operations: [
-                new ILOC.NormalOperation({
-                    opcode: ILOC.NORMAL_OPCODES.addI,
-                    sources: [
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.register,
-                            name: 'b',
-                        }),
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.num,
-                            name: '1',
-                        }),
-                    ],
-                    targets: [
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.register,
-                            name: 'c',
-                        }),
-                    ],
-                }),
-            ],
-        }),
-        new ILOC.Instruction({
-            label: new ILOC.Operand({
-                type: ILOC.OPERAND_TYPES.label,
-                name: 'L3',
-            }),
-            operations: [
-                new ILOC.NormalOperation({
-                    opcode: ILOC.NORMAL_OPCODES.add,
-                    sources: [
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.register,
-                            name: 'a',
-                        }),
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.register,
-                            name: 'c',
-                        }),
-                    ],
-                    targets: [
-                        new ILOC.Operand({
-                            type: ILOC.OPERAND_TYPES.register,
-                            name: 'd',
-                        }),
-                    ],
-                }),
-            ],
-        }),
-    ]
-});
+// console.log("vs1/vs1: " + compare_value_sets(vs1,vs1));
+// console.log("vs2/vs2: " + compare_value_sets(vs2,vs2));
+// console.log("vs1/vs2: " + compare_value_sets(vs1,vs2));
+// console.log("vs2/vs1: " + compare_value_sets(vs2,vs1));
 
-console.log(iloc_code)
-console.log(ast);
-console.log(ast.toString());
-console.log(parsed_ast);
-if(parsed_ast != undefined) {
-    console.log(parsed_ast.toString());
-}
+// console.log("vs1/vs1: " + compare_value_sets(vs1,vs1));
+// console.log("vs3/vs3: " + compare_value_sets(vs3,vs3));
+// console.log("vs1/vs3: " + compare_value_sets(vs1,vs3));
+// console.log("vs3/vs1: " + compare_value_sets(vs3,vs1));
