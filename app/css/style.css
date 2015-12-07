@@ -15,11 +15,6 @@ th {
     margin: 0px 0;
 }
 
-.instruction {
-    display: block;
-    padding: 1px 1px;
-}
-
 .visited-highlight {
     background-color: #eee;
     color: #666;
@@ -47,4 +42,8 @@ th {
     background-color: #5cb85c;
     color: #FFF;
     font-weight: bold;
+}
+
+.borderless tbody tr td, .borderless tbody tr th, .borderless thead tr th {
+    border: none;
 }

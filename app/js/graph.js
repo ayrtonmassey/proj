@@ -106,6 +106,14 @@ function Graph (kwargs) {
  */
 function Node (kwargs) {    
     this.instruction = kwargs.instruction;
+
+    this.toString=function(){
+        throw new ReferenceError("function toString not defined in {0}".format(this.constructor.name))
+    }
+
+    this.toHTML=function(){
+        throw new ReferenceError("function toHTML not defined in {0}".format(this.constructor.name))
+    }
 };
 
 

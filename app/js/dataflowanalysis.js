@@ -149,10 +149,12 @@ function RoundRobinIterator (kwargs) {
      *  Reset the code panel.
      */
     this.reset_code = function() {
-        $("#code").html("");
-        for(var i = 0; i < this.graph.nodes.length; i++) {
-            $("#code").append("<span id=\"instruction-{0}\" class=\"instruction\">I".format(i)+i+": "+this.graph.nodes[i].toString()+"\n");
-        }
+        table_html = '<table class="table borderless"><tbody>{0}</tbody></table>'.format(
+            this.graph.nodes.map(function(node){
+                return "<tr id=\"instruction-{0}\" class=\"instruction\">{1}</tr>".format(node.index,node.toHTML());
+            }).join("")
+        )
+        $("#code").html(table_html);
     }
 
     /*
@@ -185,13 +187,13 @@ function RoundRobinIterator (kwargs) {
         row_string = row_string.concat("<td rowspan=\"2\" style=\"text-align: center; vertical-align: middle;\">" + label + "</td>")
             row_string = row_string.concat("<td>In</td>");
         for(var i = 0; i < graph.nodes.length; i++) {
-            row_string = row_string.concat("<td id=\"round-{0}-in-{1}\" class=\"in result\">{2}</td>".format(this.round, i, this.graph.nodes[i].in_set));
+            row_string = row_string.concat("<td id=\"round-{0}-in-{1}\" class=\"in result\">{2}</td>".format(this.round, i, this.graph.nodes[i].in_set.toHTML()));
         }
         row_string = row_string.concat("</tr>");
         row_string = row_string.concat("<tr>");
         row_string = row_string.concat("<td>Out</td>");
         for(var i = 0; i < graph.nodes.length; i++) {
-            row_string = row_string.concat("<td id=\"round-{0}-out-{1}\" class=\"out result\">{2}</td>".format(this.round, i, this.graph.nodes[i].out_set));
+            row_string = row_string.concat("<td id=\"round-{0}-out-{1}\" class=\"out result\">{2}</td>".format(this.round, i, this.graph.nodes[i].out_set.toHTML()));
         }
         row_string = row_string.concat("</tr>");
         
@@ -199,11 +201,11 @@ function RoundRobinIterator (kwargs) {
     }
 
     this.fill_in_result = function(round,i) {
-        $("#round-{0}-in-{1}".format(round, i)).html(this.graph.nodes[i].in_set.toString());
+        $("#round-{0}-in-{1}".format(round, i)).html(this.graph.nodes[i].in_set.toHTML());
     }
     
     this.fill_out_result = function(round,i) {
-        $("#round-{0}-out-{1}".format(round, i)).html(this.graph.nodes[i].out_set.toString());
+        $("#round-{0}-out-{1}".format(round, i)).html(this.graph.nodes[i].out_set.toHTML());
     }
 
     this.visited_highlight = function(node, set) {

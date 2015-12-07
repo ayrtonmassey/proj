@@ -72,11 +72,23 @@ function ValueSet(iterable) {
      */
     this.toString = function() {
         var string = "{ ";
-        for(v of this.values()) {
-            string += v.toString() + ", ";
-        }
+        string += this.values().map(function(v) {
+            return v.toString();
+        }).join(", ");
         return string + " }";
     }
+
+    /*
+     *  Returns a String representation of this ValueSet.
+     */
+    this.toHTML = function() {
+        var string = "{ ";
+        string += this.values().map(function(v) {
+            return v.toHTML();
+        }).join(", ");
+        return string + " }";
+    }
+
 
     /* Initialize from iterable */
     for(v of iterable) {
@@ -128,6 +140,11 @@ function compare_value_sets(v1,v2) {
  */
 function ValueMixin(kwargs) {
     this.comparison_string=function(){
-        throw new ReferenceError("Value comparison function for {0} undefined.".format(this.constructor.name))
+        throw new ReferenceError("function comparison_string not defined in {0}".format(this.constructor.name))
     }
+
+    this.toHTML=function(){
+        throw new ReferenceError("function toHTML not defined in {0}".format(this.constructor.name))
+    }
+        
 }

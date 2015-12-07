@@ -26,9 +26,10 @@ try{
 graph = ILOC.build_CFG(parsed_ast);
 
 rr = new RoundRobinIterator({
-    framework: iloc_liveness,
+    framework: iloc_reaching_definitions,
+    // framework: iloc_liveness,
     graph:     graph,
-    order:     DFA.POSTORDER,
+    order:     DFA.REVERSE_POSTORDER,
 });
 
 rr.run();

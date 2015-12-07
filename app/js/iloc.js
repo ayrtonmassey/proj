@@ -24,6 +24,15 @@ var ILOC = {
             }
             return string;
         }
+
+        this.toHTML = function() {
+            var string = "<table><tbody><tr>";
+            string += this.instructions.map(function(ins) {
+                return ins.toHTML();
+            }).join("</tr><tr>");
+            string += "</tr></tbody></table>";
+            return string;
+        }
     },
 
     /*
@@ -42,6 +51,18 @@ var ILOC = {
             for(o of this.operations) {
                 string += o.toString();
             }
+            return string;
+        }
+
+        this.toHTML = function() {
+            var string = "<td>";
+            if (this.label != undefined) {
+                string += this.label + ": ";
+            }
+            string += "</td>";
+            string += this.operations.map(function(op) {
+                return op.toHTML();
+            }).join("</tr><tr><td></td>");
             return string;
         }
     },
@@ -70,6 +91,43 @@ var ILOC = {
             }
             return string;
         }
+
+        this.toHTML = function() {
+            var string = "<td>{0}</td>".format(this.opcode);
+            if (this.sources != null) {
+                count = 0;
+                // Print all the sources
+                for(s of this.sources) {
+                    string += "<td>{0}</td>".format(s.toHTML());
+                    count += 1;
+                }
+                // Pad up to 2 cols
+                while (count < 2) {
+                    string += "<td></td>";
+                    count += 1;
+                }
+                string += "<td>{0}</td>".format(this.operator_symbol);
+            } else {
+                string += "<td></td><td></td><td></td>";
+            }
+            if (this.targets != null) {
+                count = 0;
+                // Print all the sources
+                for(t of this.targets) {
+                    string += "<td>{0}</td>".format(t.toHTML());
+                    count += 1;
+                }
+                // Pad up to 2 cols
+                while (count < 2) {
+                    string += "<td></td>";
+                    count += 1;
+                }
+            } else {
+                string += "<td></td><td></td>";
+            }
+            return string;
+        }
+
     },
 
     NORMAL_OPCODES: {
@@ -177,6 +235,15 @@ var ILOC = {
         this.name = kwargs.name;
 
         this.toString = function() {
+            switch(this.type) {
+            case ILOC.OPERAND_TYPES.register:
+                return "r"+this.name + (this.index != undefined ? "<{0}>".format(this.index) : "");
+            default:
+                return this.name
+            }
+        }
+        
+        this.toHTML = function() {
             switch(this.type) {
             case ILOC.OPERAND_TYPES.register:
                 return "r"+this.name + (this.index != undefined ? "<sub>" + this.index + "</sub>" : "");
