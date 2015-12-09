@@ -63,7 +63,7 @@ function RoundRobinIteratorView(kwargs) {
             $("#round-header").before("<td rowspan=\"2\" class=\"text-center\" style=\"vertical-align: middle\">{0}</td>".format(local_set))
             for(node of this.iterator.graph.nodes) {
                 $("#result-row-ins-{0}".format(node.index)).append(
-                    "<td class=\"{0} result\">{1}</td>".format(local_set, node[local_set])
+                    "<td class=\"{0} result\">{1}</td>".format(local_set, node[local_set].toHTML())
                 );
             }
         }

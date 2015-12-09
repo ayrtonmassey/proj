@@ -20,7 +20,7 @@ function DFAFramework (kwargs) {
     this.meet = kwargs.meet;
     this.transfer = kwargs.transfer;
     this.direction = kwargs.direction;
-    this.transfer_value_set = kwargs.transfer_value_set;
+    this.value_domain = kwargs.value_domain;
     this.local_sets = kwargs.local_sets;
     this.top = kwargs.top;
 }
@@ -31,7 +31,7 @@ function RoundRobinIterator (kwargs) {
     this.graph = kwargs.graph;
 
     this.framework = kwargs.framework;
-    this.transfer_value_set = this.framework.transfer_value_set(this.graph);
+    this.value_domain = this.framework.value_domain(this.graph);
     
     this.order = (function(order) {
         switch(order) {
@@ -65,7 +65,7 @@ function RoundRobinIterator (kwargs) {
             node.in_set = new ValueSet([]);
             node.out_set = new ValueSet([]);
             for(local_set in this.framework.local_sets) {
-                node[local_set] = this.framework.local_sets[local_set](node);
+                node[local_set] = this.framework.local_sets[local_set](node, this.value_domain);
             }
         }
         
@@ -94,7 +94,7 @@ function RoundRobinIterator (kwargs) {
             node = this.graph.nodes[this.order[this.order_index]];
             
             var old_out  = new ValueSet(node.out_set.values());
-            result = this.framework.meet(node,this.graph,this.meet_highlight);
+            result = this.framework.meet(node,this.graph);
             node.out_set = result.value_set;
             result_calculated = "out";
             this.changed = this.changed || !compare_value_sets(node.out_set,old_out);
@@ -120,16 +120,15 @@ function RoundRobinIterator (kwargs) {
             node = this.graph.nodes[this.order[this.order_index]];
             
             var old_in = new ValueSet(node.in_set.values());
-            result = this.framework.transfer(node, node.out_set, this.transfer_value_set);
+            result = this.framework.transfer(node);
             node.in_set = result.value_set;
             modified_nodes = result.modified_nodes;
             this.changed = this.changed || !compare_value_sets(node.in_set,old_in);
             result_calculated = "in";
         } else {
             node = this.graph.nodes[this.order[this.order_index]];
-
             var old_out = new ValueSet(node.out_set.values());
-            result = this.framework.transfer(node, node.in_set, this.transfer_value_set);
+            result = this.framework.transfer(node);
             node.out_set = result.value_set;
             modified_nodes = result.modified_nodes;
             result_calculated = "out";

@@ -1,10 +1,15 @@
 var iloc_grammar = '\
+{ \n\
+  var definition_counts = {}; \n\
+  var count = 0; \n\
+} \n\
+ \n\
 IlocProgram \n\
     = _ ins_list:InstructionList _ { return new ILOC.IlocProgram({instructions: ins_list}); } \n\
  \n\
 InstructionList \n\
-    =  _ l:(l:label _ ":" _ { return l; })? ins:Instruction _ "\\n"_ ins_list:InstructionList _ { ins.label = l; ins_list.unshift(ins); return ins_list; }\n\
-    / _ l:(l:label _ ":" _ { return l; })? ins:Instruction _ "\\n" _ { ins.label = l; return [ ins ]; }\n\
+    =  _ l:(l:label _ ":" _ { return l; })? _ ins:Instruction ins_list:(mandatory_newline ins_list:InstructionList { return ins_list; })? _n { ins.label = l; if(ins_list != undefined) { ins_list.unshift(ins); return ins_list; } else { return [ins] } } \n\
+    /* / _ l:(l:label _ ":" _ { return l; })? _ ins:Instruction "\\n"* _ { ins.label = l; return [ ins ]; } */ \n\
 \n\
 Instruction \n\
     = _ op:Operation _ { return new ILOC.Instruction({operations: [ op ]}); } \n\
@@ -19,7 +24,7 @@ Operation \n\
     / _ op:ControlFlowOp _ { return op; } \n\
  \n\
 NormalOp = \n\
-    _ oc:opcode _ s:OperandList _ "=>" _ t:OperandList _ { return new ILOC.NormalOperation({ opcode:oc, sources: s, targets: t, }); } \n\
+    _ oc:opcode _ s:OperandList _ "=>" _ t:OperandList _ { return new ILOC.NormalOperation({ opcode:oc, sources: s, targets: t.map(function(operand) { if (definition_counts[operand.name]==undefined) { definition_counts[operand.name] = 1 }; operand.index=definition_counts[operand.name]++; return operand; }) }); } \n\
  \n\
 ControlFlowOp \n\
     = _ oc:opcode _ s:(s:OperandList _ "->" { return s; })? _ t:OperandList _ { return new ILOC.ControlFlowOperation({opcode:oc, sources: s, targets: t, }); } \n\
@@ -51,4 +56,9 @@ _ \n\
  \n\
 __ \n\
   = w:[ \\t\\r]+ { return w; } \n\
+_n \n\
+  = w:[ \\n\\t\\r]* { return w; } \n\
+ \n\
+mandatory_newline \n\
+  = w:[ \\t\\r]*"\\n"[ \\n\\t\\r]* { return w; } \n\
 '

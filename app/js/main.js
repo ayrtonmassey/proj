@@ -23,15 +23,13 @@ try{
     console.log(ex.location);
 }
 
-graph = ILOC.build_CFG(parsed_ast);
-
 view = new RoundRobinIteratorView({
     iterator: new RoundRobinIterator({
-        // framework: iloc_reaching_definitions,
+        framework: iloc_reaching_definitions,
         order:     DFA.REVERSE_POSTORDER,
-        framework: iloc_liveness,
-        order:     DFA.POSTORDER,
-        graph:     graph,
+        // framework: iloc_liveness,
+        // order:     DFA.POSTORDER,
+        graph:     ILOC.build_CFG(parsed_ast),
     }),
 });
 

@@ -1,4 +1,4 @@
-var defs = function (node,v_def) {
+var defs = function (node, v_uses) {
     // Return all the source operands of this nodes' operations
     return new ValueSet(
         [].concat.apply([], node.operations.filter(function(operation) {
@@ -17,7 +17,7 @@ var defs = function (node,v_def) {
     );
 };
 
-var uses = function (node, v_def) {
+var uses = function (node, v_uses) {
     // Return all the source operands of this nodes' operations
     return new ValueSet(
         [].concat.apply([], node.operations.map(function(operation) {
@@ -33,7 +33,7 @@ var uses = function (node, v_def) {
     );
 };
 
-var v_use = function(graph) {
+var v_uses = function(graph) {
     // Find all operations in the graph
     var operations = [].concat.apply([], graph.nodes.map(function(node) {
         return node.operations.map(function(operation) {
@@ -74,7 +74,7 @@ var iloc_liveness = new DFAFramework({
         
         return {value_set: out_set, modified_nodes: succ, local_sets: []};
     },
-    transfer: function(node, value_set) {
+    transfer: function(node) {
         var set1 = new ValueSet(node.use.values()); // set1 = use[B]
 
         var set2 = new ValueSet(node.out_set.values()); // set2 = in[B]
@@ -95,7 +95,7 @@ var iloc_liveness = new DFAFramework({
         use: uses,
         def: defs,
     },
-    transfer_value_set: v_use,
+    value_domain: v_uses,
     direction: DFA.BACKWARD,
     top: new ValueSet([]),
     name: "ILOC Liveness Analysis",

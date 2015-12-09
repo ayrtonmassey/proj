@@ -233,13 +233,14 @@ var ILOC = {
         ValueMixin.call(this, kwargs);
         this.type = kwargs.type;
         this.name = kwargs.name;
+        this.index = kwargs.index;
 
         this.toString = function() {
             switch(this.type) {
             case ILOC.OPERAND_TYPES.register:
                 return "r"+this.name + (this.index != undefined ? "<{0}>".format(this.index) : "");
             default:
-                return this.name
+                return this.name;
             }
         }
         
@@ -248,7 +249,7 @@ var ILOC = {
             case ILOC.OPERAND_TYPES.register:
                 return "r"+this.name + (this.index != undefined ? "<sub>" + this.index + "</sub>" : "");
             default:
-                return this.name + (this.index != undefined ? "<sub>" + this.index + "</sub>" : "");
+                return this.name;
             }
         }
 

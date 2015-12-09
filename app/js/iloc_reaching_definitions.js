@@ -1,13 +1,5 @@
-var defgen = function (node,v_def) {
-    var operations = node.operations.map(function(operation) {
-        // Assign defintion indexes to all definitions
-        if(operation.targets != undefined) {
-            for (t of operation.targets) {
-                t.index = "{0},{1}".format(node.index,node.operations.indexOf(operation));
-            }
-        }
-        return operation;
-    }).filter(function(operation) {
+var defgen = function (node, v_def) {
+    var operations = node.operations.filter(function(operation) {
         // Filter to those which are assignments
         return (operation instanceof ILOC.NormalOperation);
     });
@@ -28,15 +20,7 @@ var defgen = function (node,v_def) {
 };
 
 var defkill = function (node, v_def) {
-    var operations = node.operations.map(function(operation) {
-        // Assign defintion indexes to all definitions
-        if(operation.targets != undefined) {
-            for (t of operation.targets) {
-                t.index = "{0},{1}".format(node.index,node.operations.indexOf(operation));
-            }
-        }
-        return operation;
-    }).filter(function(operation) {
+    var operations = node.operations.filter(function(operation) {
         // Filter to those which are assignments
         return (operation instanceof ILOC.NormalOperation);
     });
@@ -59,23 +43,12 @@ var defkill = function (node, v_def) {
             }
         }
     };
-    if(node.index == 3) {
-        console.log(out_set);
-    }
     return out_set;
 };
     
 var v_def = function(graph) {
     var operations = [].concat.apply([], graph.nodes.map(function(node) {
-        return node.operations.map(function(operation) {
-            // Assign defintion indexes to all definitions
-            if(operation.targets != undefined) {
-                for (t of operation.targets) {
-                    t.index = "{0},{1}".format(node.index,node.operations.indexOf(operation));
-                }
-            }
-            return operation;
-        });
+        return node.operations;
     })).filter(function(operation) {
         // Filter to those which are assignments
         return (operation instanceof ILOC.NormalOperation);
@@ -91,10 +64,10 @@ var v_def = function(graph) {
             }
         }))
     );
-}
+};
 
 var iloc_reaching_definitions = new DFAFramework({
-    meet: function(node, graph, highlight) {
+    meet: function(node, graph) {
         var in_set = new ValueSet([]);
         var preds  = graph.nodes.filter(function(p) {
             if(graph.adjacency[p.index][node.index] == 1) {
@@ -106,14 +79,14 @@ var iloc_reaching_definitions = new DFAFramework({
                 in_set.add(def);
             }
         };
-        return {value_set: in_set, modified_nodes: preds};
+        return {value_set: in_set, modified_nodes: preds, local_sets: [] };
     },
-    transfer: function(node, in_set, v_def) {
-        var set1 = defgen(node, v_def); // set1 = gen[B]
+    transfer: function(node) {
+        var set1 = new ValueSet(node.defgen.values()); // set1 = gen[B]
 
-        var set2 = new ValueSet(in_set.values()); // set2 = in[B]
+        var set2 = new ValueSet(node.in_set.values()); // set2 = in[B]
 
-        for(v of defkill(node, v_def).values()) {
+        for(v of node.defkill.values()) {
             set2.delete(v);
         } // set2 = in[B] - kill[B]
         
@@ -121,11 +94,15 @@ var iloc_reaching_definitions = new DFAFramework({
             set1.add(v); // set1 = gen[B] U (in[B] - kill[B])
         }
         
-        return {value_set: set1, modified_nodes: [node]};
+        return {value_set: set1, modified_nodes: [node], local_sets: ['defgen', 'defkill'] };
     },
     meet_latex: "\\[\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)\\]",
     transfer_latex: "\\[\\text{Out}(n) = \\text{DefGen}(n) \\cup \\big{(}\\text{In}(n) \\setminus \\text{DefKill}(n)\\big{)}\\]",
-    transfer_value_set: v_def,
+    value_domain: v_def,
+    local_sets: {
+        defgen: defgen,
+        defkill: defkill,
+    },
     direction: DFA.FORWARD,
     top: new ValueSet([]),
     name: "ILOC Reaching Definitions",

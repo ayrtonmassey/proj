@@ -104,9 +104,7 @@ function Graph (kwargs) {
  *
  *  All other Nodes should inherit from this base class.
  */
-function Node (kwargs) {    
-    this.instruction = kwargs.instruction;
-
+function Node (kwargs) {
     this.toString=function(){
         throw new ReferenceError("function toString not defined in {0}".format(this.constructor.name))
     }
