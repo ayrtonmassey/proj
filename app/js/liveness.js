@@ -49,7 +49,7 @@ var liveness = new DFAFramework({
                 out_set.add(use);
             }
         };
-        return [out_set, succ];
+        return [out_set, succ, []];
     },
     transfer: function(node, out_set, value_set) {
         var set1 = uses(node, value_set); // set1 = use[B]
@@ -64,7 +64,7 @@ var liveness = new DFAFramework({
             set1.add(v); // set1 = use[B] U (in[B] - def[B])
         }
         
-        return [set1, [node]];
+        return [set1, [node], ['use', 'def']];
     },
     meet_latex: "\\[\\text{Out}(n) = \\bigcup_{s \\in succ} \\text{In}(s)\\]",
     transfer_latex: "\\[\\text{In}(n) = \\text{Use}(n) \\cup \\big{(}\\text{Out}(n) \\setminus \\text{Def}(n)\\big{)}\\]",

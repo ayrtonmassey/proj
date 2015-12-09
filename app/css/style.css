@@ -2,8 +2,9 @@
 
 #canvas {
     font-family: roboto;
-    font-size: 1.3rem;
+    font-size: 1rem;
     padding-top: 20px;
+    padding-bottom: 50px;
 }
 
 #canvas h1 {
@@ -22,6 +23,11 @@
 #left-column {
     text-align: center;
 }
+
+.fixed {
+    position: fixed;
+}
+
 
 /* Controls */
 #controls {
@@ -57,8 +63,33 @@
     overflow-x: auto;
 }
 
+#result-container td{
+    white-space:nowrap;
+}
+
+#result-container table {
+    margin: 0;
+}
+
+.table-bordered,
+.table-bordered>thead,
+.table-bordered>tbody,
+.table-bordered>thead>tr,
+.table-bordered>tbody>tr,
+.table-bordered>thead>tr>th,
+.table-bordered>tbody>tr>th,
+.table-bordered>thead>tr>td,
+.table-bordered>tbody>tr>td {
+    border-color: #ccc;
+    border-width: 1px;
+}
+
 
 /* Table */
+
+.cell-grey {
+    background-color: #eee;
+}
 
 th {
     text-align: center;
@@ -76,18 +107,23 @@ th {
     color: #000 !important;
     padding: 1px 0;
     margin: 0px 0;
+    border-radius: 5px;
 }
 
 #transfer {
     color: #000 !important;
     padding: 1px 0;
     margin: 0px 0;
+    border-radius: 5px;
+}
+
+.unvisited-highlight {
+    color: #ddd;
 }
 
 .visited-highlight {
-    background-color: #eee;
-    color: #666;
 }
+
 
 .transfer-light-highlight {
     background-color: #72BbFa;

@@ -21,6 +21,7 @@ function DFAFramework (kwargs) {
     this.transfer = kwargs.transfer;
     this.direction = kwargs.direction;
     this.transfer_value_set = kwargs.transfer_value_set;
+    this.local_sets = kwargs.local_sets;
     this.top = kwargs.top;
 }
 
@@ -49,7 +50,7 @@ function RoundRobinIterator (kwargs) {
     })(kwargs.order);
 
     // Iteration variables
-    this.round=0;
+    this.round=1;
     this.order_index=0;
     this.changed=false;
     this.finished=false;
@@ -60,9 +61,12 @@ function RoundRobinIterator (kwargs) {
      */
     this.reset_state = function() {
         // Reset data sets.
-        for(var i = 0; i < this.graph.nodes.length; i++) {
-            this.graph.nodes[i].in_set = new ValueSet([]);
-            this.graph.nodes[i].out_set = new ValueSet([]);
+        for(node of this.graph.nodes) {
+            node.in_set = new ValueSet([]);
+            node.out_set = new ValueSet([]);
+            for(local_set in this.framework.local_sets) {
+                node[local_set] = this.framework.local_sets[local_set](node);
+            }
         }
         
         // Reset variables.
@@ -82,33 +86,36 @@ function RoundRobinIterator (kwargs) {
     }
     
     this.meet = function() {
+        var node;
+        var modified_nodes;
+        var result_calculated;
+        var result;
         if(this.framework.direction==DFA.BACKWARD) {
-            var node = this.graph.nodes[this.order[this.order_index]];
+            node = this.graph.nodes[this.order[this.order_index]];
             
             var old_out  = new ValueSet(node.out_set.values());
             result = this.framework.meet(node,this.graph,this.meet_highlight);
             node.out_set = result.value_set;
-            modified_nodes = result.modified_nodes;
             result_calculated = "out";
             this.changed = this.changed || !compare_value_sets(node.out_set,old_out);
         } else {
-            var node = this.graph.nodes[this.order[this.order_index]];
+            node = this.graph.nodes[this.order[this.order_index]];
             
             var old_in = new ValueSet(node.in_set.values());
             result = this.framework.meet(node,this.graph);
             node.in_set = result.value_set;
-            modified_nodes = result.modified_nodes;
             result_calculated = "in";
             this.changed = this.changed || !compare_value_sets(node.in_set,old_in);
         }
         this.set_to_calculate=DFA.TRANSFER;
-        return { node: node, modified_nodes: modified_nodes, result_calculated: result_calculated, type: "meet" };
+        return $.extend(result, result, { node: node, result_calculated: result_calculated, type: "meet" });
     }
 
     this.transfer = function() {
         var node;
         var modified_nodes;
         var result_calculated;
+        var result
         if(this.framework.direction==DFA.BACKWARD) {
             node = this.graph.nodes[this.order[this.order_index]];
             
@@ -129,7 +136,7 @@ function RoundRobinIterator (kwargs) {
             this.changed = this.changed || !compare_value_sets(node.out_set,old_out);
         }
         this.set_to_calculate=DFA.MEET;
-        return { node: node, modified_nodes: modified_nodes, result_calculated: result_calculated, type: "transfer" };
+        return $.extend(result, result, { node: node, result_calculated: result_calculated, type: "transfer" });
     }
     
     this.iterate = function() {
@@ -166,11 +173,9 @@ function RoundRobinIterator (kwargs) {
             if(this.framework.direction==DFA.BACKWARD) {
                 node.out_set = new ValueSet(this.framework.top.values());
                 node.in_set = new ValueSet(this.framework.top.values());
-                this.transfer();
             } else {
                 node.in_set = new ValueSet(this.framework.top.values());
                 node.out_set = new ValueSet(this.framework.top.values());
-                this.transfer();
             }
             this.order_index++;
         }

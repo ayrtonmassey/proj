@@ -59,24 +59,27 @@ var v_use = function(graph) {
 var iloc_liveness = new DFAFramework({
     meet: function(node, graph) {
         var out_set = new ValueSet([]);
+        
         var succ  = graph.nodes.filter(function(s) {
             if(graph.adjacency[node.index][s.index] == 1) {
                 return true;
             }
         })
+        
         for(s of succ) {
-            for(use of s.in_set.values()) {
-                out_set.add(use);
+            for(val of s.in_set.values()) {
+                out_set.add(val);
             }
         };
-        return {value_set: out_set, modified_nodes: succ};
-    },
-    transfer: function(node, out_set, value_set) {
-        var set1 = uses(node, value_set); // set1 = use[B]
-
-        var set2 = new ValueSet(out_set.values()); // set2 = in[B]
         
-        for(v of defs(node, value_set).values()) {
+        return {value_set: out_set, modified_nodes: succ, local_sets: []};
+    },
+    transfer: function(node, value_set) {
+        var set1 = new ValueSet(node.use.values()); // set1 = use[B]
+
+        var set2 = new ValueSet(node.out_set.values()); // set2 = in[B]
+        
+        for(v of node.def.values()) {
             set2.delete(v);
         } // set2 = in[B] - def[B]
         
@@ -84,10 +87,14 @@ var iloc_liveness = new DFAFramework({
             set1.add(v); // set1 = use[B] U (in[B] - def[B])
         }
         
-        return {value_set: set1, modified_nodes: [node]};
+        return {value_set: set1, modified_nodes: [node], local_sets: ['use', 'def']};
     },
     meet_latex: "\\[\\text{Out}(n) = \\bigcup_{s \\in succ} \\text{In}(s)\\]",
     transfer_latex: "\\[\\text{In}(n) = \\text{Use}(n) \\cup \\big{(}\\text{Out}(n) \\setminus \\text{Def}(n)\\big{)}\\]",
+    local_sets: {
+        use: uses,
+        def: defs,
+    },
     transfer_value_set: v_use,
     direction: DFA.BACKWARD,
     top: new ValueSet([]),

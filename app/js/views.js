@@ -30,26 +30,51 @@ function RoundRobinIteratorView(kwargs) {
         this.table.html('<thead id="table-head"></thead><tbody id="table-body"></tbody>');
         this.table_head = $("#table-head");
         this.table_body = $("#table-body");
+
         var table_head_html = '\n\
           <tr> \n\
             <th style="border-right:1px solid #ddd;"></th> \n\
-            <th style=\"border-right:1px solid #ddd;"></th> \n\
-            <th colspan=\"{0}\">Instruction</th> \n\
+            <th id="local-header">Local Information</th> \n\
+            <th id="global-header" colspan="99999">Global Information</th> \n\
           </tr> \n\
-          <tr> \n\
-            <th style="border-right:1px solid #ddd;">Round</th> \n\
-          <th style="border-right:1px solid #ddd;">Set</th> \n\
-        '.format(this.iterator.graph.nodes.length);
-        
-        for(var i = 0; i < this.iterator.graph.nodes.length; i++) {
-            table_head_html += '<th style="border-right:1px solid #ddd; border-top: 1px solid #ddd;">I{0}</th>'.format(i);
-        }
-        
-        table_head_html+='</tr>';
+          <tr id="round-row"> \n\
+            <th rowspan="2" style="border-right:1px solid #ddd; vertical-align: middle">Instruction</th> \n\
+            <th id="round-header">Round</th> \n\
+          </tr> \n\
+          <tr id="set-row"> \n\
+            <th>Set</th> \n\
+            <span id="set-headers"> \n\
+            </span> \n\
+          </tr> \n\
+          {1} \n\
+          '.format(
+              this.iterator.graph.nodes.length,
+              this.iterator.graph.nodes.map(function(node) {
+                  return '<tr id="result-row-ins-{0}"><th>{0}</th></tr>'.format(node.index);
+              }).join('')
+          );
         
         this.table_head.html(table_head_html);
     }
 
+    this.reset_local_information = function() {
+        $("#local-header").prop('colspan', Object.keys(this.iterator.framework.local_sets).length)
+        for(local_set in this.iterator.framework.local_sets) {
+            $("#round-header").before("<td rowspan=\"2\" class=\"text-center\" style=\"vertical-align: middle\">{0}</td>".format(local_set))
+            for(node of this.iterator.graph.nodes) {
+                $("#result-row-ins-{0}".format(node.index)).append(
+                    "<td class=\"{0} result\">{1}</td>".format(local_set, node[local_set])
+                );
+            }
+        }
+        
+        for(node of this.iterator.graph.nodes) {
+            $("#result-row-ins-{0}".format(node.index)).append(
+                "<td class=\"cell-grey\"></td>"
+            );
+        }
+    }
+    
     this.reset_highlight = function() {
         $(".meet-light-highlight").each(function() {
             $(this).removeClass("meet-light-highlight")
@@ -94,43 +119,23 @@ function RoundRobinIteratorView(kwargs) {
         MathJax.Hub.Queue(["Typeset",MathJax.Hub,"transfer"]);
     }
 
-    this.print_result_template = function(label) {
-        // Print the round # & label for the "In" row
-        var row_string = "\n\
-          <tr id=\"round-{0}\"> \n\
-            <td rowspan=\"2\" style=\"text-align: center; vertical-align: middle;\"> \n\
-              {1} \n\
-            </td> \n\
-            <td>In</td> \n\
-        ".format(this.iterator.round, label);
-
-        // Print each entry for the "In" row
-        for(var i = 0; i < graph.nodes.length; i++) {
-            row_string += '<td id="round-{0}-in-{1}" class="in result">{2}</td>'.format(
-                this.iterator.round,
-                i,
-                this.iterator.graph.nodes[i].in_set.toHTML()
-            );
+    this.print_iteration_column = function(round) {
+        $("#round-row").append("<td colspan=\"2\" class=\"text-center\">{0}</td>".format(round));
+        $("#set-row").append("<td class=\"text-center\">In</td><td class=\"text-center\">Out</td>".format(round));
+        for(node of this.iterator.graph.nodes) {
+            $("#result-row-ins-{0}".format(node.index)).append(
+                '<td id="round-{0}-in-{1}" class="in result unvisited-highlight">{2}</td>'.format(
+                    round,
+                    node.index,
+                    node.in_set.toHTML()
+                ));
+            $("#result-row-ins-{0}".format(node.index)).append(
+                '<td id="round-{0}-out-{1}" class="out result unvisited-highlight">{2}</td>'.format(
+                    round,
+                    node.index,
+                    node.out_set.toHTML()
+                ));
         }
-
-        // Print the label for the "Out" row
-        row_string += "</tr> \n\
-        <tr> \n\
-          <td>Out</td> \n\
-        "
-
-        // Print each entry for the "Out" row
-        for(var i = 0; i < graph.nodes.length; i++) {
-            row_string += '<td id="round-{0}-out-{1}" class="out result">{2}</td>'.format(
-                this.iterator.round,
-                i,
-                this.iterator.graph.nodes[i].out_set.toHTML()
-            );
-        }
-
-        row_string += '</tr>'
-
-        this.table_body.append(row_string);
     }
 
     this.fill_in_result = function(round,node) {
@@ -142,10 +147,10 @@ function RoundRobinIteratorView(kwargs) {
     }
     
     this.visited_highlight = function(round, node, set) {
-        $("#round-{0}-{1}-{2}".format(round, set, node.index)).addClass("visited-highlight");
+        $("#round-{0}-{1}-{2}".format(round, set, node.index)).addClass("visited-highlight").removeClass("unvisited-highlight");;
     }
 
-    this.meet_highlight = function(dark_node,light_nodes) {
+    this.meet_highlight = function(dark_node,light_nodes,local_info) {
         this.reset_highlight();
 
         // Add the highlight to the light nodes
@@ -158,6 +163,11 @@ function RoundRobinIteratorView(kwargs) {
              ).addClass("meet-light-highlight");
             // And related code instructions
             $("#instruction-{0}".format(node.index)).addClass("meet-light-highlight");
+
+            // Highlight local sets
+            for(set of local_info) {
+                $("#result-row-ins-{0} .result.{1}".format(node.index, set)).addClass("meet-light-highlight");
+            }
         }
 
         // Add the highlight to the dark node
@@ -175,7 +185,7 @@ function RoundRobinIteratorView(kwargs) {
         this.meet_function.addClass("meet-light-highlight");
     }
 
-    this.transfer_highlight = function(dark_node,light_nodes) {
+    this.transfer_highlight = function(dark_node,light_nodes,local_info) {
         this.reset_highlight();
 
         // Add the highlight to all light nodes
@@ -189,6 +199,11 @@ function RoundRobinIteratorView(kwargs) {
             
             // And the related instructions
             $("#instruction-{0}".format(node.index)).addClass("transfer-light-highlight");
+
+            // Highlight local sets
+            for(set of local_info) {
+                $("#result-row-ins-{0} .result.{1}".format(node.index, set)).addClass("transfer-light-highlight");
+            }
         }
 
         // Add the highlight to the dark node        
@@ -220,13 +235,13 @@ function RoundRobinIteratorView(kwargs) {
         this.reset_highlight();
 
         if (result.new_round) {
-            this.print_result_template(this.iterator.round);
+            this.print_iteration_column(this.iterator.round);
         }
         
         if(result.type == "meet") {
-            this.meet_highlight(result.node,result.modified_nodes);
+            this.meet_highlight(result.node, result.modified_nodes, result.local_sets);
         } else {
-            this.transfer_highlight(result.node,result.modified_nodes);
+            this.transfer_highlight(result.node, result.modified_nodes, result.local_sets);
         }
 
         if(result.result_calculated == "in") {
@@ -258,31 +273,21 @@ function RoundRobinIteratorView(kwargs) {
     this.reset = function() {
         // Reset the iterator
         this.iterator.reset();
-        
+
         this.reset_title();
         this.reset_highlight();
         this.reset_code();
         this.reset_controls();
-        this.reset_table();
         this.reset_equations();
-        
-        // Print the initial row
-        this.print_result_template("Initial");
-
-        // Set the initial row to be visited
-        for(node of this.iterator.graph.nodes) {
-            this.fill_in_result(this.iterator.round, node);
-            this.fill_out_result(this.iterator.round, node);
-            this.visited_highlight(this.iterator.round, node, "in");
-            this.visited_highlight(this.iterator.round, node, "out");
-        }
+        this.reset_table();
+        this.reset_local_information();
     }
 
     this.init = function() {
         this.canvas = $('#canvas');
         
         this.canvas.html("\n\
-          <div id=\"left-column\" class=\"col-xs-3\"> \n\
+          <div id=\"left-column\" class=\"col-xs-3 fixed\"> \n\
             <div id=\"code-container\"> \n\
               <table id=\"code\"> \n\
               </table> \n\
@@ -302,7 +307,7 @@ function RoundRobinIteratorView(kwargs) {
               </button> \n\
             </div> \n\
           </div> \n\
-          <div id=\"right-column\" class=\"col-xs-9\"> \n\
+          <div id=\"right-column\" class=\"col-xs-offset-3 col-xs-9\"> \n\
             <h1 id=\"title\"></h1> \n\
             <table class=\"table borderless\"> \n\
               <thead> \n\
@@ -314,8 +319,10 @@ function RoundRobinIteratorView(kwargs) {
                 <td id=\"transfer\" class=\"col-xs-6\"></td> \n\
               </tbody> \n\
             </table> \n\
-            <table id=\"table\" class=\"table table-bordered\" style=\"box-shadow: 0 -1px 0px #ddd\"> \n\
-            </table> \n\
+            <div id=\"result-container\"> \n\
+              <table id=\"table\" class=\"table table-bordered\"> \n\
+              </table> \n\
+            </div> \n\
           </div> \n\
         ");
         
