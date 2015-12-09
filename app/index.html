@@ -6,42 +6,9 @@
     <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-    <div class="container" style="width: 100%;">
-        <div class="row">
-            <div class="col-xs-4">
-                <h1>Code</h1>
-                <pre id="code">
-                </pre>
-                
-                <div class="text-center">
-                    <div id="controls" class="btn-group">
-                        <button id="fast-backward" class="btn btn-default">
-                            <span class="fa fa-fast-backward"></span>
-                        </button>
-                        <button id="step-forward" class="btn btn-default">
-                            <span class="fa fa-step-forward"></span>
-                        </button>
-                        <button id="play" class="btn btn-default">
-                            <span class="fa fa-play"></span>
-                        </button>
-                        <button id="fast-forward" class="btn btn-default">
-                            <span class="fa fa-fast-forward"></span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-8">
-                <h1>Data Flow: <span id="dataFlowName"></span></h1>
-                <h4>Meet Function:</h4>
-                <p id="meet"></p>
-                <h4>Transfer Function:</h4>
-                <p id="transfer"></p>
-                <h4>Results:</h4>
-                <div id="dataFlowCanvas">
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- View Canvas -->
+    <div class="container" id="canvas" style="width: 100%;"></div>
+    
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-git2.min.js"></script>
     
@@ -63,5 +30,6 @@
     <script src="js/dataflowanalysis.js" type="text/javascript"></script>
     <script src="js/iloc_reaching_definitions.js" type="text/javascript"></script>
     <script src="js/iloc_liveness.js" type="text/javascript"></script>
+    <script src="js/views.js" type="text/javascript"></script>
     <script src="js/main.js" type="text/javascript"></script>
 </body>

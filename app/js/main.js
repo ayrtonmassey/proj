@@ -25,11 +25,14 @@ try{
 
 graph = ILOC.build_CFG(parsed_ast);
 
-rr = new RoundRobinIterator({
-    framework: iloc_reaching_definitions,
-    // framework: iloc_liveness,
-    graph:     graph,
-    order:     DFA.REVERSE_POSTORDER,
+view = new RoundRobinIteratorView({
+    iterator: new RoundRobinIterator({
+        // framework: iloc_reaching_definitions,
+        // order:     DFA.REVERSE_POSTORDER,
+        framework: iloc_liveness,
+        order: DFA.POSTORDER,
+        graph:     graph,
+    }),
 });
 
-rr.run();
+view.init();

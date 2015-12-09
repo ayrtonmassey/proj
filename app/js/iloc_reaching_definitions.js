@@ -106,7 +106,7 @@ var iloc_reaching_definitions = new DFAFramework({
                 in_set.add(def);
             }
         };
-        return [in_set,preds];
+        return {value_set: in_set, modified_nodes: preds};
     },
     transfer: function(node, in_set, v_def) {
         var set1 = defgen(node, v_def); // set1 = gen[B]
@@ -121,7 +121,7 @@ var iloc_reaching_definitions = new DFAFramework({
             set1.add(v); // set1 = gen[B] U (in[B] - kill[B])
         }
         
-        return [set1,[node]];
+        return {value_set: set1, modified_nodes: [node]};
     },
     meet_latex: "\\[\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)\\]",
     transfer_latex: "\\[\\text{Out}(n) = \\text{DefGen}(n) \\cup \\big{(}\\text{In}(n) \\setminus \\text{DefKill}(n)\\big{)}\\]",

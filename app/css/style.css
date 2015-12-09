@@ -1,7 +1,76 @@
+/* General Settings */
+
+#canvas {
+    font-family: roboto;
+    font-size: 1.3rem;
+    padding-top: 20px;
+}
+
+#canvas h1 {
+    font-size: 1.5em;
+    text-align: center;
+    font-weight: bold;
+}
+
+#canvas h2 {
+    font-size: 1.2em;
+}
+
+
+/* Left Column */
+
+#left-column {
+    text-align: center;
+}
+
+/* Controls */
+#controls {
+    margin: 0 auto;
+    margin-top: 20px;
+    text-align: center;
+}
+
+
+/* Code Panel */
+
+#code-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+#code {
+    text-align: left;
+    whitespace: pre;
+    font-family: Monospace;
+}
+
+#code td {
+    width: 100%;
+    padding: 0 5px 0 5px;
+}
+
+
+/* Results Table */
+
+#result-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+
+/* Table */
+
 th {
     text-align: center;
     padding: 5px;
 }
+
+.borderless tbody tr td, .borderless tbody tr th, .borderless thead tr th {
+    border: none;
+}
+
+
+/* Highlighting */
 
 #meet {
     color: #000 !important;
@@ -42,8 +111,4 @@ th {
     background-color: #5cb85c;
     color: #FFF;
     font-weight: bold;
-}
-
-.borderless tbody tr td, .borderless tbody tr th, .borderless thead tr th {
-    border: none;
 }
