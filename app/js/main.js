@@ -24,13 +24,11 @@ try{
 }
 
 view = new RoundRobinIteratorView({
-    iterator: new RoundRobinIterator({
-        framework: iloc_reaching_definitions,
-        order:     DFA.REVERSE_POSTORDER,
-        // framework: iloc_liveness,
-        // order:     DFA.POSTORDER,
-        graph:     ILOC.build_CFG(parsed_ast),
-    }),
+    framework: iloc_reaching_definitions,
+    order:     DFA.REVERSE_POSTORDER,
+    default_code: iloc_code,
+    // framework: iloc_liveness,
+    // order:     DFA.POSTORDER,
 });
 
 view.init();

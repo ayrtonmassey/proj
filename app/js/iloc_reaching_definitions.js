@@ -39,6 +39,7 @@ var defkill = function (node, v_def) {
                         // Add it to the out set
                         out_set.add(v);
                     }
+                    out_set.add(t);
                 }
             }
         }
