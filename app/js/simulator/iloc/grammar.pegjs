@@ -1,13 +1,21 @@
 {
-  var definition_counts = {};
-  var count = 0;
+    var definition_counts = {};
+    var count = 0;
 }
 
 IlocProgram
     = _ ins_list:InstructionList _ { return new ILOC.IlocProgram({instructions: ins_list}); }
 
 InstructionList
-    =  _ l:(l:label _ ":" _ { return l; })? _ ins:Instruction ins_list:(mandatory_newline ins_list:InstructionList { return ins_list; })? _n { ins.label = l; if(ins_list != undefined) { ins_list.unshift(ins); return ins_list; } else { return [ins] } }
+    =  _ l:(l:label _ ":" _ { return l; })? _ ins:Instruction ins_list:(mandatory_newline ins_list:InstructionList _n { return ins_list; })? {
+        ins.label = l;
+        if(ins_list != undefined) {
+            ins_list.unshift(ins);
+            return ins_list;
+        } else {
+            return [ins]
+        };
+    }
 
 Instruction
     = _ op:Operation _ { return new ILOC.Instruction({operations: [ op ]}); }
@@ -50,12 +58,13 @@ opcode
     = _ n:([a-z0-9_]i)+ _ { return n.join(""); }
 
 _
-  = w:[ \\t\\r]* { return w; }
+    = w:[ \t\r]* { return w; }
 
 __
-  = w:[ \\t\\r]+ { return w; }
+    = w:[ \t\r]+ { return w; }
+
 _n
-  = w:[ \\n\\t\\r]* { return w; }
+    = w:[ \n\t\r]* { return w; }
 
 mandatory_newline
-  = w:[ \\t\\r]*"\\n"[ \\n\\t\\r]* { return w; }
+    = w:[ \t\r]*"\n"[ \t\r]* { return w; }

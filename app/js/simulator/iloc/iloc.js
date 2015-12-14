@@ -331,50 +331,10 @@ ILOC.Operand.prototype.constructor = ILOC.Operand;
 // Build a parser using peg.js
 
 try{
-    ILOC.parser = PEG.buildParser(iloc_grammar);
+    grammar = Handlebars.templates['grammar.pegjs']();
+    ILOC.parser = PEG.buildParser(grammar);
 } catch (ex) {
     console.log(ex);
     console.log(ex.message);
     console.log(ex.location);
 }
-
-//// Test ValueSets
-
-// vs1 = new ValueSet([
-//     new ILOC.Operand({
-//         type: ILOC.OPERAND_TYPES.num,
-//         name: '6',
-//     }),
-//     new ILOC.Operand({
-//         type: ILOC.OPERAND_TYPES.num,
-//         name: '7',
-//     }),
-// ]);
-
-// vs2 = new ValueSet([
-//     new ILOC.Operand({
-//         type: ILOC.OPERAND_TYPES.num,
-//         name: '6',
-//     }),
-//     new ILOC.Operand({
-//         type: ILOC.OPERAND_TYPES.num,
-//         name: '7',
-//     }),
-// ]);
-
-// vs3 = new ValueSet([
-//     new ILOC.Operand({
-//         type: ILOC.OPERAND_TYPES.num,
-//         name: '6',
-//     }),
-// ]);
-
-// console.log("vs1/vs1: " + compare_value_sets(vs1,vs1));
-// console.log("vs2/vs2: " + compare_value_sets(vs2,vs2));
-// console.log("vs1/vs2: " + compare_value_sets(vs1,vs2));
-// console.log("vs2/vs1: " + compare_value_sets(vs2,vs1));
-
-// console.log("vs1/vs1: " + compare_value_sets(vs1,vs1));
-// console.log("vs3/vs3: " + compare_value_sets(vs3,vs3));
-// console.log("vs1/vs3: " + compare_value_sets(vs1,vs3));
-// console.log("vs3/vs1: " + compare_value_sets(vs3,vs1));

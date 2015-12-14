@@ -15,14 +15,6 @@ L2: addI   rb   , 1  => rc        \n\
 L3: add    ra   , rc => rd        \n\
 "
 
-try{
-    var parsed_ast = ILOC.parser.parse(iloc_code);
-} catch (ex) {
-    console.log(ex);
-    console.log(ex.message);
-    console.log(ex.location);
-}
-
 view = new RoundRobinIteratorView({
     framework: iloc_reaching_definitions,
     order:     DFA.REVERSE_POSTORDER,
