@@ -8,7 +8,7 @@ function RoundRobinIteratorView(kwargs) {
         var code_html = '\
           <textarea id="code-editor">{0}</textarea>\
           '.format(this.code_text);
-        this.code.html(code_html);
+        this.code_display.html(code_html);
         var code_controls_html = '<div>\
             <button id="code-btn-sim" class="btn btn-primary btn-sm">Simulate</button>\
             <button id="code-btn-cancel-edit" class="btn btn-danger btn-sm">Cancel</button>\
@@ -48,7 +48,7 @@ function RoundRobinIteratorView(kwargs) {
                   );
               }).join("")
           )
-        this.code.html(code_html);
+        this.code_display.html(code_html);
         var code_controls_html = '\
           <div>\
             <button id="code-btn-edit" class="btn btn-primary btn-sm">Edit</button>\
@@ -103,12 +103,12 @@ function RoundRobinIteratorView(kwargs) {
 
         var table_head_html = '\n\
           <tr> \n\
-            <th style="border-right:1px solid #ddd;"></th> \n\
+            <th></th> \n\
             <th id="local-header">Local Information</th> \n\
             <th id="global-header" colspan="99999">Global Information</th> \n\
           </tr> \n\
           <tr id="round-row"> \n\
-            <th rowspan="2" style="border-right:1px solid #ddd; vertical-align: middle">Instruction</th> \n\
+            <th rowspan="2">Instruction</th> \n\
             <th id="round-header">Round</th> \n\
           </tr> \n\
           <tr id="set-row"> \n\
@@ -116,7 +116,12 @@ function RoundRobinIteratorView(kwargs) {
             <span id="set-headers"> \n\
             </span> \n\
           </tr> \n\
-          {1} \n\
+          '
+        
+        this.table_head.html(table_head_html);
+
+        table_body_html = '\n\
+                  {1} \n\
           '.format(
               this.iterator.graph.nodes.length,
               this.iterator.graph.nodes.map(function(node) {
@@ -124,13 +129,13 @@ function RoundRobinIteratorView(kwargs) {
               }).join('')
           );
         
-        this.table_head.html(table_head_html);
+        this.table_body.html(table_body_html);
     }
 
     this.reset_local_information = function() {
         $("#local-header").prop('colspan', Object.keys(this.framework.local_sets).length)
         for(local_set in this.framework.local_sets) {
-            $("#round-header").before("<td rowspan=\"2\" class=\"text-center\" style=\"vertical-align: middle\">{0}</td>".format(local_set))
+            $("#round-header").before("<td rowspan=\"2\">{0}</td>".format(local_set))
             for(node of this.iterator.graph.nodes) {
                 $("#result-row-ins-{0}".format(node.index)).append(
                     "<td class=\"{0} result\">{1}</td>".format(local_set, node[local_set].toHTML())
@@ -361,51 +366,75 @@ function RoundRobinIteratorView(kwargs) {
     this.init = function() {
         this.canvas = $('#canvas');
         
-        this.canvas.html("\n\
-          <div id=\"left-column\" class=\"col-xs-3 fixed\"> \n\
-            <div id=\"code-container\"> \n\
+        this.canvas.html('\n\
+        <div class="row"> \n\
+          <div id="left-column" class="col-xs-3"> \n\
+            <div class="row"> \n\
+              <div id="code" class="col-xs-12"> \n\
+                <div class="row"> \n\
+                  <div id="code-display" class="col-xs-12"> \n\
+                  </div> \n\
+                </div> \n\
+                <div class="row"> \n\
+                  <div id="code-controls" class="col-xs-12"> \n\
+                  </div> \n\
+                </div> \n\
+              </div> \n\
             </div> \n\
-            <div id=\"code-controls\"> \n\
+            <div class="row"> \n\
+              <div id="round-robin-controls" class="col-xs-12"> \n\
+                <span class="btn-group"> \n\
+                  <button id="fast-backward" class="btn btn-default"> \n\
+                    <span class="fa fa-fast-backward"></span> \n\
+                  </button> \n\
+                  <button id="step-forward" class="btn btn-default"> \n\
+                    <span class="fa fa-step-forward"></span> \n\
+                  </button> \n\
+                  <button id="play" class="btn btn-default"> \n\
+                    <span class="fa fa-play"></span> \n\
+                  </button> \n\
+                  <button id="fast-forward" class="btn btn-default"> \n\
+                    <span class="fa fa-fast-forward"></span> \n\
+                  </button> \n\
+                </span> \n\
+              </div> \n\
             </div> \n\
-            <div id=\"controls\" class=\"btn-group\"> \n\
-              <button id=\"fast-backward\" class=\"btn btn-default\"> \n\
-                <span class=\"fa fa-fast-backward\"></span> \n\
-              </button> \n\
-              <button id=\"step-forward\" class=\"btn btn-default\"> \n\
-                <span class=\"fa fa-step-forward\"></span> \n\
-              </button> \n\
-              <button id=\"play\" class=\"btn btn-default\"> \n\
-                <span class=\"fa fa-play\"></span> \n\
-              </button> \n\
-              <button id=\"fast-forward\" class=\"btn btn-default\"> \n\
-                <span class=\"fa fa-fast-forward\"></span> \n\
-              </button> \n\
-            </div> \n\
-            <div id=\"cfg\"> \n\
-            </div> \n\
-          </div> \n\
-          <div id=\"right-column\" class=\"col-xs-offset-3 col-xs-9\"> \n\
-            <h1 id=\"title\"></h1> \n\
-            <table class=\"table borderless\"> \n\
-              <thead> \n\
-                <th>Meet Function</th> \n\
-                <th>Transfer Function</th> \n\
-              </thead> \n\
-              <tbody> \n\
-                <td id=\"meet\" class=\"col-xs-6\"></td> \n\
-                <td id=\"transfer\" class=\"col-xs-6\"></td> \n\
-              </tbody> \n\
-            </table> \n\
-            <div id=\"result-container\"> \n\
-              <table id=\"table\" class=\"table table-bordered\"> \n\
-              </table> \n\
+            <div id="round-robin-cfg" class="row"> \n\
+              <div id="cfg" class="col-xs-12"> \n\
+              </div> \n\
             </div> \n\
           </div> \n\
-        ");
+          <div id="right-column" class="col-xs-9"> \n\
+            <div class="row"> \n\
+              <div class="col-xs-12"> \n\
+              <h1 id="title"></h1> \n\
+              </div> \n\
+            </div> \n\
+            <div class="row"> \n\
+              <div class="col-xs-12"> \n\
+                <div class="row"> \n\
+                  <div class="col-xs-6"><h2>Meet Function</h2></div> \n\
+                  <div class="col-xs-6"><h2>Transfer Function</h2></div> \n\
+                </div> \n\
+              </div> \n\
+            </div> \n\
+            <div class="row"> \n\
+              <div id="meet" class="col-xs-6"></div> \n\
+              <div id="transfer" class="col-xs-6"></div> \n\
+            </div> \n\
+            <div class="row"> \n\
+              <div id="results" class="col-xs-12"> \n\
+                <table id="table" class="table table-bordered"> \n\
+                </table> \n\
+              </div> \n\
+            </div> \n\
+          </div> \n\
+        </div> \n\
+        ');
         
         this.table = $('#table');
         this.title = $('#title');
-        this.code = $('#code-container');
+        this.code_display = $('#code-display');
         this.code_controls = $('#code-controls');
         this.controls = $('#controls');
         this.meet_function = $('#meet');

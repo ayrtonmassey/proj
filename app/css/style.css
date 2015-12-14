@@ -1,10 +1,20 @@
-/* General Settings */
+html, body {
+    height: 100%;
+    min-height: 100%;
+}
 
+/* Base Page CSS */
 #canvas {
-    font-family: roboto;
-    font-size: 1rem;
-    padding-top: 20px;
-    padding-bottom: 50px;
+    padding: 1em 2em;
+    height: 100%;
+    min-height: 100%;
+    font-size: 0.8rem;
+    display: flex;
+    flex-direction: column;
+}
+
+#canvas > .row {
+    flex: 1 1 auto;
 }
 
 #canvas h1 {
@@ -15,89 +25,138 @@
 
 #canvas h2 {
     font-size: 1.2em;
+    text-align: center;
+    font-weight: bold;
 }
-
-
-/* Left Column */
 
 #left-column {
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: stretch;
 }
 
-.fixed {
-    position: fixed;
+#left-column > .row {
+    display: flex;
+    flex: 0 1 auto;
+    margin-bottom: 1em;
 }
 
-
-/* Controls */
-#controls {
-    margin: 0 auto;
-    margin-top: 20px;
-    text-align: center;
+#left-column > .row:last-child {
+    margin-bottom: 0;
 }
 
-
-/* Code Panel */
-
-#code-container {
-    width: 100%;
-    overflow-x: auto;
+::-webkit-scrollbar {
+    width: 12px;
+}
+::-webkit-scrollbar-track {
+    background-color: #eaeaea;
+    border-left: 1px solid #ccc;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: #aaa;
 }
 
-#code {
-    text-align: left;
-    whitespace: pre;
-    font-family: Monospace;
+/* Tables */
+
+.borderless tbody tr td, .borderless tbody tr th, .borderless thead tr th {
+    border: none;
 }
 
-#code td {
-    width: 100%;
-    padding: 0 5px 0 5px;
-}
-
-
-/* Results Table */
-
-#result-container {
-    width: 100%;
-    overflow-x: auto;
-}
-
-#result-container td{
-    white-space:nowrap;
-}
-
-#result-container table {
-    margin: 0;
-}
-
-.table-bordered,
-.table-bordered>thead,
-.table-bordered>tbody,
-.table-bordered>thead>tr,
-.table-bordered>tbody>tr,
-.table-bordered>thead>tr>th,
-.table-bordered>tbody>tr>th,
-.table-bordered>thead>tr>td,
-.table-bordered>tbody>tr>td {
-    border-color: #ccc;
-    border-width: 1px;
-}
-
-
-/* Table */
-
+.cell-grey,
+.cell-grey,
+.cell-grey,
 .cell-grey {
     background-color: #eee;
 }
 
-th {
-    text-align: center;
-    padding: 5px;
+
+/* Code View */
+
+#code {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: stretch;
 }
 
-.borderless tbody tr td, .borderless tbody tr th, .borderless thead tr th {
-    border: none;
+#code > .row {
+    display: flex;
+    flex: 0 1 auto;
+    margin-bottom: 1em;
+}
+
+#code > .row:last-child {
+    margin-bottom: 0;
+}
+
+#code-editor {
+    width: 100%;
+    font-family: Monospace;
+    min-height: 18em;
+    resize: vertical;
+}
+
+#code-display {
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+table.iloc {
+    font-family: Monospace;
+    width: 100%;
+    margin-bottom: 0;
+}
+
+table.iloc>thead>tr>th,
+table.iloc>thead>tr>td,
+table.iloc>tbody>tr>th,
+table.iloc>tbody>tr>td {
+    margin: 0;
+    padding: 0 5px;
+}
+
+table.table>thead>tr>th,
+table.table>thead>tr>td,
+table.table>tbody>tr>th {
+    vertical-align: middle;
+    text-align: center;
+}
+
+
+/* Code Controls */
+
+#code-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* Results Table View */
+
+#results table {
+    margin-bottom: 0;
+}
+
+#results table>thead>tr>th,
+#results table>thead>tr>td,
+#results table>tbody>tr>th,
+#results table>tbody>tr>td {
+    border-bottom-width: 1px;
+    padding: 4px 10px;
+}
+
+
+/* Round Robin Iterator View */
+
+#round-robin-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 
@@ -124,19 +183,6 @@ th {
 .visited-highlight {
 }
 
-
-.transfer-light-highlight {
-    background-color: #72BbFa;
-    color: #FFF;
-    font-weight: bold;
-}
-
-.transfer-dark-highlight {
-    background-color: #428bca;
-    color: #FFF;
-    font-weight: bold;
-}
-
 .meet-light-highlight {
     background-color: #7cD87c;
     color: #FFF;
@@ -147,4 +193,76 @@ th {
     background-color: #5cb85c;
     color: #FFF;
     font-weight: bold;
+}
+
+/* CFG Highlight */
+
+g.node.transfer-light-highlight>rect {
+    fill: #72BbFa;
+}
+
+g.node.transfer-dark-highlight>rect {
+    fill: #428bca;
+}
+
+.transfer-light-highlight {
+    background-color: #72BbFa;
+    color: #FFF;
+    font-weight: bold;
+}
+
+.transfer-dark-highlight {
+    background-color: #428bca;
+    color: #FFF !important;
+    font-weight: bold;
+}
+
+g.node.meet-light-highlight>rect {
+    fill: #7cD87c;
+}
+
+g.node.meet-dark-highlight>rect {
+    fill: #5cb85c;
+}
+
+
+/* Graphs */
+
+#round-robin-cfg.row {
+    flex: 1 1 auto;
+}
+
+#cfg {
+    border: #eee solid 1px;
+    display: flex;
+}
+
+text {
+  font-weight: 300;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
+  font-size: 1em;
+}
+
+.node rect {
+  stroke: #1d1d1d;
+  fill: #fff;
+  color: #000;
+  stroke-width: 1.5px;
+}
+
+g.label {
+    font-size: 1em;
+    color: #000;
+    font-weight: normal;
+}
+
+g.label sub {
+    position: static;
+    bottom: 0;
+    vertical-align: sub;
+}
+
+.edgePath path {
+  stroke: #333;
+  stroke-width: 1.5px;
 }
