@@ -30,11 +30,11 @@ Operation
     / _ op:ControlFlowOp _ { return op; }
 
 NormalOp =
-    _ oc:opcode _ s:OperandList _ "=>" _ t:OperandList _ { return new ILOC.NormalOperation({ opcode:oc, sources: s, targets: t.map(function(operand) { if (definition_counts[operand.name]==undefined) { definition_counts[operand.name] = 1 }; operand.index=definition_counts[operand.name]++; return operand; }) }); }
+    _ oc:opcode _ s:OperandList _ "=>" _ t:OperandList _ { return new ILOC.NormalOperation({ opcode:oc, sources: s || [], targets: (t != undefined ? t.map(function(operand) { if (definition_counts[operand.name]==undefined) { definition_counts[operand.name] = 1 }; operand.index=definition_counts[operand.name]++; return operand; }) : []) }); }
 
 ControlFlowOp
-    = _ oc:opcode _ s:(s:OperandList _ "->" { return s; })? _ t:OperandList _ { return new ILOC.ControlFlowOperation({opcode:oc, sources: s, targets: t, }); }
-    / _ oc: opcode _ { return new ILOC.ControlFlowOperation({opcode:oc}); }
+    = _ oc:opcode _ s:(s:OperandList _ "->" { return s; })? _ t:OperandList _ { return new ILOC.ControlFlowOperation({opcode:oc, sources: s || [], targets: t || [], }); }
+    / _ oc: opcode _ { return new ILOC.ControlFlowOperation({opcode:oc, sources: [], targets: []}); }
 
 OperandList
     = _ op:Operand _ "," _ op_list:OperandList _ { op_list.unshift(op); return op_list; }

@@ -1,16 +1,16 @@
 var DFA = {
     // Directions
-    FORWARD: 0,
-    BACKWARD: 1,
-
+    FORWARD: 'forward',
+    BACKWARD: 'backward',
+    
     // Orderings
-    POSTORDER: 0,
-    PREORDER: 1,
-    REVERSE_POSTORDER: 2,
+    POSTORDER: 'postorder',
+    PREORDER: 'preorder',
+    REVERSE_POSTORDER: 'reverse_postorder',
 
     // Functions
-    MEET: 0,
-    TRANSFER: 1,
+    MEET: 'meet',
+    TRANSFER: 'transfer',
 }
 
 function DFAFramework (kwargs) {

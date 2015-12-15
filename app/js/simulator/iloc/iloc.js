@@ -253,8 +253,34 @@ var ILOC = {
             }
         }
 
-        this.comparison_string=function() {
-            return ("Operand:{0}:{1}:{2}".format(this.type,this.name,(this.index != undefined ? this.index : "no_index")));
+        this.compare=function(v2) {
+            if(v2 instanceof ILOC.Operand) {
+                var same = (this.name == v2.name) && (this.type == v2.type);
+                if(this.index != undefined && v2.index != undefined) {
+                    same = same && (this.index == v2.index);
+                }
+                return same;
+            } else {
+                return false;
+            }
+        }
+    },
+
+    CFG: function CFG(kwargs) {
+        Graph.call(this, kwargs);
+
+        this.to_code = function() {
+            return this.nodes.map(function(node) {
+                var instruction_string = '{0} '.format((node.label ? node.label + ":" : "")).pad(" ", 5, true);
+                instruction_string += node.operations.map(function(op) {
+                    return op.opcode.pad(" ", 8) + op.sources.map(function(oper) {
+                        return ((oper.type == ILOC.OPERAND_TYPES.register ? 'r' : '') + oper.name).pad(" ", 5);
+                    }).join(", ").pad(" ", 12) + " " + (op.sources.length > 0 ? op.operator_symbol : "  ") + " " + op.targets.map(function(oper) {
+                        return ((oper.type == ILOC.OPERAND_TYPES.register ? 'r' : '') + oper.name).pad(" ", 5);
+                    }).join(", ");
+                }).join("\n".pad(" ", 5));
+                return instruction_string;
+            }).join("\n");
         }
     },
 
@@ -263,7 +289,7 @@ var ILOC = {
             throw TypeError("Must pass an instance of IlocProgram to build_CFG");
         }
 
-        graph = new Graph();
+        graph = new ILOC.CFG();
 
         labels = {}
         for(i of iloc_program.instructions) {

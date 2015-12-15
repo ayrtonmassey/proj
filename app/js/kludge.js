@@ -18,3 +18,23 @@ if (!String.prototype.format) {
         });
     };
 }
+
+// Pad a string
+if (!String.prototype.pad) {
+    String.prototype.pad = function(token,len,left,truncate) {
+        num_tokens = len - this.length;
+        if(num_tokens > 0) {
+            return (left ? "" : this) + token.repeat((num_tokens / token.length) + 1).substring(0,num_tokens) + (left ? this : "");
+        } else {
+            if (truncate) {
+                if(left) {
+                    return this.substring(this.length - len, this.length);
+                } else {
+                    return this.substring(0, this.length - len);
+                }
+            } else {
+                return this;
+            }
+        }
+    };
+}

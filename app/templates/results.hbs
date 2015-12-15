@@ -1,0 +1,21 @@
+<table id="results-table" class="table table-bordered">
+    <thead id="results-table-head">
+        <tr>
+            <th></th>
+            <th id="local-header">Local Information</th>
+            <th id="global-header" colspan="99999">Global Information</th>
+        </tr>
+        <tr id="round-row">
+            <th rowspan="2">Instruction</th>
+            <th id="round-header">Round</th>
+        </tr>
+        <tr id="set-row">
+            <th>Set</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each nodes}}
+            <tr class="result-row node-{{this.index}}"><th>{{this.index}}</th></tr>
+        {{/each}}
+    </tbody>
+</table>

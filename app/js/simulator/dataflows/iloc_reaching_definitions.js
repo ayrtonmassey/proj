@@ -68,34 +68,67 @@ var v_def = function(graph) {
 };
 
 var iloc_reaching_definitions = new DFAFramework({
-    meet: function(node, graph) {
-        var in_set = new ValueSet([]);
-        var preds  = graph.nodes.filter(function(p) {
-            if(graph.adjacency[p.index][node.index] == 1) {
+    meet: function(node, cfg) {
+        var read_nodes = [];
+        var modified_nodes = [];
+        
+        var meet_set = new ValueSet([]);
+        
+        var preds  = cfg.nodes.filter(function(p) {
+            if(cfg.adjacency[p.index][node.index] == 1) {
                 return true;
             }
         });
+        
         for(p of preds) {
-            for(def of p.out_set.values()) {
-                in_set.add(def);
+            for(def of p.sets.transfer.values()) {
+                meet_set.add(def);
             }
+
+            read_nodes.push({
+                node: p,
+                sets: ['transfer'],
+            })
         };
-        return {value_set: in_set, modified_nodes: preds, local_sets: [] };
+
+        node.sets.meet = meet_set;        
+
+        modified_nodes.push({
+            node: node,
+            sets: ['meet'],
+        })
+        
+        return {modified_nodes: modified_nodes, read_nodes: read_nodes};
     },
-    transfer: function(node) {
-        var set1 = new ValueSet(node.defgen.values()); // set1 = gen[B]
-
-        var set2 = new ValueSet(node.in_set.values()); // set2 = in[B]
-
-        for(v of node.defkill.values()) {
-            set2.delete(v);
-        } // set2 = in[B] - kill[B]
+    transfer: function(node, cfg) {
+        var read_nodes = [];
+        var modified_nodes = [];
         
-        for(v of set2.values()) {
-            set1.add(v); // set1 = gen[B] U (in[B] - kill[B])
+        var transfer_set = new ValueSet(node.sets.defgen.values()); // transfer_set = gen[B]
+
+        var meet_set = new ValueSet(node.sets.meet.values()); // meet_set = in[B]
+
+        for(v of node.sets.defkill.values()) {
+            meet_set.delete(v);
+        } // meet_set = in[B] - kill[B]
+        
+        for(v of meet_set.values()) {
+            transfer_set.add(v); // transfer_set = gen[B] U (in[B] - kill[B])
         }
+
+        node.sets.transfer = transfer_set;
+
+        read_nodes.push({
+            node: node,
+            sets: ['meet', 'defgen', 'defkill'],
+        })
+
+        modified_nodes.push({
+            node: node,
+            sets: ['transfer'],
+        })
         
-        return {value_set: set1, modified_nodes: [node], local_sets: ['defgen', 'defkill'] };
+        return {read_nodes: read_nodes, modified_nodes: modified_nodes };
     },
     meet_latex: "\\[\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)\\]",
     transfer_latex: "\\[\\text{Out}(n) = \\text{DefGen}(n) \\cup \\big{(}\\text{In}(n) \\setminus \\text{DefKill}(n)\\big{)}\\]",

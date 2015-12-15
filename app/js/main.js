@@ -15,12 +15,18 @@ L2: addI   rb   , 1  => rc        \n\
 L3: add    ra   , rc => rd        \n\
 "
 
-view = new RoundRobinIteratorView({
-    framework: iloc_reaching_definitions,
-    order:     DFA.REVERSE_POSTORDER,
-    default_code: iloc_code,
-    // framework: iloc_liveness,
-    // order:     DFA.POSTORDER,
+var simulator = new RoundRobinSimulator({
+    framework: iloc_liveness,
+    ordering:  DFA.POSTORDER,
+    // framework:  iloc_reaching_definitions,
+    // ordering:   DFA.REVERSE_POSTORDER,
+    code:       iloc_code,
+    play_speed: 100,
+});
+    
+var view = new RoundRobinSimulatorView({
+    canvas: '#canvas',
+    simulator: simulator,
 });
 
 view.init();

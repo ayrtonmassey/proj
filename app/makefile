@@ -1,5 +1,7 @@
 all: templates grammar
 
+.PHONY: templates grammar
+
 templates:
 	handlebars templates/*.hbs -f js/templates.js
 

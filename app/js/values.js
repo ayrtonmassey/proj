@@ -100,12 +100,12 @@ function ValueSet(iterable) {
 /*
  *  Compare two values.
  *
- *  Compares the output of the comparison_string function of each
+ *  Compares two values using the compare() function of the first
  *  Value. This allows us to check equality between two separate
  *  instances which represent the same value.
  */ 
 function compare_values(v1, v2) {
-    return v1.comparison_string() == v2.comparison_string();
+    return v1.compare(v2);
 }
 
 /*
@@ -139,8 +139,8 @@ function compare_value_sets(v1,v2) {
  *
  */
 function ValueMixin(kwargs) {
-    this.comparison_string=function(){
-        throw new ReferenceError("function comparison_string not defined in {0}".format(this.constructor.name))
+    this.compare=function(v2){
+        throw new ReferenceError("function compare not defined in {0}".format(this.constructor.name))
     }
 
     this.toHTML=function(){

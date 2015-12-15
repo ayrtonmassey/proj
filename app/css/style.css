@@ -32,7 +32,7 @@ html, body {
 #left-column {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: start;
     align-items: stretch;
 }
 
@@ -45,6 +45,25 @@ html, body {
 #left-column > .row:last-child {
     margin-bottom: 0;
 }
+
+
+#right-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: stretch;
+}
+
+#right-column > .row {
+    display: flex;
+    flex: 0 1 auto;
+    margin-bottom: 1em;
+}
+
+#right-column > .row:last-child {
+    margin-bottom: 0;
+}
+
 
 ::-webkit-scrollbar {
     width: 12px;
@@ -66,9 +85,6 @@ html, body {
     border: none;
 }
 
-.cell-grey,
-.cell-grey,
-.cell-grey,
 .cell-grey {
     background-color: #eee;
 }
@@ -76,20 +92,21 @@ html, body {
 
 /* Code View */
 
-#code {
+#code-canvas {
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: stretch;
 }
 
-#code > .row {
+#code-canvas > .row {
     display: flex;
     flex: 0 1 auto;
     margin-bottom: 1em;
 }
 
-#code > .row:last-child {
+#code-canvas > .row:last-child {
     margin-bottom: 0;
 }
 
@@ -138,25 +155,67 @@ table.table>tbody>tr>th {
 
 /* Results Table View */
 
-#results table {
-    margin-bottom: 0;
+#results-canvas {
+    overflow-x: auto;
+    font-size: 0.8em;
+    overflow-y: hidden;
+    /* padding-bottom: 15px; */
 }
 
-#results table>thead>tr>th,
-#results table>thead>tr>td,
-#results table>tbody>tr>th,
-#results table>tbody>tr>td {
+#results-canvas table {
+    margin-bottom: 20px;
+    margin-left: -15px;
+}
+
+#results-canvas table>thead>tr>th,
+#results-canvas table>thead>tr>td,
+#results-canvas table>tbody>tr>th,
+#results-canvas table>tbody>tr>td {
     border-bottom-width: 1px;
     padding: 4px 10px;
+    white-space: nowrap;
 }
 
 
 /* Round Robin Iterator View */
 
-#round-robin-controls {
+#sim-controls-canvas {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+
+/* Framework View */
+
+#framework-canvas > .row {
+    display: flex;
+    flex: 0 1 auto;
+    margin-bottom: 1em;
+}
+
+#framework-order {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-justify: space-around;
+}
+
+.order-index {
+    flex: 1 1 3em;
+    text-align: center;
+}
+
+.flex {
+    flex: 1 1 auto;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.order-index:last-child::after {
+    content:'';
 }
 
 
@@ -176,24 +235,49 @@ table.table>tbody>tr>th {
     border-radius: 5px;
 }
 
-.unvisited-highlight {
+.unvisited {
     color: #ddd;
 }
 
-.visited-highlight {
+.visited {
 }
 
-.meet-light-highlight {
+.meet.highlight {
+    background-color: #6cc86c;
+    color: #FFF;
+    font-weight: bold;
+}
+
+.meet.read.highlight {
     background-color: #7cD87c;
     color: #FFF;
     font-weight: bold;
 }
 
-.meet-dark-highlight {
+.meet.modified.highlight {
     background-color: #5cb85c;
     color: #FFF;
     font-weight: bold;
 }
+
+.transfer.highlight {
+    background-color: #62abea;
+    color: #FFF;
+    font-weight: bold;
+}
+
+.transfer.read.highlight {
+    background-color: #72BbFa;
+    color: #FFF;
+    font-weight: bold;
+}
+
+.transfer.modified.highlight {
+    background-color: #428bca;
+    color: #FFF !important;
+    font-weight: bold;
+}
+
 
 /* CFG Highlight */
 
@@ -203,18 +287,6 @@ g.node.transfer-light-highlight>rect {
 
 g.node.transfer-dark-highlight>rect {
     fill: #428bca;
-}
-
-.transfer-light-highlight {
-    background-color: #72BbFa;
-    color: #FFF;
-    font-weight: bold;
-}
-
-.transfer-dark-highlight {
-    background-color: #428bca;
-    color: #FFF !important;
-    font-weight: bold;
 }
 
 g.node.meet-light-highlight>rect {

@@ -58,7 +58,10 @@ var v_uses = function(graph) {
 
 var iloc_liveness = new DFAFramework({
     meet: function(node, graph) {
-        var out_set = new ValueSet([]);
+        var read_nodes = [];
+        var modified_nodes = [];
+
+        var meet_set = new ValueSet([]);
         
         var succ  = graph.nodes.filter(function(s) {
             if(graph.adjacency[node.index][s.index] == 1) {
@@ -67,27 +70,54 @@ var iloc_liveness = new DFAFramework({
         })
         
         for(s of succ) {
-            for(val of s.in_set.values()) {
-                out_set.add(val);
+            for(val of s.sets.transfer.values()) {
+                meet_set.add(val);
             }
+
+            read_nodes.push({
+                node: s,
+                sets: ['transfer'],
+            })
         };
+
+        node.sets.meet = meet_set;        
+
+        modified_nodes.push({
+            node: node,
+            sets: ['meet'],
+        })
         
-        return {value_set: out_set, modified_nodes: succ, local_sets: []};
+        return {read_nodes: read_nodes, modified_nodes: modified_nodes };
     },
     transfer: function(node) {
-        var set1 = new ValueSet(node.use.values()); // set1 = use[B]
+        var read_nodes = [];
+        var modified_nodes = [];
 
-        var set2 = new ValueSet(node.out_set.values()); // set2 = in[B]
+        var transfer_set = new ValueSet(node.sets.use.values()); // transfer_set = use[B]
+
+        var meet_set = new ValueSet(node.sets.meet.values()); // meet_set = out[B]
         
-        for(v of node.def.values()) {
-            set2.delete(v);
-        } // set2 = in[B] - def[B]
+        for(v of node.sets.def.values()) {
+            meet_set.delete(v);
+        } // meet_set = out[B] - def[B]
         
-        for(v of set2.values()) {
-            set1.add(v); // set1 = use[B] U (in[B] - def[B])
+        for(v of meet_set.values()) {
+            transfer_set.add(v); // transfer_set = use[B] U (out[B] - def[B])
         }
+
+        node.sets.transfer = transfer_set;
+
+        read_nodes.push({
+            node: node,
+            sets: ['meet', 'use', 'def'],
+        })
+
+        modified_nodes.push({
+            node: node,
+            sets: ['transfer'],
+        })
         
-        return {value_set: set1, modified_nodes: [node], local_sets: ['use', 'def']};
+        return {read_nodes: read_nodes, modified_nodes: modified_nodes };
     },
     meet_latex: "\\[\\text{Out}(n) = \\bigcup_{s \\in succ} \\text{In}(s)\\]",
     transfer_latex: "\\[\\text{In}(n) = \\text{Use}(n) \\cup \\big{(}\\text{Out}(n) \\setminus \\text{Def}(n)\\big{)}\\]",
