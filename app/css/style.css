@@ -46,6 +46,9 @@ html, body {
     margin-bottom: 0;
 }
 
+#left-column .row.flex {
+    flex: 1 1 auto;
+}
 
 #right-column {
     display: flex;
@@ -115,6 +118,11 @@ html, body {
     font-family: Monospace;
     min-height: 18em;
     resize: vertical;
+    display: flex;
+}
+
+#code-editor > textarea {
+    flex: 1 1 auto;
 }
 
 #code-display {
@@ -281,32 +289,32 @@ table.table>tbody>tr>th {
 
 /* CFG Highlight */
 
-g.node.transfer-light-highlight>rect {
+g.node.transfer.read.highlight>rect {
     fill: #72BbFa;
 }
 
-g.node.transfer-dark-highlight>rect {
+g.node.transfer.modified.highlight>rect {
     fill: #428bca;
 }
 
-g.node.meet-light-highlight>rect {
+g.node.meet.read.highlight>rect {
     fill: #7cD87c;
 }
 
-g.node.meet-dark-highlight>rect {
+g.node.meet.modified.highlight>rect {
     fill: #5cb85c;
 }
 
 
 /* Graphs */
 
-#round-robin-cfg.row {
-    flex: 1 1 auto;
-}
-
-#cfg {
+#cfg-canvas {
     border: #eee solid 1px;
     display: flex;
+}
+
+#cfg-svg {
+    flex: 1 1 auto;
 }
 
 text {

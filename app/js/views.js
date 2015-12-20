@@ -85,15 +85,19 @@ function RoundRobinSimulatorView(kwargs) {
             canvas: '#sim-controls-canvas',
             simulator: this.simulator,
         });
+        this.cfg_view = new CFGView({
+            canvas: '#cfg-canvas',
+            simulator: this.simulator,
+        });
 
         this.results_view.init();
         this.code_view.init();
         this.framework_view.init();
         this.sim_controls_view.init();
+        this.cfg_view.init();
 
         this.simulator.reset();
     }
-
 }
 
 RoundRobinSimulatorView.prototype = Object.create(SimulatorView.prototype);
@@ -558,444 +562,111 @@ SimControlsView.prototype = Object.create(SimulatorView.prototype);
 SimControlsView.prototype.constructor = SimControlsView
 
 
-function RoundRobinIteratorView(kwargs) {
+function CFGView(kwargs) {    
+    SimulatorView.call(this, kwargs);
 
-    this.framework = kwargs.framework;
-    this.order = kwargs.order;
-    this.code_text = kwargs.default_code;
-
-    this.edit_code = function() {
-        var code_html = '\
-          <textarea id="code-editor">{0}</textarea>\
-          '.format(this.code_text);
-        this.code_display.html(code_html);
-        var code_controls_html = '<div>\
-            <button id="code-btn-sim" class="btn btn-primary btn-sm">Simulate</button>\
-            <button id="code-btn-cancel-edit" class="btn btn-danger btn-sm">Cancel</button>\
-          </div>\
-          '
-        this.code_controls.html(code_controls_html);
-        var _this = this
-        $('#code-btn-cancel-edit').on('click', function() {
-            _this.display_code();
-        });
-        $('#code-btn-sim').on('click', function() {
-            _this.sim_code($('#code-editor').val());
-        });
-    }
-
-    this.reset_iterator = function(graph) {
-        this.iterator = new RoundRobinIterator({
-            framework: this.framework,
-            order: this.order,
-            graph: graph,
-        });
-        this.iterator.reset();
-    }
-
-    this.display_code = function(code) {
-        var code_html = '\
-          <table class="table borderless iloc">\
-            <tbody>{0}</tbody>\
-          </table>\
-          '.format(
-              this.iterator.graph.nodes.map(function(node){
-                  return "<tr id=\"instruction-{0}\" class=\"instruction\">{1}</tr>".format(
-                      node.index,
-                      node.toHTML()
-                  );
-              }).join("")
-          )
-        this.code_display.html(code_html);
-        var code_controls_html = '\
-          <div>\
-            <button id="code-btn-edit" class="btn btn-primary btn-sm">Edit</button>\
-          </div>\
-          '
-        this.code_controls.html(code_controls_html);
-        var _this = this
-        $('#code-btn-edit').on('click', function() {
-            _this.edit_code();
-        });
-    }
-
-    this.sim_code = function(code) {
-        this.code_text = code;
-        this.reset_iterator(ILOC.build_CFG(ILOC.parser.parse(code)));
-        this.reset_controls();
-        this.reset_table();
-        this.reset_local_information();
-        this.reset_cfg_view();
-        this.display_code();
-        this.reset_highlight();
-    }
+    var _this = this
     
-    /*
-     *  Reset the play controls.
-     */
-    this.reset_controls = function() {
-        $("#fast-forward").prop('disabled', false);
-        $("#step-forward").prop('disabled', false);
-        $("#play").prop('disabled', false);
-        $("#fast-backward").off("click").click({view:this}, function(event) {
-            event.data.view.fast_backward();
-        });
-        $("#step-forward").off("click").click({view:this}, function(event) {
-            event.data.view.step_forward();
-        });
-        $("#play").off("click").click({view:this}, function(event) {
-            event.data.view.play();
-        });
-        $("#fast-forward").off("click").click({view:this}, function(event) {
-            event.data.view.fast_forward();
-        });
+    this.template = Handlebars.templates['cfg.hbs'];
+    this.node_template = Handlebars.templates['node.hbs'];
+
+    this.draw = function() {
+        this.g.graph().transition = function(selection) {
+            return selection.transition().duration(500);
+        };
+        
+        // Render the graph into svg g
+        this.render(this.svgGroup, this.g);                
     }
 
-    /*
-     *  Reset the table of results.
-     */
-    this.reset_table = function() {
-        this.table.html('<thead id="table-head"></thead><tbody id="table-body"></tbody>');
-        this.table_head = $("#table-head");
-        this.table_body = $("#table-body");
-
-        var table_head_html = '\n\
-          <tr> \n\
-            <th></th> \n\
-            <th id="local-header">Local Information</th> \n\
-            <th id="global-header" colspan="99999">Global Information</th> \n\
-          </tr> \n\
-          <tr id="round-row"> \n\
-            <th rowspan="2">Instruction</th> \n\
-            <th id="round-header">Round</th> \n\
-          </tr> \n\
-          <tr id="set-row"> \n\
-            <th>Set</th> \n\
-            <span id="set-headers"> \n\
-            </span> \n\
-          </tr> \n\
-          '
-        
-        this.table_head.html(table_head_html);
-
-        table_body_html = '\n\
-                  {1} \n\
-          '.format(
-              this.iterator.graph.nodes.length,
-              this.iterator.graph.nodes.map(function(node) {
-                  return '<tr id="result-row-ins-{0}"><th>{0}</th></tr>'.format(node.index);
-              }).join('')
-          );
-        
-        this.table_body.html(table_body_html);
-    }
-
-    this.reset_local_information = function() {
-        $("#local-header").prop('colspan', Object.keys(this.framework.local_sets).length)
-        for(local_set in this.framework.local_sets) {
-            $("#round-header").before("<td rowspan=\"2\">{0}</td>".format(local_set))
-            for(node of this.iterator.graph.nodes) {
-                $("#result-row-ins-{0}".format(node.index)).append(
-                    "<td class=\"{0} result\">{1}</td>".format(local_set, node[local_set].toHTML())
-                );
-            }
-        }
-        
-        for(node of this.iterator.graph.nodes) {
-            $("#result-row-ins-{0}".format(node.index)).append(
-                "<td class=\"cell-grey\"></td>"
-            );
-        }
-    }
-    
     this.reset_highlight = function() {
-        $(".meet-light-highlight").each(function() {
-            $(this).removeClass("meet-light-highlight")
-        });
-        $(".meet-dark-highlight").each(function() {
-            $(this).removeClass("meet-dark-highlight")
-        });
-        $(".transfer-light-highlight").each(function() {
-            $(this).removeClass("transfer-light-highlight")
-        });        
-        $(".transfer-dark-highlight").each(function() {
-            $(this).removeClass("transfer-dark-highlight")
+        $('#cfg-svg g.node').each(function() {
+            $(this).attr("class","node");
         });
     }
-
-    this.reset_cfg_view = function() {
-        this.cfg_view = new CFGView({canvas: '#cfg', cfg: this.iterator.graph});
-        this.cfg_view.init();
-    }
     
-    /*
-     *  Reset the analysis title.
-     */
-    this.reset_title = function() {
-        this.title.text(this.framework.name);
-    }
-
-    /*
-     *  Reset the equations panel.
-     */
-    this.reset_equations = function() {
-        $("#meet").html(this.framework.meet_latex);
-        MathJax.Hub.Queue(["Typeset",MathJax.Hub,"meet"]);
-        $("#transfer").html(this.framework.transfer_latex);
-        MathJax.Hub.Queue(["Typeset",MathJax.Hub,"transfer"]);
-    }
-
-    this.print_iteration_column = function(round) {
-        $("#round-row").append("<td colspan=\"2\" class=\"text-center\">{0}</td>".format(round));
-        $("#set-row").append("<td class=\"text-center\">In</td><td class=\"text-center\">Out</td>".format(round));
-        for(node of this.iterator.graph.nodes) {
-            $("#result-row-ins-{0}".format(node.index)).append(
-                '<td id="round-{0}-in-{1}" class="in result unvisited-highlight">{2}</td>'.format(
-                    round,
-                    node.index,
-                    node.in_set.toHTML()
-                ));
-            $("#result-row-ins-{0}".format(node.index)).append(
-                '<td id="round-{0}-out-{1}" class="out result unvisited-highlight">{2}</td>'.format(
-                    round,
-                    node.index,
-                    node.out_set.toHTML()
-                ));
-        }
-    }
-
-    this.fill_in_result = function(round,node) {
-        $("#round-{0}-in-{1}".format(round, node.index))
-            .html(node.in_set.toHTML());
-    }
-    
-    this.fill_out_result = function(round,node) {
-        $("#round-{0}-out-{1}".format(round, node.index))
-            .html(node.out_set.toHTML());
-    }
-    
-    this.visited_highlight = function(round, node, set) {
-        $("#round-{0}-{1}-{2}".format(round, set, node.index))
-            .addClass("visited-highlight")
-            .removeClass("unvisited-highlight");;
-    }
-
-    this.meet_highlight = function(dark_node,light_nodes,local_info) {
+    this.update = function() {
         this.reset_highlight();
 
-        // Add the highlight to the light nodes
-        for(node of light_nodes) {
-            $("#round-{0}-{1}-{2}".format(
-                this.iterator.round,
-                (this.framework.direction == DFA.FORWARD ? "out" : "in"),
-                node.index
-            )
-             ).addClass("meet-light-highlight");
-            // And related code instructions
-            $("#instruction-{0}".format(node.index)).addClass("meet-light-highlight");
-
-            // Highlight local sets
-            for(set of local_info) {
-                $("#result-row-ins-{0} .result.{1}".format(node.index, set)).addClass("meet-light-highlight");
-            }
-
-            // Higlight CFG nodes
-            $("#graph-node-{0}".format(node.index)).addClass("meet-light-highlight");
+        // Add highlighting
+        for(read of this.simulator.state.read_nodes) {
+            $("#graph-node-{0}".format(
+                read.node.index
+            ))
+                .attr('class','{0} {1} {2} {3}'.format(
+                    'node',
+                    this.simulator.state.func,
+                    "read",
+                    "highlight"
+                ));
         }
-
-        // Add the highlight to the dark node
-        $("#round-{0}-{1}-{2}".format(
-            this.iterator.round,
-            (this.framework.direction == DFA.FORWARD ? "in" : "out"),
-            dark_node.index
-        )
-         ).addClass("meet-dark-highlight");
-
-        // And the related instruction
-        $("#instruction-{0}".format(dark_node.index)).addClass("meet-dark-highlight");
-
-        // Higlight CFG nodes
-        $("#graph-node-{0}".format(dark_node.index)).addClass("meet-dark-highlight");
-
-        // Highlight the meet function
-        this.meet_function.addClass("meet-light-highlight");
-    }
-
-    this.transfer_highlight = function(dark_node,light_nodes,local_info) {
-        this.reset_highlight();
-
-        // Add the highlight to all light nodes
-        for(node of light_nodes) {
-            $("#round-{0}-{1}-{2}".format(
-                this.iterator.round,
-                (this.framework.direction == DFA.FORWARD ? "in" : "out"),
-                node.index
-            )
-             ).addClass("transfer-light-highlight");
-            
-            // And the related instructions
-            $("#instruction-{0}".format(node.index)).addClass("transfer-light-highlight");
-
-            // Highlight local sets
-            for(set of local_info) {
-                $("#result-row-ins-{0} .result.{1}".format(node.index, set)).addClass("transfer-light-highlight");
-            }
-
-            // Higlight CFG nodes
-            $("#graph-node-{0}".format(node.index)).addClass("transfer-light-highlight");
+        
+        for(modified of this.simulator.state.modified_nodes) {
+            $("#graph-node-{0}".format(
+                modified.node.index
+            ))
+                .attr('class','{0} {1} {2} {3}'.format(
+                    'node',
+                    this.simulator.state.func,
+                    "modified",
+                    "highlight"
+                ));
         }
-
-        // Add the highlight to the dark node        
-        $("#round-{0}-{1}-{2}".format(
-            this.iterator.round,
-            (this.framework.direction == DFA.FORWARD ? "out" : "in"),
-            dark_node.index
-        )
-         ).addClass("transfer-dark-highlight");
-
-        // And the related instruction
-        $("#instruction-{0}".format(this.iterator.graph.nodes.indexOf(dark_node))).addClass("transfer-dark-highlight");
         
-        // Higlight CFG nodes
-        $("#graph-node-{0}".format(dark_node.index)).addClass("transfer-dark-highlight");
-
-        // Add the highlight to the transfer function
-        this.transfer_function.addClass("transfer-light-highlight");
-    }
-
-    this.reset = function() {
-        this.reset_title();
-        this.reset_equations();
-        this.sim_code(this.code_text);
-    }
-
-    this.init = function() {
-        this.canvas = $('#canvas');
+        // Update edges.
+        for(i = 0; i < this.simulator.cfg.nodes.length; i++) {
+            for(j = 0; j < this.simulator.cfg.nodes.length; j++) {
+                if(this.simulator.cfg.adjacency[i][j] == 1) {
+                    this.g.setEdge('{0}'.format(i), '{0}'.format(j));
+                } else if(this.simulator.cfg.adjacency[i][j] == 0) {
+                    this.g.removeEdge('{0}'.format(i), '{0}'.format(j));
+                }
+            }
+        }
         
-        this.canvas.html('\n\
-        <div class="row"> \n\
-          <div id="left-column" class="col-xs-3"> \n\
-            <div class="row"> \n\
-              <div id="code" class="col-xs-12"> \n\
-                <div class="row"> \n\
-                  <div id="code-display" class="col-xs-12"> \n\
-                  </div> \n\
-                </div> \n\
-                <div class="row"> \n\
-                  <div id="code-controls" class="col-xs-12"> \n\
-                  </div> \n\
-                </div> \n\
-              </div> \n\
-            </div> \n\
-            <div class="row"> \n\
-              <div id="round-robin-controls" class="col-xs-12"> \n\
-                <span class="btn-group"> \n\
-                  <button id="fast-backward" class="btn btn-default"> \n\
-                    <span class="fa fa-fast-backward"></span> \n\
-                  </button> \n\
-                  <button id="step-forward" class="btn btn-default"> \n\
-                    <span class="fa fa-step-forward"></span> \n\
-                  </button> \n\
-                  <button id="play" class="btn btn-default"> \n\
-                    <span class="fa fa-play"></span> \n\
-                  </button> \n\
-                  <button id="fast-forward" class="btn btn-default"> \n\
-                    <span class="fa fa-fast-forward"></span> \n\
-                  </button> \n\
-                </span> \n\
-              </div> \n\
-            </div> \n\
-            <div id="round-robin-cfg" class="row"> \n\
-              <div id="cfg" class="col-xs-12"> \n\
-              </div> \n\
-            </div> \n\
-          </div> \n\
-          <div id="right-column" class="col-xs-9"> \n\
-            <div class="row"> \n\
-              <div class="col-xs-12"> \n\
-              <h1 id="title"></h1> \n\
-              </div> \n\
-            </div> \n\
-            <div class="row"> \n\
-              <div class="col-xs-12"> \n\
-                <div class="row"> \n\
-                  <div class="col-xs-6"><h2>Meet Function</h2></div> \n\
-                  <div class="col-xs-6"><h2>Transfer Function</h2></div> \n\
-                </div> \n\
-              </div> \n\
-            </div> \n\
-            <div class="row"> \n\
-              <div id="meet" class="col-xs-6"></div> \n\
-              <div id="transfer" class="col-xs-6"></div> \n\
-            </div> \n\
-            <div class="row"> \n\
-              <div id="results" class="col-xs-12"> \n\
-                <table id="table" class="table table-bordered"> \n\
-                </table> \n\
-              </div> \n\
-            </div> \n\
-          </div> \n\
-        </div> \n\
-        ');
-        
-        this.table = $('#table');
-        this.title = $('#title');
-        this.code_display = $('#code-display');
-        this.code_controls = $('#code-controls');
-        this.controls = $('#controls');
-        this.meet_function = $('#meet');
-        this.transfer_function = $('#transfer');
-
-        this.reset();
-    }
-}
-
-function CFGView(kwargs) {
-    this.cfg = kwargs.cfg;
-    this.canvas = $(kwargs.canvas);
-    this.init = function() {
-        this.canvas.html('\
-          <svg id="svg-canvas"> \n\
-          </svg>\
-          ')
-
-        this.g = new dagreD3.graphlib.Graph({compound:true})
-            .setGraph({})
-            .setDefaultEdgeLabel(function() { return {}; });
-
-        var _this = this
-        
-        // Add all the nodes to the CFG.
-        for(node of this.cfg.nodes) {
+        // Update nodes.
+        for(node of this.simulator.cfg.nodes) {
             _this.g.setNode('{0}'.format(node.index),
-                      {
-                          labelType: "html",
-                          label: "<div><table class='iloc'>\
-                                    <tbody> \
-                                      <tr>{0}</tr> \
-                                    </tbody> \
-                                  </table></div>".format(node.toHTML()),
-                          rx: 5,
-                          ry: 5,
-                      });
+                            {
+                                labelType: "html",
+                                label: this.node_template({content: new Handlebars.SafeString(node.toHTML())}),
+                                rx: 5,
+                                ry: 5,
+                            });
             _this.g.node('{0}'.format(node.index)).id = 'graph-node-{0}'.format(node.index)
         }
 
+        this.draw();
+    }
+    
+    this.reset = function() {
+        this.g = new dagreD3.graphlib.Graph({compound:true})
+            .setGraph({})
+            .setDefaultEdgeLabel(function() { return {}; });
+        
+        // Add all the nodes to the CFG.
+        for(node of this.simulator.cfg.nodes) {
+            _this.g.setNode('{0}'.format(node.index),
+                            {
+                                labelType: "html",
+                                label: this.node_template({content: new Handlebars.SafeString(node.toHTML())}),
+                                rx: 5,
+                                ry: 5,
+                            });
+            _this.g.node('{0}'.format(node.index)).id = 'graph-node-{0}'.format(node.index)
+        }
+        
         // Add the edges from the adjacency matrix.
-        for(i = 0; i < this.cfg.nodes.length; i++) {
-            for(j = 0; j < this.cfg.nodes.length; j++) {
-                if(this.cfg.adjacency[i][j] == 1) {
+        for(i = 0; i < this.simulator.cfg.nodes.length; i++) {
+            for(j = 0; j < this.simulator.cfg.nodes.length; j++) {
+                if(this.simulator.cfg.adjacency[i][j] == 1) {
                     _this.g.setEdge('{0}'.format(i), '{0}'.format(j));
                 }
             }
         }
-
-
-        // Create the renderer
-        this.render = new dagreD3.render();
-
-        // Set up an SVG group so that we can translate the final graph.
-        this.svg = d3.select("svg");
+            
+        this.svg.html("");
+        // Add the graph element to the SVG
         this.svgGroup = this.svg.append("g");
         
         var zoom = d3.behavior.zoom().on("zoom", function() {
@@ -1013,41 +684,21 @@ function CFGView(kwargs) {
         var xCenterOffset = (this.canvas.width() - this.g.graph().width) / 2;
         this.svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
     }
-    
-    this.update = function() {
-        // Update edges.
-        for(i = 0; i < this.cfg.nodes.length; i++) {
-            for(j = 0; j < this.cfg.nodes.length; j++) {
-                if(this.cfg.adjacency[i][j] == 1) {
-                    this.g.setEdge('{0}'.format(i), '{0}'.format(j));
-                } else if(this.cfg.adjacency[i][j] == 0) {
-                    this.g.removeEdge('{0}'.format(i), '{0}'.format(j));
-                }
-            }
-        }
 
-        // Update nodes.
-        for(i = 0; i < this.cfg.nodes.length; i++) {
-            for(node of this.cfg.nodes) {
-                this.g.node('{0}'.format(node.index)).label = "\
-                  <div><table class='iloc'>\
-                    <tbody> \
-                      <tr>{0}</tr> \
-                    </tbody> \
-                  </table></div>".format(node.toHTML());
-            }
-        }
-
-        this.tryDraw();
-    }
-
-    this.tryDraw = function() {
-        this.g.graph().transition = function(selection) {
-            return selection.transition().duration(500);
-        };
+    this.init = function() {
+        this.canvas.html(this.template());
         
-        // Render the graph into svg g
-        this.render(this.svgGroup, this.g);
+        // Create the renderer
+        this.render = new dagreD3.render();
+        
+        // Set up an SVG group so that we can translate the final graph.
+        this.svg = d3.select("#cfg-svg");
+
+        this.simulator.on('update', function() {
+            _this.update();
+        });
     }
-    
 }
+
+CFGView.prototype = Object.create(SimulatorView.prototype);
+CFGView.prototype.constructor = CFGView;
