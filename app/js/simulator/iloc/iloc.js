@@ -78,13 +78,13 @@ var ILOC = {
 
         this.toString = function() {
             var string = this.opcode + " ";
-            if (this.sources != null) {
+            if (this.sources.length > 0) {
                 for(s of this.sources) {
                     string += s.toString() + ",";
                 }
                 string += " " + this.operator_symbol + " ";
             }
-            if (this.targets != null) {
+            if (this.targets.length > 0) {
                 for(t of this.targets) {
                     string += t.toString() + ",";
                 }
@@ -94,7 +94,7 @@ var ILOC = {
 
         this.toHTML = function() {
             var string = "<td>{0}</td>".format(this.opcode);
-            if (this.sources != null) {
+            if (this.sources.length > 0) {
                 count = 0;
                 // Print all the sources
                 for(s of this.sources) {
@@ -110,7 +110,7 @@ var ILOC = {
             } else {
                 string += "<td></td><td></td><td></td>";
             }
-            if (this.targets != null) {
+            if (this.targets.length > 0) {
                 count = 0;
                 // Print all the sources
                 for(t of this.targets) {
