@@ -1,0 +1,7 @@
+<p>We use a set of {{#definition "dataflow_equation"}}data-flow equations{{/definition}} to determine the values at each point in the graph.</p>
+
+<p>The following data-flow equations compute {{#definition "live_variable"}}live variables{{/definition}} at each point in the control-flow graph:</p>
+
+<p id="transfer_eqn">\[\text{In}(n) = \text{Use}(n) \cup \big{(}\text{Out}(n) \setminus \text{Def}(n)\big{)}\]</p>
+
+<p id="meet_eqn">\[\text{Out}(n) = \bigcup_{s \in succ} \text{In}(s)\]</p>

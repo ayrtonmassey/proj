@@ -1,29 +1,39 @@
 html, body {
     height: 100%;
     min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar-spacer {
+    padding-bottom: 50px;
+}
+
+footer {
+    padding-top: 30px;
 }
 
 /* Base Page CSS */
-#canvas {
+
+.canvas {
+    flex: 1 1 auto;
     padding: 1em 2em;
-    height: 100%;
-    min-height: 100%;
     font-size: 0.8rem;
     display: flex;
     flex-direction: column;
 }
 
-#canvas > .row {
+.canvas > .row {
     flex: 1 1 auto;
 }
 
-#canvas h1 {
+#view-canvas h1 {
     font-size: 1.5em;
     text-align: center;
     font-weight: bold;
 }
 
-#canvas h2 {
+#view-canvas h2 {
     font-size: 1.2em;
     text-align: center;
     font-weight: bold;
@@ -80,6 +90,31 @@ html, body {
 }
 ::-webkit-scrollbar-thumb:hover {
     background-color: #aaa;
+}
+
+/* Lesson */
+
+.lesson-step {
+    font-size: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: justify;
+}
+
+.lesson-step .row {
+    flex: 1 1 auto;
+}
+
+.lesson-step nav.row {
+    flex: 0 1 auto;
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 15px;
+}
+
+.lesson-step nav button {
+    flex: 0 1 auto;
 }
 
 /* Tables */
@@ -193,6 +228,19 @@ table.table>tbody>tr>th {
     justify-content: center;
 }
 
+/* Menu */
+
+#menu {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+}
+
+#menu > button {
+    flex: 1 1 auto;
+}
+
 
 /* Framework View */
 
@@ -289,12 +337,20 @@ table.table>tbody>tr>th {
 
 /* CFG Highlight */
 
+g.node.transfer.highlight>rect {
+    fill: #62abea;
+}
+
 g.node.transfer.read.highlight>rect {
     fill: #72BbFa;
 }
 
 g.node.transfer.modified.highlight>rect {
     fill: #428bca;
+}
+
+g.node.meet.highlight>rect {
+    fill: #6cc86c;
 }
 
 g.node.meet.read.highlight>rect {
@@ -311,6 +367,7 @@ g.node.meet.modified.highlight>rect {
 #cfg-canvas {
     border: #eee solid 1px;
     display: flex;
+    padding: 0px;
 }
 
 #cfg-svg {

@@ -1,12 +1,15 @@
-all: templates grammar
+all: templates grammar parser
 
-.PHONY: templates grammar
+.PHONY: grammar parser templates
 
 templates:
-	handlebars templates/*.hbs -f js/templates.js
+	find templates -type f -exec sh -c 'handlebars $$@ -r templates -f js/templates.js' sh {} +
 
 grammar:
 	handlebars js/simulator/iloc/grammar.pegjs -f js/simulator/iloc/grammar.js
+
+parser:
+	pegjs -e iloc_parser js/simulator/iloc/grammar.pegjs js/simulator/iloc/iloc_parser.js
 
 tidy:
 	find -name "*~" | xargs rm -f

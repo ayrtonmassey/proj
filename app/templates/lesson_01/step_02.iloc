@@ -1,0 +1,5 @@
+loadI 1      => r1 
+addI  ra, 2  => rb
+addI  ra, 3  => rc
+add   ra, rc => rb
+loadI 7      => rd

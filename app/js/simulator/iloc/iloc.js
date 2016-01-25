@@ -357,8 +357,8 @@ ILOC.Operand.prototype.constructor = ILOC.Operand;
 // Build a parser using peg.js
 
 try{
-    grammar = Handlebars.templates['grammar.pegjs']();
-    ILOC.parser = PEG.buildParser(grammar);
+    // grammar = Handlebars.templates['grammar.pegjs']();
+    ILOC.parser = iloc_parser;// PEG.buildParser(grammar);
 } catch (ex) {
     console.log(ex);
     console.log(ex.message);
