@@ -697,7 +697,7 @@ function CFGView(kwargs) {
                       (function(v) {
                           var str = "";
                           for (set in v.sets) {
-                              str += "<p>{0}: {1}</p>".format(set, v.sets[set]);
+                              str += "<p>{0}: {1}</p>".format(set, v.sets[set].toHTML());
                           }
                           return str;
                       })(node)
