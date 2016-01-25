@@ -719,8 +719,8 @@ function CFGView(kwargs) {
         
         var zoom = d3.behavior.zoom().on("zoom", function() {
             // Center the graph
-            var xCenterOffset = (_this.canvas.width() - _this.g.graph().width) / 2;
-            var yCenterOffset = (_this.canvas.height() - _this.g.graph().height) / 2;
+            var xCenterOffset = (_this.canvas.width() - _this.g.graph().width) / 2 * d3.event.scale;
+            var yCenterOffset = (_this.canvas.height() - _this.g.graph().height) / 2 * d3.event.scale;
             _this.svgGroup.attr("transform", "translate(" + (xCenterOffset + d3.event.translate[0]) + ", " + (yCenterOffset + d3.event.translate[1]) + ")" +
                                 "scale(" + d3.event.scale + ")");
         });
