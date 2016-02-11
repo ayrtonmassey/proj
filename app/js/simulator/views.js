@@ -647,19 +647,24 @@ function CFGView(kwargs) {
                                 {
                                     labelType: "html",
                                     label: this.node_template({content: new Handlebars.SafeString(node.sets[(this.simulator.framework.direction == DFA.FORWARD ? DFA.MEET : DFA.TRANSFER)].toHTML())}),
-                                    rx: 100,
-                                    ry: 100,
+                                    rx: 15,
+                                    ry: 15,
+                                    style: 'stroke: #9a162c'
                                 });
-                _this.g.node('{0}-in'.format(node.index)).id = 'graph-node-{0}-in'.format(node.index)
+                _this.g.node('{0}-in'.format(node.index)).id = 'graph-node-{0}-in'.format(node.index);
+                $('#graph-node-{0}-in'.format(node.index)).attr('class','{0} {1}'.format('node', 'point'));
+                
                 // Add out point
                 _this.g.setNode('{0}-out'.format(node.index),
                                 {
                                     labelType: "html",
                                     label: this.node_template({content: new Handlebars.SafeString(node.sets[(this.simulator.framework.direction == DFA.FORWARD ? DFA.TRANSFER : DFA.MEET)].toHTML())}),
-                                    rx: 100,
-                                    ry: 100,
+                                    rx: 15,
+                                    ry: 15,
+                                    style: 'stroke: #9a162c'
                                 });
                 _this.g.node('{0}-out'.format(node.index)).id = 'graph-node-{0}-out'.format(node.index)
+                $('#graph-node-{0}-out'.format(node.index)).attr('class','{0} {1}'.format('node', 'point'));
             }
 
             // Update edges.

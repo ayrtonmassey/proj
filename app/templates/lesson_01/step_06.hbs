@@ -1,7 +1,3 @@
-<p>We use a set of {{#definition "dataflow_equation"}}data-flow equations{{/definition}} to determine the values at each point in the graph.</p>
+<p>{{#definition "reaching_definition"}}Reaching definitions{{/definition}} analysis lets us determine which values are available at each point in the CFG. A {{#definition "variable_definition"}}definition{{/definition}} occurs when a value is stored in a variable. That definition {{#definition "reaching_definition"}}reaches{{/definition}} every node along any path in which that definition is not overwritten.</p>
 
-<p>The following data-flow equations compute {{#definition "live_variable"}}live variables{{/definition}} at each point in the control-flow graph:</p>
-
-<p id="transfer_eqn">\[\text{In}(n) = \text{Use}(n) \cup \big{(}\text{Out}(n) \setminus \text{Def}(n)\big{)}\]</p>
-
-<p id="meet_eqn">\[\text{Out}(n) = \bigcup_{s \in succ} \text{In}(s)\]</p>
+</p>We can use data-flow analysis to compute the live variables at each point in our CFG.</p>

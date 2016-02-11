@@ -233,20 +233,66 @@ function IntroductionView(kwargs) {
             _this.text.append(Handlebars.templates['lesson_01/step_05.hbs']());
         },
         function step_06() {
-            _this.cfg_view.hide_points();
-            _this.cfg_view.update();
             _this.text.html("");
+            
             _this.text.append(Handlebars.templates['lesson_01/step_06.hbs']());
-
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.canvas.id]);
         },
         function step_07() {
             _this.text.append(Handlebars.templates['lesson_01/step_07.hbs']());
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.canvas.id]);
         },
-        // function step_08() {
-        //     _this.text.append(Handlebars.templates['lesson_01/step_08.hbs']());
-        // }
+        function step_08() {
+            _this.text.html("");
+            
+            _this.text.append(Handlebars.templates['lesson_01/step_08.hbs']());
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.canvas.id]);
+        },
+        function step_09() {
+            _this.text.html("");
+            
+            _this.text.append(Handlebars.templates['lesson_01/step_09.hbs']());
+        },
+        function step_10() {
+            _this.text.append(Handlebars.templates['lesson_01/step_10.hbs']());
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.canvas.id]);
+
+            _this.simulator.step_forward();
+        },
+        function step_11() {
+            _this.text.append(Handlebars.templates['lesson_01/step_11.hbs']());
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.canvas.id]);
+
+            _this.simulator.step_forward();
+        },
+        function step_12() {
+            _this.text.html("");
+            
+            _this.text.append(Handlebars.templates['lesson_01/step_12.hbs']());
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.canvas.id]);
+
+            _this.simulator.step_forward();
+        },
+        function step_13() {
+            _this.text.append(Handlebars.templates['lesson_01/step_13.hbs']());
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.canvas.id]);
+
+            _this.simulator.step_forward();
+        },
+        function step_14() {
+            _this.text.html("");
+            
+            _this.text.append(Handlebars.templates['lesson_01/step_14.hbs']());
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.canvas.id]);
+
+            _this.simulator.step_forward();
+        },
+        function step_15() {
+            _this.text.append(Handlebars.templates['lesson_01/step_15.hbs']());
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.canvas.id]);
+
+            _this.simulator.step_forward();
+        },
     ];
     
     this.init_children = function() {
@@ -266,3 +312,4 @@ function IntroductionView(kwargs) {
 
 IntroductionView.prototype = Object.create(TutorialView.prototype);
 IntroductionView.prototype.constructor = IntroductionView
+

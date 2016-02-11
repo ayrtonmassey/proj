@@ -1,0 +1,9 @@
+<p>Then we need to calculate the \(\text{Out}\) set:</p>
+<p>
+\begin{align}
+\text{Out}(n) &= \text{DefGen}(n) \cup \big{(}\text{In}(n) \setminus \text{DefKill}(n)\big{)} \\
+              &= \{ \texttt{ra}_1\} \cup (\emptyset \setminus \{ \texttt{ra}_i \: : \:  \forall i \neq 1 \}) \\
+              &= \{ \texttt{ra}_1\} \cup \emptyset \\
+              &= \{ \texttt{ra}_1\}
+\end{align}
+</p>

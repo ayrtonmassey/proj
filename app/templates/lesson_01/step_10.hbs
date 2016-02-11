@@ -1,0 +1,7 @@
+<p>Reaching definitions is a forward data-flow, so we need to calculate the \(\text{In}\) set for the first node:</p>
+
+<p>\begin{align}
+\text{In}(n) &= \bigcup_{p \in preds} \text{Out}(s) \\
+             &= \bigcup_{p \in \emptyset} \text{Out}(p) \\
+             &= \emptyset
+ \end{align}</p>

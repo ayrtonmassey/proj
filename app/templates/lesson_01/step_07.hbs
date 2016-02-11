@@ -1,7 +1,7 @@
-<p>\(\text{In}(n)\) is the set of variables that are {{#definition "live_in"}}live-in{{/definition}} at a given node.</p>
+<p>We use a set of {{#definition "dataflow_equation"}}data-flow equations{{/definition}} to determine the values at each point in the graph.</p>
 
-<p>\(\text{Out}\) is the set of variables that are {{#definition "live_out"}}live-out{{/definition}} at a given node.</p>
+<p>The following data-flow equations compute {{#definition "reaching_definition"}}reaching definitions{{/definition}} at each point in the control-flow graph:</p>
 
-<p>\(\text{Use}(n)\) is the set of variables that are {{#definition "variable_use"}}used{{/definition}} at a given node: in our example program, the variables on the <strong>left-hand side</strong> of each instruction.</p>
+<p id="meet_eqn">\[\text{In}(n) = \bigcup_{p \in preds} \text{Out}(s)\]</p>
 
-<p>\(\text{Def}(n)\) is the set of variables that are {{#definition "variable_definition"}}defined{{/definition}} at a given node: in our example program, the variables on the <strong>right-hand side</strong> of each instruction.</p>
+<p id="transfer_eqn">\[\text{Out}(n) = \text{DefGen}(n) \cup \big{(}\text{In}(n) \setminus \text{DefKill}(n)\big{)}\]</p>

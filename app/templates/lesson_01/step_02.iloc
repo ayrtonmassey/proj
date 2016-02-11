@@ -1,5 +1,5 @@
-loadI 1      => r1 
+loadI 1      => ra
 addI  ra, 2  => rb
-addI  ra, 3  => rc
-add   ra, rc => rb
+addI  ra, 3  => rb
+add   ra, rb => rc
 loadI 7      => rd
