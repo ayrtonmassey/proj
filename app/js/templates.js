@@ -75,7 +75,7 @@ templates['lesson_01/step_02.hbs'] = template({"1":function(container,depth0,hel
     + " for a simple program.</p>\n";
 },"useData":true});
 templates['lesson_01/step_02.iloc'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "loadI 1      => ra\naddI  ra, 2  => rb\naddI  ra, 3  => rb\nadd   ra, rb => rc\nloadI 7      => rd";
+    return "loadI 1      => ra\naddI  ra, 2  => rb\naddI  ra, 3  => rb\nadd   ra, rb => ra\nloadI 7      => rd";
 },"useData":true});
 templates['lesson_01/step_03.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<p>Each <strong style=\"color: #6cc86c\">node</strong> represents an instruction.</p>\n";
@@ -179,8 +179,24 @@ templates['lesson_01/step_16.hbs'] = template({"1":function(container,depth0,hel
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || helpers.helperMissing).call(depth0 != null ? depth0 : {},"definition_killed",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + " the definition of \\(\\texttt{rb}_1\\).</p>";
 },"useData":true});
+templates['lesson_01/step_18.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "killed";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "generates";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
+
+  return "<p>That's correct! The definition of \\(\\texttt{ra}_1\\) is "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"variable_killed",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " by the store to \\(\\texttt{ra}\\), which "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"variable_generated",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " \\(\\texttt{ra}_2\\).</p>\n";
+},"useData":true});
+templates['lesson_01/step_19.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<p>Let's fast forward to the end of the analysis. We can see that the store to \\(\\texttt{rd}\\) generates the definition \\(\\texttt{rd}_1\\), leaving us with \\(\\{\\texttt{rd}_1, \\texttt{rb}_2, \\texttt{ra}_2\\}\\)</p>\n\n<p>Normally we'd iterate over the graph again to make sure nothing changes. In this example it's not necessary, so we'll save that for a later lesson.</p>\n\n<p><a href=\"index.html?lesson=2\" class=\"btn btn-primary btn-block\">Next Lesson</a></p>\n<p><a href=\"index.html?simulator\" class=\"btn btn-secondary btn-block\">Open CFG in Simulator</a></p>\n<p><a href=\"index.html\" class=\"btn btn-secondary btn-block\">Back to Menu</a></p>\n";
+},"useData":true});
 templates['menu.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"row\">\n    <div class=\"col-xs-12\">\n        <h1 class=\"text-center\">Data-Flow Analysis</h1>\n        <div class=\"row\">\n            <div id=\"menu\" class=\"col-xs-6\">\n                <div class=\"row\">\n                    <div class=\"col-xs-12\">\n                        <h2>Lessons</h2>\n                        <p>\n                        <button class=\"btn btn-secondary btn-block\" id=\"btn-lesson-01\">\n                            Introduction\n                        </button>\n                        </p>\n                    </div>\n                </div>\n                <div class=\"row\">\n                    <div class=\"col-xs-12\">\n                        <h2>Simulations</h2>\n                        <p>\n                        <button class=\"btn btn-secondary btn-block\" id=\"btn-round-robin-simulator\">\n                            Round Robin Iterator\n                        </button>\n                        </p>\n                    </div>\n                </div>\n            </div>\n            <div class=\"col-xs-6 well\">\n                <div id=\"description-canvas\">\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
+    return "<div class=\"row\">\n    <div class=\"col-xs-12\">\n        <h1 class=\"text-center\">Data-Flow Analysis</h1>\n        <div class=\"row\">\n            <div id=\"menu\" class=\"col-xs-6\">\n                <div class=\"row\">\n                    <div class=\"col-xs-12\">\n                        <h2>Lessons</h2>\n                        <p>\n                        <button class=\"btn btn-secondary btn-block\" id=\"btn-lesson-0\">\n                            Introduction\n                        </button>\n                        </p>\n                    </div>\n                </div>\n                <div class=\"row\">\n                    <div class=\"col-xs-12\">\n                        <h2>Simulations</h2>\n                        <p>\n                        <button class=\"btn btn-secondary btn-block\" id=\"btn-round-robin-simulator\">\n                            Round Robin Iterator\n                        </button>\n                        </p>\n                    </div>\n                </div>\n            </div>\n            <div class=\"col-xs-6 well\">\n                <div id=\"description-canvas\">\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
 },"useData":true});
 templates['node.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, helper;
@@ -209,5 +225,32 @@ templates['roundrobin.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":functio
 },"useData":true});
 templates['sim_controls.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<span id=\"sim-controls\" class=\"btn-group\">\n    <button id=\"fast-backward\" class=\"btn btn-default\">\n        <span class=\"fa fa-fast-backward\"></span>\n    </button>\n    <button id=\"step-forward\" class=\"btn btn-default\">\n        <span class=\"fa fa-step-forward\"></span>\n    </button>\n    <button id=\"play\" class=\"btn btn-default\">\n        <span class=\"fa fa-play\"></span>\n    </button>\n    <button id=\"pause\" class=\"btn btn-default\">\n        <span class=\"fa fa-pause\"></span>\n    </button>\n    <button id=\"fast-forward\" class=\"btn btn-default\">\n        <span class=\"fa fa-fast-forward\"></span>\n    </button>\n</span>\n";
+},"useData":true});
+templates['question.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "    <p>"
+    + container.escapeExpression(container.lambda(depth0, depth0))
+    + "</p>\n";
+},"3":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "        <button class=\"btn btn-primary btn-answer "
+    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.correct : depth0),{"name":"if","hash":{},"fn":container.program(4, data, 0),"inverse":container.program(6, data, 0),"data":data})) != null ? stack1 : "")
+    + "\">\n            "
+    + container.escapeExpression(container.lambda((depth0 != null ? depth0.text : depth0), depth0))
+    + "\n        </button>\n";
+},"4":function(container,depth0,helpers,partials,data) {
+    return "correct";
+},"6":function(container,depth0,helpers,partials,data) {
+    return "incorrect";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {};
+
+  return ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.question : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "<div class=\"row answer-grid\">\n"
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.answers : depth0),{"name":"each","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "</div>\n";
+},"useData":true});
+templates['question_canvas.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<div id=\"question-canvas\" class=\"question row\">\n</div>";
 },"useData":true});
 })();

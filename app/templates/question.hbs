@@ -1,0 +1,10 @@
+{{#each question}}
+    <p>{{this}}</p>
+{{/each}}
+<div class="row answer-grid">
+    {{#each answers}}
+        <button class="btn btn-primary btn-answer {{#if this.correct}}correct{{else}}incorrect{{/if}}">
+            {{this.text}}
+        </button>
+    {{/each}}
+</div>

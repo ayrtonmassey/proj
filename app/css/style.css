@@ -421,3 +421,23 @@ g.label sub {
   stroke: #333;
   stroke-width: 1.5px;
 }
+
+/* Question Views */
+
+.question {
+    margin-bottom: 1em;
+}
+
+.answer-grid {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+}
+
+.btn-answer {
+    flex: 0 1 47.5%;
+    margin-left: 2.5%;
+    margin-top: 2.5%
+}
