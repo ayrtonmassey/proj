@@ -337,8 +337,9 @@ table.table>tbody>tr>th {
 
 /* CFG Highlight */
 
-g.point>rect {
-    stroke: #9a162c;
+g.node.highlight foreignobject {
+    color: #fff;
+    font-weight: bold;
 }
 
 g.node.transfer.highlight>rect {

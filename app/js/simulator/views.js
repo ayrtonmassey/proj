@@ -600,29 +600,80 @@ function CFGView(kwargs) {
     this.update = function() {
         this.reset_highlight();
 
-        // Add highlighting
-        for(read of this.simulator.state.read_nodes) {
-            $("#graph-node-{0}".format(
-                read.node.index
-            ))
-                .attr('class','{0} {1} {2} {3}'.format(
-                    'node',
-                    this.simulator.state.func,
-                    "read",
-                    "highlight"
-                ));
-        }
-        
-        for(modified of this.simulator.state.modified_nodes) {
-            $("#graph-node-{0}".format(
-                modified.node.index
-            ))
-                .attr('class','{0} {1} {2} {3}'.format(
-                    'node',
-                    this.simulator.state.func,
-                    "modified",
-                    "highlight"
-                ));
+        if (this.draw_points) {
+            // Add highlighting
+            for(read of this.simulator.state.read_nodes) {
+                for (set of read.sets) {
+                    var in_out = undefined;
+                    
+                    if (set == 'meet') {
+                        in_out = (this.simulator.framework.direction == DFA.FORWARD ? 'in' : 'out');
+                    } else if (set == 'transfer') {
+                        in_out = (this.simulator.framework.direction == DFA.FORWARD ? 'out' : 'int');
+                    }
+                    
+                    if (in_out != undefined) {
+                        node = $("#graph-node-{0}-{1}".format(
+                            read.node.index,
+                            in_out
+                        )).attr('class','{0} {1} {2} {3}'.format(
+                            'node',
+                            this.simulator.state.func,
+                            "read",
+                            "highlight"
+                        ));
+                    }
+                }
+            }
+            
+            for(modified of this.simulator.state.modified_nodes) {
+                for (set of modified.sets) {
+                    var in_out = undefined;
+                    
+                    if (set == 'meet') {
+                        in_out = (this.simulator.framework.direction == DFA.FORWARD ? 'in' : 'out');
+                    } else if (set == 'transfer') {
+                        in_out = (this.simulator.framework.direction == DFA.FORWARD ? 'out' : 'in');
+                    }
+                    
+                    if (in_out != undefined) {
+                        node = $("#graph-node-{0}-{1}".format(
+                            modified.node.index,
+                            in_out
+                        )).attr('class','{0} {1} {2} {3}'.format(
+                            'node',
+                            this.simulator.state.func,
+                            "modified",
+                            "highlight"
+                        ));
+                    }
+                }
+            }
+        } else {
+            // Add highlighting
+            for(read of this.simulator.state.read_nodes) {
+                $("#graph-node-{0}".format(
+                    read.node.index
+                ))
+                    .attr('class','{0} {1} {2} {3}'.format(
+                        'node',
+                        this.simulator.state.func,
+                        "read",
+                        "highlight"
+                    ));
+            }
+            
+            for(modified of this.simulator.state.modified_nodes) {
+                $("#graph-node-{0}".format(
+                    modified.node.index
+                ))
+                    .attr('class','{0} {1} {2} {3}'.format(
+                        'node',
+                        this.simulator.state.func,
+                        "modified",
+                        "highlight"
+                    ));
+            }
         }
         
         // Update nodes.
@@ -652,7 +703,6 @@ function CFGView(kwargs) {
                                     style: 'stroke: #9a162c'
                                 });
                 _this.g.node('{0}-in'.format(node.index)).id = 'graph-node-{0}-in'.format(node.index);
-                $('#graph-node-{0}-in'.format(node.index)).attr('class','{0} {1}'.format('node', 'point'));
                 
                 // Add out point
                 _this.g.setNode('{0}-out'.format(node.index),
@@ -664,7 +714,6 @@ function CFGView(kwargs) {
                                     style: 'stroke: #9a162c'
                                 });
                 _this.g.node('{0}-out'.format(node.index)).id = 'graph-node-{0}-out'.format(node.index)
-                $('#graph-node-{0}-out'.format(node.index)).attr('class','{0} {1}'.format('node', 'point'));
             }
 
             // Update edges.
@@ -714,6 +763,22 @@ function CFGView(kwargs) {
         }
         
         this.draw();
+
+        this.graph_properties.height = this.g.graph().height;
+        this.graph_properties.width  = this.g.graph().width;
+        
+        this.translate_graph();
+    }
+
+    this.translate_graph = function() {
+        var xCenterOffset = (_this.canvas.width() - _this.graph_properties.width)
+            / 2 * _this.graph_properties.scale;
+        var yCenterOffset = (_this.canvas.height() - _this.graph_properties.height)
+            / 2 * _this.graph_properties.scale;
+        _this.svgGroup.attr("transform", "translate(" +
+                            (xCenterOffset + _this.graph_properties.offset_x) + ", " +
+                            (yCenterOffset + _this.graph_properties.offset_y) + ")" +
+                            "scale(" + _this.graph_properties.scale + ")");
     }
     
     this.reset = function() {
@@ -725,12 +790,15 @@ function CFGView(kwargs) {
         // Add the graph element to the SVG
         this.svgGroup = this.svg.append("g");
         
-        var zoom = d3.behavior.zoom().on("zoom", function() {
-            // Center the graph
-            var xCenterOffset = (_this.canvas.width() - _this.g.graph().width) / 2 * d3.event.scale;
-            var yCenterOffset = (_this.canvas.height() - _this.g.graph().height) / 2 * d3.event.scale;
-            _this.svgGroup.attr("transform", "translate(" + (xCenterOffset + d3.event.translate[0]) + ", " + (yCenterOffset + d3.event.translate[1]) + ")" +
-                                "scale(" + d3.event.scale + ")");
+        var zoom = d3.behavior.zoom().on("zoom", function() {        
+            _this.graph_properties = {
+                scale: d3.event.scale,
+                offset_x: d3.event.translate[0],
+                offset_y: d3.event.translate[1],
+                height: _this.g.graph().height,
+                width: _this.g.graph().width,
+            }
+            _this.translate_graph();
         });
 
         this.svg.call(zoom);
@@ -741,12 +809,17 @@ function CFGView(kwargs) {
             this.hide_points();
         }
 
+        this.graph_properties = {
+            scale: 1.0,
+            offset_x: 0.0,
+            offset_y: 0.0,
+            height: 0.0,
+            width: 0.0,
+        }
+        
         this.update();
-
-        var xCenterOffset = (this.canvas.width() - this.g.graph().width) / 2;
-        var yCenterOffset = (this.canvas.height() - this.g.graph().height) / 2;
-        this.svgGroup.attr("transform",
-                           "translate(" + xCenterOffset + ", " + yCenterOffset + ")")
+                
+        this.translate_graph();
     }
 
     this.init = function() {
