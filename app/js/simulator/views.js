@@ -576,17 +576,20 @@ function CFGView(kwargs) {
     }
 
     this.reset_highlight = function() {
-        if (this.g.edgeObjs != undefined) {
-            for(edge of this.g.edgeObjs) {
-                this.g.setEdge(
-                    edge.v,
-                    edge.w,
-                    {
-                        style: "stroke: #000; stroke-width: 1.5px;",
-                        arrowheadStyle: "stroke: #000; fill: #000;",
-                    }
-                );
-            }
+        if (undefined != this.g._edgeObjs) {
+            $.each(
+                this.g._edgeObjs,
+                function(k,edge) {
+                    _this.g.setEdge(
+                        edge.v,
+                        edge.w,
+                        {
+                            style: "stroke: #000; stroke-width: 1.5px;",
+                            arrowheadStyle: "stroke: #000; fill: #000;",
+                        }
+                    );
+                }
+            );
         }
         
         $('#cfg-svg g.node').each(function() {

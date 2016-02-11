@@ -109,12 +109,12 @@ footer {
 .lesson-step nav.row {
     flex: 0 1 auto;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     padding: 0 15px;
 }
 
-.lesson-step nav button {
-    flex: 0 1 auto;
+.less-step nav.row button {
+    
 }
 
 /* Tables */
@@ -363,6 +363,19 @@ g.node.meet.modified.highlight>rect {
 
 
 /* Graphs */
+
+svg:hover {
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+}
+
+svg:active { 
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+}
 
 #cfg-canvas {
     border: #eee solid 1px;

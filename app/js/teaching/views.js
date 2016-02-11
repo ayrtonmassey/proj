@@ -75,14 +75,92 @@ MenuView.prototype = Object.create(View.prototype);
 MenuView.prototype.constructor = MenuView
 
 
-function IntroductionView(kwargs) {
+function TutorialView(kwargs) {
     View.call(this, kwargs);
-
-    this.template = Handlebars.templates['introduction.hbs']
-
+    
+    var _this = this;
+    
     this.title = kwargs.title;
+    
+    this.next = function() {
+        if (this.step < this.steps.length - 1) {
+            this.step++;
+            this.steps[this.step]();
+            if (this.step >= this.steps.length - 1) {
+                this.next_button.prop('disabled', true);
+            }
+            if (this.step > 0) {
+                this.prev_button.prop('disabled', false);
+            }
+        }
+    }
+
+    this.prev = function() {
+        console.log(this.step);
+        this.new_step = this.step - 1;
+        console.log(this.new_step);
+        this.reset();
+        while (this.step < this.new_step) {
+            this.next();
+        }
+        if (this.step < this.steps.length) {
+            this.next_button.prop('disabled', false);
+        }
+    }
+
+    this.reset = function() {
+        this.step = -1;
+        
+        this.prev_button.prop('disabled', true);
+        
+        this.simulator = new RoundRobinSimulator({
+            framework:  iloc_reaching_definitions,
+            ordering:   DFA.REVERSE_POSTORDER,
+            code:       "nop",
+            play_speed: 100,
+        });
+        
+        this.simulator.init();
+
+        // Allow children to init contained components
+        this.init_children();
+        
+        this.simulator.reset();
+
+        this.next();
+    }
+    
+    this.init = function() {
+        this.canvas.html(this.template({title: this.title}));
+
+        this.text = $('#text');
+        
+        this.next_button = $('#btn-next');
+        
+        this.next_button.on('click', function() {
+            _this.next();
+        });
+
+        this.prev_button = $('#btn-prev');
+        
+        this.prev_button.on('click', function() {
+            _this.prev();
+        });
+
+        this.reset();
+    }
+}
+
+TutorialView.prototype = Object.create(View.prototype);
+TutorialView.prototype.constructor = TutorialView
+
+
+function IntroductionView(kwargs) {
+    TutorialView.call(this, kwargs);
 
     var _this = this;
+    
+    this.template = Handlebars.templates['introduction.hbs']
     
     this.steps = [
         function step_00() {
@@ -170,46 +248,8 @@ function IntroductionView(kwargs) {
         //     _this.text.append(Handlebars.templates['lesson_01/step_08.hbs']());
         // }
     ];
-
-    this.step = -1;
     
-    this.next = function() {
-        this.step++;
-        this.steps[this.step]();
-    }
-    
-    this.init = function() {
-        this.canvas.html(this.template({title: this.title}));
-
-        // var iloc_code = "\
-        //     loadI  1      => ra      \n\
-        //     addI   r1, 6  => rb      \n\
-        //     mult   ra, rb => rc      \n\
-        //     add    ra, rb => rd      \n\
-        //     cmp_GE rc, rd => rcmp    \n\
-        //     cbr    rcmp   -> L1,  L2 \n\
-        // L1: i2i    rc     => rret    \n\
-        //     jump   L3                \n\
-        // L2: i2i    rd     => rret    \n\
-        // L3: nop \
-        // "
-
-        this.text = $('#text');
-        
-        this.next_button = $('#btn-next');
-        
-        this.next_button.on('click', function() {
-            _this.next();
-        });
-        
-        this.simulator = new RoundRobinSimulator({
-            framework:  iloc_reaching_definitions,
-            ordering:   DFA.REVERSE_POSTORDER,
-            code:       "nop",
-            play_speed: 100,
-        });
-
-        this.simulator.init();
+    this.init_children = function() {
 
         this.cfg_canvas = $('#cfg-canvas');
         
@@ -219,12 +259,10 @@ function IntroductionView(kwargs) {
         });
         
         this.cfg_view.init();
-
-        this.simulator.reset();
-
-        this.next();
+        
     }
+    
 }
 
-IntroductionView.prototype = Object.create(View.prototype);
+IntroductionView.prototype = Object.create(TutorialView.prototype);
 IntroductionView.prototype.constructor = IntroductionView
