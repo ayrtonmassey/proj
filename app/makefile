@@ -3,7 +3,7 @@ all: templates grammar parser
 .PHONY: grammar parser templates
 
 templates:
-	find templates -type f -exec sh -c 'handlebars $$@ -r templates -f js/templates.js' sh {} +
+	find templates -type f ! -name '*~' -exec sh -c 'handlebars $$@ -r templates -f js/templates.js' sh {} +
 
 grammar:
 	handlebars js/simulator/iloc/grammar.pegjs -f js/simulator/iloc/grammar.js

@@ -81,6 +81,10 @@ function TutorialView(kwargs) {
     var _this = this;
     
     this.title = kwargs.title;
+
+    this.clear = function() {
+        throw ReferenceError("clear is not defined in class {0}".format(_this.constructor.name));
+    }
     
     this.next = function() {
         if (this.step < this.steps.length - 1) {
@@ -96,9 +100,7 @@ function TutorialView(kwargs) {
     }
 
     this.prev = function() {
-        console.log(this.step);
         this.new_step = this.step - 1;
-        console.log(this.new_step);
         this.reset();
         while (this.step < this.new_step) {
             this.next();
@@ -154,13 +156,16 @@ function TutorialView(kwargs) {
 TutorialView.prototype = Object.create(View.prototype);
 TutorialView.prototype.constructor = TutorialView
 
-
 function IntroductionView(kwargs) {
     TutorialView.call(this, kwargs);
 
     var _this = this;
     
     this.template = Handlebars.templates['introduction.hbs']
+    
+    this.clear = function() {
+        _this.text.html("");
+    }
     
     this.steps = [
         function step_00() {
@@ -175,6 +180,7 @@ function IntroductionView(kwargs) {
             _this.text.append(Handlebars.templates['lesson_01/step_01.hbs']());
         },
         function step_02() {
+            _this.clear();
             // Show the CFG
             _this.cfg_canvas.show();
             
@@ -183,7 +189,6 @@ function IntroductionView(kwargs) {
             _this.simulator.sim_code(iloc_code);
 
             // Update the text
-            _this.text.html("");
             _this.text.append(Handlebars.templates['lesson_01/step_02.hbs']());
         },
         function step_03() {
@@ -191,12 +196,19 @@ function IntroductionView(kwargs) {
             var index = 0;
             var timeout = 500;
             setTimeout(function animate_04() {
-                _this.cfg_view.reset_highlight();
-                if(index < _this.simulator.cfg.nodes.length && _this.step == 3) {
-                    $('#graph-node-{0}'.format(index))
-                        .attr("class", "node meet highlight");
-                    index += 1;
-                    setTimeout(animate_04, timeout);
+                if(_this.step == 3) {
+                    if(index < _this.simulator.cfg.nodes.length - 1) {
+                        _this.cfg_view.reset_highlight();
+                        $('#graph-node-{0}'.format(index))
+                            .attr("class", "node meet highlight");
+                        index += 1;
+                        setTimeout(animate_04, timeout);
+                    } else if (index < _this.simulator.cfg.nodes.length) {
+                        for(index = 0; index < _this.simulator.cfg.nodes.length; index++) {
+                            $('#graph-node-{0}'.format(index))
+                                .attr("class", "node meet highlight");
+                        }
+                    }
                 }
             }, timeout);
             
@@ -208,18 +220,31 @@ function IntroductionView(kwargs) {
             var index = 1;
             var timeout = 500;
             setTimeout(function animate_05() {
-                _this.cfg_view.reset_highlight();
-                if(index < _this.simulator.cfg.nodes.length && _this.step == 4) {
-                    _this.cfg_view.g.setEdge(
-                        '{0}'.format(index-1),
-                        '{0}'.format(index),
-                        {
-                            style: "stroke: #62abea; stroke-width: 1.5px;",
-                            arrowheadStyle: "stroke: #62abea; fill: #62abea;",
+                if(_this.step == 4) {
+                    if(index < _this.simulator.cfg.nodes.length - 1) {
+                        _this.cfg_view.reset_highlight();
+                        _this.cfg_view.g.setEdge(
+                            '{0}'.format(index-1),
+                            '{0}'.format(index),
+                            {
+                                style: "stroke: #62abea; stroke-width: 1.5px;",
+                                arrowheadStyle: "stroke: #62abea; fill: #62abea;",
+                            }
+                        );
+                        index += 1;
+                        setTimeout(animate_05, timeout);
+                    } else if (index < _this.simulator.cfg.nodes.length) {
+                        for(index = 1; index < _this.simulator.cfg.nodes.length; index++) {
+                            _this.cfg_view.g.setEdge(
+                                '{0}'.format(index-1),
+                                '{0}'.format(index),
+                                {
+                                    style: "stroke: #62abea; stroke-width: 1.5px;",
+                                    arrowheadStyle: "stroke: #62abea; fill: #62abea;",
+                                }
+                            );
                         }
-                    );
-                    index += 1;
-                    setTimeout(animate_05, timeout);
+                    }
                 }
                 _this.cfg_view.draw();
             }, timeout);
@@ -228,13 +253,13 @@ function IntroductionView(kwargs) {
             _this.text.append(Handlebars.templates['lesson_01/step_04.hbs']());
         },
         function step_05() {
+            _this.cfg_view.reset_highlight();
             _this.cfg_view.show_points();
             _this.cfg_view.update();
             _this.text.append(Handlebars.templates['lesson_01/step_05.hbs']());
         },
         function step_06() {
-            _this.text.html("");
-            
+            _this.clear();
             _this.text.append(Handlebars.templates['lesson_01/step_06.hbs']());
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.canvas.id]);
         },
@@ -243,14 +268,12 @@ function IntroductionView(kwargs) {
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.canvas.id]);
         },
         function step_08() {
-            _this.text.html("");
-            
+            _this.clear();
             _this.text.append(Handlebars.templates['lesson_01/step_08.hbs']());
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.canvas.id]);
         },
         function step_09() {
-            _this.text.html("");
-            
+            _this.clear();
             _this.text.append(Handlebars.templates['lesson_01/step_09.hbs']());
         },
         function step_10() {
@@ -266,8 +289,7 @@ function IntroductionView(kwargs) {
             _this.simulator.step_forward();
         },
         function step_12() {
-            _this.text.html("");
-            
+            _this.clear();
             _this.text.append(Handlebars.templates['lesson_01/step_12.hbs']());
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.canvas.id]);
 
@@ -280,8 +302,7 @@ function IntroductionView(kwargs) {
             _this.simulator.step_forward();
         },
         function step_14() {
-            _this.text.html("");
-            
+            _this.clear();
             _this.text.append(Handlebars.templates['lesson_01/step_14.hbs']());
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.canvas.id]);
 
@@ -293,8 +314,12 @@ function IntroductionView(kwargs) {
 
             _this.simulator.step_forward();
         },
+        function step_15() {
+            _this.text.append(Handlebars.templates['lesson_01/step_16.hbs']());
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.canvas.id]);
+        },
     ];
-    
+
     this.init_children = function() {
 
         this.cfg_canvas = $('#cfg-canvas');
