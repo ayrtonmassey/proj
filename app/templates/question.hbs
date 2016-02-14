@@ -1,7 +1,7 @@
 {{#each question}}
     <p>{{this}}</p>
 {{/each}}
-<div class="row answer-grid">
+<div class="col-xs-12 answer-grid">
     {{#each answers}}
         <button class="btn btn-primary btn-answer {{#if this.correct}}correct{{else}}incorrect{{/if}}">
             {{this.text}}

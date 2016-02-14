@@ -201,13 +201,12 @@ table.table>tbody>tr>th {
 #results-canvas {
     overflow-x: auto;
     font-size: 0.8em;
-    overflow-y: hidden;
+    /* overflow-y: hidden; */
     /* padding-bottom: 15px; */
 }
 
 #results-canvas table {
-    margin-bottom: 20px;
-    margin-left: -15px;
+    margin-bottom: 1px;
 }
 
 #results-canvas table>thead>tr>th,
@@ -426,6 +425,8 @@ g.label sub {
 
 .question {
     margin-bottom: 1em;
+    display: flex;
+    flex-direction: column;
 }
 
 .answer-grid {
@@ -438,6 +439,5 @@ g.label sub {
 
 .btn-answer {
     flex: 0 1 47.5%;
-    margin-left: 2.5%;
-    margin-top: 2.5%
+    margin: 0.5em 0;
 }
