@@ -65,6 +65,21 @@ footer {
     flex-direction: column;
     justify-content: start;
     align-items: stretch;
+    align-content: stretch;
+}
+
+.tab-content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.tab-content > .tab-pane {
+    display: none !important;
+}
+
+.tab-content > .active {
+    display: flex !important;
 }
 
 #right-column > .row {
@@ -134,13 +149,13 @@ footer {
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
     align-items: stretch;
 }
 
 #code-canvas > .row {
     display: flex;
-    flex: 0 1 auto;
+    flex: 1 1 100%;
     margin-bottom: 1em;
 }
 
@@ -149,20 +164,23 @@ footer {
 }
 
 #code-editor {
-    width: 100%;
+    flex: 1 1 100%;
     font-family: Monospace;
-    min-height: 18em;
-    resize: vertical;
+    min-height: 12em;
     display: flex;
+    align-items: stretch;
 }
 
 #code-editor > textarea {
-    flex: 1 1 auto;
+    flex: 1 1 100%;
+    resize: vertical;
 }
 
 #code-display {
     overflow-x: auto;
     overflow-y: auto;
+    margin: 0 auto;
+    max-width: 30em;
 }
 
 table.iloc {
@@ -262,7 +280,7 @@ table.table>tbody>tr>th {
 }
 
 .flex {
-    flex: 1 1 auto;
+    flex: 1 1 auto !important;
 }
 
 .text-center {
@@ -382,12 +400,24 @@ svg:active {
 }
 
 #cfg-canvas {
+    flex: 1 1 auto;
+    border: #eee solid 1px;
+    display: flex;
+    flex-flow: column nowrap;
+    padding: 0px;
+}
+
+#cfg-svg {
+    flex: 1 1 auto;
+}
+
+#lattice-canvas {
     border: #eee solid 1px;
     display: flex;
     padding: 0px;
 }
 
-#cfg-svg {
+#lattice-svg {
     flex: 1 1 auto;
 }
 

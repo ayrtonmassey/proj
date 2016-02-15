@@ -47,26 +47,6 @@ var defkill = function (node, v_def) {
     return out_set;
 };
     
-var v_def = function(graph) {
-    var operations = [].concat.apply([], graph.nodes.map(function(node) {
-        return node.operations;
-    })).filter(function(operation) {
-        // Filter to those which are assignments
-        return (operation instanceof ILOC.NormalOperation);
-    });
-    
-    // Return all the target operands of said operations
-    return new ValueSet(
-        [].concat.apply([], operations.map(function(operation) {
-            if (operation.targets != undefined) {
-                return operation.targets;
-            } else {
-                return [];
-            }
-        }))
-    );
-};
-
 var iloc_reaching_definitions = new DFAFramework({
     meet: function(node, cfg) {
         var read_nodes = [];
@@ -100,6 +80,9 @@ var iloc_reaching_definitions = new DFAFramework({
         
         return {modified_nodes: modified_nodes, read_nodes: read_nodes};
     },
+    meet_op: function(set1, set2) {
+        return set1.union(set2);
+    },
     transfer: function(node, cfg) {
         var read_nodes = [];
         var modified_nodes = [];
@@ -132,7 +115,7 @@ var iloc_reaching_definitions = new DFAFramework({
     },
     meet_latex: "\\[\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)\\]",
     transfer_latex: "\\[\\text{Out}(n) = \\text{DefGen}(n) \\cup \\big{(}\\text{In}(n) \\setminus \\text{DefKill}(n)\\big{)}\\]",
-    value_domain: v_def,
+    value_domain: DFA.DEFINITIONS,
     local_sets: {
         defgen: defgen,
         defkill: defkill,

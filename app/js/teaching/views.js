@@ -36,21 +36,23 @@ function MenuView(kwargs) {
         this.canvas.hide();
         this.view_canvas.html("");
         this.view_canvas.show();
+
+        var iloc_code = Handlebars.templates['test/lattice.iloc']();
         
-        var iloc_code = "\
-        L0: nop \n\
-            loadI  2         => ra        \n\
-            load   rb        => rx        \n\
-            addI   ra   , 1  => ra        \n\
-            loadI  0         => r0        \n\
-            cmp_GE rx   , r0 => rcomp     \n\
-            cbr    rcomp     -> L1   , L2 \n\
-        L1: i2i    rx        => ra        \n\
-            add    ra   , rb => rc        \n\
-            jump   L3                     \n\
-        L2: addI   rb   , 1  => rc        \n\
-        L3: add    ra   , rc => rd        \n\
-        ";
+        // var iloc_code = "\
+        // L0: nop \n\
+        //     loadI  2         => ra        \n\
+        //     load   rb        => rx        \n\
+        //     addI   ra   , 1  => ra        \n\
+        //     loadI  0         => r0        \n\
+        //     cmp_GE rx   , r0 => rcomp     \n\
+        //     cbr    rcomp     -> L1   , L2 \n\
+        // L1: i2i    rx        => ra        \n\
+        //     add    ra   , rb => rc        \n\
+        //     jump   L3                     \n\
+        // L2: addI   rb   , 1  => rc        \n\
+        // L3: add    ra   , rc => rd        \n\
+        // ";
         
         var simulator = new RoundRobinSimulator({
             framework: iloc_liveness,
@@ -68,17 +70,58 @@ function MenuView(kwargs) {
         
         this.view.init();
     }
+
+    this.show_testbed = function(testbed_name) {
+        switch(testbed_name) {
+        case 'lattice':
+            this.show_lattice_testbed();
+            break;
+        default:
+            throw ReferenceError("Unrecognised testbed {0}".format(testbed_name));
+        }
+    }
+    
+    this.show_lattice_testbed = function() {
+        this.canvas.hide();
+        this.view_canvas.html("");
+        this.view_canvas.show();
+        
+        var iloc_code = Handlebars.templates['test/lattice.iloc']();
+        
+        var simulator = new RoundRobinSimulator({
+            // framework: iloc_liveness,
+            // ordering:  DFA.POSTORDER,
+            framework:  iloc_reaching_definitions,
+            ordering:   DFA.REVERSE_POSTORDER,
+            code:       iloc_code,
+            play_speed: 100,
+        });
+        
+        this.view = new LatticeTestbedView({
+            canvas: '#view-canvas',
+            simulator: simulator,
+        });
+        
+        this.view.init();
+    }
     
     this.init = function() {
         this.canvas.html(this.template());
         this.view_canvas.hide();
 
+        /* Simulation */
         $('#btn-round-robin-simulator').on('click', function() {
             _this.show_round_robin_simulator();
         });
 
+        /* Lessons */
         $('#btn-lesson-0').on('click', function() {
             _this.show_lesson(0);
+        });
+
+        /* Testing */
+        $('#btn-lattice-testbed').on('click', function() {
+            _this.show_lattice_testbed();
         });
     }
 }
@@ -239,7 +282,7 @@ function IntroductionView(kwargs) {
                             '{0}'.format(index-1),
                             '{0}'.format(index),
                             {
-                                style: "stroke: #62abea; stroke-width: 1.5px;",
+                                style: "stroke: #62abea;",
                                 arrowheadStyle: "stroke: #62abea; fill: #62abea;",
                             }
                         );

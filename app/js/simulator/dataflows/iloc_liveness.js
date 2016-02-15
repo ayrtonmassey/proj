@@ -33,29 +33,6 @@ var uses = function (node, v_uses) {
     );
 };
 
-var v_uses = function(graph) {
-    // Find all operations in the graph
-    var operations = [].concat.apply([], graph.nodes.map(function(node) {
-        return node.operations.map(function(operation) {
-            return operation;
-        });
-    }))
-    
-    // Return all the source operands of said operations
-    return new ValueSet(
-        [].concat.apply([], operations.map(function(operation) {
-            if (operation.sources != undefined) {
-                return operation.sources;
-            } else {
-                return [];
-            }
-        })).filter(function(source) {
-            // Filter to just registers (variables)
-            return (source.type == ILOC.OPERAND_TYPES.register)
-        })
-    );
-}
-
 var iloc_liveness = new DFAFramework({
     meet: function(node, graph) {
         var read_nodes = [];
@@ -88,6 +65,9 @@ var iloc_liveness = new DFAFramework({
         })
         
         return {read_nodes: read_nodes, modified_nodes: modified_nodes };
+    },
+    meet_op: function(set1, set2) {
+        return set1.union(set2);
     },
     transfer: function(node) {
         var read_nodes = [];
@@ -125,7 +105,7 @@ var iloc_liveness = new DFAFramework({
         use: uses,
         def: defs,
     },
-    value_domain: v_uses,
+    value_domain: DFA.VARIABLES,
     direction: DFA.BACKWARD,
     top: new ValueSet([]),
     name: "ILOC Liveness Analysis",

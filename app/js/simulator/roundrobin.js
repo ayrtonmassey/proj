@@ -47,7 +47,17 @@ function RoundRobinSimulator (kwargs) {
         this.code = code;
         this.ast  = ILOC.parser.parse(this.code);
         this.cfg  = ILOC.build_CFG(this.ast);
-        this.value_domain = this.framework.value_domain(this.cfg);
+
+        this.value_domain = this.framework.distinct_values(this.cfg);
+
+        // If the lattice isn't too big, build it
+        if (this.value_domain.size() <= 4) {
+            this.lattice = this.framework.build_lattice(this.cfg);
+        } else {
+            // Otherwise, set it as null
+            this.lattice = null;
+        }
+        
         this.order = (function(order) {
             switch(order) {
             case DFA.POSTORDER:

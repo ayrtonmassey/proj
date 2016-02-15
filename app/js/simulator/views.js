@@ -20,6 +20,8 @@ SimulatorView.prototype.constructor = SimulatorView
 function RoundRobinSimulatorView(kwargs) {
     SimulatorView.call(this, kwargs);
 
+    var _this = this;
+    
     this.template = Handlebars.templates['roundrobin.hbs'];
     
     // this.update = function() {
@@ -51,6 +53,10 @@ function RoundRobinSimulatorView(kwargs) {
             canvas: '#sim-controls-canvas',
             simulator: this.simulator,
         });
+        this.lattice_view = new LatticeView({
+            canvas: '#lattice-canvas',
+            simulator: this.simulator,
+        });
         this.cfg_view = new CFGView({
             canvas: '#cfg-canvas',
             simulator: this.simulator,
@@ -61,8 +67,13 @@ function RoundRobinSimulatorView(kwargs) {
         this.code_view.init();
         this.framework_view.init();
         this.sim_controls_view.init();
+        this.lattice_view.init();
         this.cfg_view.init();
 
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            _this.cfg_view.update();
+        });
+        
         this.simulator.reset();
     }
 }
@@ -584,8 +595,8 @@ function CFGView(kwargs) {
                         edge.v,
                         edge.w,
                         {
-                            style: "stroke: #000; stroke-width: 1.5px;",
-                            arrowheadStyle: "stroke: #000; fill: #000;",
+                            style: 'stroke: #333; fill: rgba(0,0,0,0)',
+                            arrowheadStyle: '',
                         }
                     );
                 }
@@ -609,7 +620,7 @@ function CFGView(kwargs) {
                     if (set == 'meet') {
                         in_out = (this.simulator.framework.direction == DFA.FORWARD ? 'in' : 'out');
                     } else if (set == 'transfer') {
-                        in_out = (this.simulator.framework.direction == DFA.FORWARD ? 'out' : 'int');
+                        in_out = (this.simulator.framework.direction == DFA.FORWARD ? 'out' : 'in');
                     }
                     
                     if (in_out != undefined) {
@@ -696,7 +707,7 @@ function CFGView(kwargs) {
                 // Add in point
                 _this.g.setNode('{0}-in'.format(node.index),
                                 {
-                                    labelType: "html",
+                                    labelType: 'html',
                                     label: this.node_template({content: new Handlebars.SafeString(node.sets[(this.simulator.framework.direction == DFA.FORWARD ? DFA.MEET : DFA.TRANSFER)].toHTML())}),
                                     rx: 15,
                                     ry: 15,
@@ -707,7 +718,7 @@ function CFGView(kwargs) {
                 // Add out point
                 _this.g.setNode('{0}-out'.format(node.index),
                                 {
-                                    labelType: "html",
+                                    labelType: 'html',
                                     label: this.node_template({content: new Handlebars.SafeString(node.sets[(this.simulator.framework.direction == DFA.FORWARD ? DFA.TRANSFER : DFA.MEET)].toHTML())}),
                                     rx: 15,
                                     ry: 15,
@@ -840,3 +851,219 @@ function CFGView(kwargs) {
 
 CFGView.prototype = Object.create(SimulatorView.prototype);
 CFGView.prototype.constructor = CFGView;
+
+
+function LatticeView(kwargs) {    
+    SimulatorView.call(this, kwargs);
+    
+    var _this = this
+    
+    this.template = Handlebars.templates['lattice.hbs'];
+    this.node_template = Handlebars.templates['node.hbs'];
+
+    this.draw = function() {
+        this.g.graph().transition = function(selection) {
+            return selection.transition().duration(500);
+        };
+        
+        // Render the graph into svg g
+        this.render(this.svgGroup, this.g);
+    }
+
+    this.reset_highlight = function() {
+        if (undefined != this.g._edgeObjs) {
+            $.each(
+                this.g._edgeObjs,
+                function(k,edge) {
+                    _this.g.setEdge(
+                        edge.v,
+                        edge.w,
+                        {
+                            style: "stroke: #000; fill: rgba(0,0,0,0);",
+                            arrowheadStyle: "stroke: #000; fill: #000;",
+                        }
+                    );
+                }
+            );
+        }
+        
+        $('#lattice-svg g.node').each(function() {
+            $(this).attr("class","node");
+        });
+    }
+    
+    this.update = function() {
+        this.reset_highlight();
+
+        if (this.simulator.state.func == DFA.MEET) {
+            for(read_node of this.simulator.state.read_nodes) {
+                for (set of read_node.sets) {
+                    $('#lattice-node-{0}'.format(
+                        this.simulator.lattice.get_node(read_node.node.sets[set]).index)
+                     ).attr(
+                         'class',
+                         '{0} {1} {2} {3}'.format('node', 'read', 'meet', 'highlight')
+                     );
+                }
+            }
+
+            for(modified_node of this.simulator.state.modified_nodes) {
+                for (set of modified_node.sets) {
+                    $('#lattice-node-{0}'.format(
+                        this.simulator.lattice.get_node(modified_node.node.sets[set]).index)
+                     ).attr(
+                         'class',
+                         '{0} {1} {2} {3}'.format('node', 'modified', 'meet', 'highlight')
+                     );
+                }
+            }
+        }
+        
+        this.draw();
+
+        this.graph_properties.height = this.g.graph().height;
+        this.graph_properties.width  = this.g.graph().width;
+        
+        this.translate_graph();
+    }
+
+    this.translate_graph = function() {
+        var xCenterOffset = (_this.canvas.width() - _this.graph_properties.width)
+            / 2 * _this.graph_properties.scale;
+        var yCenterOffset = (_this.canvas.height() - _this.graph_properties.height)
+            / 2 * _this.graph_properties.scale;
+        _this.svgGroup.attr("transform", "translate(" +
+                            (xCenterOffset + _this.graph_properties.offset_x) + ", " +
+                            (yCenterOffset + _this.graph_properties.offset_y) + ")" +
+                            "scale(" + _this.graph_properties.scale + ")");
+    }
+
+    this.construct_graph = function() {
+        // Update nodes.
+        for(node of this.simulator.lattice.nodes) {
+            _this.g.setNode('{0}'.format(node.index),
+                            {
+                                labelType: "html",
+                                label: this.node_template({content: new Handlebars.SafeString(node.value_set.toHTML())}),
+                                rx: 5,
+                                ry: 5,
+                            });
+            _this.g.node('{0}'.format(node.index)).id = 'lattice-node-{0}'.format(node.index);
+        }
+        
+        // Update edges.
+        for(i = 0; i < this.simulator.lattice.nodes.length; i++) {
+            for(j = 0; j < this.simulator.lattice.nodes.length; j++) {
+                if(this.simulator.lattice.adjacency[i][j] == 1) {
+                    this.g.setEdge('{0}'.format(i), '{0}'.format(j), {
+                        lineInterpolate: 'basis',
+                    });
+                } else if(this.simulator.lattice.adjacency[i][j] == 0) {
+                    this.g.removeEdge('{0}'.format(i), '{0}'.format(j));
+                }
+            }
+        }
+    }
+    
+    this.reset = function() {
+        if (this.simulator.lattice != null) {
+            this.g = new dagreD3.graphlib.Graph({compound:true})
+                .setGraph({})
+                .setDefaultEdgeLabel(function() { return {}; });
+
+            this.construct_graph();
+            
+            this.svg.html("");
+            // Add the graph element to the SVG
+            this.svgGroup = this.svg.append("g");
+            
+            var zoom = d3.behavior.zoom().on("zoom", function() {        
+                _this.graph_properties = {
+                    scale: d3.event.scale,
+                    offset_x: d3.event.translate[0],
+                    offset_y: d3.event.translate[1],
+                    height: _this.g.graph().height,
+                    width: _this.g.graph().width,
+                }
+                _this.translate_graph();
+            });
+
+            this.svg.call(zoom);
+
+            this.graph_properties = {
+                scale: 1.0,
+                offset_x: 0.0,
+                offset_y: 0.0,
+                height: 0.0,
+                width: 0.0,
+            }
+            
+            this.update();
+            
+            this.translate_graph();
+        } else {
+            this.canvas.html("Cannot display lattice - number of values exceeds minimum.");
+        }            
+    }
+
+    this.init = function() {
+        // If the lattice is null, then we won't show it
+        if (this.simulator.lattice != null) {
+            this.canvas.html(this.template());
+            
+            // Create the renderer
+            this.render = new dagreD3.render();
+            
+            // Set up an SVG group so that we can translate the final graph.
+            this.svg = d3.select("#lattice-svg");
+            
+            this.simulator.on('update', function() {
+                _this.update();
+            });
+        } else {
+            this.canvas.html("Cannot display lattice - number of values exceeds minimum.");
+        }
+    }
+
+}
+
+LatticeView.prototype = Object.create(SimulatorView.prototype);
+LatticeView.prototype.constructor = Lattice;
+
+
+function LatticeTestbedView(kwargs) {
+    SimulatorView.call(this, kwargs);
+
+    this.template = Handlebars.templates['test/lattice.hbs'];
+    
+    // this.update = function() {
+
+    // }
+
+    this.reset = function() {
+        // Do nothing.
+    }
+
+    this.init = function() {
+        this.simulator.init();
+        
+        this.canvas.html(this.template());
+        
+        this.sim_controls_view = new SimControlsView({
+            canvas: '#sim-controls-canvas',
+            simulator: this.simulator,
+        });
+        this.lattice_view = new LatticeView({
+            canvas: '#lattice-canvas',
+            simulator: this.simulator,
+        });
+
+        this.sim_controls_view.init();
+        this.lattice_view.init();
+
+        this.simulator.reset();
+    }
+}
+
+LatticeTestbedView.prototype = Object.create(SimulatorView.prototype);
+LatticeTestbedView.prototype.constructor = LatticeTestbedView

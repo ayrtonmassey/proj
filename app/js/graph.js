@@ -16,7 +16,7 @@ function Graph (kwargs) {
     this.add_node = function(node) {
         var new_row = [0];
         for(var i = 0; i < this.nodes.length; i++) { // For each node A in adj-matrix
-                                                     this.adjacency[i].push(0);               // Add the (lack of) edge A->B
+            this.adjacency[i].push(0);               // Add the (lack of) edge A->B
             new_row.push(0);                    // Add the (lack of) edge B->A
         }
         node.index = this.nodes.length     // Set the index of the node in the adj-matrix
@@ -97,6 +97,22 @@ function Graph (kwargs) {
     }
     
 };
+
+
+/*
+ * A Lattice.
+ *
+ * Contains functions for finding find paths to common descendents etc.
+ */
+function Lattice (kwargs) {
+    Graph.call(this, kwargs);
+
+    this.meet = kwargs.meet;
+
+}
+
+Lattice.prototype = Object.create(Lattice.prototype);
+Lattice.prototype.constructor = Lattice
 
 
 /*

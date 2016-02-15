@@ -238,7 +238,7 @@ var ILOC = {
         this.toString = function() {
             switch(this.type) {
             case ILOC.OPERAND_TYPES.register:
-                return "r"+this.name + (this.index != undefined ? "<{0}>".format(this.index) : "");
+                return "r"+this.name + (this.index != undefined ? "_{0}".format(this.index) : "");
             default:
                 return this.name;
             }

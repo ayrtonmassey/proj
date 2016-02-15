@@ -35,6 +35,27 @@ function ValueSet(iterable) {
         }
     }
 
+
+    /* 
+     *  Add `item` to this ValueSet, if it is not present.
+     */
+    this.add_all = function(value_set) {
+        for (item of value_set.values()) {
+            if (!this.has(item)) {
+                this.array.push(item);
+            }
+        }
+    }
+
+    /* 
+     *  Add `item` to this ValueSet, if it is not present.
+     */
+    this.union = function(v2) {
+        var v1 = new ValueSet(this.values());
+        v1.add_all(v2);
+        return v1;
+    }
+    
     /* 
      *  Removes `item` from this ValueSet, if it is present.
      *
@@ -66,7 +87,7 @@ function ValueSet(iterable) {
         }
         return false;
     }
-
+    
     /*
      *  Returns a String representation of this ValueSet.
      */
@@ -87,8 +108,7 @@ function ValueSet(iterable) {
             return v.toHTML();
         }).join(", ");
         return string + " }";
-    }
-
+    }    
 
     /* Initialize from iterable */
     for(v of iterable) {

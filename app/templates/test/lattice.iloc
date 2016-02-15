@@ -1,0 +1,8 @@
+L0: nop
+    loadI  1         => ra
+    cmp_GE ra   , rb => rc
+    cbr    rc        -> L1   , L2
+L1: i2i    ra        => rc
+    jump   L3
+L2: i2i    rb   , 1  => rc
+L3: nop
