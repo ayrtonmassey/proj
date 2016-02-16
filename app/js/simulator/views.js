@@ -33,6 +33,8 @@ function RoundRobinSimulatorView(kwargs) {
     }
 
     this.init = function() {
+        $('#page-title').html("Simulator");
+        
         this.simulator.init();
         
         this.canvas.html(this.template());
@@ -61,6 +63,7 @@ function RoundRobinSimulatorView(kwargs) {
             canvas: '#cfg-canvas',
             simulator: this.simulator,
             draw_points: true,
+            show_points_button: true,
         });
 
         this.results_view.init();
@@ -156,7 +159,20 @@ function CodeView(kwargs) {
     }
 
     this.sim_code = function(code) {
-        this.simulator.sim_code(code);
+        try {
+            this.simulator.sim_code(code);
+            this.code_alert.show();
+            this.code_alert_content.html("Loaded code successfully!");
+            this.code_alert
+                .addClass('alert-success')
+                .removeClass('alert-danger');
+        } catch(err) {
+            this.code_alert.show();
+            this.code_alert_content.html(err.message);
+            this.code_alert
+                .addClass('alert-danger')
+                .removeClass('alert-success');
+        }
     }
     
     this.init = function() {
@@ -174,7 +190,7 @@ function CodeView(kwargs) {
         
         this.code_edit_controls = $('#code-controls-edit');
         this.code_edit_controls.hide();
-        this.code_sim_controls  = $('#code-controls-sim'); 
+        this.code_sim_controls  = $('#code-controls-sim');
         
         var _this = this;
         
@@ -190,6 +206,15 @@ function CodeView(kwargs) {
         this.code_sim_controls.find('#btn-edit').on('click', function() {
             _this.edit_code();
         });
+
+        this.code_alert = $('#code-alert');
+        this.code_alert_content = $('#code-alert-content');
+        
+        this.code_alert.find('#btn-hide-alert').on('click', function() {
+            _this.code_alert.hide();
+        });
+        
+        this.code_alert.hide();
 
         this.simulator.on('update', function() {
             _this.update();
@@ -251,7 +276,7 @@ function FrameworkView(kwargs) {
 
         var order_html = this.simulator.order.map(function(i) {
             return '<div class="order-index node-{0}">{0}</div>'.format(i);
-        }).join('<div class="flex text-center">→</div>').concat('<div class="flex-max"></div>');
+        }).join('<div class="flex text-center">→</div>');
 
         this.order.html(order_html);
         
@@ -547,6 +572,7 @@ function CFGView(kwargs) {
 
     // Default to not showing points
     this.draw_points = kwargs.draw_points || false;
+    this.show_points_button = kwargs.show_points_button || false;
 
     this.draw = function() {
         this.g.graph().transition = function(selection) {
@@ -583,7 +609,6 @@ function CFGView(kwargs) {
             this.g.removeNode('{0}-in'.format(i))
             this.g.removeNode('{0}-out'.format(i))
         }
-        
     }
 
     this.reset_highlight = function() {
@@ -827,12 +852,12 @@ function CFGView(kwargs) {
             height: 0.0,
             width: 0.0,
         }
-        
+                
         this.update();
                 
         this.translate_graph();
     }
-
+    
     this.init = function() {
         this.canvas.html(this.template());
         
@@ -845,6 +870,35 @@ function CFGView(kwargs) {
         this.simulator.on('update', function() {
             _this.update();
         });
+        
+        if (this.show_points_button) {
+            this.canvas.append(Handlebars.templates['cfg-show-points.hbs']);
+            
+            if (this.draw_points) {
+                $('#btn-show-points').html("Hide Points")
+                    .addClass("btn-danger")
+                    .removeClass("btn-success");
+            } else {
+                $('#btn-show-points').html("Show Points")
+                    .removeClass("btn-danger")
+                    .addClass("btn-success");
+            }
+            
+            $('#btn-show-points').on('click', function() {
+                if (_this.draw_points) {
+                    _this.hide_points();
+                    $(this).html("Show Points")
+                        .removeClass("btn-danger")
+                        .addClass("btn-success");
+                } else {
+                    _this.show_points();
+                    $(this).html("Hide Points")
+                        .addClass("btn-danger")
+                        .removeClass("btn-success");
+                }
+                _this.update();
+            });
+        }
     }
 
 }
@@ -861,6 +915,8 @@ function LatticeView(kwargs) {
     this.template = Handlebars.templates['lattice.hbs'];
     this.node_template = Handlebars.templates['node.hbs'];
 
+    this.display_toggle = true;
+    
     this.draw = function() {
         this.g.graph().transition = function(selection) {
             return selection.transition().duration(500);
@@ -966,6 +1022,8 @@ function LatticeView(kwargs) {
     }
     
     this.reset = function() {
+        this.init();
+        
         if (this.simulator.lattice != null) {
             this.g = new dagreD3.graphlib.Graph({compound:true})
                 .setGraph({})
@@ -1001,14 +1059,14 @@ function LatticeView(kwargs) {
             this.update();
             
             this.translate_graph();
-        } else {
-            this.canvas.html("Cannot display lattice - number of values exceeds minimum.");
-        }            
+        }     
     }
 
     this.init = function() {
         // If the lattice is null, then we won't show it
         if (this.simulator.lattice != null) {
+            this.displaying = true;
+            
             this.canvas.html(this.template());
             
             // Create the renderer
@@ -1020,8 +1078,42 @@ function LatticeView(kwargs) {
             this.simulator.on('update', function() {
                 _this.update();
             });
+            
+            this.canvas.append(Handlebars.templates['lattice-collapse.hbs']);
+            
+            if (_this.display_toggle) {
+                _this.canvas.parent().addClass('flex-max').attr('style', '');
+                $('#btn-collapse-lattice').html('<i class="fa fa-minus"></i>')
+                    .addClass("btn-danger")
+                    .removeClass("btn-success");
+            } else {
+                _this.canvas.parent().removeClass('flex-max').attr('style', 'flex: 0 0 5em;');
+                $('#btn-collapse-lattice').html('<i class="fa fa-plus"></i>')
+                    .removeClass("btn-danger")
+                    .addClass("btn-success");
+            }
+            
+            $('#btn-collapse-lattice').on('click', function() {
+                if (_this.display_toggle) {
+                    _this.display_toggle = false;
+                    _this.svg.attr('style','display: none;');
+                    _this.canvas.parent().removeClass('flex-max').attr('style', 'flex: 0 0 5em;');
+                    $('#btn-collapse-lattice').html('<i class="fa fa-plus"></i>')
+                        .removeClass("btn-danger")
+                        .addClass("btn-success");
+                } else {
+                    _this.display_toggle = true;
+                    _this.svg.attr('style','');
+                    _this.canvas.parent().addClass('flex-max').attr('style', '');
+                    $('#btn-collapse-lattice').html('<i class="fa fa-minus"></i>')
+                        .addClass("btn-danger")
+                        .removeClass("btn-success");
+                }
+            });
         } else {
-            this.canvas.html("Cannot display lattice - number of values exceeds minimum.");
+            this.displaying = false;
+            _this.canvas.html('<p class="alert alert-danger" style="margin-bottom: 0; width: 100%;">Cannot display lattice - number of values exceeds minimum.</p>');
+            _this.canvas.parent().removeClass('flex-max').attr('style', 'flex: 0 0 6em;');
         }
     }
 

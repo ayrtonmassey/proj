@@ -37,7 +37,19 @@ function MenuView(kwargs) {
         this.view_canvas.html("");
         this.view_canvas.show();
 
-        var iloc_code = Handlebars.templates['test/lattice.iloc']();
+        var iloc_code;
+        if (getParameterByName('code') != null) {
+            try {
+                ILOC.parser.parse(getParameterByName('code'));
+                iloc_code = getParameterByName('code');
+            } catch(ex) {
+                alert('Could not simulate code given in URL: {0}'.format(ex.message));
+            }
+        }
+
+        if (!iloc_code) {
+            iloc_code = Handlebars.templates['test/lattice.iloc']();1
+        }
         
         // var iloc_code = "\
         // L0: nop \n\
@@ -55,10 +67,10 @@ function MenuView(kwargs) {
         // ";
         
         var simulator = new RoundRobinSimulator({
-            framework: iloc_liveness,
-            ordering:  DFA.POSTORDER,
-            // framework:  iloc_reaching_definitions,
-            // ordering:   DFA.REVERSE_POSTORDER,
+            // framework: iloc_liveness,
+            // ordering:  DFA.POSTORDER,
+            framework:  iloc_reaching_definitions,
+            ordering:   DFA.REVERSE_POSTORDER,
             code:       iloc_code,
             play_speed: 100,
         });
@@ -106,6 +118,8 @@ function MenuView(kwargs) {
     }
     
     this.init = function() {
+        $('#page-title').html("Main Menu");
+        
         this.canvas.html(this.template());
         this.view_canvas.hide();
 
@@ -317,8 +331,97 @@ function IntroductionView(kwargs) {
             _this.clear();
             _this.text.append(Handlebars.templates['lesson_01/step_06.hbs']());
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
+
+            _this.cfg_view.g = new dagreD3.graphlib.Graph({compound:true})
+                .setGraph({})
+                .setDefaultEdgeLabel(function() { return {}; });
+
+            _this.cfg_view.svg.html("");
+            // Add the graph element to the SVG
+            _this.cfg_view.svgGroup = _this.cfg_view.svg.append("g");
+
+            _this.cfg_view.g.setNode('0',
+                            {
+                                labelType: 'html',
+                                label: '</span style="font-family: monospace;">x<sub>1</sub> = 1<span>',
+                                rx: 15,
+                                ry: 15,
+                            });
+
+            _this.cfg_view.g.setNode('1',
+                                     {
+                                         label: '...',
+                                         rx: 15,
+                                         ry: 15,
+                                         style: 'stroke: rgba(0,0,0,0);'
+                                     });
+            
+            _this.cfg_view.g.setNode('2',
+                                     {
+                                         labelType: 'html',
+                                         label: '<span style="font-family: monospace;">y<sub>1</sub> = x + 2</span>',
+                                         rx: 15,
+                                         ry: 15,
+                                     });
+
+            _this.cfg_view.g.setNode('3',
+                                     {
+                                         label: '...',
+                                         rx: 15,
+                                         ry: 15,
+                                         style: 'stroke: rgba(0,0,0,0);'
+                                     });
+
+            _this.cfg_view.g.setNode('4',
+                                     {
+                                         labelType: 'html',
+                                         label: '<span style="font-family: monospace;">x<sub>2</sub> = 7</span>',
+                                         rx: 15,
+                                         ry: 15,
+                                     });
+            
+            _this.cfg_view.g.setNode('5',
+                                     {
+                                         label: '...',
+                                         rx: 15,
+                                         ry: 15,
+                                         style: 'stroke: rgba(0,0,0,0);'
+                                     });
+
+            _this.cfg_view.g.setNode('6',
+                                     {
+                                         labelType: 'html',
+                                         label: '<span style="font-family: monospace;">z<sub>1</sub> = x * 2</span>',
+                                         rx: 15,
+                                         ry: 15,
+                                     });
+
+            _this.cfg_view.g.setEdge('0','1');
+            _this.cfg_view.g.setEdge('1','2', {labelType: 'html', label: 'x<sub>1</sub> reaches here!', labelPos: 'l'});
+            _this.cfg_view.g.setEdge('1','3');
+            _this.cfg_view.g.setEdge('3','4', {labelType: 'html', label: 'x<sub>2</sub> re-defines x...'});
+            _this.cfg_view.g.setEdge('4','5');
+            _this.cfg_view.g.setEdge('5','6', {labelType: 'html', label: '... so x<sub>1</sub> does not reach here!'});
+
+            _this.cfg_view.draw();
+
+            _this.cfg_view.graph_properties.height = _this.cfg_view.g.graph().height;
+            _this.cfg_view.graph_properties.width  = _this.cfg_view.g.graph().width;
+            
+            var xCenterOffset = (_this.cfg_view.canvas.width() - _this.cfg_view.graph_properties.width)
+                / 2 * _this.cfg_view.graph_properties.scale;
+            var yCenterOffset = (_this.cfg_view.canvas.height() - _this.cfg_view.graph_properties.height)
+                / 2 * _this.cfg_view.graph_properties.scale;
+            _this.cfg_view.svgGroup.attr("transform", "translate(" +
+                                (xCenterOffset + _this.cfg_view.graph_properties.offset_x) + ", " +
+                                (yCenterOffset + _this.cfg_view.graph_properties.offset_y) + ")" +
+                                "scale(" + _this.cfg_view.graph_properties.scale + ")");
+            
         },
         function step_07() {
+            _this.cfg_view.init();
+            _this.cfg_view.reset();
+            
             _this.text.append(Handlebars.templates['lesson_01/step_07.hbs']());
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
@@ -374,6 +477,8 @@ function IntroductionView(kwargs) {
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_17() {
+            _this.simulator.step_forward();
+            
             _this.next_button.prop('disabled', true);
             
             _this.text.html(Handlebars.templates['question_canvas.hbs']());
@@ -381,7 +486,7 @@ function IntroductionView(kwargs) {
                 canvas: '#question-canvas',
                 question: [
                     'What will the \\(\\text{Out}\\) set for the node',
-                    '\\[\\texttt{add   ra, rb => ra}\\]',
+                    '\\[\\texttt{add   ra, rb} \\; \\texttt{=>} \\; \\texttt{ra}_2\\]',
                     'be?'
                 ],
                 answers: [
@@ -402,13 +507,14 @@ function IntroductionView(kwargs) {
             _this.text.append(Handlebars.templates['lesson_01/step_18.hbs']());
             
             _this.simulator.step_forward();
-            _this.simulator.step_forward();
             
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_19() {
             _this.text.html("");
-            _this.text.append(Handlebars.templates['lesson_01/step_19.hbs']());
+            _this.text.append(Handlebars.templates['lesson_01/step_19.hbs']({
+                code: encodeURIComponent(Handlebars.templates['lesson_01/step_02.iloc']()),
+            }));
 
             _this.simulator.fast_forward();
             
@@ -418,6 +524,8 @@ function IntroductionView(kwargs) {
 
     this.init_children = function() {
 
+        $('#page-title').html("Introduction");
+        
         this.cfg_canvas = $('#cfg-canvas');
         
         this.cfg_view = new CFGView({

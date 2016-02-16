@@ -1,14 +1,14 @@
 <div class="row">
     <div id="left-column" class="col-xs-3">
         <div class="row">
-            <div id="code-canvas">
+            <div id="code-canvas" class="col-xs-12">
             </div>
         </div>
-        <div class="row">
+        <div class="row no-flex">
             <div id="sim-controls-canvas" class="col-xs-12">
             </div>
         </div>
-        <div class="row flex">
+        <div class="row flex-max">
             <div id="lattice-canvas" class="col-xs-12">
             </div>
         </div>
@@ -18,16 +18,20 @@
             <div id="framework-canvas" class="col-xs-12">
             </div>
         </div>
-        
-        <ul class="nav nav-tabs">
-            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#cfg-canvas">CFG</a></li>
-            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#results-canvas">Results Table</a></li>
-        </ul>
-        
-        <div class="tab-content">
-            <div id="cfg-canvas" class="tab-pane fade in active flex">
-            </div>
-            <div id="results-canvas" class="tab-pane fade">
+
+        <div class="row flex-max">
+            <div class="col-xs-12" style="display: flex; flex-direction: column;">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#cfg-canvas">CFG</a></li>
+                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#results-canvas">Results Table</a></li>
+                </ul>
+
+                <div class="tab-content flex-max">
+                    <div id="cfg-canvas" class="tab-pane fade in active flex">
+                    </div>
+                    <div id="results-canvas" class="tab-pane fade">
+                    </div>
+                </div>
             </div>
         </div>
     </div>

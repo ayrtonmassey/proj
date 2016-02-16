@@ -5,6 +5,25 @@ html, body {
     flex-direction: column;
 }
 
+.navbar .navbar-brand {
+    z-index: 1;
+}
+
+.navbar .navbar-nav {
+    z-index: 1;
+}
+
+.navbar .page-title {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    margin: auto;
+    margin-bottom: 1em;
+    text-align: center;
+    z-index: -1;
+}
+
 .navbar-spacer {
     padding-bottom: 50px;
 }
@@ -48,16 +67,12 @@ footer {
 
 #left-column > .row {
     display: flex;
-    flex: 0 1 auto;
+    flex: 1 1 auto;
     margin-bottom: 1em;
 }
 
 #left-column > .row:last-child {
     margin-bottom: 0;
-}
-
-#left-column .row.flex {
-    flex: 1 1 auto;
 }
 
 #right-column {
@@ -155,7 +170,7 @@ footer {
 
 #code-canvas > .row {
     display: flex;
-    flex: 1 1 100%;
+    flex: 1 1 auto;
     margin-bottom: 1em;
 }
 
@@ -173,7 +188,24 @@ footer {
 
 #code-editor > textarea {
     flex: 1 1 100%;
-    resize: vertical;
+    resize: none;
+}
+
+#code-alert {
+    position: relative;
+    justify-content: space-between;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 25px;
+    line-height: 1.3rem;
+}
+
+#code-alert .close {
+    position: absolute;
+    top: 5px;
+    right: 7.5px;
+    font-size: 1.5rem;
+    line-height: 1.3rem;
 }
 
 #code-display {
@@ -279,8 +311,12 @@ table.table>tbody>tr>th {
     text-align: center;
 }
 
-.flex {
-    flex: 1 1 auto !important;
+.flex-max {
+    flex: 9999 0 20em !important;
+}
+
+.no-flex {
+    flex: 0 0 auto !important;
 }
 
 .text-center {
@@ -400,11 +436,18 @@ svg:active {
 }
 
 #cfg-canvas {
+    position: relative;
     flex: 1 1 auto;
     border: #eee solid 1px;
     display: flex;
     flex-flow: column nowrap;
     padding: 0px;
+}
+
+#btn-show-points {
+    position: absolute;
+    top: 1em;
+    left: 1em;
 }
 
 #cfg-svg {
@@ -415,6 +458,12 @@ svg:active {
     border: #eee solid 1px;
     display: flex;
     padding: 0px;
+}
+
+#btn-collapse-lattice {
+    position: absolute;
+    top: 1em;
+    right: 1em;
 }
 
 #lattice-svg {

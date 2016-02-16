@@ -1,7 +1,10 @@
 (function() {
   var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
+templates['cfg-show-points.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<button id=\"btn-show-points\" class=\"btn btn-success btn-sm\">Show Points</button>\n";
+},"useData":true});
 templates['code.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"col-xs-12\">\n    <div id=\"code-display\" class=\"row\">\n    </div>\n    <div id=\"code-editor\" class=\"row\">\n    </div>\n    <div id=\"code-controls\" class=\"row\">\n    </div>\n</div>\n";
+    return "<div id=\"code-display\" class=\"row\">\n</div>\n<div id=\"code-editor\" class=\"row\">\n</div>\n<div id=\"code-alert\" class=\"row alert alert-dismissable no-flex\">\n    <span id=\"code-alert-content\"></span>\n    <a id=\"btn-hide-alert\" class=\"close\">&times;</a>\n</div>\n<div id=\"code-controls\" class=\"row no-flex\">\n</div>\n";
 },"useData":true});
 templates['question.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
     return "    <p>"
@@ -31,7 +34,7 @@ templates['question_canvas.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":fu
     return "<div id=\"question-canvas\" class=\"question row\">\n</div>";
 },"useData":true});
 templates['roundrobin.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"row\">\n    <div id=\"left-column\" class=\"col-xs-3\">\n        <div class=\"row\">\n            <div id=\"code-canvas\">\n            </div>\n        </div>\n        <div class=\"row\">\n            <div id=\"sim-controls-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n        <div class=\"row flex\">\n            <div id=\"lattice-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n    </div>\n    <div id=\"right-column\" class=\"col-xs-9\">\n        <div class=\"row\">\n            <div id=\"framework-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n        \n        <ul class=\"nav nav-tabs\">\n            <li class=\"nav-item\"><a class=\"nav-link active\" data-toggle=\"tab\" href=\"#cfg-canvas\">CFG</a></li>\n            <li class=\"nav-item\"><a class=\"nav-link\" data-toggle=\"tab\" href=\"#results-canvas\">Results Table</a></li>\n        </ul>\n        \n        <div class=\"tab-content\">\n            <div id=\"cfg-canvas\" class=\"tab-pane fade in active flex\">\n            </div>\n            <div id=\"results-canvas\" class=\"tab-pane fade\">\n            </div>\n        </div>\n    </div>\n</div>\n";
+    return "<div class=\"row\">\n    <div id=\"left-column\" class=\"col-xs-3\">\n        <div class=\"row\">\n            <div id=\"code-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n        <div class=\"row no-flex\">\n            <div id=\"sim-controls-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n        <div class=\"row flex-max\">\n            <div id=\"lattice-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n    </div>\n    <div id=\"right-column\" class=\"col-xs-9\">\n        <div class=\"row\">\n            <div id=\"framework-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n\n        <div class=\"row flex-max\">\n            <div class=\"col-xs-12\" style=\"display: flex; flex-direction: column;\">\n                <ul class=\"nav nav-tabs\">\n                    <li class=\"nav-item\"><a class=\"nav-link active\" data-toggle=\"tab\" href=\"#cfg-canvas\">CFG</a></li>\n                    <li class=\"nav-item\"><a class=\"nav-link\" data-toggle=\"tab\" href=\"#results-canvas\">Results Table</a></li>\n                </ul>\n\n                <div class=\"tab-content flex-max\">\n                    <div id=\"cfg-canvas\" class=\"tab-pane fade in active flex\">\n                    </div>\n                    <div id=\"results-canvas\" class=\"tab-pane fade\">\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
 },"useData":true});
 templates['framework.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"row\">\n    <div class=\"col-xs-12\">\n        <h1 id=\"framework-title\"></h1>\n    </div>\n</div>\n<div class=\"row\">\n    <div class=\"col-xs-12\">\n        <div class=\"row\">\n            <div class=\"col-xs-6\"><h2>Meet Function</h2></div>\n            <div class=\"col-xs-6\"><h2>Transfer Function</h2></div>\n        </div>\n    </div>\n</div>\n<div class=\"row\">\n    <div id=\"framework-meet\" class=\"meet col-xs-6\"></div>\n    <div id=\"framework-transfer\" class=\"transfer col-xs-6\"></div>\n</div>\n<div class=\"row\">\n    <div id=\"framework-order\" class=\"col-xs-12\"></div>\n</div>\n";
@@ -40,7 +43,10 @@ templates['cfg.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(conta
     return "<svg id=\"cfg-svg\">\n</svg>\n";
 },"useData":true});
 templates['menu.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"row\">\n    <div class=\"col-xs-12\">\n        <h1 class=\"text-center\">Data-Flow Analysis</h1>\n        <div class=\"row\">\n            <div id=\"menu\" class=\"col-xs-6\">\n                <div class=\"row\">\n                    <div class=\"col-xs-12\">\n                        <h2>Lessons</h2>\n                        <p>\n                        <button class=\"btn btn-secondary btn-block\" id=\"btn-lesson-0\">\n                            Introduction\n                        </button>\n                        </p>\n                    </div>\n                </div>\n                <div class=\"row\">\n                    <div class=\"col-xs-12\">\n                        <h2>Simulations</h2>\n                        <p>\n                        <button class=\"btn btn-secondary btn-block\" id=\"btn-round-robin-simulator\">\n                            Round Robin Iterator\n                        </button>\n                        </p>\n                    </div>\n                </div>\n                <div class=\"row\">\n                    <div class=\"col-xs-12\">\n                        <h2>Testing</h2>\n                        <p>\n                        <button class=\"btn btn-secondary btn-block\" id=\"btn-lattice-testbed\">\n                            Lattices\n                        </button>\n                        </p>\n                    </div>\n                </div>\n            </div>\n            <div class=\"col-xs-6 well\">\n                <div id=\"description-canvas\">\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
+    return "<div class=\"row\">\n    <div class=\"col-xs-12\">\n        <div class=\"row\">\n            <div id=\"menu\" class=\"col-xs-6\">\n                <div class=\"row\">\n                    <div class=\"col-xs-12\">\n                        <h2>Lessons</h2>\n                        <p>\n                        <button class=\"btn btn-secondary btn-block\" id=\"btn-lesson-0\">\n                            Introduction\n                        </button>\n                        </p>\n                    </div>\n                </div>\n                <div class=\"row\">\n                    <div class=\"col-xs-12\">\n                        <h2>Simulations</h2>\n                        <p>\n                        <button class=\"btn btn-secondary btn-block\" id=\"btn-round-robin-simulator\">\n                            Round Robin Iterator\n                        </button>\n                        </p>\n                    </div>\n                </div>\n                <div class=\"row\">\n                    <div class=\"col-xs-12\">\n                        <h2>Testing</h2>\n                        <p>\n                        <button class=\"btn btn-secondary btn-block\" id=\"btn-lattice-testbed\">\n                            Lattices\n                        </button>\n                        </p>\n                    </div>\n                </div>\n            </div>\n            <div class=\"col-xs-6 well\">\n                <div id=\"description-canvas\">\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
+},"useData":true});
+templates['lattice-collapse.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<button id=\"btn-collapse-lattice\" class=\"btn btn-success btn-sm\"><i class=\"fa fa-plus\"></i></button>\n";
 },"useData":true});
 templates['lesson_01/step_12.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<p>Now we need to consider the \\(\\text{In}\\) set for the second node:</p>\n\n<p>\\begin{align}\n\\text{In}(n) &= \\bigcup_{p \\in preds} \\text{Out}(s) \\\\\n             &= \\bigcup_{p \\in \\{n_0\\}} \\text{Out}(p) \\\\\n             &= \\{\\texttt{ra}_1\\}\n \\end{align}</p>";
@@ -67,37 +73,23 @@ templates['lesson_01/step_09.hbs'] = template({"1":function(container,depth0,hel
     + " for this CFG.</p>";
 },"useData":true});
 templates['lesson_01/step_08.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
-    return "reach";
+    return "<strong>killed</strong>";
 },"3":function(container,depth0,helpers,partials,data) {
-    return "re-defines";
-},"5":function(container,depth0,helpers,partials,data) {
-    return "killed";
-},"7":function(container,depth0,helpers,partials,data) {
-    return "defines";
-},"9":function(container,depth0,helpers,partials,data) {
-    return "generated";
+    return "<strong>generated</strong>";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
 
-  return "<p>\\(\\text{In}(n)\\) is the set of definitions which "
-    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"reaching_definition",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + " the given node.</p>\n\n<p>\\(\\text{Out}(n)\\) is the set of variables that "
-    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"reaching_definition",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + " subsequent nodes.</p>\n\n<p>\\(\\text{DefKill}(n)\\) is the set of variables which are re-defined in a node. If a node "
-    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"variable_definition",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + " a variable, the old definition is "
-    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"definition_killed",{"name":"definition","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + " and will not be in \\(\\text{Out}(n)\\).</p>\n\n<p>\\(\\text{DefGen}(n)\\) is the set of variables which are defined in a node. If a node "
-    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"variable_definition",{"name":"definition","hash":{},"fn":container.program(7, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + " a variable, the new definition is "
-    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"definition_generated",{"name":"definition","hash":{},"fn":container.program(9, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + " and will be in \\(\\text{Out}(n)\\).</p>\n";
+  return "<p>\\(\\text{In}(n)\\) is the set of definitions which reach the <strong>given</strong> node.</p>\n\n<p>\\(\\text{Out}(n)\\) is the set of variables that reach <strong>subsequent</strong> nodes.</p>\n\n<p>\\(\\text{DefKill}(n)\\) is the set of variables which are re-defined in ("
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"definition_killed",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " by) a node. These definitions <strong>will not</strong> be in \\(\\text{Out}(n)\\).</p>\n\n<p>\\(\\text{DefGen}(n)\\) is the set of variables which are defined in ("
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"definition_generated",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " by) a node. These definitions <strong>will be</strong> in \\(\\text{Out}(n)\\).</p>\n";
 },"useData":true});
 templates['lesson_01/step_11.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<p>Then we need to calculate the \\(\\text{Out}\\) set:</p>\n<p>\n\\begin{align}\n\\text{Out}(n) &= \\text{DefGen}(n) \\cup \\big{(}\\text{In}(n) \\setminus \\text{DefKill}(n)\\big{)} \\\\\n              &= \\{ \\texttt{ra}_1\\} \\cup (\\emptyset \\setminus \\{ \\texttt{ra}_i \\: : \\:  \\forall i \\neq 1 \\}) \\\\\n              &= \\{ \\texttt{ra}_1\\} \\cup \\emptyset \\\\\n              &= \\{ \\texttt{ra}_1\\}\n\\end{align}\n</p>";
 },"useData":true});
 templates['lesson_01/step_14.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<p>Now we need to consider the \\(\\text{In}\\) set for the second node:</p>\n\n<p>\\begin{align}\n\\text{In}(n) &= \\bigcup_{p \\in preds} \\text{Out}(s) \\\\\n             &= \\bigcup_{p \\in \\{n_1\\}} \\text{Out}(p) \\\\\n             &= \\{\\texttt{rb}_1, \\texttt{ra}_1\\}\n \\end{align}</p>";
+    return "<p>Now we need to consider the \\(\\text{In}\\) set for the third node:</p>\n\n<p>\\begin{align}\n\\text{In}(n) &= \\bigcup_{p \\in preds} \\text{Out}(s) \\\\\n             &= \\bigcup_{p \\in \\{n_1\\}} \\text{Out}(p) \\\\\n             &= \\{\\texttt{rb}_1, \\texttt{ra}_1\\}\n \\end{align}</p>\n";
 },"useData":true});
 templates['lesson_01/step_03.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<p>Each <strong style=\"color: #6cc86c\">node</strong> represents an instruction.</p>\n";
@@ -106,9 +98,9 @@ templates['lesson_01/step_10.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":
     return "<p>Reaching definitions is a forward data-flow, so we need to calculate the \\(\\text{In}\\) set for the first node:</p>\n\n<p>\\begin{align}\n\\text{In}(n) &= \\bigcup_{p \\in preds} \\text{Out}(s) \\\\\n             &= \\bigcup_{p \\in \\emptyset} \\text{Out}(p) \\\\\n             &= \\emptyset\n \\end{align}</p>";
 },"useData":true});
 templates['lesson_01/step_00.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
-    return "Data-flow analysis";
+    return "<strong>Data-flow analysis</strong>";
 },"3":function(container,depth0,helpers,partials,data) {
-    return "control-flow graph";
+    return "<strong>control-flow graph</strong>";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
 
@@ -116,34 +108,26 @@ templates['lesson_01/step_00.hbs'] = template({"1":function(container,depth0,hel
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"dataflow_analysis",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + " is a technique for gathering information at various points in a "
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"control_flow_graph",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + ". It is often used in compilers to aid in the optimization of computer programs.</p>\n";
+    + ". Compilers perform data-flow analysis to help them make decisions when optimizing programs.</p>\n";
 },"useData":true});
 templates['lesson_01/step_19.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<p>Let's fast forward to the end of the analysis. We can see that the store to \\(\\texttt{rd}\\) generates the definition \\(\\texttt{rd}_1\\), leaving us with \\(\\{\\texttt{rd}_1, \\texttt{rb}_2, \\texttt{ra}_2\\}\\)</p>\n\n<p>Normally we'd iterate over the graph again to make sure nothing changes. In this example it's not necessary, so we'll save that for a later lesson.</p>\n\n<p><a href=\"index.html?lesson=2\" class=\"btn btn-primary btn-block\">Next Lesson</a></p>\n<p><a href=\"index.html?simulator\" class=\"btn btn-secondary btn-block\">Open CFG in Simulator</a></p>\n<p><a href=\"index.html\" class=\"btn btn-secondary btn-block\">Back to Menu</a></p>\n";
+    var helper;
+
+  return "<p>Let's fast forward to the end of the analysis. We can see that the store to \\(\\texttt{rd}\\) generates the definition \\(\\texttt{rd}_1\\), leaving us with \\(\\{\\texttt{rd}_1, \\texttt{ra}_2, \\texttt{rb}_2\\}\\)</p>\n\n<p>Normally we'd iterate over the graph again to make sure nothing changes. In this example it's not necessary, so we'll save that for a later lesson.</p>\n\n<p><a href=\"index.html?lesson=2\" class=\"btn btn-primary btn-block\">Next Lesson</a></p>\n<p><a href=\"index.html?simulator&code="
+    + container.escapeExpression(((helper = (helper = helpers.code || (depth0 != null ? depth0.code : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"code","hash":{},"data":data}) : helper)))
+    + "\" class=\"btn btn-secondary btn-block\">Open CFG in Simulator</a></p>\n<p><a href=\"index.html\" class=\"btn btn-secondary btn-block\">Back to Menu</a></p>\n";
 },"useData":true});
 templates['lesson_01/step_07.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
     return "data-flow equations";
-},"3":function(container,depth0,helpers,partials,data) {
-    return "reaching definitions";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
+    var stack1;
 
   return "<p>We use a set of "
-    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"dataflow_equation",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + " to determine the values at each point in the graph.</p>\n\n<p>The following data-flow equations compute "
-    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"reaching_definition",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + " at each point in the control-flow graph:</p>\n\n<p id=\"meet_eqn\">\\[\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(s)\\]</p>\n\n<p id=\"transfer_eqn\">\\[\\text{Out}(n) = \\text{DefGen}(n) \\cup \\big{(}\\text{In}(n) \\setminus \\text{DefKill}(n)\\big{)}\\]</p>";
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || helpers.helperMissing).call(depth0 != null ? depth0 : {},"dataflow_equation",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " to determine the values at each point in the graph.</p>\n\n<p>The following data-flow equations compute reaching definitions at each point in the control-flow graph:</p>\n\n<p id=\"meet_eqn\">\\[\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(s)\\]</p>\n\n<p id=\"transfer_eqn\">\\[\\text{Out}(n) = \\text{DefGen}(n) \\cup \\big{(}\\text{In}(n) \\setminus \\text{DefKill}(n)\\big{)}\\]</p>\n";
 },"useData":true});
-templates['lesson_01/step_01.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
-    return "control-flow graph";
-},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
-
-  return "<p>A "
-    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"control_flow_graph",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + " is a graph representing the possible execution paths of a computer program.</p>\n<p>Let's see what a "
-    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"control_flow_graph",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + " looks like.</p>\n";
+templates['lesson_01/step_01.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<p>A control-flow graph is a graph representing the <strong>possible execution paths</strong> of a computer program.</p>\n<p>Let's see what a control-flow graph looks like.</p>\n";
 },"useData":true});
 templates['lesson_01/step_18.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
     return "killed";
@@ -182,13 +166,13 @@ templates['lesson_01/step_06.hbs'] = template({"1":function(container,depth0,hel
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"variable_definition",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + " occurs when a value is stored in a variable. That definition "
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"reaching_definition",{"name":"definition","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + " every node along any path in which that definition is not overwritten.</p>\n\n</p>We can use data-flow analysis to compute the live variables at each point in our CFG.</p>";
+    + " every node along any path in which that definition is not overwritten by another assignment.</p>\n\n</p>We can use data-flow analysis to compute the reaching definitions at each point in our CFG.</p>\n";
 },"useData":true});
 templates['lesson_01/step_04.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<p>Each <strong style=\"color: #62abea\">edge</strong> represents the flow of control from one instruction to the next.</p>\n";
 },"useData":true});
 templates['lesson_01/step_05.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<p>We collect information about the data flowing in and out of each node. We refer to these as  <strong style=\"color: #9a162c\">points</strong> in the control-flow graph.</p>\n";
+    return "<p>We collect information about the data <strong>flowing in</strong> and <strong>out</strong> of each node. We refer to these as  <strong style=\"color: #9a162c\">points</strong> in the control-flow graph.</p>\n";
 },"useData":true});
 templates['lesson_01/step_13.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<p>Then we need to calculate the \\(\\text{Out}\\) set:</p>\n<p>\n\\begin{align}\n\\text{Out}(n) &= \\text{DefGen}(n) \\cup \\big{(}\\text{In}(n) \\setminus \\text{DefKill}(n)\\big{)} \\\\\n              &= \\{\\texttt{rb}_1\\} \\cup (\\{\\texttt{ra}_1\\} \\setminus \\{ \\texttt{rb}_i \\: : \\:  \\forall i \\neq 1 \\}) \\\\\n              &= \\{\\texttt{rb}_1\\} \\cup \\{\\texttt{ra}_1\\} \\\\\n              &= \\{\\texttt{rb}_1, \\texttt{ra}_1\\}\n\\end{align}\n</p>";
@@ -218,11 +202,7 @@ templates['code_display.hbs'] = template({"1":function(container,depth0,helpers,
     + "    </tbody>\n</table>\n";
 },"useData":true});
 templates['introduction.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var helper;
-
-  return "<h1>"
-    + container.escapeExpression(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"title","hash":{},"data":data}) : helper)))
-    + "</h1>\n<div class=\"row\">\n    <div class=\"col-xs-6 lesson-step\">\n        <div class=\"row\">\n            <div id=\"text\" class=\"col-xs-12\">\n            </div>\n        </div>\n        <nav class=\"row\">\n            <button id=\"btn-prev\" class=\"btn btn-primary\">Prev</button>\n            <button id=\"btn-next\" class=\"pull-right btn btn-primary\">Next</button>\n        </nav>\n    </div>\n    <div id=\"cfg-canvas\" class=\"col-xs-6\">\n    </div>\n</div>\n";
+    return "<div class=\"row\">\n    <div class=\"col-xs-6 lesson-step\">\n        <div class=\"row\">\n            <div id=\"text\" class=\"col-xs-12\">\n            </div>\n        </div>\n        <nav class=\"row\">\n            <button id=\"btn-prev\" class=\"btn btn-primary\">Prev</button>\n            <button id=\"btn-next\" class=\"pull-right btn btn-primary\">Next</button>\n        </nav>\n    </div>\n    <div id=\"cfg-canvas\" class=\"col-xs-6\">\n    </div>\n</div>\n";
 },"useData":true});
 templates['test/lattice.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"row\">\n    <div id=\"left-column\" class=\"col-xs-3\">\n        <div class=\"row\">\n            <div id=\"sim-controls-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n    </div>\n    <div id=\"right-column\" class=\"col-xs-9\">\n        <div class=\"row flex\">\n            <div id=\"lattice-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n    </div>\n</div>\n";

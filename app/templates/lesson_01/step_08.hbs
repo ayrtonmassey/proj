@@ -1,7 +1,7 @@
-<p>\(\text{In}(n)\) is the set of definitions which {{#definition "reaching_definition"}}reach{{/definition}} the given node.</p>
+<p>\(\text{In}(n)\) is the set of definitions which reach the <strong>given</strong> node.</p>
 
-<p>\(\text{Out}(n)\) is the set of variables that {{#definition "reaching_definition"}}reach{{/definition}} subsequent nodes.</p>
+<p>\(\text{Out}(n)\) is the set of variables that reach <strong>subsequent</strong> nodes.</p>
 
-<p>\(\text{DefKill}(n)\) is the set of variables which are re-defined in a node. If a node {{#definition "variable_definition"}}re-defines{{/definition}} a variable, the old definition is {{#definition "definition_killed"}}killed{{/definition}} and will not be in \(\text{Out}(n)\).</p>
+<p>\(\text{DefKill}(n)\) is the set of variables which are re-defined in ({{#definition "definition_killed"}}<strong>killed</strong>{{/definition}} by) a node. These definitions <strong>will not</strong> be in \(\text{Out}(n)\).</p>
 
-<p>\(\text{DefGen}(n)\) is the set of variables which are defined in a node. If a node {{#definition "variable_definition"}}defines{{/definition}} a variable, the new definition is {{#definition "definition_generated"}}generated{{/definition}} and will be in \(\text{Out}(n)\).</p>
+<p>\(\text{DefGen}(n)\) is the set of variables which are defined in ({{#definition "definition_generated"}}<strong>generated</strong>{{/definition}} by) a node. These definitions <strong>will be</strong> in \(\text{Out}(n)\).</p>

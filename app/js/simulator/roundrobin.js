@@ -45,6 +45,7 @@ function RoundRobinSimulator (kwargs) {
 
     this.sim_code = function(code) {
         this.code = code;
+        
         this.ast  = ILOC.parser.parse(this.code);
         this.cfg  = ILOC.build_CFG(this.ast);
 
