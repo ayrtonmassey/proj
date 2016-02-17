@@ -2,6 +2,6 @@
 
 <p>The following data-flow equations compute reaching definitions at each point in the control-flow graph:</p>
 
-<p id="meet_eqn">\[\text{In}(n) = \bigcup_{p \in preds} \text{Out}(s)\]</p>
+<p id="meet_eqn">\[\text{In}(n) = \bigcup_{p \in preds} \text{Out}(p)\]</p>
 
 <p id="transfer_eqn">\[\text{Out}(n) = \text{DefGen}(n) \cup \big{(}\text{In}(n) \setminus \text{DefKill}(n)\big{)}\]</p>
