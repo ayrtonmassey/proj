@@ -1,72 +1,74 @@
 <!DOCTYPE html>
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF8">
-    <title>Honours Project: s1208057</title>
-    <link rel="stylesheet" href="lib/bootstrap-4.0.0-alpha.2/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="lib/font-awesome-4.5.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="lib/tether-1.1.1/dist/css/tether.min.css">
-    <link rel="stylesheet" href="lib/tipsy.css" />
-    <link rel="stylesheet" href="css/style.css" />
-</head>
-<body>
-    <!-- View Canvas -->
-    <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
-        <span id="page-title" class="page-title"></span>
-        <a class="navbar-brand pull-left" href="index.html">Data-flow Analysis Tutor</a>
-        <ul class="nav navbar-nav pull-right">
-            <li class="nav-item"><a class="nav-link" href="index.html" id="nav-return-menu">Menu</a></li>
-            <li class="nav-item"><a class="nav-link" href="index.html?simulator" id="nav-return-menu">Simulator</a></li>
-        </ul>
-    </nav>
-    <div class="navbar-spacer"></div>
-    <div class="container-fluid canvas" id="menu-canvas" style="width: 100%;"></div>
-    <div class="container-fluid canvas" id="view-canvas" style="width: 100%;"></div>
-    
-    <!-- jQuery -->
-    <script src="lib/jquery-2.1.4.js"></script>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF8">
+        <title>Honours Project: s1208057</title>
+        <link rel="stylesheet" href="lib/bootstrap-4.0.0-alpha.2/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="lib/font-awesome-4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="lib/tether-1.1.1/dist/css/tether.min.css">
+        <link rel="stylesheet" href="lib/tipsy.css" />
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body>
+        <!-- View Canvas -->
+        <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
+            <span id="page-title" class="page-title"></span>
+            <a class="navbar-brand pull-left" href="index.html">Data-flow Analysis Tutor</a>
+            <ul class="nav navbar-nav pull-right">
+                <li class="nav-item"><a class="nav-link" id="nav-goto-menu">Menu</a></li>
+                <li class="nav-item"><a class="nav-link" id="nav-goto-simulator">Simulator</a></li>
+            </ul>
+        </nav>
+        <div class="navbar-spacer"></div>
+        
+        <div class="container-fluid canvas" id="view-canvas" style="width: 100%;"></div>
+        
+        <!-- jQuery -->
+        <script src="lib/jquery-2.1.4.js"></script>
 
-    <!-- svg.js -->
-    <script src="lib/svg.js"></script>
-    
-    <!-- Bootstrap -->
-    <script src="lib/tether-1.1.1/dist/js/tether.min.js" type="text/javascript"></script>
-    <script src="lib/bootstrap-4.0.0-alpha.2/dist/js/bootstrap.js" type="text/javascript"></script>
-    
-    <!-- MathJax -->
-    <script type="text/javascript" src="lib/MathJax-2.6-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-    <!-- PEGjs -->
-    <script src="lib/peg-0.9.0.js" type="text/javascript"></script>
+        <!-- svg.js -->
+        <script src="lib/svg.js"></script>
+        
+        <!-- Bootstrap -->
+        <script src="lib/tether-1.1.1/dist/js/tether.min.js" type="text/javascript"></script>
+        <script src="lib/bootstrap-4.0.0-alpha.2/dist/js/bootstrap.js" type="text/javascript"></script>
+        
+        <!-- MathJax -->
+        <script type="text/javascript" src="lib/MathJax-2.6-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+        <!-- PEGjs -->
+        <script src="lib/peg-0.9.0.js" type="text/javascript"></script>
 
-    <!-- d3.js -->
-    <script src="lib/d3/d3.js" type="text/javascript"></script>
-    
-    <!-- dagre / dagre-d3 -->
-    <!-- <script src="http://cpettitt.github.io/project/dagre/latest/dagre.min.js" type="text/javascript"></script> -->
-    <script src="lib/dagre-d3-14-02.js" type="text/javascript"></script>
-    <!-- <script src="http://cpettitt.github.io/project/graphlib-dot/v0.5.2/graphlib-dot.js"></script> -->
+        <!-- d3.js -->
+        <script src="lib/d3/d3.js" type="text/javascript"></script>
+        
+        <!-- dagre / dagre-d3 -->
+        <!-- <script src="http://cpettitt.github.io/project/dagre/latest/dagre.min.js" type="text/javascript"></script> -->
+        <script src="lib/dagre-d3-14-02.js" type="text/javascript"></script>
+        <!-- <script src="http://cpettitt.github.io/project/graphlib-dot/v0.5.2/graphlib-dot.js"></script> -->
 
-    <!-- Tipsy: Tooltips -->
-    <script src="lib/tipsy.js" type="text/javascript"></script>
+        <!-- Tipsy: Tooltips -->
+        <script src="lib/tipsy.js" type="text/javascript"></script>
 
-    <!-- Handlebars -->
-    <script src="lib/handlebars.runtime-v4.0.5.js"></script>
+        <!-- Handlebars -->
+        <script src="lib/handlebars.runtime-v4.0.5.js"></script>
 
-    <!-- UG4 Proj JS -->
-    <script src="js/kludge.js" type="text/javascript"></script>
-    <script src="js/teaching/dictionary.js" type="text/javascript"></script>
-    <script src="js/helpers.js" type="text/javascript"></script>
-    <script src="js/templates.js" type="text/javascript"></script>
-    <script src="js/values.js" type="text/javascript"></script>
-    <script src="js/graph.js" type="text/javascript"></script>
-    <script src="js/simulator/iloc/iloc_parser.js" type="text/javascript"></script>
-    <script src="js/simulator/iloc/iloc.js" type="text/javascript"></script>
-    <script src="js/simulator/dfa.js" type="text/javascript"></script>
-    <script src="js/simulator/dataflows/iloc_reaching_definitions.js" type="text/javascript"></script>
-    <script src="js/simulator/dataflows/iloc_liveness.js" type="text/javascript"></script>
-    <script src="js/simulator/roundrobin.js" type="text/javascript"></script>
-    <script src="js/views.js" type="text/javascript"></script>
-    <script src="js/simulator/views.js" type="text/javascript"></script>
-    <script src="js/teaching/views.js" type="text/javascript"></script>
-    <script src="js/main.js" type="text/javascript"></script>
-</body>
+        <!-- UG4 Proj JS -->
+        <script src="js/kludge.js" type="text/javascript"></script>
+        <script src="js/teaching/dictionary.js" type="text/javascript"></script>
+        <script src="js/helpers.js" type="text/javascript"></script>
+        <script src="js/templates.js" type="text/javascript"></script>
+        <script src="js/values.js" type="text/javascript"></script>
+        <script src="js/graph.js" type="text/javascript"></script>
+        <script src="js/simulator/iloc/iloc_parser.js" type="text/javascript"></script>
+        <script src="js/simulator/iloc/iloc.js" type="text/javascript"></script>
+        <script src="js/simulator/dfa.js" type="text/javascript"></script>
+        <script src="js/simulator/dataflows/iloc_reaching_definitions.js" type="text/javascript"></script>
+        <script src="js/simulator/dataflows/iloc_liveness.js" type="text/javascript"></script>
+        <script src="js/simulator/roundrobin.js" type="text/javascript"></script>
+        <script src="js/views.js" type="text/javascript"></script>
+        <script src="js/simulator/views.js" type="text/javascript"></script>
+        <script src="js/teaching/views.js" type="text/javascript"></script>
+        <script src="js/main.js" type="text/javascript"></script>
+    </body>
+</html>

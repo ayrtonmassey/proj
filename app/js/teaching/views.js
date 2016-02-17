@@ -1,149 +1,3 @@
-function MenuView(kwargs) {    
-    View.call(this, kwargs);
-
-    var _this = this;
-
-    this.view_canvas = $(kwargs.view_canvas);
-    
-    this.template = Handlebars.templates['menu.hbs']
-
-    this.lessons = [
-        {
-            constructor: IntroductionView,
-            kwargs: {
-                title: "Introduction",
-                canvas: '#view-canvas',
-            }
-        }
-    ]
-    
-    this.show_lesson = function(lesson_id) {
-        this.canvas.hide();
-        this.view_canvas.html("");
-        this.view_canvas.show();
-
-        if (lesson_id < this.lessons.length) {
-            var lesson = this.lessons[lesson_id];
-            this.view = new lesson.constructor(lesson.kwargs);
-        
-            this.view.init();
-        } else {
-            throw TypeError("Lesson with index {0} does not exist.".format(lesson_id));
-        }
-    }
-    
-    this.show_round_robin_simulator = function() {
-        this.canvas.hide();
-        this.view_canvas.html("");
-        this.view_canvas.show();
-
-        var iloc_code;
-        if (getParameterByName('code') != null) {
-            try {
-                ILOC.parser.parse(getParameterByName('code'));
-                iloc_code = getParameterByName('code');
-            } catch(ex) {
-                alert('Could not simulate code given in URL: {0}'.format(ex.message));
-            }
-        }
-
-        if (!iloc_code) {
-            iloc_code = Handlebars.templates['test/lattice.iloc']();1
-        }
-        
-        // var iloc_code = "\
-        // L0: nop \n\
-        //     loadI  2         => ra        \n\
-        //     load   rb        => rx        \n\
-        //     addI   ra   , 1  => ra        \n\
-        //     loadI  0         => r0        \n\
-        //     cmp_GE rx   , r0 => rcomp     \n\
-        //     cbr    rcomp     -> L1   , L2 \n\
-        // L1: i2i    rx        => ra        \n\
-        //     add    ra   , rb => rc        \n\
-        //     jump   L3                     \n\
-        // L2: addI   rb   , 1  => rc        \n\
-        // L3: add    ra   , rc => rd        \n\
-        // ";
-        
-        var simulator = new RoundRobinSimulator({
-            // framework: iloc_liveness,
-            // ordering:  DFA.POSTORDER,
-            framework:  iloc_reaching_definitions,
-            ordering:   DFA.REVERSE_POSTORDER,
-            code:       iloc_code,
-            play_speed: 100,
-        });
-        
-        this.view = new RoundRobinSimulatorView({
-            canvas: '#view-canvas',
-            simulator: simulator,
-        });
-        
-        this.view.init();
-    }
-
-    this.show_testbed = function(testbed_name) {
-        switch(testbed_name) {
-        case 'lattice':
-            this.show_lattice_testbed();
-            break;
-        default:
-            throw ReferenceError("Unrecognised testbed {0}".format(testbed_name));
-        }
-    }
-    
-    this.show_lattice_testbed = function() {
-        this.canvas.hide();
-        this.view_canvas.html("");
-        this.view_canvas.show();
-        
-        var iloc_code = Handlebars.templates['test/lattice.iloc']();
-        
-        var simulator = new RoundRobinSimulator({
-            // framework: iloc_liveness,
-            // ordering:  DFA.POSTORDER,
-            framework:  iloc_reaching_definitions,
-            ordering:   DFA.REVERSE_POSTORDER,
-            code:       iloc_code,
-            play_speed: 100,
-        });
-        
-        this.view = new LatticeTestbedView({
-            canvas: '#view-canvas',
-            simulator: simulator,
-        });
-        
-        this.view.init();
-    }
-    
-    this.init = function() {
-        $('#page-title').html("Main Menu");
-        
-        this.canvas.html(this.template());
-        this.view_canvas.hide();
-
-        /* Simulation */
-        $('#btn-round-robin-simulator').on('click', function() {
-            _this.show_round_robin_simulator();
-        });
-
-        /* Lessons */
-        $('#btn-lesson-0').on('click', function() {
-            _this.show_lesson(0);
-        });
-
-        /* Testing */
-        $('#btn-lattice-testbed').on('click', function() {
-            _this.show_lattice_testbed();
-        });
-    }
-}
-
-MenuView.prototype = Object.create(View.prototype);
-MenuView.prototype.constructor = MenuView
-
-
 function TutorialView(kwargs) {
     View.call(this, kwargs);
     
@@ -225,12 +79,53 @@ function TutorialView(kwargs) {
 TutorialView.prototype = Object.create(View.prototype);
 TutorialView.prototype.constructor = TutorialView
 
-function IntroductionView(kwargs) {
+/*
+function LessonTEMPLATEView(kwargs) {
     TutorialView.call(this, kwargs);
 
     var _this = this;
+
+    this.main_view = kwargs.main_view;
+    this.next_lesson = kwargs.next_lesson;
+
+    this.template_root = 'teaching/lesson/TEMPLATE/';
+    this.template = this.get_template('main');
+        
+    this.steps = [
+        function step_00() {
+            // Update the text
+            _this.text.html(_this.get_template('step_00')());
+        },
+    ];
+
+    this.init_children = function() {
+        $('#page-title').html(this.title);
+        
+        this.cfg_canvas = $('#cfg-canvas');
+        
+        this.cfg_view = new CFGView({
+            canvas: '#cfg-canvas',
+            simulator: this.simulator
+        });
+        
+        this.cfg_view.init();
+    }
+}
+
+LessonTEMPLATEView.prototype = Object.create(TutorialView.prototype);
+LessonTEMPLATEView.prototype.constructor = LessonTEMPLATEView
+*/
+
+function Lesson00View(kwargs) {
+    TutorialView.call(this, kwargs);
+
+    var _this = this;
+
+    this.main_view = kwargs.main_view;
+    this.next_lesson = kwargs.next_lesson;
     
-    this.template = Handlebars.templates['introduction.hbs'];
+    this.template_root = 'teaching/lesson/00/';
+    this.template = this.get_template('main');
     
     this.clear = function() {
         _this.text.html("");
@@ -242,11 +137,11 @@ function IntroductionView(kwargs) {
             _this.cfg_canvas.hide();
 
             // Update the text
-            _this.text.html(Handlebars.templates['lesson_01/step_00.hbs']());
+            _this.text.html(_this.get_template('step_00')());
         },
-        function step_01() {
+        function step_00() {
             // Update the text
-            _this.text.append(Handlebars.templates['lesson_01/step_01.hbs']());
+            _this.text.append(_this.get_template('step_01')());
         },
         function step_02() {
             _this.clear();
@@ -254,11 +149,11 @@ function IntroductionView(kwargs) {
             _this.cfg_canvas.show();
             
             // Reset the CFG code
-            var iloc_code = Handlebars.templates['lesson_01/step_02.iloc']();
+            var iloc_code = _this.get_template('step_02', 'iloc')();
             _this.simulator.sim_code(iloc_code);
 
             // Update the text
-            _this.text.append(Handlebars.templates['lesson_01/step_02.hbs']());
+            _this.text.append(_this.get_template('step_02')());
         },
         function step_03() {
             // Animate the nodes
@@ -282,7 +177,7 @@ function IntroductionView(kwargs) {
             }, timeout);
             
             // Update the text
-            _this.text.append(Handlebars.templates['lesson_01/step_03.hbs']());
+            _this.text.append(_this.get_template('step_03')());
         },
         function step_04() {
             // Animate the nodes
@@ -319,17 +214,17 @@ function IntroductionView(kwargs) {
             }, timeout);
             
             // Update the text
-            _this.text.append(Handlebars.templates['lesson_01/step_04.hbs']());
+            _this.text.append(_this.get_template('step_04')());
         },
         function step_05() {
             _this.cfg_view.reset_highlight();
             _this.cfg_view.show_points();
             _this.cfg_view.update();
-            _this.text.append(Handlebars.templates['lesson_01/step_05.hbs']());
+            _this.text.append(_this.get_template('step_05')());
         },
         function step_06() {
             _this.clear();
-            _this.text.append(Handlebars.templates['lesson_01/step_06.hbs']());
+            _this.text.append(_this.get_template('step_06')());
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
 
             _this.cfg_view.g = new dagreD3.graphlib.Graph({compound:true})
@@ -422,58 +317,58 @@ function IntroductionView(kwargs) {
             _this.cfg_view.init();
             _this.cfg_view.reset();
             
-            _this.text.append(Handlebars.templates['lesson_01/step_07.hbs']());
+            _this.text.append(_this.get_template('step_07')());
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_08() {
             _this.clear();
-            _this.text.append(Handlebars.templates['lesson_01/step_08.hbs']());
+            _this.text.append(_this.get_template('step_08')());
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_09() {
             _this.clear();
-            _this.text.append(Handlebars.templates['lesson_01/step_09.hbs']());
+            _this.text.append(_this.get_template('step_09')());
         },
         function step_10() {
-            _this.text.append(Handlebars.templates['lesson_01/step_10.hbs']());
+            _this.text.append(_this.get_template('step_10')());
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
 
             _this.simulator.step_forward();
         },
         function step_11() {
-            _this.text.append(Handlebars.templates['lesson_01/step_11.hbs']());
+            _this.text.append(_this.get_template('step_11')());
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
 
             _this.simulator.step_forward();
         },
         function step_12() {
             _this.clear();
-            _this.text.append(Handlebars.templates['lesson_01/step_12.hbs']());
+            _this.text.append(_this.get_template('step_12')());
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
 
             _this.simulator.step_forward();
         },
         function step_13() {
-            _this.text.append(Handlebars.templates['lesson_01/step_13.hbs']());
+            _this.text.append(_this.get_template('step_13')());
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
 
             _this.simulator.step_forward();
         },
         function step_14() {
             _this.clear();
-            _this.text.append(Handlebars.templates['lesson_01/step_14.hbs']());
+            _this.text.append(_this.get_template('step_14')());
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
 
             _this.simulator.step_forward();
         },
         function step_15() {
-            _this.text.append(Handlebars.templates['lesson_01/step_15.hbs']());
+            _this.text.append(_this.get_template('step_15')());
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
 
             _this.simulator.step_forward();
         },
         function step_16() {
-            _this.text.append(Handlebars.templates['lesson_01/step_16.hbs']());
+            _this.text.append(_this.get_template('step_16')());
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_17() {
@@ -481,7 +376,7 @@ function IntroductionView(kwargs) {
             
             _this.next_button.prop('disabled', true);
             
-            _this.text.html(Handlebars.templates['question_canvas.hbs']());
+            _this.text.html(Handlebars.templates['teaching/question/canvas.hbs']());
             var question_view = new QuestionView({
                 canvas: '#question-canvas',
                 question: [
@@ -504,7 +399,7 @@ function IntroductionView(kwargs) {
             question_view.init();
         },
         function step_18() {
-            _this.text.append(Handlebars.templates['lesson_01/step_18.hbs']());
+            _this.text.append(_this.get_template('step_18')());
             
             _this.simulator.step_forward();
             
@@ -512,19 +407,33 @@ function IntroductionView(kwargs) {
         },
         function step_19() {
             _this.text.html("");
-            _this.text.append(Handlebars.templates['lesson_01/step_19.hbs']({
-                code: encodeURIComponent(Handlebars.templates['lesson_01/step_02.iloc']()),
-            }));
+            _this.text.append(_this.get_template('step_19')());
 
             _this.simulator.fast_forward();
             
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
+
+            $('#btn-goto-next-lesson').on('click', function() {
+                _this.main_view.show_lesson(
+                    _this.next_lesson
+                );
+            });
+            
+            $('#btn-goto-simulator').on('click', function() {
+                _this.main_view.show_round_robin_simulator(
+                    _this.get_template('step_02', 'iloc')()
+                );
+            });
+            
+            $('#btn-goto-menu').on('click', function() {
+                _this.main_view.show_menu();
+            });
         }
     ];
 
     this.init_children = function() {
-
-        $('#page-title').html("Introduction");
+        
+        $('#page-title').html(this.title);
         
         this.cfg_canvas = $('#cfg-canvas');
         
@@ -534,13 +443,49 @@ function IntroductionView(kwargs) {
         });
         
         this.cfg_view.init();
-        
     }
     
 }
 
-IntroductionView.prototype = Object.create(TutorialView.prototype);
-IntroductionView.prototype.constructor = IntroductionView
+Lesson00View.prototype = Object.create(TutorialView.prototype);
+Lesson00View.prototype.constructor = Lesson00View
+
+
+function Lesson01View(kwargs) {
+    TutorialView.call(this, kwargs);
+
+    var _this = this;
+
+    this.main_view = kwargs.main_view;
+    this.next_lesson = kwargs.next_lesson;
+
+        
+    this.template_root = 'teaching/lesson/01/';
+    this.template = this.get_template('main');
+        
+    this.steps = [
+        function step_00() {
+            // Update the text
+            _this.text.html(_this.get_template('step_00')());
+        },
+    ];
+
+    this.init_children = function() {
+        $('#page-title').html(this.title);
+        
+        this.cfg_canvas = $('#cfg-canvas');
+        
+        this.cfg_view = new CFGView({
+            canvas: '#cfg-canvas',
+            simulator: this.simulator
+        });
+        
+        this.cfg_view.init();        
+    }    
+}
+
+Lesson01View.prototype = Object.create(TutorialView.prototype);
+Lesson01View.prototype.constructor = Lesson01View
 
 
 function QuestionView(kwargs) {
@@ -565,8 +510,9 @@ function QuestionView(kwargs) {
     
     this.show_on_click = kwargs.show_on_click || (SHOW_CORRECT_ALL | SHOW_INCORRECT_ONE);
     this.disable_on_click = kwargs.disable_on_click || (DISABLE_CORRECT_ALL | DISABLE_INCORRECT_ONE);
-    
-    this.template = Handlebars.templates['question.hbs']
+
+    this.template_root = 'teaching/question/';
+    this.template = this.get_template('main');
 
     this.highlight_answers = function() {
         $("button.btn-answer").each(function(){

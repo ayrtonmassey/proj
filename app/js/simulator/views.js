@@ -21,8 +21,9 @@ function RoundRobinSimulatorView(kwargs) {
     SimulatorView.call(this, kwargs);
 
     var _this = this;
-    
-    this.template = Handlebars.templates['roundrobin.hbs'];
+
+    this.template_root = 'simulator/';
+    this.template = this.get_template('roundrobin');
     
     // this.update = function() {
 
@@ -88,10 +89,11 @@ RoundRobinSimulatorView.prototype.constructor = RoundRobinSimulatorView
 function CodeView(kwargs) {
     SimulatorView.call(this, kwargs);
 
-    this.template = Handlebars.templates['code.hbs'];
-    this.code_display_template  = Handlebars.templates['code_display.hbs'];
-    this.code_editor_template   = Handlebars.templates['code_editor.hbs'];
-    this.code_controls_template = Handlebars.templates['code_controls.hbs'];
+    this.template_root = 'simulator/code/';
+    this.template = this.get_template('main');
+    this.code_display_template  = this.get_template('display');
+    this.code_editor_template   = this.get_template('editor');
+    this.code_controls_template = this.get_template('controls');
     
     this.update = function () {
         this.reset_highlight();
@@ -231,7 +233,8 @@ CodeView.prototype.constructor = CodeView
 function FrameworkView(kwargs) {
     SimulatorView.call(this, kwargs);
 
-    this.template = Handlebars.templates['framework.hbs'];
+    this.template_root = 'simulator/framework/';
+    this.template = this.get_template('main');
     
     this.update = function() {
         // Highlight Meet
@@ -311,7 +314,8 @@ FrameworkView.prototype.constructor = FrameworkView
 function RoundRobinResultsView(kwargs) {
     SimulatorView.call(this, kwargs);
 
-    this.template = Handlebars.templates['results.hbs'];
+    this.template_root = 'simulator/results/';
+    this.template = this.get_template('main');
 
     this.new_round = function(round) {
         $("#round-row").append("<td colspan=\"2\" class=\"text-center\">{0}</td>".format(this.simulator.state.round));
@@ -489,8 +493,9 @@ RoundRobinResultsView.prototype.constructor = RoundRobinResultsView
 
 function SimControlsView(kwargs) {
     SimulatorView.call(this, kwargs);
-    
-    this.template = Handlebars.templates['sim_controls.hbs'];
+
+    this.template_root = 'simulator/sim_controls/';
+    this.template = this.get_template('main');
 
     var _this = this;
     
@@ -567,8 +572,9 @@ function CFGView(kwargs) {
     
     var _this = this
     
-    this.template = Handlebars.templates['cfg.hbs'];
-    this.node_template = Handlebars.templates['node.hbs'];
+    this.template_root = 'simulator/cfg/';
+    this.template = this.get_template('main');
+    this.node_template = this.get_template('node');
 
     // Default to not showing points
     this.draw_points = kwargs.draw_points || false;
@@ -872,7 +878,7 @@ function CFGView(kwargs) {
         });
         
         if (this.show_points_button) {
-            this.canvas.append(Handlebars.templates['cfg-show-points.hbs']);
+            this.canvas.append(this.get_template('btn-show-points')());
             
             if (this.draw_points) {
                 $('#btn-show-points').html("Hide Points")
@@ -912,8 +918,9 @@ function LatticeView(kwargs) {
     
     var _this = this
     
-    this.template = Handlebars.templates['lattice.hbs'];
-    this.node_template = Handlebars.templates['node.hbs'];
+    this.template_root = 'simulator/lattice/';
+    this.template = this.get_template('main');
+    this.node_template = this.get_template('node');
 
     this.display_toggle = true;
     
@@ -1079,33 +1086,33 @@ function LatticeView(kwargs) {
                 _this.update();
             });
             
-            this.canvas.append(Handlebars.templates['lattice-collapse.hbs']);
+            this.canvas.append(this.get_template('btn-lattice-collapse')());
             
             if (_this.display_toggle) {
                 _this.canvas.parent().addClass('flex-max').attr('style', '');
-                $('#btn-collapse-lattice').html('<i class="fa fa-minus"></i>')
+                $('#btn-lattice-collapse').html('<i class="fa fa-minus"></i>')
                     .addClass("btn-danger")
                     .removeClass("btn-success");
             } else {
                 _this.canvas.parent().removeClass('flex-max').attr('style', 'flex: 0 0 5em;');
-                $('#btn-collapse-lattice').html('<i class="fa fa-plus"></i>')
+                $('#btn-lattice-collapse').html('<i class="fa fa-plus"></i>')
                     .removeClass("btn-danger")
                     .addClass("btn-success");
             }
             
-            $('#btn-collapse-lattice').on('click', function() {
+            $('#btn-lattice-collapse').on('click', function() {
                 if (_this.display_toggle) {
                     _this.display_toggle = false;
                     _this.svg.attr('style','display: none;');
                     _this.canvas.parent().removeClass('flex-max').attr('style', 'flex: 0 0 5em;');
-                    $('#btn-collapse-lattice').html('<i class="fa fa-plus"></i>')
+                    $('#btn-lattice-collapse').html('<i class="fa fa-plus"></i>')
                         .removeClass("btn-danger")
                         .addClass("btn-success");
                 } else {
                     _this.display_toggle = true;
                     _this.svg.attr('style','');
                     _this.canvas.parent().addClass('flex-max').attr('style', '');
-                    $('#btn-collapse-lattice').html('<i class="fa fa-minus"></i>')
+                    $('#btn-lattice-collapse').html('<i class="fa fa-minus"></i>')
                         .addClass("btn-danger")
                         .removeClass("btn-success");
                 }

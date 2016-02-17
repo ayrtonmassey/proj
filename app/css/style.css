@@ -24,6 +24,10 @@ html, body {
     z-index: -1;
 }
 
+.nav-link:hover {
+    cursor: pointer;
+}
+
 .navbar-spacer {
     padding-bottom: 50px;
 }
@@ -460,7 +464,7 @@ svg:active {
     padding: 0px;
 }
 
-#btn-collapse-lattice {
+#btn-lattice-collapse {
     position: absolute;
     top: 1em;
     right: 1em;
