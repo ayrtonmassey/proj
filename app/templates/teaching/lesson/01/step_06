@@ -1,0 +1,9 @@
+<p>Then we need to calculate the \(\text{Out}\) set:</p>
+<p>
+\begin{align}
+\text{Out}(n_4) &= \text{DefGen}(n_4) \cup \big{(}\text{In}(n_4) \setminus \text{DefKill}(n_4)\big{)} \\
+              &= \{\texttt{rc}_2\} \cup (\{\texttt{rc}_1, \texttt{rb}_1, \texttt{ra}_1\} \setminus \{ \texttt{rb}_i \: : \:  \forall i \neq 1 \}) \\
+              &= \{\texttt{rc}_2\} \cup \{\texttt{rb}_1, \texttt{ra}_1\} \\
+              &= \{\texttt{rc}_2, \texttt{rb}_1, \texttt{ra}_1\}
+\end{align}
+</p>

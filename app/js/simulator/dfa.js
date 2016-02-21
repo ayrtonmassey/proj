@@ -12,6 +12,16 @@ var DFA = {
     MEET: 'meet',
     TRANSFER: 'transfer',
 
+    // Sets
+    IN: 'in',
+    OUT: 'out',
+
+    // Actions
+    READ: 'read',
+    MODIFIED: 'modified',
+
+    HIGHLIGHT: 'highlight',
+
     // Value Sets
     VARIABLES: 'variables',
     DEFINITIONS: 'definitions',

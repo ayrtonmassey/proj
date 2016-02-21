@@ -95,3 +95,15 @@ var combine = function(a) {
     all.push(a);
     return all;
 }
+
+// Title case a sentence
+// http://stackoverflow.com/questions/31495239/title-case-a-sentence
+function titleCase(str) {
+  var newstr = str.split(" ");
+  for(i=0;i<newstr.length;i++){
+    var copy = newstr[i].substring(1).toLowerCase();
+    newstr[i] = newstr[i][0].toUpperCase() + copy;
+  }
+   newstr = newstr.join(" ");
+   return newstr;
+}  

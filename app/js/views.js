@@ -101,7 +101,7 @@ function MainView(kwargs) {
         }
 
         if (!iloc_code) {
-            iloc_code = Handlebars.templates['test/lattice.iloc']();1
+            iloc_code = Handlebars.templates['teaching/lesson/01/loop.iloc']();
         }
         
         var simulator = new RoundRobinSimulator({
@@ -126,6 +126,9 @@ function MainView(kwargs) {
         switch(testbed_name) {
         case 'lattice':
             this.show_lattice_testbed();
+            break;
+        case 'cfg':
+            this.show_cfg_testbed();
             break;
         default:
             throw ReferenceError("Unrecognised testbed {0}".format(testbed_name));
@@ -155,6 +158,31 @@ function MainView(kwargs) {
         
         this.view.init();
     }
+
+    this.show_cfg_testbed = function() {
+        this.view_canvas.html("");
+        this.view_canvas.show();
+        
+        var iloc_code = Handlebars.templates['test/cfg.iloc']();
+        
+        var simulator = new RoundRobinSimulator({
+            // framework: iloc_liveness,
+            // ordering:  DFA.POSTORDER,
+            framework:  iloc_reaching_definitions,
+            ordering:   DFA.REVERSE_POSTORDER,
+            code:       iloc_code,
+            play_speed: 1000,
+        });
+        
+        this.view = new CFGTestbedView({
+            main_view: this,
+            canvas: this.view_canvas_selector,
+            simulator: simulator,
+        });
+        
+        this.view.init();
+    }
+
 
     this.show_menu = function() {
         this.view = new MenuView({
@@ -246,6 +274,10 @@ function MenuView(kwargs) {
         /* Testing */
         $('#btn-lattice-testbed').on('click', function() {
             _this.main_view.show_lattice_testbed();
+        });
+
+        $('#btn-cfg-testbed').on('click', function() {
+            _this.main_view.show_cfg_testbed();
         });
     }
 }

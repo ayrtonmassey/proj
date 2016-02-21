@@ -1,8 +1,6 @@
-(function() {
-    var view = new MainView({
-        canvas: 'html',
-        view_canvas: '#view-canvas'
-    });
+var view = new MainView({
+    canvas: 'html',
+    view_canvas: '#view-canvas'
+});
 
-    view.init();
-})();
+view.init();

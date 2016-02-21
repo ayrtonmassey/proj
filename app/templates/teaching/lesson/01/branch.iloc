@@ -1,0 +1,8 @@
+     load   rx     => ra
+     load   ry     => rb
+     cmp_GE ra, rb => rc
+     cbr    rc     -> L1, L2
+L1:  i2i    ra     => rc
+     jump   L3
+L2:  i2i    rb     => rc
+L3:  store  rc     => rz

@@ -1,0 +1,9 @@
+<p>\begin{align}
+    \text{In}(n_3) &= \bigcup_{p \in preds} \text{Out}(p) \\
+    &= \text{Out}(n_2) \cup \text{Out}(n_6) \\
+    &= \{\texttt{rc}_1, \texttt{rb}_1, \texttt{ra}_1\} \cup \{\texttt{rd}_1, \texttt{rb}_2, \texttt{rc}_2, \texttt{ra}_1\} \\
+    &= \{\texttt{rc}_1, \texttt{rb}_1, \texttt{ra}_1, \texttt{rd}_1, \texttt{rb}_2, \texttt{rc}_2\}
+    \end{align}</p>
+
+<p>Even though the definitions \(\texttt{rc}_1\), \(\texttt{rb}_1\) and \(\texttt{rd}_1\) are generated <strong>after</strong> \(n_3\), they reach \(\text{In}(n_3)\) because of the back-edge \(n_6 \rightarrow n_3\).</p>
+

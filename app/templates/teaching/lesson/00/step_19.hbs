@@ -1,7 +1,3 @@
 <p>Let's fast forward to the end of the analysis. We can see that the store to \(\texttt{rd}\) generates the definition \(\texttt{rd}_1\), leaving us with \(\{\texttt{rd}_1, \texttt{ra}_2, \texttt{rb}_2\}\)</p>
 
-<p>Normally we'd iterate over the graph again to make sure nothing changes. In this example it's not necessary, so we'll save that for a later lesson.</p>
-
-<p><a id="btn-goto-next-lesson" class="btn btn-primary btn-block">Next Lesson</a></p>
-<p><a id="btn-goto-simulator" class="btn btn-secondary btn-block">Open CFG in Simulator</a></p>
-<p><a id="btn-goto-menu" class="btn btn-secondary btn-block">Back to Menu</a></p>
+<p>In data-flow analysis we <strong>iterate</strong> this process until the values at each point <strong>stop changing</strong>. Since this example only has a single path, it's not necessary - we'll save that for the next lesson.</p>

@@ -143,9 +143,38 @@ function RoundRobinSimulator (kwargs) {
         this.state.changed = this.state.changed || !compare_value_sets(node.sets.transfer,old_transfer);
         return result;
     }
+    
+    this.mt_to_io = function(set) {
+        switch(set) {
+        case DFA.MEET:
+            return (this.framework.direction == DFA.FORWARD ? DFA.IN : DFA.OUT)
+        case DFA.TRANSFER:
+            return (this.framework.direction == DFA.FORWARD ? DFA.OUT : DFA.IN)
+        default:
+            throw new ReferenceError('Expected DFA.MEET or DFA.TRANSFER, got "{0}"'.format(set));
+        }
+    }
+
+    this.io_to_mt = function(set) {
+        switch(set) {
+        case DFA.IN:
+            return (this.framework.direction == DFA.FORWARD ? DFA.MEET : DFA.TRANSFER)
+        case DFA.OUT:
+            return (this.framework.direction == DFA.FORWARD ? DFA.TRANSFER : DFA.MEET)
+        default:
+            throw new ReferenceError('Expected DFA.IN or DFA.OUT, got "{0}"'.format(set));
+        }
+    }
 
     this.step_forward = function() {
         this.iterate();
+        this.events.trigger('update');
+    }
+
+    this.advance = function(n) {
+        for (var i = 0; i < n; i++) {
+            this.iterate();
+        }
         this.events.trigger('update');
     }
 

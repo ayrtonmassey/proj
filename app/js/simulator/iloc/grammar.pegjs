@@ -52,7 +52,7 @@ label
     = _ n:([0-9a-z_]i)+ _ { return new ILOC.Operand({ type: ILOC.OPERAND_TYPES.label, name: n.join("") }); }
 
 num
-    = _ n:([0-9]i)+ _ { return new ILOC.Operand({ type: ILOC.OPERAND_TYPES.num, name: n.join("") }); }
+    = _ n:([0-9-]i)+ _ { return new ILOC.Operand({ type: ILOC.OPERAND_TYPES.num, name: n.join("") }); }
 
 opcode
     = _ n:([a-z0-9_]i)+ _ { return n.join(""); }

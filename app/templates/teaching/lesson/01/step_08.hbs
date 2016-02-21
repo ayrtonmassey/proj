@@ -1,0 +1,10 @@
+<p>We calculate it using the same formula as before, but now we have <strong>more than one set</strong> to consider:</p>
+
+<p>\begin{align}
+    \text{In}(n_7) &= \bigcup_{p \in preds} \text{Out}(p) \\
+    &= \text{Out}(n_5) \cup \text{Out}(n_6) \\
+    &= \{\texttt{rc}_2, \texttt{rb}_1, \texttt{ra}_1\} \cup \{\texttt{rc}_3, \texttt{rb}_1, \texttt{ra}_1\} \\
+    &= \{\texttt{rc}_2, \texttt{rb}_1, \texttt{ra}_1, \texttt{rc}_3\}
+    \end{align}</p>
+
+<p>We can see that the set contains both \(\texttt{rc}_2\) <strong>and</strong> \(\texttt{rc}_3\). Since the meet function for reaching definitions only <strong>combines</strong> value sets, we don't remove anything.</p>

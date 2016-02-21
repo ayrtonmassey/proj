@@ -139,7 +139,7 @@ function Lesson00View(kwargs) {
             // Update the text
             _this.text.html(_this.get_template('step_00')());
         },
-        function step_00() {
+        function step_01() {
             // Update the text
             _this.text.append(_this.get_template('step_01')());
         },
@@ -218,12 +218,18 @@ function Lesson00View(kwargs) {
         },
         function step_05() {
             _this.cfg_view.reset_highlight();
-            _this.cfg_view.show_points();
+
+            _this.cfg_view.show_all_points();
             _this.cfg_view.update();
+            
             _this.text.append(_this.get_template('step_05')());
         },
         function step_06() {
             _this.clear();
+
+            _this.cfg_view.show_touched_points();
+            _this.cfg_view.update();
+            
             _this.text.append(_this.get_template('step_06')());
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
 
@@ -372,10 +378,12 @@ function Lesson00View(kwargs) {
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_17() {
+            _this.clear();
+            
             _this.simulator.step_forward();
             
             _this.next_button.prop('disabled', true);
-            
+
             _this.text.html(Handlebars.templates['teaching/question/canvas.hbs']());
             var question_view = new QuestionView({
                 canvas: '#question-canvas',
@@ -406,13 +414,17 @@ function Lesson00View(kwargs) {
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_19() {
-            _this.text.html("");
+            _this.clear();
             _this.text.append(_this.get_template('step_19')());
 
             _this.simulator.fast_forward();
             
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
-
+        },
+        function step_20() {
+            _this.clear();
+            _this.text.append(_this.get_template('step_20')());
+            
             $('#btn-goto-next-lesson').on('click', function() {
                 _this.main_view.show_lesson(
                     _this.next_lesson
@@ -462,12 +474,269 @@ function Lesson01View(kwargs) {
         
     this.template_root = 'teaching/lesson/01/';
     this.template = this.get_template('main');
-        
+
+    this.clear = function() {
+        _this.text.html("");
+    }
+    
     this.steps = [
         function step_00() {
+            // Hide the CFG
+            _this.cfg_canvas.hide();
+            
             // Update the text
             _this.text.html(_this.get_template('step_00')());
         },
+        function step_01() {
+            // Update the text
+            _this.clear();
+
+            // Show the CFG
+            _this.cfg_canvas.show();
+            
+            // Reset the CFG code
+            var iloc_code = _this.get_template('branch', 'iloc')();
+            _this.simulator.sim_code(iloc_code);
+            
+            _this.text.html(_this.get_template('step_01')());
+            
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
+        },
+        function step_02() {
+            // Update the text
+            _this.text.html(_this.get_template('step_02')());
+
+            _this.cfg_view.update();
+            
+            _this.simulator.advance(8);
+        },
+        function step_03() {
+            _this.simulator.step_forward();
+            
+            // Update the text
+            _this.text.append(_this.get_template('step_03')());
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
+        },
+        function step_04() {
+            _this.simulator.step_forward();
+            
+            // Update the text
+            _this.text.append(_this.get_template('step_04')());
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
+        },
+        function step_05() {
+            _this.clear();
+
+            _this.simulator.step_forward();
+            
+            // Update the text
+            _this.text.append(_this.get_template('step_05')());
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
+        },
+        function step_06() {
+            _this.simulator.step_forward();
+            
+            // Update the text
+            _this.text.append(_this.get_template('step_06')());
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
+        },
+        function step_07() {
+            _this.clear();
+
+            _this.cfg_view.show_no_points();
+
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[5], DFA.OUT);
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[6], DFA.OUT);
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[7], DFA.IN);
+            
+            _this.simulator.advance(2);
+
+            _this.cfg_view.reset_highlight();
+            
+            // Update the text
+            _this.text.append(_this.get_template('step_07')());
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
+        },
+        function step_08() {
+            _this.cfg_view.show_touched_points();
+            
+            _this.simulator.step_forward();
+            
+            // Update the text
+            _this.text.append(_this.get_template('step_08')());
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
+        },
+        function step_09() {
+            _this.simulator.fast_forward();
+            
+            // Update the text
+            _this.text.append(_this.get_template('step_09')());
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
+        },
+        function step_10() {
+            // Update the text
+            _this.clear();
+
+            // Reset the CFG code
+            var iloc_code = _this.get_template('loop', 'iloc')();
+            _this.simulator.sim_code(iloc_code);
+            
+            _this.text.html(_this.get_template('step_10')());
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
+        },
+        function step_11() {
+            _this.simulator.advance(6);
+            
+            // Update the text
+            _this.text.append(_this.get_template('step_11')());
+        },
+        function step_12() {
+            _this.clear();
+
+            _this.cfg_view.show_no_points();
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[2], DFA.OUT);
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[3], DFA.IN);
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[6], DFA.OUT);
+            _this.cfg_view.update();
+            _this.cfg_view.reset_highlight();
+            
+            // Update the text
+            _this.text.append(_this.get_template('step_12')());
+
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
+        },
+        function step_13() {
+            _this.cfg_view.show_touched_points();
+            
+            _this.simulator.step_forward();
+            
+            // Update the text
+            _this.text.append(_this.get_template('step_13')());
+
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
+        },
+        function step_14() {
+            // Update the text
+            _this.clear();
+
+            _this.simulator.advance(9);
+            
+            _this.text.append(_this.get_template('step_14')());
+
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
+        },
+        function step_15() {
+            _this.cfg_view.show_no_points();
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[6], DFA.OUT);
+            _this.cfg_view.update();
+            _this.cfg_view.reset_highlight();
+
+            _this.text.append(_this.get_template('step_15')());
+
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
+        },
+        function step_16() {
+            _this.cfg_view.show_touched_points();
+            _this.simulator.step_forward();
+
+            _this.text.append(_this.get_template('step_16')());
+
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
+        },
+        function step_17() {
+            _this.cfg_view.show_no_points();
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[2], DFA.OUT);
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[3], DFA.IN);
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[6], DFA.OUT);
+            _this.simulator.advance(5);
+            _this.cfg_view.reset_highlight();
+
+            _this.text.append(_this.get_template('step_17')());
+
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
+        },
+        function step_18() {
+            _this.cfg_view.show_touched_points();
+            _this.simulator.step_forward();
+
+            _this.text.append(_this.get_template('step_18')());
+
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
+        },
+        function step_19() {
+            _this.clear();
+            
+            _this.simulator.step_forward();
+
+            _this.text.append(_this.get_template('step_19')());
+
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
+        },
+        function step_20() {
+            _this.simulator.step_forward();
+        },
+        function step_21() {
+            _this.simulator.step_forward();
+        },
+        function step_22() {
+            _this.simulator.step_forward();
+        },
+        function step_23() {
+            _this.simulator.step_forward();
+        },
+        function step_24() {
+            _this.simulator.step_forward();
+        },
+        function step_25() {
+            _this.simulator.step_forward();
+        },
+        function step_26() {
+            _this.simulator.step_forward();
+        },
+        function step_27() {
+            _this.simulator.step_forward();
+
+            _this.text.append(_this.get_template('step_27')());
+
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);            
+        },
+        function step_28() {
+            _this.simulator.play();
+        },
+        function step_29() {
+            _this.simulator.fast_forward();
+
+            _this.text.append(_this.get_template('step_29')());
+
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
+        },
+        function step_30() {
+            _this.clear();
+
+            _this.text.append(_this.get_template('step_30')());
+            
+            $('#btn-goto-next-lesson').on('click', function() {
+                _this.main_view.show_lesson(
+                    _this.next_lesson
+                );
+            });
+            
+            $('#btn-goto-branch-simulator').on('click', function() {
+                _this.main_view.show_round_robin_simulator(
+                    _this.get_template('branch', 'iloc')()
+                );
+            });
+
+            $('#btn-goto-loop-simulator').on('click', function() {
+                _this.main_view.show_round_robin_simulator(
+                    _this.get_template('loop', 'iloc')()
+                );
+            });
+            
+            $('#btn-goto-menu').on('click', function() {
+                _this.main_view.show_menu();
+            });
+        }
     ];
 
     this.init_children = function() {
@@ -477,7 +746,8 @@ function Lesson01View(kwargs) {
         
         this.cfg_view = new CFGView({
             canvas: '#cfg-canvas',
-            simulator: this.simulator
+            simulator: this.simulator,
+            draw_points: CFG_FLAGS.SHOW_TOUCHED_POINTS,
         });
         
         this.cfg_view.init();        
@@ -487,29 +757,30 @@ function Lesson01View(kwargs) {
 Lesson01View.prototype = Object.create(TutorialView.prototype);
 Lesson01View.prototype.constructor = Lesson01View
 
+var QFLAGS = {
+    DISABLE_INCORRECT_NONE: 0,
+    DISABLE_INCORRECT_ONE : 1,
+    DISABLE_INCORRECT_ALL : 2,
+    DISABLE_CORRECT_NONE  : 4,
+    DISABLE_CORRECT_ONE   : 8,
+    DISABLE_CORRECT_ALL   : 16,
+
+    SHOW_INCORRECT_ONE : 0,
+    SHOW_INCORRECT_ALL : 1,
+    SHOW_CORRECT_ONE   : 0,
+    SHOW_CORRECT_ALL   : 2,
+}
 
 function QuestionView(kwargs) {
     View.call(this, kwargs);
 
     var _this = this;
 
-    var DISABLE_INCORRECT_NONE = 0;
-    var DISABLE_INCORRECT_ONE  = 1;
-    var DISABLE_INCORRECT_ALL  = 2;
-    var DISABLE_CORRECT_NONE   = 4;
-    var DISABLE_CORRECT_ONE    = 8;
-    var DISABLE_CORRECT_ALL    = 16;
-
-    var SHOW_INCORRECT_ONE  = 0;
-    var SHOW_INCORRECT_ALL  = 1;
-    var SHOW_CORRECT_ONE    = 0;
-    var SHOW_CORRECT_ALL    = 2;
-
     this.correct_callback = kwargs.correct_callback || (function() {});
     this.incorrect_callback = kwargs.incorrect_callback || (function() {});
     
-    this.show_on_click = kwargs.show_on_click || (SHOW_CORRECT_ALL | SHOW_INCORRECT_ONE);
-    this.disable_on_click = kwargs.disable_on_click || (DISABLE_CORRECT_ALL | DISABLE_INCORRECT_ONE);
+    this.show_on_click = kwargs.show_on_click || (QFLAGS.SHOW_CORRECT_ALL | QFLAGS.SHOW_INCORRECT_ONE);
+    this.disable_on_click = kwargs.disable_on_click || (QFLAGS.DISABLE_CORRECT_ALL | QFLAGS.DISABLE_INCORRECT_ONE);
 
     this.template_root = 'teaching/question/';
     this.template = this.get_template('main');
@@ -526,15 +797,15 @@ function QuestionView(kwargs) {
     }
     
     this.incorrect_answer = function(elem) {
-        if(this.show_on_click & SHOW_INCORRECT_ALL) {
+        if(this.show_on_click & QFLAGS.SHOW_INCORRECT_ALL) {
             this.highlight_answers();
         } else {
             elem.addClass('btn-danger').removeClass('btn-primary');
         }
 
-        if(this.disable_on_click & DISABLE_INCORRECT_ALL) {
+        if(this.disable_on_click & QFLAGS.DISABLE_INCORRECT_ALL) {
             this.set_answers_disabled(true);
-        } else if(this.disable_on_click & DISABLE_INCORRECT_ONE) {
+        } else if(this.disable_on_click & QFLAGS.DISABLE_INCORRECT_ONE) {
             elem.prop('disabled', true);
         }
         
@@ -542,15 +813,15 @@ function QuestionView(kwargs) {
     }
 
     this.correct_answer = function(elem) {
-        if(this.show_on_click & SHOW_CORRECT_ALL) {
+        if(this.show_on_click & QFLAGS.SHOW_CORRECT_ALL) {
             this.highlight_answers();
         } else {
             elem.addClass('btn-success').removeClass('btn-primary');
         }
         
-        if(this.disable_on_click & DISABLE_CORRECT_ALL) {
+        if(this.disable_on_click & QFLAGS.DISABLE_CORRECT_ALL) {
             this.set_answers_disabled(true);
-        } else if(this.disable_on_click & DISABLE_CORRECT_ONE) {
+        } else if(this.disable_on_click & QFLAGS.DISABLE_CORRECT_ONE) {
             elem.prop('disabled', true);
         }
         

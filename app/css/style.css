@@ -43,11 +43,12 @@ footer {
     padding: 1em 2em;
     font-size: 0.8rem;
     display: flex;
-    flex-direction: column;
+    flex-flow: column;
 }
 
 .canvas > .row {
     flex: 1 1 auto;
+    flex-wrap: nowrap;
 }
 
 #view-canvas h1 {
@@ -85,20 +86,22 @@ footer {
     justify-content: start;
     align-items: stretch;
     align-content: stretch;
+    max-width: 75%;
 }
 
 .tab-content {
+    max-width: 100%;
     flex: 1 1 auto;
     display: flex;
     flex-flow: column nowrap;
 }
 
-.tab-content > .tab-pane {
-    display: none !important;
+.tab-content > #cfg-canvas.tab-pane {
+    display: none;
 }
 
-.tab-content > .active {
-    display: flex !important;
+.tab-content > #cfg-canvas.tab-pane.active {
+    display: flex;
 }
 
 #right-column > .row {
@@ -219,6 +222,10 @@ footer {
     max-width: 30em;
 }
 
+.iloc {
+    font-family: Monospace;
+}
+
 table.iloc {
     font-family: Monospace;
     width: 100%;
@@ -253,11 +260,13 @@ table.table>tbody>tr>th {
 /* Results Table View */
 
 #results-canvas {
-    overflow-x: auto;
+    max-width: 100%;
     font-size: 0.8em;
+    overflow-x: auto;
     /* overflow-y: hidden; */
     /* padding-bottom: 15px; */
 }
+
 
 #results-canvas table {
     margin-bottom: 1px;
@@ -394,7 +403,22 @@ table.table>tbody>tr>th {
 
 /* CFG Highlight */
 
+.node-index {
+    color: #000 !important;
+    font-weight: normal !important;
+}
+
 g.node.highlight foreignobject {
+    color: #fff;
+    font-weight: bold;
+}
+
+g.node.highlight g.rect {
+    color: #fff;
+    font-weight: bold;
+}
+
+g.node.highlight g.label {
     color: #fff;
     font-weight: bold;
 }
@@ -448,10 +472,17 @@ svg:active {
     padding: 0px;
 }
 
-#btn-show-points {
+#show-points-controls {
     position: absolute;
     top: 1em;
     left: 1em;
+}
+
+.input-group-addon-sm {
+    padding: .25rem .75rem;
+    font-size: .875rem;
+    line-height: 1.5;
+    border-radius: .2rem;
 }
 
 #cfg-svg {
@@ -485,6 +516,13 @@ text {
   fill: #fff;
   color: #000;
   stroke-width: 1.5px;
+}
+
+.node-index {
+    display: inline-block;
+    float: left;
+    margin-top: -2.5em;
+    margin-left: -1em;
 }
 
 g.label {

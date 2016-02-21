@@ -63,7 +63,7 @@ function RoundRobinSimulatorView(kwargs) {
         this.cfg_view = new CFGView({
             canvas: '#cfg-canvas',
             simulator: this.simulator,
-            draw_points: true,
+            draw_points: CFG_FLAGS.SHOW_NO_POINTS,
             show_points_button: true,
         });
 
@@ -566,6 +566,11 @@ function SimControlsView(kwargs) {
 SimControlsView.prototype = Object.create(SimulatorView.prototype);
 SimControlsView.prototype.constructor = SimControlsView
 
+var CFG_FLAGS = {
+    SHOW_NO_POINTS     : 0,
+    SHOW_TOUCHED_POINTS: 1,
+    SHOW_ALL_POINTS    : 2,
+}
 
 function CFGView(kwargs) {    
     SimulatorView.call(this, kwargs);
@@ -575,50 +580,231 @@ function CFGView(kwargs) {
     this.template_root = 'simulator/cfg/';
     this.template = this.get_template('main');
     this.node_template = this.get_template('node');
+    this.point_template = this.get_template('point');
 
     // Default to not showing points
-    this.draw_points = kwargs.draw_points || false;
+    this.draw_points = kwargs.draw_points || CFG_FLAGS.SHOW_NO_POINTS;
     this.show_points_button = kwargs.show_points_button || false;
 
     this.draw = function() {
-        this.g.graph().transition = function(selection) {
-            return selection.transition().duration(500);
-        };
+        // // Fancy transition code:
+        // this.g.graph().transition = function(selection) {
+        //     return selection.transition().duration(500);
+        // };
         
         // Render the graph into svg g
         this.render(this.svgGroup, this.g);
     }
 
-    this.show_points = function() {
-        this.draw_points = true;
+    this.construct_graph = function() {
+        // Add nodes
+        for(node of this.simulator.cfg.nodes) {
+            _this.g.setNode('{0}'.format(node.index),
+                            {
+                                labelType: "html",
+                                label: this.node_template({
+                                    content: new Handlebars.SafeString(
+                                        node.toHTML()
+                                    ),
+                                    index: node.index
+                                }),
+                                rx: 5,
+                                ry: 5,
+                            });
+            _this.g.node('{0}'.format(node.index)).id = 'graph-node-{0}'.format(node.index)
+        }
 
+        // Add edges
         for(i = 0; i < this.simulator.cfg.nodes.length; i++) {
             for(j = 0; j < this.simulator.cfg.nodes.length; j++) {
-                // Remove any edges between nodes
-                this.g.removeEdge('{0}'.format(i), '{0}'.format(j));
+                if(this.simulator.cfg.adjacency[i][j] == 1) {
+                    this.g.setEdge('{0}'.format(i), '{0}'.format(j));
+                }
+            }
+        }
+    }
+    
+    this.add_point = function(node, set) {
+        // Check set is valid
+        if (set != DFA.IN && set != DFA.OUT) {
+            throw new ReferenceError('Expected DFA.IN or DFA.OUT, got "{0}"'.format(set));
+        }
+        
+        var point_id = '{0}-{1}'.format(node.index, set);
+        var node_id = '{0}'.format(node.index)
+        
+        // Add point
+        var point = _this.g.setNode(
+            point_id,
+            {
+                labelType: 'html',
+                label: this.point_template({
+                    content: new Handlebars.SafeString(
+                        node.sets[this.simulator.io_to_mt(set)].toHTML()
+                    ),
+                    set: titleCase(set),
+                    index: node.index,
+                }),
+                rx: 15,
+                ry: 15,
+                style: 'stroke: #9a162c',
+                class: 'point'
+            });
+
+        this.point_ids.push(point_id);
+
+        this.g.node(point_id).id = 'graph-node-{0}'.format(point_id);
+        this.g.node(point_id).set = set;
+        this.g.node(point_id).dagre_id = point_id;
+        this.g.node(point_id).dagre_id = point_id;
+        this.g.node(point_id).node_index = node.index;
+
+        // Add edges from / to in / out points
+        if (set == DFA.IN) {
+            this.g.setEdge(point_id, node_id);
+
+            // Update edges entering node
+            for(i = 0; i < this.simulator.cfg.nodes.length; i++) {
+                if(this.simulator.cfg.adjacency[i][node.index] == 1) {
+                    // If we're showing points for the prev node
+                    var prev_node_id;
+                    if (this.g.node('{0}-out'.format(i))) {
+                        prev_node_id = '{0}-out'.format(i);
+                    } else {
+                        prev_node_id = '{0}'.format(i);
+                    }
+                    
+                    // Remove edge from prev to node
+                    this.g.removeEdge(prev_node_id, node_id);
+                    
+                    // Add edge from prev to point
+                    this.g.setEdge(prev_node_id, point_id);
+                }
+            }            
+        } else if (set == DFA.OUT) {
+            this.g.setEdge(node_id, point_id);
+
+            // Update edges leaving node
+            for(i = 0; i < this.simulator.cfg.nodes.length; i++) {
+                if(this.simulator.cfg.adjacency[node.index][i] == 1) {
+                    // If we're showing points for the next node
+                    var next_node_id;
+                    if (this.g.node('{0}-in'.format(i))) {
+                        next_node_id = '{0}-in'.format(i);
+                    } else {
+                        next_node_id = '{0}'.format(i);
+                    }
+                    
+                    // Remove edge from node to next
+                    this.g.removeEdge(node_id, next_node_id);
+                    
+                    // Add edge from point to next
+                    this.g.setEdge(point_id, next_node_id);
+                }
             }
         }
     }
 
-    this.hide_points = function() {
-        this.draw_points = false;
+    this.remove_point = function(node, set) {
+        // Check set is valid
+        if (set != DFA.IN && set != DFA.OUT) {
+            throw new ReferenceError('Expected DFA.IN or DFA.OUT, got "{0}"'.format(set));
+        }
+        
+        var point_id = '{0}-{1}'.format(node.index, set);
+        var node_id = '{0}'.format(node.index)
 
-        for(i = 0; i < this.simulator.cfg.nodes.length; i++) {
-            // Remove any edges between points
-            this.g.removeEdge('{0}-in'.format(i), '{0}'.format(i));
-            this.g.removeEdge('{0}'.format(i), '{0}-out'.format(i));
-            for(j = 0; j < this.simulator.cfg.nodes.length; j++) {
-                // Remove any edges to next node's points
-                this.g.removeEdge('{0}-out'.format(i), '{0}-in'.format(j));
+        // Remove point
+        this.g.removeNode(point_id);
+
+        var index = this.point_ids.indexOf(point_id);
+        if (index > -1) {
+            this.point_ids.splice(index,1);
+        }
+
+        // Add edges from / to in / out points
+        if (set == DFA.IN) {
+            this.g.removeEdge(point_id, node_id);
+
+            // Update edges entering node
+            for(i = 0; i < this.simulator.cfg.nodes.length; i++) {
+                if(this.simulator.cfg.adjacency[i][node.index] == 1) {
+                    // If we're showing points for the next node
+                    var prev_node_id;
+                    if (this.g.node('{0}-out'.format(i))) {
+                        prev_node_id = '{0}-out'.format(i);
+                    } else {
+                        prev_node_id = '{0}'.format(i);
+                    }
+                    
+                    // Remove edge from prev to point
+                    this.g.removeEdge(prev_node_id, point_id);
+                    
+                    // Add edge from prev to node
+                    this.g.setEdge(prev_node_id, node_id);
+                }
+            } 
+        } else if (set == DFA.OUT) {
+            this.g.removeEdge(node_id, point_id);
+            
+            // Update edges leaving node
+            for(i = 0; i < this.simulator.cfg.nodes.length; i++) {
+                if(this.simulator.cfg.adjacency[node.index][i] == 1) {
+                    // If we're showing points for the next node
+                    var next_node_id;
+                    if (this.g.node('{0}-in'.format(i))) {
+                        next_node_id = '{0}-in'.format(i);
+                    } else {
+                        next_node_id = '{0}'.format(i);
+                    }
+                    
+                    // Remove edge from point to next
+                    this.g.removeEdge(point_id, next_node_id);
+                    
+                    // Add edge from node to next
+                    this.g.setEdge(node_id, next_node_id);
+                }
             }
-            // Remove points
-            this.g.removeNode('{0}-in'.format(i))
-            this.g.removeNode('{0}-out'.format(i))
         }
     }
 
-    this.reset_highlight = function() {
-        if (undefined != this.g._edgeObjs) {
+    this.add_all_points = function() {
+        // Update nodes.
+        for(node of this.simulator.cfg.nodes) {
+            this.add_point(node, DFA.IN);
+            this.add_point(node, DFA.OUT);
+        }
+    }
+
+    this.remove_all_points = function() {
+        // Update nodes.
+        for(node of this.simulator.cfg.nodes) {
+            this.remove_point(node, DFA.IN);
+            this.remove_point(node, DFA.OUT);
+        }
+    }
+    
+    this.show_all_points = function() {
+        this.draw_points = CFG_FLAGS.SHOW_ALL_POINTS;
+
+        this.add_all_points();
+    }
+    
+    this.show_no_points = function() {
+        this.draw_points = CFG_FLAGS.SHOW_NO_POINTS;
+
+        this.remove_all_points();
+    }
+
+    this.show_touched_points = function() {
+        this.draw_points = CFG_FLAGS.SHOW_TOUCHED_POINTS;
+    }
+
+    // Backward compatibility
+    this.hide_points = this.show_no_points;
+
+    this.reset_edge_highlights = function() {
+        if (this.g._edgeObjs != undefined) {
             $.each(
                 this.g._edgeObjs,
                 function(k,edge) {
@@ -633,161 +819,127 @@ function CFGView(kwargs) {
                 }
             );
         }
-        
-        $('#cfg-svg g.node').each(function() {
-            $(this).attr("class","node");
+    }
+    
+    this.reset_node_highlights = function () {
+        $('.node').each(function() {
+            $(this)[0].classList.remove(DFA.READ);
+            $(this)[0].classList.remove(DFA.MODIFIED);
+            $(this)[0].classList.remove(DFA.MEET);
+            $(this)[0].classList.remove(DFA.TRANSFER);
+            $(this)[0].classList.remove(DFA.HIGHLIGHT);
         });
+    }
+    
+    this.reset_highlight = function() {
+        this.reset_edge_highlights();
+        this.reset_node_highlights();
+    }
+
+    this.update_points = function() {
+        for (point_id of this.point_ids) {
+            var point = this.g.node(point_id);
+            var set   = point.set;
+            var node  = this.simulator.cfg.nodes[point.node_index];
+            
+            point.label = this.point_template({
+                    content: new Handlebars.SafeString(
+                        node.sets[this.simulator.io_to_mt(set)].toHTML()
+                    ),
+                    set: titleCase(set),
+                    index: node.index,
+            });
+        }
+    }
+
+    this.highlight_node = function(elem, state, func) {
+        switch(state) {
+        case DFA.READ:
+            elem[0].classList.add(DFA.READ);
+            elem[0].classList.remove(DFA.MODIFIED);
+            elem[0].classList.add(DFA.HIGHLIGHT);
+            elem[0].classList.add(func);
+            break;
+        case DFA.MODIFIED:
+            elem[0].classList.add(DFA.MODIFIED);
+            elem[0].classList.remove(DFA.READ);
+            elem[0].classList.add(DFA.HIGHLIGHT);
+            elem[0].classList.add(func);
+            break;
+        default:
+            throw new ReferenceError('Expected DFA.READ or DFA.MODIFIED, got "{0}"'.format(state))
+        }
+    }
+    
+    this.update_highlight = function() {
+        // Add highlighting
+        for(read of this.simulator.state.read_nodes) {
+            for (set of read.sets) {
+                if (set == DFA.MEET || set == DFA.TRANSFER) {
+                    var point_elem = $("#graph-node-{0}-{1}".format(
+                        read.node.index,
+                        this.simulator.mt_to_io(set)
+                    ));
+                    if (point_elem.length > 0) {
+                        this.highlight_node(point_elem, DFA.READ, this.simulator.state.func);
+                    } else {
+                        this.highlight_node(
+                            $("#graph-node-{0}".format(read.node.index)),
+                            DFA.READ,
+                            this.simulator.state.func
+                        );
+                    }
+                }
+            }
+        }
+        
+        for(modified of this.simulator.state.modified_nodes) {
+            for (set of modified.sets) {
+                if (set == DFA.MEET || set == DFA.TRANSFER) {
+                    var point_elem = $("#graph-node-{0}-{1}".format(
+                        modified.node.index,
+                        this.simulator.mt_to_io(set)
+                    ));
+                    
+                    if (point_elem.length > 0) {
+                        this.highlight_node(point_elem, DFA.MODIFIED, this.simulator.state.func);
+                    } else {
+                        this.highlight_node(
+                            $("#graph-node-{0}".format(modified.node.index)),
+                            DFA.MODIFIED,
+                            this.simulator.state.func
+                        );
+                    }
+                }
+            }
+        }
     }
     
     this.update = function() {
         this.reset_highlight();
+        
+        // Add points, if we're showing them
+        if (this.draw_points & CFG_FLAGS.SHOW_TOUCHED_POINTS) {
+            this.remove_all_points();
 
-        if (this.draw_points) {
-            // Add highlighting
             for(read of this.simulator.state.read_nodes) {
                 for (set of read.sets) {
-                    var in_out = undefined;
-                    
-                    if (set == 'meet') {
-                        in_out = (this.simulator.framework.direction == DFA.FORWARD ? 'in' : 'out');
-                    } else if (set == 'transfer') {
-                        in_out = (this.simulator.framework.direction == DFA.FORWARD ? 'out' : 'in');
-                    }
-                    
-                    if (in_out != undefined) {
-                        node = $("#graph-node-{0}-{1}".format(
-                            read.node.index,
-                            in_out
-                        )).attr('class','{0} {1} {2} {3}'.format(
-                            'node',
-                            this.simulator.state.func,
-                            "read",
-                            "highlight"
-                        ));
+                    if (set == DFA.MEET || set == DFA.TRANSFER) {
+                        var set = this.simulator.mt_to_io(set);
+                        this.add_point(read.node, set);
                     }
                 }
             }
             
             for(modified of this.simulator.state.modified_nodes) {
                 for (set of modified.sets) {
-                    var in_out = undefined;
-                    
-                    if (set == 'meet') {
-                        in_out = (this.simulator.framework.direction == DFA.FORWARD ? 'in' : 'out');
-                    } else if (set == 'transfer') {
-                        in_out = (this.simulator.framework.direction == DFA.FORWARD ? 'out' : 'in');
-                    }
-                    
-                    if (in_out != undefined) {
-                        node = $("#graph-node-{0}-{1}".format(
-                            modified.node.index,
-                            in_out
-                        )).attr('class','{0} {1} {2} {3}'.format(
-                            'node',
-                            this.simulator.state.func,
-                            "modified",
-                            "highlight"
-                        ));
+                    if (set == DFA.MEET || set == DFA.TRANSFER) {
+                        var set = this.simulator.mt_to_io(set);
+                        this.add_point(modified.node, set);
                     }
                 }
             }
-        } else {
-            // Add highlighting
-            for(read of this.simulator.state.read_nodes) {
-                $("#graph-node-{0}".format(
-                    read.node.index
-                ))
-                    .attr('class','{0} {1} {2} {3}'.format(
-                        'node',
-                        this.simulator.state.func,
-                        "read",
-                        "highlight"
-                    ));
-            }
-            
-            for(modified of this.simulator.state.modified_nodes) {
-                $("#graph-node-{0}".format(
-                    modified.node.index
-                ))
-                    .attr('class','{0} {1} {2} {3}'.format(
-                        'node',
-                        this.simulator.state.func,
-                        "modified",
-                        "highlight"
-                    ));
-            }
-        }
-        
-        // Update nodes.
-        for(node of this.simulator.cfg.nodes) {
-            _this.g.setNode('{0}'.format(node.index),
-                            {
-                                labelType: "html",
-                                label: this.node_template({content: new Handlebars.SafeString(node.toHTML())}),
-                                rx: 5,
-                                ry: 5,
-                            });
-            _this.g.node('{0}'.format(node.index)).id = 'graph-node-{0}'.format(node.index)
-        }
-
-        // Add points, if we're showing them
-        if (this.draw_points) {
-            
-            // Update nodes.
-            for(node of this.simulator.cfg.nodes) {
-                // Add in point
-                _this.g.setNode('{0}-in'.format(node.index),
-                                {
-                                    labelType: 'html',
-                                    label: this.node_template({content: new Handlebars.SafeString(node.sets[(this.simulator.framework.direction == DFA.FORWARD ? DFA.MEET : DFA.TRANSFER)].toHTML())}),
-                                    rx: 15,
-                                    ry: 15,
-                                    style: 'stroke: #9a162c'
-                                });
-                _this.g.node('{0}-in'.format(node.index)).id = 'graph-node-{0}-in'.format(node.index);
-                
-                // Add out point
-                _this.g.setNode('{0}-out'.format(node.index),
-                                {
-                                    labelType: 'html',
-                                    label: this.node_template({content: new Handlebars.SafeString(node.sets[(this.simulator.framework.direction == DFA.FORWARD ? DFA.TRANSFER : DFA.MEET)].toHTML())}),
-                                    rx: 15,
-                                    ry: 15,
-                                    style: 'stroke: #9a162c'
-                                });
-                _this.g.node('{0}-out'.format(node.index)).id = 'graph-node-{0}-out'.format(node.index)
-            }
-
-            // Update edges.
-            for(i = 0; i < this.simulator.cfg.nodes.length; i++) {
-                for(j = 0; j < this.simulator.cfg.nodes.length; j++) {
-                    if(this.simulator.cfg.adjacency[i][j] == 1) { // The edge to next exists
-                        // Add edge to in of next
-                        this.g.setEdge('{0}-out'.format(i), '{0}-in'.format(j));
-                    } else if(this.simulator.cfg.adjacency[i][j] == 0) { // The edge to next no longer exists
-                        // Remove edge to in of next
-                        this.g.removeEdge('{0}-out'.format(i), '{0}-in'.format(j));
-                    }
-                }
-                // Add edges from / to in / out points
-                this.g.setEdge('{0}-in'.format(i), '{0}'.format(i));
-                this.g.setEdge('{0}'.format(i), '{0}-out'.format(i));
-            }
-            
-        } else {
-            
-            // Update edges.
-            for(i = 0; i < this.simulator.cfg.nodes.length; i++) {
-                for(j = 0; j < this.simulator.cfg.nodes.length; j++) {
-                    if(this.simulator.cfg.adjacency[i][j] == 1) {
-                        this.g.setEdge('{0}'.format(i), '{0}'.format(j));
-                    } else if(this.simulator.cfg.adjacency[i][j] == 0) {
-                        this.g.removeEdge('{0}'.format(i), '{0}'.format(j));
-                    }
-                }
-            }
-            
-        }
+        }            
 
         // Add set value tooltips
         for(node of this.simulator.cfg.nodes) {
@@ -803,8 +955,12 @@ function CFGView(kwargs) {
                      )
                 .tipsy({ gravity: "w", opacity: 1, html: true });
         }
+
+        this.update_points();
         
         this.draw();
+
+        this.update_highlight();
 
         this.graph_properties.height = this.g.graph().height;
         this.graph_properties.width  = this.g.graph().width;
@@ -845,10 +1001,15 @@ function CFGView(kwargs) {
 
         this.svg.call(zoom);
 
-        if(this.draw_points) {
-            this.show_points();
+        this.construct_graph();
+        this.point_ids = [];
+
+        if(this.draw_points & CFG_FLAGS.SHOW_ALL_POINTS) {
+            this.show_all_points();
+        } else if(this.draw_points & CFG_FLAGS.SHOW_TOUCHED_POINTS) {
+            this.show_touched_points();
         } else {
-            this.hide_points();
+            this.show_no_points();
         }
 
         this.graph_properties = {
@@ -863,6 +1024,51 @@ function CFGView(kwargs) {
                 
         this.translate_graph();
     }
+
+    this.init_show_points_button = function() {
+        this.canvas.append(this.get_template('btn-show-points')());
+
+        if(this.draw_points & CFG_FLAGS.SHOW_ALL_POINTS) {
+            $('#btn-show-points').html("All")
+                .addClass("btn-success")
+                .removeClass("btn-info")
+                .removeClass("btn-danger");
+        } else if(this.draw_points & CFG_FLAGS.SHOW_TOUCHED_POINTS) {
+            $('#btn-show-points').html("Current")
+                .removeClass("btn-success")
+                .addClass("btn-info")
+                .removeClass("btn-danger");
+        } else {
+            $('#btn-show-points').html("None")
+                .removeClass("btn-success")
+                .removeClass("btn-info")
+                .addClass("btn-danger");
+        }
+        
+        $('#btn-show-points').on('click', function() {
+            if (_this.draw_points & CFG_FLAGS.SHOW_ALL_POINTS) {
+                _this.show_touched_points();
+                $(this).html("Current")
+                    .removeClass("btn-success")
+                    .addClass("btn-info")
+                    .removeClass("btn-danger");
+            } else if (_this.draw_points & CFG_FLAGS.SHOW_TOUCHED_POINTS) {
+                _this.show_no_points();
+                $(this).html("None")
+                    .removeClass("btn-success")
+                    .removeClass("btn-info")
+                    .addClass("btn-danger");
+            } else {
+                _this.show_all_points();
+                $(this).html("All")
+                    .addClass("btn-success")
+                    .removeClass("btn-info")
+                    .removeClass("btn-danger");
+            }
+            
+            _this.update();
+        });
+    }
     
     this.init = function() {
         this.canvas.html(this.template());
@@ -876,34 +1082,9 @@ function CFGView(kwargs) {
         this.simulator.on('update', function() {
             _this.update();
         });
-        
+
         if (this.show_points_button) {
-            this.canvas.append(this.get_template('btn-show-points')());
-            
-            if (this.draw_points) {
-                $('#btn-show-points').html("Hide Points")
-                    .addClass("btn-danger")
-                    .removeClass("btn-success");
-            } else {
-                $('#btn-show-points').html("Show Points")
-                    .removeClass("btn-danger")
-                    .addClass("btn-success");
-            }
-            
-            $('#btn-show-points').on('click', function() {
-                if (_this.draw_points) {
-                    _this.hide_points();
-                    $(this).html("Show Points")
-                        .removeClass("btn-danger")
-                        .addClass("btn-success");
-                } else {
-                    _this.show_points();
-                    $(this).html("Hide Points")
-                        .addClass("btn-danger")
-                        .removeClass("btn-success");
-                }
-                _this.update();
-            });
+            this.init_show_points_button()
         }
     }
 
@@ -1007,7 +1188,12 @@ function LatticeView(kwargs) {
             _this.g.setNode('{0}'.format(node.index),
                             {
                                 labelType: "html",
-                                label: this.node_template({content: new Handlebars.SafeString(node.value_set.toHTML())}),
+                                label: this.node_template({
+                                    content: new Handlebars.SafeString(
+                                        node.value_set.toHTML()
+                                    ),
+                                    index: node.index
+                                }),
                                 rx: 5,
                                 ry: 5,
                             });
@@ -1166,3 +1352,42 @@ function LatticeTestbedView(kwargs) {
 
 LatticeTestbedView.prototype = Object.create(SimulatorView.prototype);
 LatticeTestbedView.prototype.constructor = LatticeTestbedView
+
+function CFGTestbedView(kwargs) {
+    SimulatorView.call(this, kwargs);
+
+    this.template = Handlebars.templates['test/cfg.hbs'];
+    
+    // this.update = function() {
+
+    // }
+
+    this.reset = function() {
+        // Do nothing.
+    }
+
+    this.init = function() {
+        this.simulator.init();
+        
+        this.canvas.html(this.template());
+        
+        this.sim_controls_view = new SimControlsView({
+            canvas: '#sim-controls-canvas',
+            simulator: this.simulator,
+        });
+        
+        this.cfg_view = new CFGView({
+            canvas: '#cfg-canvas',
+            simulator: this.simulator,
+            draw_points: CFG_FLAGS.SHOW_TOUCHED_POINTS,
+        });
+
+        this.sim_controls_view.init();
+        this.cfg_view.init();
+
+        this.simulator.reset();
+    }
+}
+
+CFGTestbedView.prototype = Object.create(SimulatorView.prototype);
+CFGTestbedView.prototype.constructor = CFGTestbedView
