@@ -1,0 +1,192 @@
+# Topics Covered
+
+- Basic data-flow analysis
+  - Basic concepts: Control-flow graph, terminology, example of an
+    analysis
+
+- Different data-flows and how they work:
+  - Dominators
+  - Reaching Definitions
+  - Liveness Analysis
+  - Available Expressions
+  - Partially Available Expressions
+  - Anticipable Expressions
+  - Constant Propagation
+  - Copy Propagation
+  - Implement 4-5, more if there's time. Priority is to get all
+    features implemented, then come back and add more types of
+    data-flow later if necessary.
+
+- Generic data-flow framework
+  - Meet/transfer functions
+  - Lattices
+  - Conditions for termination?
+  - Data-flows with multiple value parameters (e.g.
+    <x, [unknown/const/never]> for constant propagation)
+
+- Round-robin iterative algorithm
+
+- Structural algorithm
+
+
+# Software Features
+
+- Data-flows:
+  - Implement as many as possible, more if there's time. Show the
+    steps / result of analysis for a given data-flow.
+
+- Lattices:
+  - Generate and display lattice for a CFG (and analysis, to determine
+    value set).
+  
+- Round-robin iterative algorithm:
+  - Table of results
+  - CFG (?)
+  - Annotations for data sets (in/out/gen/kill etc.) (only if CFG
+    shown, otherwise shown in table)
+  - Highlighting of related elements (table cells, program
+    instructions, CFG nodes)
+
+- Structural algorithm:
+  - CFG (with reductions)
+  - Annotations for data sets (in/out/gen/kill etc.)
+  - Highlighting of related elements (table cells, program
+    instructions, CFG nodes)
+
+- Teaching:
+  - Interactive step-by-step tutorial/guide for each topic
+    - Text to describe what is happening at each step, highlight
+      visual elements being discussed. Allow user input in specific
+      areas and show result of input (e.g. ask them questions and
+      accept text answers, ask them to enter an ILOC program /
+      instruction etc.)
+  - Non-interactive step-by-step tutorial/guide for each topic
+    - Text to describe what is happening at each step, highlight
+      visual elements being discussed. Don't allow user input - enter
+      input for them.
+  - Show all the information at once
+    - Highlight elements to show how concepts relate.
+  - Show only related concepts
+    - Mask out areas which are not being discussed.
+  - Sandbox: present all the controls to the user at once, let them
+    experiment.
+
+
+# Evaluation
+
+## Questions Discussed
+
+1. Is the software more effective than the lectures / textbook /
+   youtube videos / other software? Which is most effective? Which is
+   least?
+   - Use the following teaching methods on groups of students:
+     - Lecture
+     - Textbook (?)
+     - All software versions
+
+2. Does guided teaching improve test results over free experimentation?
+   - Have students use step-by-step versions & sandbox version.
+
+3. Does using the sandbox before/after teaching (or at all) improve
+   results?
+   - Have students use sandbox version of software before / after other
+     version(s) and compare results between the groups.
+
+4. What effect does guided teaching / sandbox have on those with no
+   experience vs. those with some?
+   - Ask people to rate prior knowledge before use. Compare results
+     across [experience+version] groups, e.g. [sandbox + experience]
+     vs. [guided + experience] vs. [guided + no experience] vs...
+
+5. Does showing all the visual elements together increase
+   understanding of related topics or cause information overload?
+   - Have students use versions with/without masking, compare results.
+
+6. Does allowing user input increase interaction / learning or cause
+   confusion / stump the user?
+   - Have students use versions with/without allowing user input,
+     compare results.
+
+7. Are all of the features of the program being used? Are students
+   missing some topics / elements? What effect does this have on test
+   scores?
+   - Observe the students using the software to see which features
+     they use.
+   - (Potential) add click-tracking to display heatmap / track what
+     students are looking at.
+   - Compare test results.
+   - See which elements of the software are underused.
+
+8. Which elements of the software did the students THINK were helpful?
+   Which did they think were detrimental?
+   - Collect data from user-experience survey.
+  
+9. Were the users' opinions correct? (If they said that the version
+   displaying all the elements at once was confusing, did that version
+   produce lower test scores?)
+   - Compare user-experience survey to test scores.
+
+10. Which topics did the students find difficult? How could this be
+    improved?
+   - Collect data from user-experience survey & test scores. Discuss
+     methods for improving teaching of those topics. Examine what
+     worked from topics where students performed well.
+
+Things to bear in mind:
+
+  - Consistency: is all of the visual/written content designed
+    consistently? Inconsistencies distract the user and detract from
+    the learning experience.
+  - Visibility: are all of the elements clearly visible and being
+    used?
+  - Learnability: Does the system have a low learning curve (in terms
+    of order or topics given, and also interaction with the software)
+  - Predictability: Does the system give a predictable response to
+    user interaction?
+  - Feedback: Is the feedback from the user's actions easy to
+    comprehend? Failure to provide comprehensible feedback could
+    result in frustration on the user's part.
+
+These can all be discussed during the evaluation of the UX.
+
+
+## Participant Requirements
+
+6-12 students use the sandbox version, then use the guided
+version. 3-6 have prior experience.
+
+6-12 students use one of the guided versions, then use the sandbox
+version. 3-6 have prior experience. Repeat for each of 4 guided
+versions.
+
+In total: 30 - 60 students participate, 15 - 30 of whom attended the
+lectures / were given some instruction beforehand (by me, by Youtube
+or by Hugh - need to decide on a standard method later). All students
+are asked questions about prior experience, other factors if required
+(for categorization). Some students then take a UX survey.
+
+
+## Material Requirements
+
+- 5 versions of software (as described above).
+- 2 tests: one taken after the first piece of software, one taken
+  after the second.
+- User questionnaire (ask details about prior experience etc.)
+- User experience survey.
+
+
+# Hugh Notes
+
+- Do basic blocks before structural
+- Video people using the software
+- E-mail psychology department: see e-mail from Hugh
+- Find out who does HCI research
+- Metrics like:
+  - e.g. how many lines
+
+
+- How long does it take to download / run / install
+- Large input data - does it slow down?
+- How big is the screen?
+- Get more advice from HCI/Psych! What kind of metrics can I get?
+- 
