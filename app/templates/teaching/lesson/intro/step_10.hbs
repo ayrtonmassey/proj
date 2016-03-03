@@ -1,0 +1,12 @@
+<p>Now let's work out \(\text{Out}(n_0)\):</p>
+
+<p>
+    \begin{align}
+    \text{Out}(n_0) &= \text{DefGen}(n_0) \cup \big{(}\text{In}(n_0) \setminus \text{DefKill}(n_0)\big{)} \\
+    \text{Out}(n_0) &= \{ {\tt rx_0} \} \cup \big{(}\emptyset \setminus \{ {\tt rx_i} : \forall i \neq 1 \}\big{)} \\
+    \text{Out}(n_0) &= \{ {\tt rx_0} \} \cup \emptyset \\
+    \text{Out}(n_0) &= \{ {\tt rx_0} \}
+    \end{align}
+</p>
+
+<p>The assignment to \({\tt rx}\) {{#definition "definition_generated"}}generates{{/definition}} the definition \({\tt rx_1}\). No values are flowing in and the node doesn't kill any definitions, so we're left with \( \{ {\tt rx_1} \} \)!</p>.

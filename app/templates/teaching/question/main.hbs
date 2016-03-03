@@ -1,10 +1,12 @@
-{{#each question}}
-    <p>{{this}}</p>
-{{/each}}
-<div class="col-xs-12 answer-grid">
-    {{#each answers}}
-        <button class="btn btn-primary btn-answer {{#if this.correct}}correct{{else}}incorrect{{/if}}">
-            {{this.text}}
-        </button>
+<div class="col-xs-12">
+    {{#each question}}
+        <p>{{this}}</p>
     {{/each}}
+    <div class="answer-grid">
+        {{#each answers}}
+            <button class="btn btn-primary btn-answer {{#if this.correct}}correct{{else}}incorrect{{/if}}">
+                {{this.text}}
+            </button>
+        {{/each}}
+    </div>
 </div>

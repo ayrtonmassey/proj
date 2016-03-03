@@ -1,0 +1,2 @@
+    loadI 7     => rx
+    addI  rx, 1 => rx

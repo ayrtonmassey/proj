@@ -1,0 +1,7 @@
+    loadI  2      => ra
+    loadI  3      => rb
+L0: cbr_LE ra, rb -> L1, L2
+L1: addI   ra, 1  => ra
+    jump   L3
+L2: addI   rb, 1  => rb
+L3: jump   L0

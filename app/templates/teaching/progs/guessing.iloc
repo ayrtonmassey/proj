@@ -1,0 +1,10 @@
+    load   rx     => rx
+    loadI  50     => rg
+L0: div    rg, 2  => rt
+    cbr_EQ rg, rx -> L5, L1
+L1: cbr_LT rg, rx -> L2, L3
+L2: add    rg, rt => rg
+    jump   L4
+L3: sub    rg, rt => rg
+L4: jump   L0
+L5: store  rx     => rx

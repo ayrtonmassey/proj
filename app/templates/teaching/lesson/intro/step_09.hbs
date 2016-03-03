@@ -1,0 +1,14 @@
+<p>Let's try working out the sets for this graph. Remember the equation for \(\text{In}(n)\):</p>
+
+<p>\[\text{In}(n) = \bigcup_{p \in preds} \text{Out}(p)\]</p>
+
+<p>This means, "take the union of \(\text{Out}(p)\) for all predecessors \(p\) of \(n\)". There are no predecessors for \(n_0\):</p>
+
+<p>
+    \begin{align}
+    \text{In}(n_0) &= \bigcup_{p \in \emptyset} \text{Out}(p) \\
+                   &= \emptyset \\
+    \end{align}
+</p>
+
+<p>So the answer is the <strong>empty set</strong> (written \(\emptyset\) or \(\{\}\)).</p>

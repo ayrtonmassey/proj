@@ -1,0 +1,10 @@
+<p>We use a set of equations called {{#definition "dataflow_equation"}}data-flow equations{{/definition}} to calculate the values at each point.</p>
+
+<p>Here are the equations for {{#definition "reaching_definition"}}reaching definitions{{/definition}}:</p>
+
+<p>
+    \begin{align}
+    \text{In}(n)  &= \bigcup_{p \in preds} \text{Out}(p) \\
+    \text{Out}(n) &= \text{DefGen}(n) \cup \big{(}\text{In}(n) \setminus \text{DefKill}(n)\big{)}
+    \end{align}
+</p>

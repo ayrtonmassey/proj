@@ -3,5 +3,5 @@ Handlebars.registerHelper('toHTML', function(item) {
 });
 
 Handlebars.registerHelper('definition', function(term, options) {
-    return new Handlebars.SafeString('<abbr title="{0}">{1}</abbr>'.format(DICTIONARY[term], options.fn()));
+    return new Handlebars.SafeString('<abbr title="{0}"><strong>{1}</strong></abbr>'.format(DICTIONARY[term], options.fn()));
 });

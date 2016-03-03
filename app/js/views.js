@@ -55,6 +55,13 @@ function MainView(kwargs) {
                 title: "Branches & Loops",
                 next_lesson: -1,
             }
+        },
+        {
+            constructor: LessonIntroView,
+            kwargs: {
+                title: "Interactive Intro",
+                next_lesson: -1,
+            }
         }
     ]
     

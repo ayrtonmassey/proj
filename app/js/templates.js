@@ -92,17 +92,17 @@ templates['simulator/lattice/node.hbs'] = template({"compiler":[7,">= 4.0.0"],"m
     + "</tr>\n        </tbody>\n    </table>\n</div>\n";
 },"useData":true});
 templates['teaching/question/main.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
-    return "    <p>"
+    return "        <p>"
     + container.escapeExpression(container.lambda(depth0, depth0))
     + "</p>\n";
 },"3":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "        <button class=\"btn btn-primary btn-answer "
+  return "            <button class=\"btn btn-primary btn-answer "
     + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.correct : depth0),{"name":"if","hash":{},"fn":container.program(4, data, 0),"inverse":container.program(6, data, 0),"data":data})) != null ? stack1 : "")
-    + "\">\n            "
+    + "\">\n                "
     + container.escapeExpression(container.lambda((depth0 != null ? depth0.text : depth0), depth0))
-    + "\n        </button>\n";
+    + "\n            </button>\n";
 },"4":function(container,depth0,helpers,partials,data) {
     return "correct";
 },"6":function(container,depth0,helpers,partials,data) {
@@ -110,13 +110,17 @@ templates['teaching/question/main.hbs'] = template({"1":function(container,depth
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : {};
 
-  return ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.question : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "<div class=\"col-xs-12 answer-grid\">\n"
+  return "<div class=\"col-xs-12\">\n"
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.question : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "    <div class=\"answer-grid\">\n"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.answers : depth0),{"name":"each","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "</div>\n";
+    + "    </div>\n</div>\n";
 },"useData":true});
 templates['teaching/question/canvas.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div id=\"question-canvas\" class=\"question row\">\n</div>";
+},"useData":true});
+templates['teaching/progs/guessing.iloc'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "    load   rx     => rx\n    loadI  50     => rg\nL0: div    rg, 2  => rt\n    cbr_EQ rg, rx -> L5, L1\nL1: cbr_LT rg, rx -> L2, L3\nL2: add    rg, rt => rg\n    jump   L4\nL3: sub    rg, rt => rg\nL4: jump   L0\nL5: store  rx     => rx";
 },"useData":true});
 templates['teaching/lesson/00/main.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"row\">\n    <div class=\"col-xs-6 lesson-step\">\n        <div class=\"row\">\n            <div id=\"text\" class=\"col-xs-12\">\n            </div>\n        </div>\n        <nav class=\"row\">\n            <button id=\"btn-prev\" class=\"btn btn-primary\">Prev</button>\n            <button id=\"btn-next\" class=\"pull-right btn btn-primary\">Next</button>\n        </nav>\n    </div>\n    <div id=\"cfg-canvas\" class=\"col-xs-6\">\n    </div>\n</div>\n";
@@ -351,6 +355,165 @@ templates['teaching/lesson/01/step_13.hbs'] = template({"compiler":[7,">= 4.0.0"
 },"useData":true});
 templates['teaching/lesson/01/step_15.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<p>However, <strong>we're not done yet</strong>. When we computed each set, their values <strong>changed</strong>.</p>\n";
+},"useData":true});
+templates['teaching/lesson/intro/main.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<div class=\"row\">\n    <div class=\"col-xs-6 lesson-step\">\n        <div class=\"row\">\n            <div id=\"text\" class=\"col-xs-12\">\n            </div>\n        </div>\n        <nav class=\"row\">\n            <button id=\"btn-prev\" class=\"btn btn-primary\">Prev</button>\n            <button id=\"btn-next\" class=\"pull-right btn btn-primary\">Next</button>\n        </nav>\n    </div>\n    <div id=\"cfg-canvas\" class=\"col-xs-6\">\n    </div>\n</div>\n";
+},"useData":true});
+templates['teaching/lesson/intro/step_11.iloc'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "addI rx, 1 => ra";
+},"useData":true});
+templates['teaching/lesson/intro/step_12.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<p>Now try this question!</p>\n";
+},"useData":true});
+templates['teaching/lesson/intro/step_11_ans.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<p>Correct! No values are flowing in to \\(n_0\\), so the \\(\\text{In}\\) set is the empty set.</p>\n";
+},"useData":true});
+templates['teaching/lesson/intro/step_09.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<p>Let's try working out the sets for this graph. Remember the equation for \\(\\text{In}(n)\\):</p>\n\n<p>\\[\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)\\]</p>\n\n<p>This means, \"take the union of \\(\\text{Out}(p)\\) for all predecessors \\(p\\) of \\(n\\)\". There are no predecessors for \\(n_0\\):</p>\n\n<p>\n    \\begin{align}\n    \\text{In}(n_0) &= \\bigcup_{p \\in \\emptyset} \\text{Out}(p) \\\\\n                   &= \\emptyset \\\\\n    \\end{align}\n</p>\n\n<p>So the answer is the <strong>empty set</strong> (written \\(\\emptyset\\) or \\(\\{\\}\\)).</p>\n";
+},"useData":true});
+templates['teaching/lesson/intro/step_08.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "data-flow equations";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "reaching definitions";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
+
+  return "<p>We use a set of equations called "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"dataflow_equation",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " to calculate the values at each point.</p>\n\n<p>Here are the equations for "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"reaching_definition",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ":</p>\n\n<p>\n    \\begin{align}\n    \\text{In}(n)  &= \\bigcup_{p \\in preds} \\text{Out}(p) \\\\\n    \\text{Out}(n) &= \\text{DefGen}(n) \\cup \\big{(}\\text{In}(n) \\setminus \\text{DefKill}(n)\\big{)}\n    \\end{align}\n</p>\n";
+},"useData":true});
+templates['teaching/lesson/intro/step_11.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<p>Now it's your turn. Look at the graph on the right, then answer the question below!</p>\n\n";
+},"useData":true});
+templates['teaching/lesson/intro/step_14.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<p>We can use the same equations to work out \\(\\text{In}(n_1)\\):</p>\n\n<p>\n    \\begin{align}\n    \\text{In}(n_1) &= \\bigcup_{p \\in \\{n_1\\}} \\text{Out}(p) \\\\\n                   &= \\text{Out}(n_1) \\\\\n                   &= \\{ {\\tt rx_1} \\} \\\\\n    \\end{align}\n</p>\n\n<p>Since \\(n_0\\) is a predecessor of \\(n_1\\), the values from \\(\\text{Out}(n_1)\\) <strong>flow into</strong> \\(n_1\\), so we are left with \\(\\{ {\\tt rx_1} \\}\\).</p>\n";
+},"useData":true});
+templates['teaching/lesson/intro/step_03.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<p>Normal instructions such as <code>add</code>, <code>load</code>, and <code>store</code> usually only have <strong>one outgoing edge</strong>, leading to the next instruction in the code.</p>\n";
+},"useData":true});
+templates['teaching/lesson/intro/step_10.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "generates";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<p>Now let's work out \\(\\text{Out}(n_0)\\):</p>\n\n<p>\n    \\begin{align}\n    \\text{Out}(n_0) &= \\text{DefGen}(n_0) \\cup \\big{(}\\text{In}(n_0) \\setminus \\text{DefKill}(n_0)\\big{)} \\\\\n    \\text{Out}(n_0) &= \\{ {\\tt rx_0} \\} \\cup \\big{(}\\emptyset \\setminus \\{ {\\tt rx_i} : \\forall i \\neq 1 \\}\\big{)} \\\\\n    \\text{Out}(n_0) &= \\{ {\\tt rx_0} \\} \\cup \\emptyset \\\\\n    \\text{Out}(n_0) &= \\{ {\\tt rx_0} \\}\n    \\end{align}\n</p>\n\n<p>The assignment to \\({\\tt rx}\\) "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || helpers.helperMissing).call(depth0 != null ? depth0 : {},"definition_generated",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " the definition \\({\\tt rx_1}\\). No values are flowing in and the node doesn't kill any definitions, so we're left with \\( \\{ {\\tt rx_1} \\} \\)!</p>.\n";
+},"useData":true});
+templates['teaching/lesson/intro/step_00.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<h1>Introduction</h1>\n\n<p>Welcome to the Data-Flow Analysis Tutor! In this tutorial, you'll learn:</p>\n\n<ul>\n    <li>What data-flow analysis is and why it is useful.</li>\n    <li>How to perform a simple data-flow analysis.</li>\n</ul>\n\n<p>To begin, please click the <em>Next</em> button.</p>\n";
+},"useData":true});
+templates['teaching/lesson/intro/step_07.iloc'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "loadI 7 => rx";
+},"useData":true});
+templates['teaching/lesson/intro/step_12_ans.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "generates";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<p>Correct! The assignment to \\({\\tt ra}\\) "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || helpers.helperMissing).call(depth0 != null ? depth0 : {},"definition_generated",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " the definition \\({\\tt ra_1}\\). No values are flowing in and the node doesn't kill any definitions, so we're left with \\( \\{ {\\tt ra_1} \\} \\)!</p>\n";
+},"useData":true});
+templates['teaching/lesson/intro/step_07.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<p>When we talk about <strong style=\"color: #9a162c\">points</strong> in a CFG, we mean the points where control flows in and out of nodes in the graph, referred to as <strong>in</strong> and <strong>out</strong>.</p>\n";
+},"useData":true});
+templates['teaching/lesson/intro/step_01.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "Data-flow analysis";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "control-flow graph";
+},"5":function(container,depth0,helpers,partials,data) {
+    return "Compilers";
+},"7":function(container,depth0,helpers,partials,data) {
+    return "optimizing";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
+
+  return "<h1>What is Data-Flow Analysis?</h1>\n\n<p>"
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"dataflow_analysis",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " is a technique for gathering information at various points in a "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"control_flow_graph",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ". "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"compiler",{"name":"definition","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " perform data-flow analysis to help them make decisions when "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"optimizing_compiler",{"name":"definition","hash":{},"fn":container.program(7, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " programs.</p>\n";
+},"useData":true});
+templates['teaching/lesson/intro/step_13.iloc'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "    loadI 7     => rx\n    addI  rx, 1 => rx";
+},"useData":true});
+templates['teaching/lesson/intro/step_02.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "control-flow graph";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "CFG";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
+
+  return "<h1>Control-Flow Graphs</h1>\n\n<p>To perform data-flow analysis, we need to create a "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"control_flow_graph",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " or "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"cfg",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ". A control-flow graph represents the possible execution paths in a program. Edges connect instructions which are executed in sequence.<p>\n";
+},"useData":true});
+templates['teaching/lesson/intro/step_06.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "data-flow analysis";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "reaching definitions";
+},"5":function(container,depth0,helpers,partials,data) {
+    return "generated";
+},"7":function(container,depth0,helpers,partials,data) {
+    return "killed";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
+
+  return "<h1>Reaching Definitions</h1>\n\n<p>One form of "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"data_flow_analysis",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " is "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"reaching_definition",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ". A definition is said to <strong>reach</strong> a point in our control-flow graph if there exists a path from where it was defined (or "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"definition_generated",{"name":"definition","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ") to that point along which it is not overwritten (or "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"definition_killed",{"name":"definition","hash":{},"fn":container.program(7, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ").</p>\n";
+},"useData":true});
+templates['teaching/lesson/intro/step_04.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "Branching";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<p>"
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || helpers.helperMissing).call(depth0 != null ? depth0 : {},"branch",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " instructions such as <code>cbr</code>, <code>cmp_GE</code>, and <code>jump</code> have <strong>multiple outgoing edges</strong>, one for each instruction we might jump to.</p>\n";
+},"useData":true});
+templates['teaching/lesson/intro/example.iloc'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "    loadI  2      => ra\n    loadI  3      => rb\nL0: cbr_LE ra, rb -> L1, L2\nL1: addI   ra, 1  => ra\n    jump   L3\nL2: addI   rb, 1  => rb\nL3: jump   L0\n";
+},"useData":true});
+templates['teaching/lesson/intro/step_05.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "control-flow graph";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<p>On the right is the "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || helpers.helperMissing).call(depth0 != null ? depth0 : {},"control_flow_graph",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " for a simple program (shown below).</p>\n";
+},"useData":true});
+templates['teaching/lesson/intro/step_13.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<p>Let's make things more complicated. This time, we have a CFG with two nodes. The sets for \\(n_0\\) have been worked out for us.</p>\n";
+},"useData":true});
+templates['teaching/lesson/intro/step_15.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "generates";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "kills";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
+
+  return "<p>Now let's work out \\(\\text{Out}(n_1)\\):</p>\n\n<p>\n    \\begin{align}\n    \\text{Out}(n_1) &= \\text{DefGen}(n_1) \\cup \\big{(}\\text{In}(n_1) \\setminus \\text{DefKill}(n_1)\\big{)} \\\\\n    \\text{Out}(n_1) &= \\{ {\\tt rx_2} \\} \\cup \\big{(} \\{ {\\tt rx_1} \\} \\setminus \\{ {\\tt rx_i} : \\forall i \\neq 1 \\}\\big{)} \\\\\n    \\text{Out}(n_1) &= \\{ {\\tt rx_2} \\} \\cup \\emptyset \\\\\n    \\text{Out}(n_1) &= \\{ {\\tt rx_2} \\}\n    \\end{align}\n</p>\n\n<p>The assignment to \\({\\tt rx}\\) "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"definition_generated",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " the definition \\({\\tt rx_2}\\). This definition overwrites (and "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"definition_killed",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ") \\({\\tt rx_1}\\) so we're left with \\( \\{ {\\tt rx_2} \\} \\)!</p>\n";
 },"useData":true});
 templates['test/cfg.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"row\">\n    <div id=\"left-column\" class=\"col-xs-3\">\n        <div class=\"row\">\n            <div id=\"sim-controls-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n    </div>\n    <div id=\"right-column\" class=\"col-xs-9\">\n        <div class=\"row flex flex-max\">\n            <div id=\"cfg-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n    </div>\n</div>\n";

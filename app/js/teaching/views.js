@@ -8,6 +8,10 @@ function TutorialView(kwargs) {
     this.clear = function() {
         throw ReferenceError("clear is not defined in class {0}".format(_this.constructor.name));
     }
+
+    this.update_math = function() {
+        throw ReferenceError("update_math is not defined in class {0}".format(_this.constructor.name));
+    }
     
     this.next = function() {
         if (this.step < this.steps.length - 1) {
@@ -20,6 +24,8 @@ function TutorialView(kwargs) {
                 this.prev_button.prop('disabled', false);
             }
         }
+
+        this.update_math();
     }
 
     this.prev = function() {
@@ -31,6 +37,8 @@ function TutorialView(kwargs) {
         if (this.step < this.steps.length) {
             this.next_button.prop('disabled', false);
         }
+
+        this.update_math();
     }
 
     this.reset = function() {
@@ -90,6 +98,14 @@ function LessonTEMPLATEView(kwargs) {
 
     this.template_root = 'teaching/lesson/TEMPLATE/';
     this.template = this.get_template('main');
+
+    this.clear = function() {
+        _this.text.html("");
+    }
+
+    this.update_math = function() {
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
+    }
         
     this.steps = [
         function step_00() {
@@ -129,6 +145,10 @@ function Lesson00View(kwargs) {
     
     this.clear = function() {
         _this.text.html("");
+    }
+
+    this.update_math = function() {
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
     }
     
     this.steps = [
@@ -231,7 +251,6 @@ function Lesson00View(kwargs) {
             _this.cfg_view.update();
             
             _this.text.append(_this.get_template('step_06')());
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
 
             _this.cfg_view.g = new dagreD3.graphlib.Graph({compound:true})
                 .setGraph({})
@@ -324,12 +343,10 @@ function Lesson00View(kwargs) {
             _this.cfg_view.reset();
             
             _this.text.append(_this.get_template('step_07')());
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_08() {
             _this.clear();
             _this.text.append(_this.get_template('step_08')());
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_09() {
             _this.clear();
@@ -337,45 +354,38 @@ function Lesson00View(kwargs) {
         },
         function step_10() {
             _this.text.append(_this.get_template('step_10')());
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
 
             _this.simulator.step_forward();
         },
         function step_11() {
             _this.text.append(_this.get_template('step_11')());
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
 
             _this.simulator.step_forward();
         },
         function step_12() {
             _this.clear();
             _this.text.append(_this.get_template('step_12')());
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
 
             _this.simulator.step_forward();
         },
         function step_13() {
             _this.text.append(_this.get_template('step_13')());
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
 
             _this.simulator.step_forward();
         },
         function step_14() {
             _this.clear();
             _this.text.append(_this.get_template('step_14')());
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
 
             _this.simulator.step_forward();
         },
         function step_15() {
             _this.text.append(_this.get_template('step_15')());
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
 
             _this.simulator.step_forward();
         },
         function step_16() {
             _this.text.append(_this.get_template('step_16')());
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_17() {
             _this.clear();
@@ -410,16 +420,12 @@ function Lesson00View(kwargs) {
             _this.text.append(_this.get_template('step_18')());
             
             _this.simulator.step_forward();
-            
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_19() {
             _this.clear();
             _this.text.append(_this.get_template('step_19')());
 
             _this.simulator.fast_forward();
-            
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_20() {
             _this.clear();
@@ -478,6 +484,10 @@ function Lesson01View(kwargs) {
     this.clear = function() {
         _this.text.html("");
     }
+
+    this.update_math = function() {
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
+    }
     
     this.steps = [
         function step_00() {
@@ -500,7 +510,6 @@ function Lesson01View(kwargs) {
             
             _this.text.html(_this.get_template('step_01')());
             
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_02() {
             // Update the text
@@ -515,14 +524,12 @@ function Lesson01View(kwargs) {
             
             // Update the text
             _this.text.append(_this.get_template('step_03')());
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_04() {
             _this.simulator.step_forward();
             
             // Update the text
             _this.text.append(_this.get_template('step_04')());
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_05() {
             _this.clear();
@@ -531,14 +538,12 @@ function Lesson01View(kwargs) {
             
             // Update the text
             _this.text.append(_this.get_template('step_05')());
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_06() {
             _this.simulator.step_forward();
             
             // Update the text
             _this.text.append(_this.get_template('step_06')());
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_07() {
             _this.clear();
@@ -555,7 +560,6 @@ function Lesson01View(kwargs) {
             
             // Update the text
             _this.text.append(_this.get_template('step_07')());
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_08() {
             _this.cfg_view.show_touched_points();
@@ -564,14 +568,12 @@ function Lesson01View(kwargs) {
             
             // Update the text
             _this.text.append(_this.get_template('step_08')());
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_09() {
             _this.simulator.fast_forward();
             
             // Update the text
             _this.text.append(_this.get_template('step_09')());
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_10() {
             // Update the text
@@ -582,7 +584,6 @@ function Lesson01View(kwargs) {
             _this.simulator.sim_code(iloc_code);
             
             _this.text.html(_this.get_template('step_10')());
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_11() {
             _this.simulator.advance(6);
@@ -603,7 +604,6 @@ function Lesson01View(kwargs) {
             // Update the text
             _this.text.append(_this.get_template('step_12')());
 
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_13() {
             _this.cfg_view.show_touched_points();
@@ -612,8 +612,6 @@ function Lesson01View(kwargs) {
             
             // Update the text
             _this.text.append(_this.get_template('step_13')());
-
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_14() {
             // Update the text
@@ -622,8 +620,6 @@ function Lesson01View(kwargs) {
             _this.simulator.advance(9);
             
             _this.text.append(_this.get_template('step_14')());
-
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_15() {
             _this.cfg_view.show_no_points();
@@ -632,16 +628,12 @@ function Lesson01View(kwargs) {
             _this.cfg_view.reset_highlight();
 
             _this.text.append(_this.get_template('step_15')());
-
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_16() {
             _this.cfg_view.show_touched_points();
             _this.simulator.step_forward();
 
             _this.text.append(_this.get_template('step_16')());
-
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_17() {
             _this.cfg_view.show_no_points();
@@ -652,16 +644,12 @@ function Lesson01View(kwargs) {
             _this.cfg_view.reset_highlight();
 
             _this.text.append(_this.get_template('step_17')());
-
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_18() {
             _this.cfg_view.show_touched_points();
             _this.simulator.step_forward();
 
             _this.text.append(_this.get_template('step_18')());
-
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_19() {
             _this.clear();
@@ -670,7 +658,6 @@ function Lesson01View(kwargs) {
 
             _this.text.append(_this.get_template('step_19')());
 
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_20() {
             _this.simulator.step_forward();
@@ -697,8 +684,6 @@ function Lesson01View(kwargs) {
             _this.simulator.step_forward();
 
             _this.text.append(_this.get_template('step_27')());
-
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);            
         },
         function step_28() {
             _this.simulator.play();
@@ -707,8 +692,6 @@ function Lesson01View(kwargs) {
             _this.simulator.fast_forward();
 
             _this.text.append(_this.get_template('step_29')());
-
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
         },
         function step_30() {
             _this.clear();
