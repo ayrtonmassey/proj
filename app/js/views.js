@@ -67,6 +67,13 @@ function MainView(kwargs) {
             constructor: LessonRoundRobinView,
             kwargs: {
                 title: "Round Robin Algorithm",
+                next_lesson: 'generic_framework',
+            }
+        },
+        generic_framework: {
+            constructor: LessonGenericFrameworkView,
+            kwargs: {
+                title: "Generic Framework",
                 next_lesson: undefined,
             }
         }
@@ -219,17 +226,15 @@ function MainView(kwargs) {
 
         if(show_simulator=='' || show_simulator==true) {
             this.show_round_robin_simulator();
-        } else if (show_lesson) {
-            if (typeof show_lesson == 'string' && (show_lesson in this.lessons)) {
-                var step = undefined;
-                if (show_lesson_step) {
-                    step = Number(show_lesson_step);
-                    if (!(typeof step == 'number' && Math.floor(step)==step)) {
-                        step=undefined;
-                    }
+        } else if (show_lesson && (show_lesson in this.lessons)) {
+            var step = undefined;
+            if (show_lesson_step) {
+                step = Number(show_lesson_step);
+                if (!(typeof step == 'number' && Math.floor(step)==step)) {
+                    step=undefined;
                 }
-                this.show_lesson(show_lesson, step);
             }
+            this.show_lesson(show_lesson, step);
         } else if (show_testbed) {
             this.show_testbed(show_testbed);
         } else {

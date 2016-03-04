@@ -1,0 +1,14 @@
+<p>Our <strong>generic framework</strong> has five components:</p>
+
+<ul>
+    <li>A {{#definition "domain"}}domain{{/definition}} of values, such as {{#definition "variable"}}variables{{/definition}}, {{#definition "variable_definition"}}definitions{{/definition}}, or {{#definition "expression"}}expressions{{/definition}}.</li>
+    <li>A {{#definition "direction"}}direction{{/definition}} in which data flows, either {{#definition "forward_analysis"}}forward{{/definition}} or {{#definition "backward_analysis"}}backward{{/definition}}.</li>
+    <li>A set of {{#definition "dataflow_equation"}}data-flow equations{{/definition}}:
+        <ul>
+            <li>A set of {{#definition "transfer_function"}}transfer functions{{/definition}} \(F\) in which define how data is propagated <strong>through</strong> a node.</li>
+            <li>A {{#definition "meet_function"}}meet function{{/definition}} which defines how data is is propagated <strong>between</strong> nodes.</li>
+        </ul>
+    </li>
+    <li>A {{#definition "boundary"}}boundary{{/definition}} which defines the values at the <strong>starting point</strong> of the analysis.</li>
+    <li>A set of <strong>initial values</strong> for each point.</li>
+</ul>

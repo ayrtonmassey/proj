@@ -5,6 +5,8 @@ var DICTIONARY = {
     // Reaching Definitions
     reaching_definition: "A definition of a variable 'reaches' a block if there exists at least one path from its definition to the block along which it is not overwritten.",
     variable_definition: "A variable is defined when a new value is stored in it.",
+    variable: "In computing, a variable is a data item which may take on more than one value during the execution of a program.",
+    expression: "An expression is a collection of variables and operators which together express a value, such as x+y or reversed(list).",
     definition_killed: "A definition is killed when the variable it belongs to is re-defined.",
     definition_generated: "A definition is generated when a variable is defined.",
     // Liveness Analysis
@@ -26,6 +28,13 @@ var DICTIONARY = {
     ordering: "An ordering defines the order in which we visit nodes in a graph or tree, such as post-order, in-order or pre-order.",
     successor: "A nodes's successors are the nodes which come after it, i.e. nodes which have edges to them from this node.",
     efficiency: "How quickly an algorithm or process can be executed. A faster algorithm is said to be more efficient.",
+    direction: "The direction in which data flows; for example, if values are propagated from the entry of the CFG to the exit the analysis is in the forward direction.",
     forward_analysis: "An analysis in which the values at a node depend upon the values at that node's predecessors, such as reaching definitions.",
     backward_analysis: "An analysis in which the values at a node depend upon the values at that node's successors, such as liveness analysis.",
+    meet_semilattice: "A structure which defines the ordering of values according to a meet function.",
+    terminate: "An algorithm terminates if there is some condition under which it will stop executing. The opposite of becoming stuck in an infinite loop.",
+    meet_function: "A function which defines how values are propagated between nodes in a control-flow graph.",
+    transfer_function: "A function which defines how values are propagated through nodes in a control-flow graph.",
+    domain: "The set of values to be considered.",
+    boundary: "In a generic data-flow framework, the boundary defines the initial value of the starting point of the analysis.",
 }

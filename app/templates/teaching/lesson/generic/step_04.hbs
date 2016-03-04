@@ -1,0 +1,36 @@
+<p>We can define {{#definition "reaching_definitions"}}reaching definitions{{/definition}} using our <strong>generic framework</strong>:</p>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr id="framework-domain">
+            <td>Domain</td>
+            <td>Definitions</td>
+        </tr>
+        <tr id="framework-direction">
+            <td>Direction</td>
+            <td>Forward</td>
+        </tr>
+        <tr id="framework-transfer">
+            <td>Transfer Function</td>
+            <td>\(\small{F(n) = \{ \text{DefGen}(n) \cup (\text{In}(n) \setminus \text{DefKill}(n)) \, : \, \forall n \}}\)</td>
+        </tr>
+        <tr id="framework-meet">
+            <td>Meet Function</td>
+            <td>\(\small{\text{In}(n) = \bigcup_{p \in preds} \text{Out}(p)}\)</td>
+        </tr>
+        <tr id="framework-boundary">
+            <td>Boundary</td>
+            <td>\(\small{\text{In}(\small{\text{ENTRY}}) = \emptyset}\)</td>
+        </tr>
+        <tr id="framework-initial">
+            <td>Initial Value</td>
+            <td>\(\small{\emptyset}\)</td>
+        </tr>
+    </tbody>
+</table>
