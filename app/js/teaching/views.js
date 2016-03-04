@@ -21,8 +21,6 @@ function TutorialView(kwargs) {
             this.steps[this.step]();
         }
         if (this.step >= this.steps.length - 1) {
-            console.log(this.step);
-            console.log(this.steps.length);
             this.next_button.prop('disabled', true);
         }
         if (this.step > 0) {

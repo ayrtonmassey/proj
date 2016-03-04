@@ -41,35 +41,42 @@ function MainView(kwargs) {
     this.view_canvas = $(kwargs.view_canvas);
     this.view_canvas_selector = kwargs.view_canvas;
 
-    this.lessons = [
-        {
-            constructor: Lesson00View,
-            kwargs: {
-                title: "Introduction",
-                next_lesson: 1,
-            }
-        },
-        {
-            constructor: Lesson01View,
-            kwargs: {
-                title: "Branches & Loops",
-                next_lesson: -1,
-            }
-        },
-        {
+    this.lessons = {
+        // {
+        //     constructor: Lesson00View,
+        //     kwargs: {
+        //         title: "Introduction",
+        //         next_lesson: 1,
+        //     }
+        // },
+        // {
+        //     constructor: Lesson01View,
+        //     kwargs: {
+        //         title: "Branches & Loops",
+        //         next_lesson: -1,
+        //     }
+        // },
+        intro: {
             constructor: LessonIntroView,
             kwargs: {
-                title: "Interactive Intro",
-                next_lesson: -1,
+                title: "Introduction",
+                next_lesson: 'roundrobin',
+            }
+        },
+        roundrobin: {
+            constructor: LessonRoundRobinView,
+            kwargs: {
+                title: "Round Robin Algorithm",
+                next_lesson: undefined,
             }
         }
-    ]
+    }
     
     this.show_lesson = function(lesson_id, step) {
         this.view_canvas.html("");
         this.view_canvas.show();
 
-        if (lesson_id < this.lessons.length) {
+        if (lesson_id in this.lessons) {
             var lesson = this.lessons[lesson_id];
             this.view = new lesson.constructor(
                 $.extend(lesson.kwargs,
@@ -121,7 +128,7 @@ function MainView(kwargs) {
             framework:  iloc_reaching_definitions,
             ordering:   DFA.REVERSE_POSTORDER,
             code:       iloc_code,
-            play_speed: 100,
+            play_speed: 1000,
         });
         
         this.view = new RoundRobinSimulatorView({
@@ -158,7 +165,7 @@ function MainView(kwargs) {
             framework:  iloc_reaching_definitions,
             ordering:   DFA.REVERSE_POSTORDER,
             code:       iloc_code,
-            play_speed: 100,
+            play_speed: 1000,
         });
         
         this.view = new LatticeTestbedView({
@@ -213,8 +220,7 @@ function MainView(kwargs) {
         if(show_simulator=='' || show_simulator==true) {
             this.show_round_robin_simulator();
         } else if (show_lesson) {
-            var lesson_num = Number(show_lesson);
-            if (typeof lesson_num == 'number' && (Math.floor(lesson_num) == lesson_num)) {
+            if (typeof show_lesson == 'string' && (show_lesson in this.lessons)) {
                 var step = undefined;
                 if (show_lesson_step) {
                     step = Number(show_lesson_step);
@@ -222,7 +228,7 @@ function MainView(kwargs) {
                         step=undefined;
                     }
                 }
-                this.show_lesson(lesson_num, step);
+                this.show_lesson(show_lesson, step);
             }
         } else if (show_testbed) {
             this.show_testbed(show_testbed);
@@ -276,11 +282,11 @@ function MenuView(kwargs) {
         if (this.lessons) {
             this.menu.append(this.lesson_menu_template());
             this.lesson_menu = $('#lesson-menu');
-            for(var i = 0; i < this.lessons.length; i++) {
-                var button_id = 'btn-lesson-{0}'.format(i);
+            for(id in this.lessons) {
+                var button_id = 'btn-lesson-{0}'.format(id);
                 // Create the button
                 this.lesson_menu.append(
-                    this.lesson_button_template({id: button_id, text: this.lessons[i].kwargs.title, lesson: i})
+                    this.lesson_button_template({id: button_id, text: this.lessons[id].kwargs.title, lesson: id})
                 );
                 // Set up on click action
                 $('#{0}'.format(button_id)).on('click', function() {

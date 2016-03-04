@@ -267,7 +267,7 @@ function LessonIntroView(kwargs) {
                 canvas: '#question-canvas',
                 question: [
                     'The equation for \\(\\text{Out}(n)\\) is:',
-                    '\\[ \\text{Out}(n_0) = \\text{DefGen}(n_0) \\cup \\big{(}\\text{In}(n_0) \\setminus \\text{DefKill}(n_0)\\big{)} \\]',
+                    '\\[ \\text{Out}(n) = \\text{DefGen}(n) \\cup \\big{(}\\text{In}(n) \\setminus \\text{DefKill}(n)\\big{)} \\]',
                     'What is the value of \\(\\text{Out}(n_0)\\)?',
                 ],
                 answers: [

@@ -36,6 +36,10 @@ footer {
     padding-top: 30px;
 }
 
+.margin-bottom {
+    margin-bottom: 15px;
+}
+
 /* Base Page CSS */
 
 .canvas {

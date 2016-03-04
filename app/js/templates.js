@@ -21,6 +21,9 @@ templates['simulator/results/main.hbs'] = template({"1":function(container,depth
     + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.nodes : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "    </tbody>\n</table>\n";
 },"useData":true});
+templates['simulator/results/canvas.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<div id=\"results-canvas\" class=\"row\">\n</div>\n";
+},"useData":true});
 templates['simulator/roundrobin.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"row\">\n    <div id=\"left-column\" class=\"col-xs-3\">\n        <div class=\"row\">\n            <div id=\"code-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n        <div class=\"row no-flex\">\n            <div id=\"sim-controls-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n        <div class=\"row flex-max\">\n            <div id=\"lattice-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n    </div>\n    <div id=\"right-column\" class=\"col-xs-9\">\n        <div class=\"row\">\n            <div id=\"framework-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n\n        <div class=\"row flex-max\">\n            <div class=\"col-xs-12\" style=\"display: flex; flex-direction: column; max-width: 100%;\">\n                <ul class=\"nav nav-tabs\">\n                    <li class=\"nav-item\"><a class=\"nav-link active\" data-toggle=\"tab\" href=\"#cfg-canvas\">CFG</a></li>\n                    <li class=\"nav-item\"><a class=\"nav-link\" data-toggle=\"tab\" href=\"#results-canvas\">Results Table</a></li>\n                </ul>\n\n                <div class=\"tab-content flex-max\">\n                    <div id=\"cfg-canvas\" class=\"tab-pane fade in active flex\">\n                    </div>\n                    <div id=\"results-canvas\" class=\"tab-pane fade\">\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
 },"useData":true});
@@ -430,7 +433,7 @@ templates['teaching/lesson/intro/step_10.hbs'] = template({"1":function(containe
     + " the definition \\({\\tt rx_1}\\). No values are flowing in and the node doesn't kill any definitions, so we're left with \\( \\{ {\\tt rx_1} \\} \\)!</p>.\n";
 },"useData":true});
 templates['teaching/lesson/intro/step_00.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<h1>Introduction</h1>\n\n<p>Welcome to the Data-Flow Analysis Tutor! In this tutorial, you'll learn:</p>\n\n<ul>\n    <li>What data-flow analysis is and why it is useful.</li>\n    <li>How to perform a simple data-flow analysis.</li>\n</ul>\n\n<p>To begin, please click the <em>Next</em> button.</p>\n";
+    return "<h1>Introduction</h1>\n\n<p>Welcome to the Data-Flow Analysis Tutor! In this tutorial, you'll learn:</p>\n\n<ul>\n    <li>What data-flow analysis is and why it is useful.</li>\n    <li>The basic concepts of data-flow analysis.</li>\n</ul>\n\n<p>To begin, please click the <em>Next</em> button.</p>\n";
 },"useData":true});
 templates['teaching/lesson/intro/step_07.iloc'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "loadI 7 => rx";
@@ -565,6 +568,253 @@ templates['teaching/lesson/intro/step_15.hbs'] = template({"1":function(containe
     + " the definition \\({\\tt rx_2}\\). This definition overwrites (and "
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"definition_killed",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + ") \\({\\tt rx_1}\\) so we're left with \\( \\{ {\\tt rx_2} \\} \\)!</p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_31.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "reaching definitions";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "reverse postorder";
+},"5":function(container,depth0,helpers,partials,data) {
+    return "predecessors";
+},"7":function(container,depth0,helpers,partials,data) {
+    return "postorder";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
+
+  return "<p>Which ordering we use can affect the efficiency of our algorithm hugely. For analyses like "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"reaching_definitions",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " we use "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"reverse_postorder",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " because the values of \\(\\text{In}(n)\\) depend on that node's "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"predecessor",{"name":"definition","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " (or <strong>parents</strong>).</p>\n\n<p>Let's repeat our analysis using "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"postorder",{"name":"definition","hash":{},"fn":container.program(7, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " traversal.</p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/main.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<div class=\"row\">\n    <div class=\"col-xs-6 lesson-step\" style=\"max-width: 50%\">\n        <div class=\"row flex-max\">\n            <div id=\"text\" class=\"col-xs-12\">\n            </div>\n        </div>\n        <div class=\"row margin-bottom\">\n            <div id=\"results-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n        <nav class=\"row\">\n            <button id=\"btn-prev\" class=\"btn btn-primary\">Prev</button>\n            <button id=\"btn-next\" class=\"pull-right btn btn-primary\">Next</button>\n        </nav>\n    </div>\n    <div id=\"cfg-canvas\" class=\"col-xs-6\">\n    </div>\n</div>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_34.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "reaching definitions";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "forward analysis";
+},"5":function(container,depth0,helpers,partials,data) {
+    return "backward analyses";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
+
+  return "<p>This is because "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"reaching_definitions",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " is a "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"forward_analysis",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ". Later on we'll look at "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"backward_analysis",{"name":"definition","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " and see which ordering is best for those.</p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_16.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<p>As we stepped through the analysis, you may have noticed that our value sets have <strong>changed</strong>. This means we need to perform <strong>another round</strong>. This time, <strong>you're</strong> going to work out the answers! Refer to the table if you get stuck. Click the <em>Next</em> button when you're ready to continue.</p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_20_ans.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "kills";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<p>Correct! Even though \\(\\text{In}(n_1)\\) has changed, the definition of \\({\\tt ra_2}\\) still "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || helpers.helperMissing).call(depth0 != null ? depth0 : {},"definition_killed",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " \\({\\tt ra_1}\\). The definition \\({\\tt rc_1}\\) survives \\(n_1\\).</p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_28.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "reverse post-order";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "post-order";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
+
+  return "<p>That's all we need to do for the round-robin analysis: examine each node, in order, until everything stops changing. This process <strong>usually</strong> only takes a couple of rounds, but that depends on the <strong>structure</strong> of the CFG and the <strong>order</strong> in which we evaluate nodes.</p>\n\n<p>In this lesson we evaluated nodes in "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"reverse_postorder",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ". However, for some analyses it's better to use "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"postorder",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ".<p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_03.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<p>Let's see this in practice. We'll use the table below to track the value sets at each node. On the right is our CFG.<p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_22_ans.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<p>Correct! \\({\\tt rc_1}\\) doesn't kill itself, so the values flow through \\(n_2\\).</p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_00.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "round-robin";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<h1>Round Robin Algorithm</h1>\n\n<p>Welcome to the Data-Flow Analysis Tutor! In this tutorial, you'll learn:</p>\n\n<ul>\n    <li>How to perform a simple data-flow analysis using the "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || helpers.helperMissing).call(depth0 != null ? depth0 : {},"round_robin",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " approach.</li>\n    <li>How the order of evaluated nodes affects the efficiency of analysis.</li>\n</ul>\n\n<p>To begin, please click the <em>Next</em> button.</p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_27_ans.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<p>Correct! Although we humans can <strong>intuitively</strong> tell that our values will not change, a <strong>compiler</strong> needs to perform <strong>another round</strong> to make sure nothing changes.</p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_17_ans.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "reaching definitions";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<p>Correct! In "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || helpers.helperMissing).call(depth0 != null ? depth0 : {},"reaching_definition",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ", no values flow into the entry node of the CFG, so we keep our initial value.</p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_35.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "round-robin";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "iterate";
+},"5":function(container,depth0,helpers,partials,data) {
+    return "control-flow graph";
+},"7":function(container,depth0,helpers,partials,data) {
+    return "order";
+},"9":function(container,depth0,helpers,partials,data) {
+    return "efficiency";
+},"11":function(container,depth0,helpers,partials,data) {
+    return "post-order";
+},"13":function(container,depth0,helpers,partials,data) {
+    return "successors";
+},"15":function(container,depth0,helpers,partials,data) {
+    return "reverse post-order";
+},"17":function(container,depth0,helpers,partials,data) {
+    return "predecessors";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
+
+  return "<h1>Summary</h1>\n\n<ul>\n    <li>In "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"round_robin",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " analysis we "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"iterative",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " over a "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"control_flow_graph",{"name":"definition","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ", evaluating nodes in a specific "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"ordering",{"name":"definition","hash":{},"fn":container.program(7, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " until the values at each node <strong>stop changing</strong></li>\n    <li>The "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"ordering",{"name":"definition","hash":{},"fn":container.program(7, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " in which we evaluate nodes can affect the "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"efficiency",{"name":"definition","hash":{},"fn":container.program(9, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " of our analysis.</li>\n    <li>In "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"postorder",{"name":"definition","hash":{},"fn":container.program(11, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " we evaluate a node's "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"successor",{"name":"definition","hash":{},"fn":container.program(13, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " (<strong>children</strong>) first.</li>\n    <li>In "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"reverse_postorder",{"name":"definition","hash":{},"fn":container.program(15, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " we evaluate a node's "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"predecessor",{"name":"definition","hash":{},"fn":container.program(17, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " (<strong>parents</strong>) first.</li>\n</ul>\n\n<p>Continue to the next lesson, view the example in the simulator or return to the menu using the buttons below.</p>\n\n<p><a id=\"btn-goto-next-lesson\" class=\"btn btn-primary btn-block\">Next Lesson</a></p>\n<p><a id=\"btn-goto-simulator\" class=\"btn btn-secondary btn-block\">Open CFG in Simulator</a></p>\n<p><a id=\"btn-goto-menu\" class=\"btn btn-secondary btn-block\">Back to Menu</a></p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_24_ans.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<p>Correct! \\(\\text{DefKill}(n_3)\\) is empty, so the definitions flow through \\(n_3\\).</p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_29.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "Post-order";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "ordering";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
+
+  return "<p>"
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"postorder",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " is an "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"ordering",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " of nodes in a graph or tree. Starting at the entry node, we visit <strong>each child</strong>, then each child's child, and so on. When we reach a node with <strong>no children</strong> we <strong>add</strong> it to the list, then add its <strong>parent</strong> to the list, and its parent and so on until we have an ordering in which we visit each node's <strong>children first</strong>. The <strong>post-ordering</strong> of our CFG is \\([{\\tt n_4}, {\\tt n_3}, {\\tt n_2}, {\\tt n_1}, {\\tt n_0} ]\\).</p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_19_ans.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<p>Correct! Since the value of \\(\\text{Out}(n_3)\\) <strong>changed</strong> after we calculated \\(\\text{In}(n_1)\\), our value of \\(\\text{In}(n_1)\\) <strong>changes<strong>!</p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_32.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<p>Use the controls below to control the simulation and click <em>Next</em> when you're ready to continue.</p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_23_ans.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<p>Correct! Like \\(n_2\\), \\(n_3\\) only has one predecessor, so the values carry through.</p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_33.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "postorder";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<p>You may have noticed that using a "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || helpers.helperMissing).call(depth0 != null ? depth0 : {},"postorder",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " traversal made our analysis take <strong>5</strong> iterations instead of 3. Since we're evaluating each <strong>child first</strong>, we need to <strong>wait</strong> until we've analysed that node's <strong>parent</strong> before that information becomes available, which takes a <strong>whole round</strong>!</p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_26_ans.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "generates";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<p>Correct! \\(n_4\\) "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || helpers.helperMissing).call(depth0 != null ? depth0 : {},"definition_generated",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " \\({\\tt rb_1}\\), so we add it to \\(\\text{In}(n_4)\\) to produce \\(\\text{Out}(n_4)\\).</p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_03.iloc'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "    loadI  0      => ra\nL0: addI   ra, 1  => ra\n    subI   rc, 1  => rc\n    cbr_GE ra, rb -> L1, L0\nL1: addI   rb, rc => rb";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_25_ans.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<p>Correct! Again, \\(n_4\\) only has one predecessor, so the values flow through.</p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_01.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "data-flow equations";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "control-flow graph";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
+
+  return "<p>So far we've seen how "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"dataflow_equations",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " help us calculate value sets at points in the "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"control_flow_graph",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ". But how do we apply this in practice?</p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_02.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "round robin approach";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<p>One way of calculating value sets is to take the "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || helpers.helperMissing).call(depth0 != null ? depth0 : {},"round_robin",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ". You may remember from last time that we need to <strong>iterate</strong> our analysis until our values <strong>stop changing</strong>. Using the round-robin analysis algorithm, we evaluate nodes in a <strong>specific order</strong>, repeating this order in <strong>rounds</strong> until the values stop changing between rounds.</p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_21_ans.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<p>Correct! There is only one predecessor of \\(n_2\\), \\(n_1\\), so \\(\\text{Out}(n_1)\\) carries over to \\(\\text{In}(n_2)\\).</p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_30.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "Reverse post-order";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<p>"
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || helpers.helperMissing).call(depth0 != null ? depth0 : {},"reverse_postorder",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " is post-order in reverse. This can be seen as a <strong>parent-first</strong> approach. The <strong>reverse post-ordering</strong> of our CFG is \\([{\\tt n_0}, {\\tt n_1}, {\\tt n_2}, {\\tt n_3}, {\\tt n_4} ]\\).</p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_18_ans.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<p>Correct! None of the values flowing \\(\\text{In}\\) have changed, so our \\(\\text{Out}\\) set doesn't change from the last round.</p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_06.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<p>As before, we calculate the \\(\\text{In}\\) set for a node and subsequently calculate its \\(\\text{Out}\\) set. Click the <em>Next</em> button to step through the first round of the analysis.</p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_04.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "local information";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<p>We can see in the table that the values of \\(\\text{DefGen}\\) and \\(\\text{DefKill}\\) have been worked out already. Since this information only depends upon the <strong>node itself</strong>, we can work it out ahead of time. This is referred to as "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || helpers.helperMissing).call(depth0 != null ? depth0 : {},"local_information",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ".</p>\n";
+},"useData":true});
+templates['teaching/lesson/roundrobin/step_05.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "reaching definitions";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "available expressions";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
+
+  return "<p>When we begin our "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"reaching_definition",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " analysis, our value sets are initialised to the <strong>empty set</strong> (\\(\\{\\}\\) or \\(\\emptyset\\)). However, this depends upon the analysis;  "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"available_expression",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " initialises every node except \\(n_0\\) to the set of <strong>all possible values</strong>!</p>\n";
 },"useData":true});
 templates['test/cfg.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"row\">\n    <div id=\"left-column\" class=\"col-xs-3\">\n        <div class=\"row\">\n            <div id=\"sim-controls-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n    </div>\n    <div id=\"right-column\" class=\"col-xs-9\">\n        <div class=\"row flex flex-max\">\n            <div id=\"cfg-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n    </div>\n</div>\n";
