@@ -250,7 +250,7 @@ templates['teaching/lesson/generic/step_04.hbs'] = template({"1":function(contai
 
   return "<p>We can define "
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || helpers.helperMissing).call(depth0 != null ? depth0 : {},"reaching_definitions",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + " using our <strong>generic framework</strong>:</p>\n\n<table class=\"table table-bordered table-striped\">\n    <thead>\n        <tr>\n            <th>Property</th>\n            <th>Value</th>\n        </tr>\n    </thead>\n    <tbody>\n        <tr id=\"framework-domain\">\n            <td>Domain</td>\n            <td>Definitions</td>\n        </tr>\n        <tr id=\"framework-direction\">\n            <td>Direction</td>\n            <td>Forward</td>\n        </tr>\n        <tr id=\"framework-transfer\">\n            <td>Transfer Function</td>\n            <td>\\(\\small{F(n) = \\{ \\text{DefGen}(n) \\cup (\\text{In}(n) \\setminus \\text{DefKill}(n)) \\, : \\, \\forall n \\}}\\)</td>\n        </tr>\n        <tr id=\"framework-meet\">\n            <td>Meet Function</td>\n            <td>\\(\\small{\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)}\\)</td>\n        </tr>\n        <tr id=\"framework-boundary\">\n            <td>Boundary</td>\n            <td>\\(\\small{\\text{In}(\\small{\\text{ENTRY}}) = \\emptyset}\\)</td>\n        </tr>\n        <tr id=\"framework-initial\">\n            <td>Initial Value</td>\n            <td>\\(\\small{\\emptyset}\\)</td>\n        </tr>\n    </tbody>\n</table>\n";
+    + " using our <strong>generic framework</strong>:</p>\n\n<table class=\"table table-bordered table-striped\">\n    <thead>\n        <tr>\n            <th>Property</th>\n            <th>Value</th>\n        </tr>\n    </thead>\n    <tbody>\n        <tr id=\"framework-domain\">\n            <td>Domain</td>\n            <td>Definitions</td>\n        </tr>\n        <tr id=\"framework-direction\">\n            <td>Direction</td>\n            <td>Forward</td>\n        </tr>\n        <tr id=\"framework-transfer\">\n            <td>Transfer Function</td>\n            <td>\\(\\small{F(n) = \\{ \\text{DefGen}(n) \\cup (\\text{In}(n) \\setminus \\text{DefKill}(n)) \\, : \\, \\forall n \\}}\\)</td>\n        </tr>\n        <tr id=\"framework-meet\">\n            <td>Meet Function</td>\n            <td>\\(\\small{\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)}\\)</td>\n        </tr>\n        <tr id=\"framework-boundary\">\n            <td>Boundary</td>\n            <td>\\(\\small{\\text{In}(\\small{\\text{ENTRY}}) = \\varnothing}\\)</td>\n        </tr>\n        <tr id=\"framework-initial\">\n            <td>Initial Value</td>\n            <td>\\(\\small{\\varnothing}\\)</td>\n        </tr>\n    </tbody>\n</table>\n";
 },"useData":true});
 templates['teaching/lesson/generic/step_05.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
     return "reaching definitions";
@@ -313,7 +313,7 @@ templates['teaching/lesson/00/step_08.hbs'] = template({"1":function(container,d
     + " by) a node. These definitions <strong>will be</strong> in \\(\\text{Out}(n)\\).</p>\n";
 },"useData":true});
 templates['teaching/lesson/00/step_11.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<p>Then we need to calculate the \\(\\text{Out}\\) set:</p>\n<p>\n\\begin{align}\n\\text{Out}(n) &= \\text{DefGen}(n) \\cup \\big{(}\\text{In}(n) \\setminus \\text{DefKill}(n)\\big{)} \\\\\n              &= \\{ \\texttt{ra}_1\\} \\cup (\\emptyset \\setminus \\{ \\texttt{ra}_i \\: : \\:  \\forall i \\neq 1 \\}) \\\\\n              &= \\{ \\texttt{ra}_1\\} \\cup \\emptyset \\\\\n              &= \\{ \\texttt{ra}_1\\}\n\\end{align}\n</p>";
+    return "<p>Then we need to calculate the \\(\\text{Out}\\) set:</p>\n<p>\n\\begin{align}\n\\text{Out}(n) &= \\text{DefGen}(n) \\cup \\big{(}\\text{In}(n) \\setminus \\text{DefKill}(n)\\big{)} \\\\\n              &= \\{ \\texttt{ra}_1\\} \\cup (\\varnothing \\setminus \\{ \\texttt{ra}_i \\: : \\:  \\forall i \\neq 1 \\}) \\\\\n              &= \\{ \\texttt{ra}_1\\} \\cup \\varnothing \\\\\n              &= \\{ \\texttt{ra}_1\\}\n\\end{align}\n</p>";
 },"useData":true});
 templates['teaching/lesson/00/step_14.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<p>Now we need to consider the \\(\\text{In}\\) set for the third node:</p>\n\n<p>\\begin{align}\n\\text{In}(n) &= \\bigcup_{p \\in preds} \\text{Out}(p) \\\\\n             &= \\bigcup_{p \\in \\{n_1\\}} \\text{Out}(p) \\\\\n             &= \\{\\texttt{rb}_1, \\texttt{ra}_1\\}\n \\end{align}</p>\n";
@@ -322,7 +322,7 @@ templates['teaching/lesson/00/step_03.hbs'] = template({"compiler":[7,">= 4.0.0"
     return "<p>Each <strong style=\"color: #6cc86c\">node</strong> represents an instruction.</p>\n";
 },"useData":true});
 templates['teaching/lesson/00/step_10.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<p>Reaching definitions is a forward data-flow, so we need to calculate the \\(\\text{In}\\) set for the first node:</p>\n\n<p>\\begin{align}\n\\text{In}(n) &= \\bigcup_{p \\in preds} \\text{Out}(p) \\\\\n             &= \\bigcup_{p \\in \\emptyset} \\text{Out}(p) \\\\\n             &= \\emptyset\n \\end{align}</p>\n";
+    return "<p>Reaching definitions is a forward data-flow, so we need to calculate the \\(\\text{In}\\) set for the first node:</p>\n\n<p>\\begin{align}\n\\text{In}(n) &= \\bigcup_{p \\in preds} \\text{Out}(p) \\\\\n             &= \\bigcup_{p \\in \\varnothing} \\text{Out}(p) \\\\\n             &= \\varnothing\n \\end{align}</p>\n";
 },"useData":true});
 templates['teaching/lesson/00/step_00.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
     return "<strong>Data-flow analysis</strong>";
@@ -498,7 +498,7 @@ templates['teaching/lesson/01/step_05.hbs'] = template({"compiler":[7,">= 4.0.0"
     return "<p>Now we need to calculate the \\(\\text{In}\\) set for the <strong>left-hand</strong> branch:</p>\n\n<p>\\begin{align}\n\\text{In}(n_4) &= \\bigcup_{p \\in preds} \\text{Out}(p) \\\\\n             &= \\text{Out}(n_3) \\\\\n             &= \\{\\texttt{rc}_1, \\texttt{rb}_1, \\texttt{ra}_1\\}\n    \\end{align}</p>\n\n";
 },"useData":true});
 templates['teaching/lesson/01/step_13.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<p>\\begin{align}\n    \\text{In}(n_3) &= \\bigcup_{p \\in preds} \\text{Out}(p) \\\\\n    &= \\text{Out}(n_2) \\cup \\text{Out}(n_6) \\\\\n    &= \\{\\texttt{rc}_1, \\texttt{rb}_1, \\texttt{ra}_1\\} \\cup \\emptyset \\\\\n    &= \\{\\texttt{rc}_1, \\texttt{rb}_1, \\texttt{ra}_1\\}\n    \\end{align}</p>\n\n<p>We always use <strong>current information</strong> when computing sets. In this case, we take \\(\\text{Out}(n_6)\\) to be the empty set.</p>\n";
+    return "<p>\\begin{align}\n    \\text{In}(n_3) &= \\bigcup_{p \\in preds} \\text{Out}(p) \\\\\n    &= \\text{Out}(n_2) \\cup \\text{Out}(n_6) \\\\\n    &= \\{\\texttt{rc}_1, \\texttt{rb}_1, \\texttt{ra}_1\\} \\cup \\varnothing \\\\\n    &= \\{\\texttt{rc}_1, \\texttt{rb}_1, \\texttt{ra}_1\\}\n    \\end{align}</p>\n\n<p>We always use <strong>current information</strong> when computing sets. In this case, we take \\(\\text{Out}(n_6)\\) to be the empty set.</p>\n";
 },"useData":true});
 templates['teaching/lesson/01/step_15.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<p>However, <strong>we're not done yet</strong>. When we computed each set, their values <strong>changed</strong>.</p>\n";
@@ -537,7 +537,7 @@ templates['teaching/lesson/intro/step_20_ans.hbs'] = template({"compiler":[7,">=
     return "<p>Correct! We use the new value of \\(\\text{Out}(n_3)\\) when calculating \\(\\text{In}(n_1)\\):</p>\n<p>\n    \\begin{align}\n    \\text{In}(n_1) &= \\bigcup_{p \\in n_2, n_3} \\text{Out}(p) \\\\\n    &= \\text{Out}(n_2) \\cup \\text{Out}(n_3) \\\\\n    &= \\{ {\\tt ra_1} \\} \\cup \\{ {\\tt rc_1, ra_2} \\} \\\\\n    &= \\{ {\\tt ra_1}, {\\tt ra_2}, {\\tt rc_1} \\} \\\\\n    \\end{align}\n</p>\n\n";
 },"useData":true});
 templates['teaching/lesson/intro/step_09.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<p>Let's try working out the sets for this graph. Remember the equation for \\(\\text{In}(n)\\):</p>\n\n<p>\\[\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)\\]</p>\n\n<p>This means, \"take the union of \\(\\text{Out}(p)\\) for all predecessors \\(p\\) of \\(n\\)\". There are no predecessors for \\(n_0\\):</p>\n\n<p>\n    \\begin{align}\n    \\text{In}(n_0) &= \\bigcup_{p \\in \\emptyset} \\text{Out}(p) \\\\\n                   &= \\emptyset \\\\\n    \\end{align}\n</p>\n\n<p>So the answer is the <strong>empty set</strong> (written \\(\\emptyset\\) or \\(\\{\\}\\)).</p>\n";
+    return "<p>Let's try working out the sets for this graph. Remember the equation for \\(\\text{In}(n)\\):</p>\n\n<p>\\[\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)\\]</p>\n\n<p>This means, \"take the union of \\(\\text{Out}(p)\\) for all predecessors \\(p\\) of \\(n\\)\". There are no predecessors for \\(n_0\\):</p>\n\n<p>\n    \\begin{align}\n    \\text{In}(n_0) &= \\bigcup_{p \\in \\varnothing} \\text{Out}(p) \\\\\n                   &= \\varnothing \\\\\n    \\end{align}\n</p>\n\n<p>So the answer is the <strong>empty set</strong> (written \\(\\varnothing\\) or \\(\\{\\}\\)).</p>\n";
 },"useData":true});
 templates['teaching/lesson/intro/step_08.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
     return "data-flow equations";
@@ -569,7 +569,7 @@ templates['teaching/lesson/intro/step_10.hbs'] = template({"1":function(containe
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "<p>Now let's work out \\(\\text{Out}(n_0)\\):</p>\n\n<p>\n    \\begin{align}\n    \\text{Out}(n_0) &= \\text{DefGen}(n_0) \\cup \\big{(}\\text{In}(n_0) \\setminus \\text{DefKill}(n_0)\\big{)} \\\\\n    &= \\{ {\\tt rx_1} \\} \\cup \\big{(}\\emptyset \\setminus \\{ {\\tt rx_i} : \\forall i \\neq 1 \\}\\big{)} \\\\\n    &= \\{ {\\tt rx_1} \\} \\cup \\emptyset \\\\\n    &= \\{ {\\tt rx_1} \\}\n    \\end{align}\n</p>\n\n<p>The assignment to \\({\\tt rx}\\) "
+  return "<p>Now let's work out \\(\\text{Out}(n_0)\\):</p>\n\n<p>\n    \\begin{align}\n    \\text{Out}(n_0) &= \\text{DefGen}(n_0) \\cup \\big{(}\\text{In}(n_0) \\setminus \\text{DefKill}(n_0)\\big{)} \\\\\n    &= \\{ {\\tt rx_1} \\} \\cup \\big{(}\\varnothing \\setminus \\{ {\\tt rx_i} : \\forall i \\neq 1 \\}\\big{)} \\\\\n    &= \\{ {\\tt rx_1} \\} \\cup \\varnothing \\\\\n    &= \\{ {\\tt rx_1} \\}\n    \\end{align}\n</p>\n\n<p>The assignment to \\({\\tt rx}\\) "
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || helpers.helperMissing).call(depth0 != null ? depth0 : {},"definition_generated",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + " the definition \\({\\tt rx_1}\\). No values are flowing in and the node doesn't kill any definitions, so we're left with \\( \\{ {\\tt rx_1} \\} \\)!</p>.\n";
 },"useData":true});
@@ -580,7 +580,7 @@ templates['teaching/lesson/intro/step_07.iloc'] = template({"compiler":[7,">= 4.
     return "loadI 7 => rx";
 },"useData":true});
 templates['teaching/lesson/intro/step_17_ans.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<p>Correct! Both \\(n_2\\) and \\(n_3\\) are <strong>predecessors</strong> of \\(n_1\\), because there is a <strong>back-edge</strong> from \\(n_3\\) to \\(n_1\\). Right now \\(n_3\\) is \\(\\emptyset\\), so:</p>\n\n<p>\n    \\begin{align}\n    \\text{In}(n_1) &= \\bigcup_{p \\in n_2, n_3} \\text{Out}(p) \\\\\n    &= \\text{Out}(n_2) \\cup \\text{Out}(n_3) \\\\\n    &= \\{ {\\tt ra_1} \\} \\cup \\emptyset \\\\\n    &= \\{ {\\tt ra_1} \\} \\\\\n    \\end{align}\n</p>\n\n";
+    return "<p>Correct! Both \\(n_2\\) and \\(n_3\\) are <strong>predecessors</strong> of \\(n_1\\), because there is a <strong>back-edge</strong> from \\(n_3\\) to \\(n_1\\). Right now \\(n_3\\) is \\(\\varnothing\\), so:</p>\n\n<p>\n    \\begin{align}\n    \\text{In}(n_1) &= \\bigcup_{p \\in n_2, n_3} \\text{Out}(p) \\\\\n    &= \\text{Out}(n_2) \\cup \\text{Out}(n_3) \\\\\n    &= \\{ {\\tt ra_1} \\} \\cup \\varnothing \\\\\n    &= \\{ {\\tt ra_1} \\} \\\\\n    \\end{align}\n</p>\n\n";
 },"useData":true});
 templates['teaching/lesson/intro/step_12_ans.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
     return "generates";
@@ -704,7 +704,7 @@ templates['teaching/lesson/intro/step_15.hbs'] = template({"1":function(containe
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
 
-  return "<p>Now let's work out \\(\\text{Out}(n_1)\\):</p>\n\n<p>\n    \\begin{align}\n    \\text{Out}(n_1) &= \\text{DefGen}(n_1) \\cup \\big{(}\\text{In}(n_1) \\setminus \\text{DefKill}(n_1)\\big{)} \\\\\n    &= \\{ {\\tt rx_2} \\} \\cup \\big{(} \\{ {\\tt rx_1} \\} \\setminus \\{ {\\tt rx_i} : \\forall i \\neq 1 \\}\\big{)} \\\\\n    &= \\{ {\\tt rx_2} \\} \\cup \\emptyset \\\\\n    &= \\{ {\\tt rx_2} \\}\n    \\end{align}\n</p>\n\n<p>The assignment to \\({\\tt rx}\\) "
+  return "<p>Now let's work out \\(\\text{Out}(n_1)\\):</p>\n\n<p>\n    \\begin{align}\n    \\text{Out}(n_1) &= \\text{DefGen}(n_1) \\cup \\big{(}\\text{In}(n_1) \\setminus \\text{DefKill}(n_1)\\big{)} \\\\\n    &= \\{ {\\tt rx_2} \\} \\cup \\big{(} \\{ {\\tt rx_1} \\} \\setminus \\{ {\\tt rx_i} : \\forall i \\neq 1 \\}\\big{)} \\\\\n    &= \\{ {\\tt rx_2} \\} \\cup \\varnothing \\\\\n    &= \\{ {\\tt rx_2} \\}\n    \\end{align}\n</p>\n\n<p>The assignment to \\({\\tt rx}\\) "
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"definition_generated",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + " the definition \\({\\tt rx_2}\\). This definition overwrites (and "
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"definition_killed",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
@@ -953,7 +953,7 @@ templates['teaching/lesson/roundrobin/step_05.hbs'] = template({"1":function(con
 
   return "<p>When we begin our "
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"reaching_definition",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + " analysis, our value sets are initialised to the <strong>empty set</strong> (\\(\\{\\}\\) or \\(\\emptyset\\)). However, this depends upon the analysis;  "
+    + " analysis, our value sets are initialised to the <strong>empty set</strong> (\\(\\{\\}\\) or \\(\\varnothing\\)). However, this depends upon the analysis;  "
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"available_expression",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + " initialises every node except \\(n_0\\) to the set of <strong>all possible values</strong>!</p>\n";
 },"useData":true});
