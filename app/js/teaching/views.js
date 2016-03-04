@@ -12,32 +12,33 @@ function TutorialView(kwargs) {
     this.update_math = function() {
         throw ReferenceError("update_math is not defined in class {0}".format(_this.constructor.name));
     }
+
+    this.advance = function(steps) {
+        var new_step = this.step + steps;
+        while (this.step < new_step && this.step < this.steps.length - 1) {
+            this.step++;
+            this.next_button.prop('disabled', false);
+            this.steps[this.step]();
+        }
+        if (this.step >= this.steps.length - 1) {
+            console.log(this.step);
+            console.log(this.steps.length);
+            this.next_button.prop('disabled', true);
+        }
+        if (this.step > 0) {
+            this.prev_button.prop('disabled', false);
+        }
+    }
     
     this.next = function() {
-        if (this.step < this.steps.length - 1) {
-            this.step++;
-            this.steps[this.step]();
-            if (this.step >= this.steps.length - 1) {
-                this.next_button.prop('disabled', true);
-            }
-            if (this.step > 0) {
-                this.prev_button.prop('disabled', false);
-            }
-        }
-
+        this.advance(1);
         this.update_math();
     }
 
     this.prev = function() {
-        this.new_step = this.step - 1;
+        var new_step = this.step - 1;
         this.reset();
-        while (this.step < this.new_step) {
-            this.next();
-        }
-        if (this.step < this.steps.length) {
-            this.next_button.prop('disabled', false);
-        }
-
+        this.advance(new_step);
         this.update_math();
     }
 

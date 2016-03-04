@@ -306,6 +306,187 @@ function LessonIntroView(kwargs) {
             _this.simulator.step_forward();
             
             _this.text.append(_this.get_template('step_15')());
+        },
+        function step_16() {
+            _this.clear()
+            // Reset the CFG code
+            var iloc_code = _this.get_template('step_16', 'iloc')();
+            _this.simulator.sim_code(iloc_code);            
+
+            _this.cfg_view.show_touched_points();
+            _this.simulator.advance(10);
+            _this.cfg_view.reset_highlight();
+            
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[2], DFA.OUT);
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[4], DFA.OUT);
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[5], DFA.IN);
+            _this.cfg_view.remove_point(_this.simulator.cfg.nodes[2], DFA.IN);
+            _this.cfg_view.draw();
+                        
+            _this.text.append(_this.get_template('step_16')());
+
+            _this.next_button.prop('disabled', true);
+
+            _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
+            var question_view = new QuestionView({
+                canvas: '#question-canvas',
+                question: [
+                    'The equation for \\(\\text{In}(n)\\) is:',
+                    '\\[\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)\\]',
+                    'What is the value of \\(\\text{In}(n_5)\\)?',
+                ],
+                answers: [
+                    {text: '\\(\\{\\texttt{ra}_1\\}\\)', correct: false},
+                    {text: '\\(\\{\\texttt{ra}_2\\}\\)', correct: false},
+                    {text: '\\(\\{\\}\\)', correct: false},
+                    {text: '\\(\\{\\texttt{ra}_1, \\texttt{ra}_2\\}\\)', correct: true}
+                ],
+                correct_callback: function() {
+                    _this.simulator.step_forward();
+                    _this.text.append(_this.get_template('step_16_ans')());
+                    MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
+                    _this.next_button.prop('disabled', false);
+                }
+            });
+            
+            question_view.init();
+        },
+        function step_17(){
+            _this.clear()
+            
+            _this.text.append(_this.get_template('step_17')());
+            
+            // Reset the CFG code
+            var iloc_code = _this.get_template('step_17', 'iloc')();
+            _this.simulator.sim_code(iloc_code);
+
+            _this.cfg_view.show_no_points();
+            _this.simulator.advance(2);
+            _this.cfg_view.reset_highlight();
+            
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[0], DFA.OUT);
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[3], DFA.OUT);
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[1], DFA.IN);
+            _this.cfg_view.remove_point(_this.simulator.cfg.nodes[0], DFA.IN);
+            _this.cfg_view.draw();
+
+            _this.next_button.prop('disabled', true);
+
+            _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
+            var question_view = new QuestionView({
+                canvas: '#question-canvas',
+                question: [
+                    'The equation for \\(\\text{In}(n)\\) is:',
+                    '\\[\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)\\]',
+                    'What is the value of \\(\\text{In}(n_1)\\)?',
+                ],
+                answers: [
+                    {text: '\\(\\{\\texttt{ra}_1\\}\\)', correct: true},
+                    {text: '\\(\\{\\texttt{rc}_1, \\texttt{ra}_2\\}\\)', correct: false},
+                    {text: '\\(\\{\\}\\)', correct: false},
+                    {text: '\\(\\{\\texttt{ra}\\}\\)', correct: false}
+                ],
+                correct_callback: function() {
+                    _this.simulator.step_forward();
+                    _this.text.append(_this.get_template('step_17_ans')());
+                    MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
+                    _this.next_button.prop('disabled', false);
+                }
+            });
+            
+            question_view.init();
+        },
+        function step_18() {
+            _this.clear()
+
+            _this.text.append(_this.get_template('step_18')());
+
+            _this.simulator.reset();
+            _this.simulator.advance(7);
+            
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[3], DFA.IN);
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[3], DFA.OUT);
+            _this.cfg_view.reset_highlight();
+            
+            _this.cfg_view.draw();
+        },
+        function step_19() {
+            _this.text.append(_this.get_template('step_19')());
+
+            _this.simulator.step_forward();
+        },
+        function step_20() {
+            _this.clear();
+            _this.text.append(_this.get_template('step_20')());
+
+            _this.simulator.advance(4);
+            
+            _this.cfg_view.remove_point(_this.simulator.cfg.nodes[3], DFA.IN);
+            _this.cfg_view.remove_point(_this.simulator.cfg.nodes[0], DFA.IN);
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[0], DFA.OUT);
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[3], DFA.OUT);
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[1], DFA.IN);
+            _this.cfg_view.draw();
+            _this.cfg_view.reset_highlight();
+
+            _this.next_button.prop('disabled', true);
+
+            _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
+            var question_view = new QuestionView({
+                canvas: '#question-canvas',
+                question: [
+                    'The equation for \\(\\text{In}(n)\\) is:',
+                    '\\[\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)\\]',
+                    'What is the value of \\(\\text{In}(n_1)\\)?',
+                ],
+                answers: [
+                    {text: '\\(\\{\\texttt{ra}_1\\}\\)', correct: false},
+                    {text: '\\(\\{\\texttt{rc}_1, \\texttt{ra}_2\\}\\)', correct: false},
+                    {text: '\\(\\{\\}\\)', correct: false},
+                    {text: '\\(\\{\\texttt{ra}_1, \\texttt{rc}_1, \\texttt{ra}_2\\}\\)', correct: true}
+                ],
+                correct_callback: function() {
+                    _this.simulator.step_forward();
+                    _this.text.append(_this.get_template('step_20_ans')());
+                    MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
+                    _this.next_button.prop('disabled', false);
+                }
+            });
+            
+            question_view.init();
+        },
+        function step_21() {
+            _this.clear();
+
+            _this.text.append(_this.get_template('step_21')());
+
+            _this.cfg_view.show_touched_points();
+            
+            _this.simulator.reset();
+            _this.simulator.advance(13);
+            
+            _this.text.append(Handlebars.templates['simulator/sim_controls/canvas.hbs']());
+            var controls_view = new SimControlsView({
+                canvas: '#sim-controls-canvas',
+                simulator: _this.simulator,
+            });
+            
+            controls_view.init();
+        },
+        function step_22() {
+            _this.clear();
+
+            _this.text.append(_this.get_template('step_22')());
+
+            $('#btn-goto-next-lesson').on('click', function() {
+                _this.main_view.show_lesson(
+                    _this.next_lesson
+                );
+            });
+            
+            $('#btn-goto-menu').on('click', function() {
+                _this.main_view.show_menu();
+            });
         }
     ];
 

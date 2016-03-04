@@ -65,7 +65,7 @@ function MainView(kwargs) {
         }
     ]
     
-    this.show_lesson = function(lesson_id) {
+    this.show_lesson = function(lesson_id, step) {
         this.view_canvas.html("");
         this.view_canvas.show();
 
@@ -81,6 +81,10 @@ function MainView(kwargs) {
             );
         
             this.view.init();
+
+            if (step!=undefined) {
+                this.view.advance(step);
+            }
         } else {
             throw TypeError("Lesson with index {0} does not exist.".format(lesson_id));
         }
@@ -190,7 +194,6 @@ function MainView(kwargs) {
         this.view.init();
     }
 
-
     this.show_menu = function() {
         this.view = new MenuView({
             main_view: this,
@@ -203,6 +206,7 @@ function MainView(kwargs) {
 
     this.init = function() {
         var show_lesson = getParameterByName('lesson');
+        var show_lesson_step = getParameterByName('step');
         var show_simulator = getParameterByName('simulator');
         var show_testbed = getParameterByName('testbed');
 
@@ -211,7 +215,14 @@ function MainView(kwargs) {
         } else if (show_lesson) {
             var lesson_num = Number(show_lesson);
             if (typeof lesson_num == 'number' && (Math.floor(lesson_num) == lesson_num)) {
-                this.show_lesson(lesson_num);
+                var step = undefined;
+                if (show_lesson_step) {
+                    step = Number(show_lesson_step);
+                    if (!(typeof step == 'number' && Math.floor(step)==step)) {
+                        step=undefined;
+                    }
+                }
+                this.show_lesson(lesson_num, step);
             }
         } else if (show_testbed) {
             this.show_testbed(show_testbed);

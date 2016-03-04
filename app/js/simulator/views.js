@@ -520,6 +520,8 @@ function SimControlsView(kwargs) {
     
     this.reset = function() {        
         this.play_button.prop('disabled', false);
+        this.play_button.prop('disabled', false).show();
+        this.pause_button.prop('disabled', true).hide();
         this.fast_forward_button.prop('disabled', false);
         this.step_forward_button.prop('disabled', false);
     }

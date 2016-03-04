@@ -12,4 +12,4 @@ parser:
 	pegjs -e iloc_parser js/simulator/iloc/grammar.pegjs js/simulator/iloc/iloc_parser.js
 
 tidy:
-	find -name "*~" | xargs rm -f
+	find js/ css/ templates/ -name "*~" | xargs rm -f

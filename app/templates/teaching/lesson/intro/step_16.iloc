@@ -1,0 +1,6 @@
+    cbr_EQ ra, rb -> L0, L1
+L0: loadI  2      => ra
+    jump   L2
+L1: loadI  3      => ra
+    jump   L2
+L2: i2i    ra     => rb

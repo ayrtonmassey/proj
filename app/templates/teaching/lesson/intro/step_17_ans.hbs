@@ -1,0 +1,11 @@
+<p>Correct! Both \(n_2\) and \(n_3\) are <strong>predecessors</strong> of \(n_1\), because there is a <strong>back-edge</strong> from \(n_3\) to \(n_1\). Right now \(n_3\) is \(\emptyset\), so:</p>
+
+<p>
+    \begin{align}
+    \text{In}(n_1) &= \bigcup_{p \in n_2, n_3} \text{Out}(p) \\
+    &= \text{Out}(n_2) \cup \text{Out}(n_3) \\
+    &= \{ {\tt ra_1} \} \cup \emptyset \\
+    &= \{ {\tt ra_1} \} \\
+    \end{align}
+</p>
+

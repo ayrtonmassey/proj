@@ -16,4 +16,5 @@ var DICTIONARY = {
     optimizing_compiler: "A compiler can make programs faster by re-arranging instructions or removing them entirely. This is known as compiler optimisation.",
     cfg: "Abbreviation of Control-Flow Graph.",
     branch: "A branch occurs when an instruction has two possible successors. For example, an if-else statement is a branching statement after which we might jump to either the 'if' or 'else' blocks of code.",
+    iterative: "An iterative process is one which involves repetition.",
 }
