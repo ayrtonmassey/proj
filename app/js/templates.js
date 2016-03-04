@@ -129,7 +129,107 @@ templates['teaching/progs/guessing.iloc'] = template({"compiler":[7,">= 4.0.0"],
     return "    load   rx     => rx\n    loadI  50     => rg\nL0: div    rg, 2  => rt\n    cbr_EQ rg, rx -> L5, L1\nL1: cbr_LT rg, rx -> L2, L3\nL2: add    rg, rt => rg\n    jump   L4\nL3: sub    rg, rt => rg\nL4: jump   L0\nL5: store  rx     => rx";
 },"useData":true});
 templates['teaching/lesson/generic/main.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"row\">\n    <div class=\"col-xs-6 lesson-step\" style=\"max-width: 50%\">\n        <div class=\"row\">\n            <div id=\"text\" class=\"col-xs-12\">\n            </div>\n        </div>\n        <nav class=\"row\">\n            <button id=\"btn-prev\" class=\"btn btn-primary\">Prev</button>\n            <button id=\"btn-next\" class=\"pull-right btn btn-primary\">Next</button>\n        </nav>\n    </div>\n    <div id=\"cfg-canvas\" class=\"col-xs-6\">\n    </div>\n</div>\n";
+    return "<div class=\"row\">\n    <div id=\"left-column\" class=\"col-md-offset-2 col-xs-8 lesson-step\">\n        <div class=\"row flex-max\">\n            <div id=\"text\" class=\"col-xs-12\">\n            </div>\n        </div>\n        <nav class=\"row\">\n            <button id=\"btn-prev\" class=\"btn btn-primary\">Prev</button>\n            <button id=\"btn-next\" class=\"pull-right btn btn-primary\">Next</button>\n        </nav>\n    </div>\n</div>\n";
+},"useData":true});
+templates['teaching/lesson/generic/step_20.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "backward analysis";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<h1>Backward Analysis Algorithm</h1>\n\n<p>For a "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || helpers.helperMissing).call(depth0 != null ? depth0 : {},"backward_analysis",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " the algorithm is almost the same:</p>\n\n<p>\n    \\begin{align}\n    & \\text{Out} ( \\small{\\text{EXIT}} ) = v_{\\text{EXIT}}; \\\\\n    & {\\bf for} \\, ( \\text{each node} \\: n \\: \\text{in the CFG} ) \\; \\text{In}(n) = \\top;\\\\\n    & {\\bf while} \\, ( \\text{changes to any} \\: \\text{In}(n) \\: \\text{occur} ) \\: \\{\\\\\n    & \\quad \\quad {\\bf for} \\, (\\text{each node} \\: n \\: \\text{in the CFG} ) \\: \\{ \\\\\n    & \\quad \\quad \\quad \\quad \\text{Out}(n) = \\land_{s \\in \\text{succ}} \\text{Out}(s); \\\\\n    & \\quad \\quad \\quad \\quad \\text{In}(n) = F(n); \\\\\n    & \\quad \\quad \\} \\\\\n    & \\}\n    \\end{align}\n</p>\n\n<p>We initialise the boundary \\(\\text{Out}(\\small{\\text{EXIT}})\\). References to \\(\\text{In}\\) have been replaced with \\(\\text{Out}\\) and vice-versa.</p>\n";
+},"useData":true});
+templates['teaching/lesson/generic/step_12.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "round robin";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<p>One way is to use the "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || helpers.helperMissing).call(depth0 != null ? depth0 : {},"round_robin",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " approach from before. We've seen it in action, but let's look at how we'd actually implement it.</p>\n";
+},"useData":true});
+templates['teaching/lesson/generic/step_16.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "forward analysis";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "boundary";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
+
+  return "<h1>Forward Analysis Algorithm</h1>\n\n<p>For a "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"forward_analysis",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " we use the following algorithm:</p>\n\n<p>\n    \\begin{align}\n    & \\text{In} ( \\small{\\text{ENTRY}} ) = v_{\\text{ENTRY}}; \\\\\n    & {\\bf for} \\, ( \\text{each node} \\: n \\: \\text{in the CFG} ) \\; \\text{Out}(n) = \\top;\\\\\n    & {\\bf while} \\, ( \\text{changes to any} \\: \\text{Out}(n) \\: \\text{occur} ) \\: \\{\\\\\n    & \\quad \\quad {\\bf for} \\, (\\text{each node} \\: n \\: \\text{in the CFG} ) \\: \\{ \\\\\n    & \\phantom{ \\quad \\quad \\quad \\quad \\text{In}(n) = \\land_{p \\in \\text{preds}} \\text{Out}(p); } \\\\\n    & \\phantom{ \\quad \\quad \\quad \\quad \\text{Out}(n) = F(n); } \\\\\n    & \\phantom{ \\quad \\quad \\} } \\\\\n    & \\phantom{ \\} }\n    \\end{align}\n</p>\n\n<ol>\n<li>First, we assign the "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"boundary",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " value.</li>\n<li>Next, we assign the <strong>initial values</strong> to each point.</li>\n<li>Then, while any <strong>changes</strong> occur...</li>\n<li>We <strong>iterate</strong> over each node <strong>in order</strong>...</li>\n</ol>\n";
+},"useData":true});
+templates['teaching/lesson/generic/step_17.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "forward analysis";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "boundary";
+},"5":function(container,depth0,helpers,partials,data) {
+    return "meet function";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
+
+  return "<h1>Forward Analysis Algorithm</h1>\n\n<p>For a "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"forward_analysis",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " we use the following algorithm:</p>\n\n<p>\n    \\begin{align}\n    & \\text{In} ( \\small{\\text{ENTRY}} ) = v_{\\text{ENTRY}}; \\\\\n    & {\\bf for} \\, ( \\text{each node} \\: n \\: \\text{in the CFG} ) \\; \\text{Out}(n) = \\top; \\\\\n    & {\\bf while} \\, ( \\text{changes to any} \\: \\text{Out}(n) \\: \\text{occur} ) \\: \\{ \\\\\n    & \\quad \\quad {\\bf for} \\, (\\text{each node} \\: n \\: \\text{in the CFG} ) \\: \\{ \\\\\n    & \\quad \\quad \\quad \\quad \\text{In}(n) = \\land_{p \\in \\text{preds}} \\text{Out}(p); \\\\\n    & \\phantom{ \\quad \\quad \\quad \\quad \\text{Out}(n) = F(n); } \\\\\n    & \\phantom{ \\quad \\quad \\} } \\\\\n    & \\phantom{ \\} }\n    \\end{align}\n</p>\n\n<ol>\n<li>First, we assign the "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"boundary",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " value.</li>\n<li>Next, we assign the <strong>initial values</strong> to each point.</li>\n<li>Then, while any <strong>changes</strong> occur...</li>\n<li>We <strong>iterate</strong> over each node <strong>in order</strong>...</li>\n<li>Calculating the value of the "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"meet_function",{"name":"definition","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " for each node - in this case, \\(\\text{In}(n)\\)...</li>\n</ol>\n";
+},"useData":true});
+templates['teaching/lesson/generic/step_09.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "reaching definitions";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "boundary";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
+
+  return "<p class=\"lesson-generic-description\">For "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"reaching_definitions",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ", the "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"boundary",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " is the <strong>empty set</strong>.</p>\n";
+},"useData":true});
+templates['teaching/lesson/generic/step_08.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "reaching definitions";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "union";
+},"5":function(container,depth0,helpers,partials,data) {
+    return "intersection";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
+
+  return "<p class=\"lesson-generic-description\">We call the <strong>combination</strong> of value sets the <strong>meet</strong> of those sets. In "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"reaching_definitions",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " we calculate the meet as the "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"union",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " (denoted \\(\\bigcup\\)) of sets. In some data-flow frameworks the meet can be a different set operation, such as the "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"intersection",{"name":"definition","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " (denoted \\(\\bigcap\\)).</p>\n";
+},"useData":true});
+templates['teaching/lesson/generic/step_11.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "reaching definitions";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<p>So, we know how our "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || helpers.helperMissing).call(depth0 != null ? depth0 : {},"reaching_definition",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " analysis can be mapped to our <strong>generic framework</strong>. But how do we use it?</p>\n";
+},"useData":true});
+templates['teaching/lesson/generic/step_14.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "forward analysis";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "boundary";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
+
+  return "<h1>Forward Analysis Algorithm</h1>\n\n<p>For a "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"forward_analysis",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " we use the following algorithm:</p>\n\n<p>\n    \\begin{align}\n    & \\text{In} ( \\small{\\text{ENTRY}} ) = v_{\\text{ENTRY}}; \\\\\n    & {\\bf for} \\, ( \\text{each node} \\: n \\: \\text{in the CFG} ) \\; \\text{Out}(n) = \\top;\\\\\n    & \\phantom{ {\\bf while} \\, ( \\text{changes to any} \\: \\text{Out}(n) \\: \\text{occur} ) \\: \\{ }\\\\\n    & \\phantom{ \\quad \\quad {\\bf for} \\, (\\text{each node} \\: n \\: \\text{in the CFG} ) \\: \\{ } \\\\\n    & \\phantom{ \\quad \\quad \\quad \\quad \\text{In}(n) = \\land_{p \\in \\text{preds}} \\text{Out}(p); } \\\\\n    & \\phantom{ \\quad \\quad \\quad \\quad \\text{Out}(n) = F(n); } \\\\\n    & \\phantom{ \\quad \\quad \\} } \\\\\n    & \\phantom{ \\} }\n    \\end{align}\n</p>\n\n<ol>\n<li>First, we assign the "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"boundary",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " value.</li>\n<li>Next, we assign the <strong>initial values</strong> to each point.</li>\n</ol>\n";
 },"useData":true});
 templates['teaching/lesson/generic/step_03.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
     return "domain";
@@ -153,6 +253,8 @@ templates['teaching/lesson/generic/step_03.hbs'] = template({"1":function(contai
     return "meet function";
 },"21":function(container,depth0,helpers,partials,data) {
     return "boundary";
+},"23":function(container,depth0,helpers,partials,data) {
+    return "top";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
 
@@ -178,7 +280,22 @@ templates['teaching/lesson/generic/step_03.hbs'] = template({"1":function(contai
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"meet_function",{"name":"definition","hash":{},"fn":container.program(19, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + " which defines how data is is propagated <strong>between</strong> nodes.</li>\n        </ul>\n    </li>\n    <li>A "
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"boundary",{"name":"definition","hash":{},"fn":container.program(21, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + " which defines the values at the <strong>starting point</strong> of the analysis.</li>\n    <li>A set of <strong>initial values</strong> for each point.</li>\n</ul>\n";
+    + " which defines the values at the <strong>starting point</strong> of the analysis.</li>\n    <li>A set of <strong>initial values</strong> for each point, referred to as \\(\\top\\) (or "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"top",{"name":"definition","hash":{},"fn":container.program(23, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ")</li>\n</ul>\n";
+},"useData":true});
+templates['teaching/lesson/generic/step_10.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "top";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "boundary";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
+
+  return "<p class=\"lesson-generic-description\">In fact, all values are initialised to the <strong>empty set</strong> - the "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"top",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " element. It is possible for the "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"boundary",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " to <strong>differ</strong> from the initial values, but here they are the same.</p>\n";
 },"useData":true});
 templates['teaching/lesson/generic/step_00.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
     return "terminate";
@@ -187,14 +304,27 @@ templates['teaching/lesson/generic/step_00.hbs'] = template({"1":function(contai
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
 
-  return "<h1>Generic Framework</h1>\n\n<p>Welcome to the Data-Flow Analysis Tutor! In this tutorial, you'll learn:</p>\n\n<ul>\n    <li>How to define data-flows within a <strong>generic framework</strong>.</li>\n    <li>The conditions under which our analyses will "
+  return "<h1>Introduction</h1>\n\n<p>Welcome to the Data-Flow Analysis Tutor! In this tutorial, you'll learn:</p>\n\n<ul>\n    <li>How to define data-flows within a <strong>generic framework</strong>.</li>\n    <li>The conditions under which our analyses will "
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"terminate",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + ".</li>\n    <li>The purpose of a "
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"meet_semilattice",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + ".</li>\n</ul>\n\n<p>To begin, please click the <em>Next</em> button.</p>\n";
 },"useData":true});
-templates['teaching/lesson/generic/#step_06.hbs#'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "\n";
+templates['teaching/lesson/generic/step_19.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<p>That's it! When broken down the algorithm is fairly easy to understand.</p>\n";
+},"useData":true});
+templates['teaching/lesson/generic/step_07.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "transfer function";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "reaching definitions";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
+
+  return "<p class=\"lesson-generic-description\">Previously, we have seen the "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"transfer_function",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " defined as \\(\\text{Out}(n)\\). In generic frameworks we define a <strong>set</strong> of transfer functions, one for <strong>each node</strong> or <strong>block</strong> of code. We will see why this is important later on. For "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"reaching_definitions",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ", the transfer function is the <strong>same</strong> for every node.</p>\n";
 },"useData":true});
 templates['teaching/lesson/generic/step_01.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
     return "data-flow analysis";
@@ -207,7 +337,7 @@ templates['teaching/lesson/generic/step_01.hbs'] = template({"1":function(contai
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
 
-  return "<p>We've seen how we can use "
+  return "<h1>Generic Frameworks for Data-Flow Analysis</h1>\n\n<p>We've seen how we can use "
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"dataflow_analysis",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + " to compute the set of "
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"reaching_definitions",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
@@ -216,6 +346,27 @@ templates['teaching/lesson/generic/step_01.hbs'] = template({"1":function(contai
     + " using the "
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"round_robin",{"name":"definition","hash":{},"fn":container.program(7, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + " algorithm, but what if we want to define <strong>other data-flows</strong> to work out different properties of the CFG?</p>\n";
+},"useData":true});
+templates['teaching/lesson/generic/step_18.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "forward analysis";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "boundary";
+},"5":function(container,depth0,helpers,partials,data) {
+    return "meet function";
+},"7":function(container,depth0,helpers,partials,data) {
+    return "transfer function";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
+
+  return "<h1>Forward Analysis Algorithm</h1>\n\n<p>For a "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"forward_analysis",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " we use the following algorithm:</p>\n\n<p>\n    \\begin{align}\n    & \\text{In} ( \\small{\\text{ENTRY}} ) = v_{\\text{ENTRY}}; \\\\\n    & {\\bf for} \\, ( \\text{each node} \\: n \\: \\text{in the CFG} ) \\; \\text{Out}(n) = \\top;\\\\\n    & {\\bf while} \\, ( \\text{changes to any} \\: \\text{Out}(n) \\: \\text{occur} ) \\: \\{\\\\\n    & \\quad \\quad {\\bf for} \\, (\\text{each node} \\: n \\: \\text{in the CFG} ) \\: \\{ \\\\\n    & \\quad \\quad \\quad \\quad \\text{In}(n) = \\land_{p \\in \\text{preds}} \\text{Out}(p); \\\\\n    & \\quad \\quad \\quad \\quad \\text{Out}(n) = F(n); \\\\\n    & \\quad \\quad \\} \\\\\n    & \\}\n    \\end{align}\n</p>\n\n<ol>\n<li>First, we assign the "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"boundary",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " value.</li>\n<li>Next, we assign the <strong>initial values</strong> to each point.</li>\n<li>Then, while any <strong>changes</strong> occur...</li>\n<li>We <strong>iterate</strong> over each node <strong>in order</strong>...</li>\n<li>Calculating the value of the "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"meet_function",{"name":"definition","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " for each node - in this case, \\(\\text{In}(n)\\)...</li>\n<li>And finally, the value of the "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"transfer_function",{"name":"definition","hash":{},"fn":container.program(7, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " - in this case, \\(\\text{Out}(n)\\).</li>\n</ol>\n";
 },"useData":true});
 templates['teaching/lesson/generic/step_02.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
     return "reaching definitions";
@@ -227,21 +378,17 @@ templates['teaching/lesson/generic/step_02.hbs'] = template({"1":function(contai
     + " can be repeated for other kinds of data-flow analysis. We can define what is known as a <strong>generic framework</strong>, which allows us to apply the <strong>same process</strong> to <strong>all</strong> our data-flows!</p>\n";
 },"useData":true});
 templates['teaching/lesson/generic/step_06.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
-    return "reaching definitions";
+    return "Reaching definitions";
 },"3":function(container,depth0,helpers,partials,data) {
-    return "variable definitions";
-},"5":function(container,depth0,helpers,partials,data) {
-    return "data-flow equations";
+    return "predecessors";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
 
-  return "<p class=\"lesson-generic-description\">The domain of "
+  return "<p class=\"lesson-generic-description\">"
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"reaching_definitions",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + " is "
-    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"variable_definition",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + " since our "
-    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"dataflow_equation",{"name":"definition","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + " operate on these values.</p>\n";
+    + " propagates values <em>forwards</em> from the entry point of the CFG, that is, from a node's "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"predecessor",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " to that node.</p>\n";
 },"useData":true});
 templates['teaching/lesson/generic/step_04.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
     return "reaching definitions";
@@ -250,7 +397,7 @@ templates['teaching/lesson/generic/step_04.hbs'] = template({"1":function(contai
 
   return "<p>We can define "
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || helpers.helperMissing).call(depth0 != null ? depth0 : {},"reaching_definitions",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + " using our <strong>generic framework</strong>:</p>\n\n<table class=\"table table-bordered table-striped\">\n    <thead>\n        <tr>\n            <th>Property</th>\n            <th>Value</th>\n        </tr>\n    </thead>\n    <tbody>\n        <tr id=\"framework-domain\">\n            <td>Domain</td>\n            <td>Definitions</td>\n        </tr>\n        <tr id=\"framework-direction\">\n            <td>Direction</td>\n            <td>Forward</td>\n        </tr>\n        <tr id=\"framework-transfer\">\n            <td>Transfer Function</td>\n            <td>\\(\\small{F(n) = \\{ \\text{DefGen}(n) \\cup (\\text{In}(n) \\setminus \\text{DefKill}(n)) \\, : \\, \\forall n \\}}\\)</td>\n        </tr>\n        <tr id=\"framework-meet\">\n            <td>Meet Function</td>\n            <td>\\(\\small{\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)}\\)</td>\n        </tr>\n        <tr id=\"framework-boundary\">\n            <td>Boundary</td>\n            <td>\\(\\small{\\text{In}(\\small{\\text{ENTRY}}) = \\varnothing}\\)</td>\n        </tr>\n        <tr id=\"framework-initial\">\n            <td>Initial Value</td>\n            <td>\\(\\small{\\varnothing}\\)</td>\n        </tr>\n    </tbody>\n</table>\n";
+    + " using our <strong>generic framework</strong>:</p>\n\n<table class=\"table table-bordered table-striped\">\n    <thead>\n        <tr>\n            <th>Property</th>\n            <th>Value</th>\n        </tr>\n    </thead>\n    <tbody>\n        <tr id=\"framework-domain\">\n            <td>Domain</td>\n            <td>Definitions</td>\n        </tr>\n        <tr id=\"framework-direction\">\n            <td>Direction</td>\n            <td>Forward</td>\n        </tr>\n        <tr id=\"framework-transfer\">\n            <td>Transfer Function</td>\n            <td>\\(\\small{F(n) = \\{ \\text{DefGen}(n) \\cup (\\text{In}(n) \\setminus \\text{DefKill}(n)) \\, : \\, \\forall n \\}}\\)</td>\n        </tr>\n        <tr id=\"framework-meet\">\n            <td>Meet Function</td>\n            <td>\\(\\small{\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)}\\)</td>\n        </tr>\n        <tr id=\"framework-boundary\">\n            <td>Boundary</td>\n            <td>\\(\\small{\\text{In}(\\small{\\text{ENTRY}}) = \\varnothing}\\)</td>\n        </tr>\n        <tr id=\"framework-initial\">\n            <td>Initial Value</td>\n            <td>\\(\\top =  \\small{\\varnothing}\\)</td>\n        </tr>\n    </tbody>\n</table>\n";
 },"useData":true});
 templates['teaching/lesson/generic/step_05.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
     return "reaching definitions";
@@ -268,6 +415,32 @@ templates['teaching/lesson/generic/step_05.hbs'] = template({"1":function(contai
     + " since our "
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"dataflow_equation",{"name":"definition","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + " operate on these values.</p>\n";
+},"useData":true});
+templates['teaching/lesson/generic/step_13.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "forward analysis";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "boundary";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
+
+  return "<h1>Forward Analysis Algorithm</h1>\n\n<p>For a "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"forward_analysis",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " we use the following algorithm:</p>\n\n<p>\n    \\begin{align}\n    & \\text{In} ( \\small{\\text{ENTRY}} ) = v_{\\text{ENTRY}}; \\\\\n    & \\phantom{ {\\bf for} \\, ( \\text{each node} \\: n \\: \\text{in the CFG} ) \\; \\text{Out}(n) = \\top; }\\\\\n    & \\phantom{ {\\bf while} \\, ( \\text{changes to any} \\: \\text{Out}(n) \\: \\text{occur} ) \\: \\{ }\\\\\n    & \\phantom{ \\quad \\quad {\\bf for} \\, (\\text{each node} \\: n \\: \\text{in the CFG} ) \\: \\{ } \\\\\n    & \\phantom{ \\quad \\quad \\quad \\quad \\text{In}(n) = \\land_{p \\in \\text{preds}} \\text{Out}(p); } \\\\\n    & \\phantom{ \\quad \\quad \\quad \\quad \\text{Out}(n) = F(n); } \\\\\n    & \\phantom{ \\quad \\quad \\} } \\\\\n    & \\phantom{ \\} }\n    \\end{align}\n</p>\n\n<ol>\n<li>First, we assign the "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"boundary",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " value.</li>\n</ol>\n";
+},"useData":true});
+templates['teaching/lesson/generic/step_15.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "forward analysis";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "boundary";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
+
+  return "<h1>Forward Analysis Algorithm</h1>\n\n<p>For a "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"forward_analysis",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " we use the following algorithm:</p>\n\n<p>\n    \\begin{align}\n    & \\text{In} ( \\small{\\text{ENTRY}} ) = v_{\\text{ENTRY}}; \\\\\n    & {\\bf for} \\, ( \\text{each node} \\: n \\: \\text{in the CFG} ) \\; \\text{Out}(n) = \\top;\\\\\n    & {\\bf while} \\, ( \\text{changes to any} \\: \\text{Out}(n) \\: \\text{occur} ) \\: \\{\\\\\n    & \\phantom{ \\quad \\quad {\\bf for} \\, (\\text{each node} \\: n \\: \\text{in the CFG} ) \\: \\{ } \\\\\n    & \\phantom{ \\quad \\quad \\quad \\quad \\text{In}(n) = \\land_{p \\in \\text{preds}} \\text{Out}(p); } \\\\\n    & \\phantom{ \\quad \\quad \\quad \\quad \\text{Out}(n) = F(n); } \\\\\n    & \\phantom{ \\quad \\quad \\} } \\\\\n    & \\phantom{ \\} }\n    \\end{align}\n</p>\n\n<ol>\n<li>First, we assign the "
+    + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"boundary",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " value.</li>\n<li>Next, we assign the <strong>initial values</strong> to each point.</li>\n<li>Then, while any <strong>changes</strong> occur...</li>\n</ol>\n";
 },"useData":true});
 templates['teaching/lesson/00/main.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"row\">\n    <div class=\"col-xs-6 lesson-step\">\n        <div class=\"row\">\n            <div id=\"text\" class=\"col-xs-12\">\n            </div>\n        </div>\n        <nav class=\"row\">\n            <button id=\"btn-prev\" class=\"btn btn-primary\">Prev</button>\n            <button id=\"btn-next\" class=\"pull-right btn btn-primary\">Next</button>\n        </nav>\n    </div>\n    <div id=\"cfg-canvas\" class=\"col-xs-6\">\n    </div>\n</div>\n";
@@ -787,7 +960,7 @@ templates['teaching/lesson/roundrobin/step_00.hbs'] = template({"1":function(con
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "<h1>Round Robin Algorithm</h1>\n\n<p>Welcome to the Data-Flow Analysis Tutor! In this tutorial, you'll learn:</p>\n\n<ul>\n    <li>How to perform a simple data-flow analysis using the "
+  return "<h1>Introduction</h1>\n\n<p>Welcome to the Data-Flow Analysis Tutor! In this tutorial, you'll learn:</p>\n\n<ul>\n    <li>How to perform a simple data-flow analysis using the "
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || helpers.helperMissing).call(depth0 != null ? depth0 : {},"round_robin",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + " approach.</li>\n    <li>How the order of evaluated nodes affects the efficiency of analysis.</li>\n</ul>\n\n<p>To begin, please click the <em>Next</em> button.</p>\n";
 },"useData":true});
@@ -902,7 +1075,7 @@ templates['teaching/lesson/roundrobin/step_01.hbs'] = template({"1":function(con
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing;
 
-  return "<p>So far we've seen how "
+  return "<h1>The Round Robin Algorithm</h1>\n\n<p>So far we've seen how "
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"dataflow_equations",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + " help us calculate value sets at points in the "
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"control_flow_graph",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")

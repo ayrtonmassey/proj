@@ -37,4 +37,7 @@ var DICTIONARY = {
     transfer_function: "A function which defines how values are propagated through nodes in a control-flow graph.",
     domain: "The set of values to be considered.",
     boundary: "In a generic data-flow framework, the boundary defines the initial value of the starting point of the analysis.",
+    intersection: "The intersection of two sets is the values they have in common, e.g. {a, b} ∩ {b, c} = {c}",
+    union: "The union of two sets is all of the values they both contain, e.g. {a, b} ∪ {b, c} = {a, b, c}",
+    top: "The top element in an ordering is the minimum (or smallest) element with respect to that ordering. All other elements have a greater value than this value.",
 }

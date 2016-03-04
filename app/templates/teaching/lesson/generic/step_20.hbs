@@ -1,0 +1,18 @@
+<h1>Backward Analysis Algorithm</h1>
+
+<p>For a {{#definition "backward_analysis"}}backward analysis{{/definition}} the algorithm is almost the same:</p>
+
+<p>
+    \begin{align}
+    & \text{Out} ( \small{\text{EXIT}} ) = v_{\text{EXIT}}; \\
+    & {\bf for} \, ( \text{each node} \: n \: \text{in the CFG} ) \; \text{In}(n) = \top;\\
+    & {\bf while} \, ( \text{changes to any} \: \text{In}(n) \: \text{occur} ) \: \{\\
+    & \quad \quad {\bf for} \, (\text{each node} \: n \: \text{in the CFG} ) \: \{ \\
+    & \quad \quad \quad \quad \text{Out}(n) = \land_{s \in \text{succ}} \text{Out}(s); \\
+    & \quad \quad \quad \quad \text{In}(n) = F(n); \\
+    & \quad \quad \} \\
+    & \}
+    \end{align}
+</p>
+
+<p>We initialise the boundary \(\text{Out}(\small{\text{EXIT}})\). References to \(\text{In}\) have been replaced with \(\text{Out}\) and vice-versa.</p>

@@ -1,0 +1,24 @@
+<h1>Forward Analysis Algorithm</h1>
+
+<p>For a {{#definition "forward_analysis"}}forward analysis{{/definition}} we use the following algorithm:</p>
+
+<p>
+    \begin{align}
+    & \text{In} ( \small{\text{ENTRY}} ) = v_{\text{ENTRY}}; \\
+    & {\bf for} \, ( \text{each node} \: n \: \text{in the CFG} ) \; \text{Out}(n) = \top; \\
+    & {\bf while} \, ( \text{changes to any} \: \text{Out}(n) \: \text{occur} ) \: \{ \\
+    & \quad \quad {\bf for} \, (\text{each node} \: n \: \text{in the CFG} ) \: \{ \\
+    & \quad \quad \quad \quad \text{In}(n) = \land_{p \in \text{preds}} \text{Out}(p); \\
+    & \phantom{ \quad \quad \quad \quad \text{Out}(n) = F(n); } \\
+    & \phantom{ \quad \quad \} } \\
+    & \phantom{ \} }
+    \end{align}
+</p>
+
+<ol>
+<li>First, we assign the {{#definition "boundary"}}boundary{{/definition}} value.</li>
+<li>Next, we assign the <strong>initial values</strong> to each point.</li>
+<li>Then, while any <strong>changes</strong> occur...</li>
+<li>We <strong>iterate</strong> over each node <strong>in order</strong>...</li>
+<li>Calculating the value of the {{#definition "meet_function"}}meet function{{/definition}} for each node - in this case, \(\text{In}(n)\)...</li>
+</ol>
