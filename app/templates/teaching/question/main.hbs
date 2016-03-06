@@ -4,9 +4,10 @@
     {{/each}}
     <div class="answer-grid">
         {{#each answers}}
-            <button class="btn btn-primary btn-answer {{#if this.correct}}correct{{else}}incorrect{{/if}}">
+            <button class="btn btn-primary btn-answer {{#if this.correct}}correct{{else}}incorrect{{/if}}" answer_id="{{this.id}}">
                 {{this.text}}
             </button>
         {{/each}}
     </div>
+    <p class="pick-text"></p>
 </div>

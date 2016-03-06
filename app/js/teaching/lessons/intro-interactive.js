@@ -19,6 +19,7 @@ function LessonIntroView(kwargs) {
 
     this.steps = [
         function step_00() {
+            _this.step_title.html("Introduction");
             // Update the text
             _this.text.html(_this.get_template('step_00')());
             
@@ -26,11 +27,13 @@ function LessonIntroView(kwargs) {
             _this.cfg_canvas.hide();
         },
         function step_01() {
+            _this.step_title.html("What is Data-Flow Analysis?");
             _this.clear();
             _this.text.html(_this.get_template('step_01')());
             
         },
         function step_02() {
+            _this.step_title.html("Control-Flow Graphs");
             _this.clear();
             _this.text.html(_this.get_template('step_02')());
             
@@ -191,6 +194,8 @@ function LessonIntroView(kwargs) {
             _this.cfg_view.reset();
         },
         function step_06() {
+            _this.step_title.html("Reaching Definitions");
+            
             _this.clear();
             
             _this.text.append(_this.get_template('step_06')());
@@ -474,6 +479,8 @@ function LessonIntroView(kwargs) {
             controls_view.init();
         },
         function step_22() {
+            _this.step_title.html("Summary");
+            
             _this.clear();
 
             _this.text.append(_this.get_template('step_22')());

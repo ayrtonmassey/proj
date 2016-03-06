@@ -1,0 +1,4 @@
+    addI   ra, 1  => ra
+    cbr_GE ra, r0 -> L0, L1
+L0: sub    r0, ra => ra
+L1: i2i    ra     => rc

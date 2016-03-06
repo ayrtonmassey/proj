@@ -1,0 +1,23 @@
+<p>For a {{#definition "forward_analysis"}}forward analysis{{/definition}} we use the following algorithm:</p>
+
+<p>
+    \begin{align}
+    & \text{In} ( \small{\text{ENTRY}} ) = v_{\text{ENTRY}}; \\
+    & {{#if hs2}} \phantom{ {{/if}} {\bf for} \, ( \text{each block} \: B \: \text{in the CFG} ) \; \text{Out}_{B} = \top; {{#if hs2}} } {{/if}} \\
+    & {{#if hs3}} \phantom{ {{/if}} {\bf while} \, ( \text{changes to any} \: \text{Out} \: \text{occur} ) \: \{ {{#if hs3}} } {{/if}} \\
+    & {{#if hs4}} \phantom{ {{/if}} \quad \quad {\bf for} \, (\text{each block} \: B \: \text{in the CFG} ) \: \{ {{#if hs4}} } {{/if}} \\
+    & {{#if hs5}} \phantom{ {{/if}} \quad \quad \quad \quad \text{In}_{B} \phantom{O} = \land_{\text{predecessors} \, P \, \text{of} \,  B} \, \text{Out}_{P}; {{#if hs5}} } {{/if}} \\
+    & {{#if hs6}} \phantom{ {{/if}} \quad \quad \quad \quad \text{Out}_{B} = F_{B}(In_{B}); {{#if hs6}} } {{/if}} \\
+    & {{#if hs6}} \phantom{ {{/if}} \quad \quad \} {{#if hs6}} } {{/if}} \\
+    & {{#if hs6}} \phantom{ {{/if}} \} {{#if hs6}} } {{/if}}
+    \end{align}
+</p>
+
+<ol>
+<li>First, we assign the {{#definition "boundary"}}boundary{{/definition}} value.</li>
+{{#if hs2}}{{else}}<li>Next, we assign the <strong>initial values</strong> to each point.</li>{{/if}}
+{{#if hs3}}{{else}}<li>Then, while any <strong>changes</strong> occur...</li>{{/if}}
+{{#if hs4}}{{else}}<li>We <strong>iterate</strong> over each node <strong>in order</strong>...</li>{{/if}}
+{{#if hs5}}{{else}}<li>Calculating the value of the {{#definition "meet_function"}}meet function{{/definition}} for that node - in this case, \(\text{In}_{B}\)...</li>{{/if}}
+{{#if hs6}}{{else}}<li>And finally, the value of the {{#definition "transfer_function"}}transfer function{{/definition}} - in this case, \(\text{Out}_{B}\).</li>{{/if}}
+</ol>

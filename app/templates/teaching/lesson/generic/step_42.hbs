@@ -1,0 +1,9 @@
+<p>For {{#definition "reaching_definition"}}reaching definitions{{/definition}}, we can verify that \(F_{B}(x \land y) \le F_{B}(x) \land F_{B}(y)\) by checking that:</p>
+
+<p>\begin{align}
+    \text{DefGen}_{B} \cup ((x \cup y) \setminus \text{DefKill}_{B}) &\le (\text{DefGen}_{B} \cup (x \setminus \text{DefKill}_{B})) \cup (\text{DefGen}_{B} \cup (y \setminus \text{DefKill}_{B})) & \\
+    &\le \text{DefGen}_{B} \cup \text{DefGen}_{B} \cup (x \setminus \text{DefKill}_{B}) \cup (y \setminus \text{DefKill}_{B}) & \\
+    &\le \text{DefGen}_{B} \cup ((x \cup y) \setminus \text{DefKill}_{B})) & \text{Q.E.D} \\
+    \end{align}</p>
+
+<p>Thus we have satisfied the {{#definition "monotonic"}}monotonicity{{/definition}} condition.</p>

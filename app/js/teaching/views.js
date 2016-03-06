@@ -66,6 +66,8 @@ function TutorialView(kwargs) {
         this.canvas.html(this.template({title: this.title}));
 
         this.text = $('#text');
+        $('#page-title').html(this.title);
+        this.step_title = $("#lesson-nav-title");
         
         this.next_button = $('#btn-next');
         
@@ -450,8 +452,6 @@ function Lesson00View(kwargs) {
 
     this.init_children = function() {
         
-        $('#page-title').html(this.title);
-        
         this.cfg_canvas = $('#cfg-canvas');
         
         this.cfg_view = new CFGView({
@@ -722,7 +722,6 @@ function Lesson01View(kwargs) {
     ];
 
     this.init_children = function() {
-        $('#page-title').html(this.title);
         
         this.cfg_canvas = $('#cfg-canvas');
         
@@ -747,10 +746,10 @@ var QFLAGS = {
     DISABLE_CORRECT_ONE   : 8,
     DISABLE_CORRECT_ALL   : 16,
 
-    SHOW_INCORRECT_ONE : 0,
-    SHOW_INCORRECT_ALL : 1,
-    SHOW_CORRECT_ONE   : 0,
-    SHOW_CORRECT_ALL   : 2,
+    SHOW_INCORRECT_ONE : 1,
+    SHOW_INCORRECT_ALL : 2,
+    SHOW_CORRECT_ONE   : 4,
+    SHOW_CORRECT_ALL   : 8,
 }
 
 function QuestionView(kwargs) {
@@ -758,10 +757,15 @@ function QuestionView(kwargs) {
 
     var _this = this;
 
+    this.answers = kwargs.answers;
+
     this.correct_callback = kwargs.correct_callback || (function() {});
     this.incorrect_callback = kwargs.incorrect_callback || (function() {});
     
     this.show_on_click = kwargs.show_on_click || (QFLAGS.SHOW_CORRECT_ALL | QFLAGS.SHOW_INCORRECT_ONE);
+
+    console.log(this.show_on_click);
+
     this.disable_on_click = kwargs.disable_on_click || (QFLAGS.DISABLE_CORRECT_ALL | QFLAGS.DISABLE_INCORRECT_ONE);
 
     this.template_root = 'teaching/question/';
@@ -777,8 +781,41 @@ function QuestionView(kwargs) {
             $(this).removeClass('btn-primary');
         });
     }
+
+    this.all_answered = function() {
+        for (answer of this.answers) {
+            if (answer.answered == false) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    this.all_correct_answered = function() {
+        for (answer of this.answers) {
+            if (answer.correct && !answer.answered) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    this.set_answered = function(elem) {
+        id = elem.attr('answer_id');
+        console.log(id);
+        this.answers[id].answered = true;
+        console.log(this.answers[id]);
+        if (this.answers[id].pick_text) {
+            this.pick_text.html(this.answers[id].pick_text);
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.canvas.id]);
+        } else {
+            this.pick_text.html("");
+        }
+    }
     
     this.incorrect_answer = function(elem) {
+        this.set_answered(elem);
+        
         if(this.show_on_click & QFLAGS.SHOW_INCORRECT_ALL) {
             this.highlight_answers();
         } else {
@@ -793,8 +830,10 @@ function QuestionView(kwargs) {
         
         this.incorrect_callback();
     }
-
+    
     this.correct_answer = function(elem) {
+        this.set_answered(elem);
+        
         if(this.show_on_click & QFLAGS.SHOW_CORRECT_ALL) {
             this.highlight_answers();
         } else {
@@ -830,10 +869,24 @@ function QuestionView(kwargs) {
     }
     
     this.init = function() {
+        
+        var has_pick_text = false;
+        for (var i=0; i < this.answers.length; i++) {
+            $.extend(this.answers[i], {id: i, answered: false});
+            console.log("has_pick_text: "+this.answers[i].pick_text);
+            has_pick_text |= (this.answers[i].pick_text ? true : false);
+        }
+        
         this.canvas.html(this.template({
             question: kwargs.question,
-            answers: shuffle(kwargs.answers)
+            answers: shuffle(this.answers)
         }));
+
+        this.pick_text = this.canvas.find('.pick-text');
+
+        if(!has_pick_text) {
+            this.pick_text.hide();
+        }
 
         $("button.btn-answer").each(function(){
             if ($(this).hasClass('correct')) {

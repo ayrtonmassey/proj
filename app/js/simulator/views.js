@@ -1106,6 +1106,7 @@ function LatticeView(kwargs) {
     this.node_template = this.get_template('node');
 
     this.display_toggle = true;
+    this.show_toggle = kwargs.show_toggle;
     
     this.draw = function() {
         this.g.graph().transition = function(selection) {
@@ -1273,38 +1274,40 @@ function LatticeView(kwargs) {
             this.simulator.on('update', function() {
                 _this.update();
             });
-            
-            this.canvas.append(this.get_template('btn-lattice-collapse')());
-            
-            if (_this.display_toggle) {
-                _this.canvas.parent().addClass('flex-max').attr('style', '');
-                $('#btn-lattice-collapse').html('<i class="fa fa-minus"></i>')
-                    .addClass("btn-danger")
-                    .removeClass("btn-success");
-            } else {
-                _this.canvas.parent().removeClass('flex-max').attr('style', 'flex: 0 0 5em;');
-                $('#btn-lattice-collapse').html('<i class="fa fa-plus"></i>')
-                    .removeClass("btn-danger")
-                    .addClass("btn-success");
-            }
-            
-            $('#btn-lattice-collapse').on('click', function() {
+
+            if (this.show_toggle) {
+                this.canvas.append(this.get_template('btn-lattice-collapse')());
+                
                 if (_this.display_toggle) {
-                    _this.display_toggle = false;
-                    _this.svg.attr('style','display: none;');
-                    _this.canvas.parent().removeClass('flex-max').attr('style', 'flex: 0 0 5em;');
-                    $('#btn-lattice-collapse').html('<i class="fa fa-plus"></i>')
-                        .removeClass("btn-danger")
-                        .addClass("btn-success");
-                } else {
-                    _this.display_toggle = true;
-                    _this.svg.attr('style','');
                     _this.canvas.parent().addClass('flex-max').attr('style', '');
                     $('#btn-lattice-collapse').html('<i class="fa fa-minus"></i>')
                         .addClass("btn-danger")
                         .removeClass("btn-success");
+                } else {
+                    _this.canvas.parent().removeClass('flex-max').attr('style', 'flex: 0 0 5em;');
+                    $('#btn-lattice-collapse').html('<i class="fa fa-plus"></i>')
+                        .removeClass("btn-danger")
+                        .addClass("btn-success");
                 }
-            });
+                
+                $('#btn-lattice-collapse').on('click', function() {
+                    if (_this.display_toggle) {
+                        _this.display_toggle = false;
+                        _this.svg.attr('style','display: none;');
+                        _this.canvas.parent().removeClass('flex-max').attr('style', 'flex: 0 0 5em;');
+                        $('#btn-lattice-collapse').html('<i class="fa fa-plus"></i>')
+                            .removeClass("btn-danger")
+                            .addClass("btn-success");
+                    } else {
+                        _this.display_toggle = true;
+                        _this.svg.attr('style','');
+                        _this.canvas.parent().addClass('flex-max').attr('style', '');
+                        $('#btn-lattice-collapse').html('<i class="fa fa-minus"></i>')
+                            .addClass("btn-danger")
+                            .removeClass("btn-success");
+                    }
+                });
+            }
         } else {
             this.displaying = false;
             _this.canvas.html('<p class="alert alert-danger" style="margin-bottom: 0; width: 100%;">Cannot display lattice - number of values exceeds minimum.</p>');

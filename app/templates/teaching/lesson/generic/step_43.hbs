@@ -1,0 +1,29 @@
+<p>That's it for this lesson! To sum up:</p>
+
+<ul>
+    <li>A <strong>generic framework</strong> lets us define {{#definition "dataflow_analysis"}}data-flows{{/definition}} for all kinds of properties.</li>
+    <li>Our generic frameworks need to contain 5 things:
+        <ul>
+            <li>A {{#definition "domain"}}domain{{/definition}} of values.</li>
+            <li>A {{#definition "direction"}}direction{{/definition}}.</li>
+            <li>A set of {{#definition "dataflow_equation"}}transfer functions{{/definition}} \(F\) and a meet operator \(\land\).</li>
+            <li>An initial value at the {{#definition "boundary"}}boundary{{/definition}}.</li>
+            <li>A set of <strong>initial values</strong> for each point.</li>
+        </ul>
+    </li>
+    <li>Our functions need to satisfy the following conditions:
+        <ul>
+            <li>\(F\) contains the {{#definition "identity_function"}}identity function{{/definition}}.</li>
+            <li>\(F\) must be {{#definition "closure"}}closed{{/definition}} under {{#definition "composition"}}composition{{/definition}}.</li>
+            <li>\(F\) must be {{#definition "monotonic"}}monotonic{{/definition}}.</li>
+            <li>The values and meet operator must form a {{#definition "meet_semilattice"}}meet semi-lattice{{/definition}}.</li>
+        </ul>
+    </li>
+    <li>The {{#definition "meet_semilattice"}}meet semi-lattice{{/definition}} is a {{#definition "partial_order"}}partially ordered{{/definition}} set.</li>
+    <li>We can represent the {{#definition "meet_semilattice"}}meet semi-lattice{{/definition}} using a {{#definition "hasse_diagram"}}hasse diagram{{/definition}}.</li>
+</ul>
+
+<p>You can <strong>view the lattice</strong> example in the simulator or <strong>return to the menu</strong> using the buttons below.</p>
+
+<p><a id="btn-goto-simulator" class="btn btn-primary btn-block">Open CFG in Simulator</a></p>
+<p><a id="btn-goto-menu" class="btn btn-secondary btn-block">Back to Menu</a></p>

@@ -19,6 +19,7 @@ function LessonRoundRobinView(kwargs) {
 
     this.steps = [
         function step_00() {
+            _this.step_title.html("Introduction");
             // Update the text
             _this.text.html(_this.get_template('step_00')());
             
@@ -27,6 +28,7 @@ function LessonRoundRobinView(kwargs) {
             _this.cfg_canvas.hide();
         },
         function step_01() {
+            _this.step_title.html("The Round Robin Algorithm");
             _this.clear();
             _this.text.html(_this.get_template('step_01')());            
         },
@@ -555,6 +557,8 @@ function LessonRoundRobinView(kwargs) {
             _this.text.append(_this.get_template('step_34')());
         },
         function step_35() {
+            _this.step_title.html("Summary");
+            
             _this.clear();
             
             _this.text.append(_this.get_template('step_35')());

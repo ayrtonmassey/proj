@@ -1,0 +1,8 @@
+<p>Now, let's compose the two functions to obtain \(F_A \circ F_B\):</p>
+
+<p>
+    \begin{align}
+    (F_A \circ F_B)(x) &= \text{DefGen}_A \cup ((\text{DefGen}_B \cup (x \setminus \text{DefKill}_B)) \setminus \text{DefKill}_A) \\
+    &= (\text{DefGen}_A \cup (\text{DefGen}_B \setminus \text{DefKill}_A)) \cup (x \setminus (\text{DefKill}_B \cup \text{DefKill}_A)) \\
+    \end{align}
+</p>
