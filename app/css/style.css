@@ -135,6 +135,10 @@ footer {
 
 /* Lesson */
 
+.complete-check {
+    line-height: 1.5;
+}
+
 .lesson-step {
     font-size: 1rem;
     display: flex;
@@ -143,7 +147,7 @@ footer {
     text-align: justify;
 }
 
-#lesson-nav-title {
+.nav-title {
     /* line-height: 18px; */
     /* vertical-align: bottom; */
     vertical-align: middle;
@@ -578,4 +582,29 @@ g.label sub {
 .btn-answer {
     flex: 0 1 47.5%;
     margin: 0.5em 0;
+}
+
+/* Tests */
+
+#test-score {
+    text-align: center;
+    font-weight: bold;
+}
+
+#test-score .A,
+#test-score .B {
+    color: #5cb85c;
+}
+
+#test-score .C,
+#test-score .D {
+    color: #f0ad4e;
+}
+
+#test-score .F {
+    color: #d9534f;
+}
+
+#test-score .percentage {
+    color: #AAA;
 }

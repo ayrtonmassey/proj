@@ -108,3 +108,11 @@ function titleCase(str) {
    newstr = newstr.join(" ");
    return newstr;
 }  
+
+// Get a cookie by name
+// http://stackoverflow.com/questions/10730362/get-cookie-by-name
+function getCookie(name) {
+  var value = "; " + document.cookie;
+  var parts = value.split("; " + name + "=");
+  if (parts.length == 2) return parts.pop().split(";").shift();
+}

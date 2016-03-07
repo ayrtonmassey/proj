@@ -4,6 +4,8 @@ function TutorialView(kwargs) {
     var _this = this;
     
     this.title = kwargs.title;
+    this.id = kwargs.id;
+    console.log(this.id);
 
     this.clear = function() {
         throw ReferenceError("clear is not defined in class {0}".format(_this.constructor.name));
@@ -22,6 +24,7 @@ function TutorialView(kwargs) {
         }
         if (this.step >= this.steps.length - 1) {
             this.next_button.prop('disabled', true);
+            document.cookie="lesson-{0}-complete={1}".format(this.id, true);
         }
         if (this.step > 0) {
             this.prev_button.prop('disabled', false);
@@ -49,7 +52,7 @@ function TutorialView(kwargs) {
             framework:  iloc_reaching_definitions,
             ordering:   DFA.REVERSE_POSTORDER,
             code:       "nop",
-            play_speed: 100,
+            play_speed: 1000,
         });
         
         this.simulator.init();
@@ -67,7 +70,7 @@ function TutorialView(kwargs) {
 
         this.text = $('#text');
         $('#page-title').html(this.title);
-        this.step_title = $("#lesson-nav-title");
+        this.step_title = $(".nav-title");
         
         this.next_button = $('#btn-next');
         
@@ -759,27 +762,36 @@ function QuestionView(kwargs) {
 
     this.answers = kwargs.answers;
 
+    this.shuffle_answers = kwargs.shuffle_answers || false;
+
     this.correct_callback = kwargs.correct_callback || (function() {});
     this.incorrect_callback = kwargs.incorrect_callback || (function() {});
     
     this.show_on_click = kwargs.show_on_click || (QFLAGS.SHOW_CORRECT_ALL | QFLAGS.SHOW_INCORRECT_ONE);
-
-    console.log(this.show_on_click);
 
     this.disable_on_click = kwargs.disable_on_click || (QFLAGS.DISABLE_CORRECT_ALL | QFLAGS.DISABLE_INCORRECT_ONE);
 
     this.template_root = 'teaching/question/';
     this.template = this.get_template('main');
 
+    this.highlight_elem = function(elem) {
+        if (elem.hasClass('correct')) {
+            elem.addClass('btn-success');
+        } else {
+            elem.addClass('btn-danger');
+        }
+        elem.removeClass('btn-primary');
+    }
+    
     this.highlight_answers = function() {
         $("button.btn-answer").each(function(){
-            if ($(this).hasClass('correct')) {
-                $(this).addClass('btn-success');
-            } else {
-                $(this).addClass('btn-danger');
-            }
-            $(this).removeClass('btn-primary');
+            _this.highlight_elem($(this));
         });
+    }
+
+    this.highlight_answer = function(answer_id) {
+        var answer_btn = $("button.btn-answer[answer_id='{0}']".format(answer_id));
+        this.highlight_elem(answer_btn);
     }
 
     this.all_answered = function() {
@@ -802,19 +814,18 @@ function QuestionView(kwargs) {
 
     this.set_answered = function(elem) {
         id = elem.attr('answer_id');
-        console.log(id);
         this.answers[id].answered = true;
-        console.log(this.answers[id]);
         if (this.answers[id].pick_text) {
             this.pick_text.html(this.answers[id].pick_text);
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.canvas.id]);
         } else {
             this.pick_text.html("");
         }
+        return this.answers[id];
     }
     
     this.incorrect_answer = function(elem) {
-        this.set_answered(elem);
+        var answer = this.set_answered(elem);
         
         if(this.show_on_click & QFLAGS.SHOW_INCORRECT_ALL) {
             this.highlight_answers();
@@ -828,11 +839,11 @@ function QuestionView(kwargs) {
             elem.prop('disabled', true);
         }
         
-        this.incorrect_callback();
+        this.incorrect_callback(answer);
     }
     
     this.correct_answer = function(elem) {
-        this.set_answered(elem);
+        var answer = this.set_answered(elem);
         
         if(this.show_on_click & QFLAGS.SHOW_CORRECT_ALL) {
             this.highlight_answers();
@@ -846,7 +857,7 @@ function QuestionView(kwargs) {
             elem.prop('disabled', true);
         }
         
-        this.correct_callback();
+        this.correct_callback(answer);
     }
 
     this.reset_highlight = function() {
@@ -869,21 +880,24 @@ function QuestionView(kwargs) {
     }
     
     this.init = function() {
-        
+
         var has_pick_text = false;
         for (var i=0; i < this.answers.length; i++) {
             $.extend(this.answers[i], {id: i, answered: false});
-            console.log("has_pick_text: "+this.answers[i].pick_text);
             has_pick_text |= (this.answers[i].pick_text ? true : false);
         }
-        
+
+        var answers = this.answers;
+        if (this.shuffle_answers) {
+            answers = shuffle(this.answers)
+        }
+
         this.canvas.html(this.template({
             question: kwargs.question,
-            answers: shuffle(this.answers)
+            answers: answers,
         }));
 
         this.pick_text = this.canvas.find('.pick-text');
-
         if(!has_pick_text) {
             this.pick_text.hide();
         }

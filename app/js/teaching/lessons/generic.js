@@ -248,7 +248,6 @@ function LessonGenericFrameworkView(kwargs) {
                 ],
                 correct_callback: function() {
                     if (question_view.all_correct_answered()) {
-                        console.log("penis");
                         question_view.highlight_answers();
                         question_view.set_answers_disabled(true);
                         _this.next_button.prop('disabled', false);

@@ -245,7 +245,7 @@ templates['teaching/lesson/generic/step_31.hbs'] = template({"1":function(contai
     + ", then as \\(x\\) increases, \\(f(x)\\) either <strong>only increases</strong> or <strong>only decreases</strong>. That is, for all \\( x \\leq y \\) we have \\( f(x) \\leq f(y) \\).</p>\n";
 },"useData":true});
 templates['teaching/lesson/generic/main.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"row\">\n    <div id=\"left-column\" class=\"col-xs-offset-2 col-xs-8 lesson-step\">\n        <nav class=\"row\">\n            <button id=\"btn-prev\" class=\"btn btn-primary\">Prev</button>\n            <h1 id=\"lesson-nav-title\">$MISSING_TITLE</h1>\n            <button id=\"btn-next\" class=\"pull-right btn btn-primary\">Next</button>\n        </nav>\n        <div class=\"row flex-max\">\n            <div id=\"text\" class=\"col-xs-12\">\n            </div>\n        </div>\n    </div>\n</div>\n";
+    return "<div class=\"row\">\n    <div id=\"left-column\" class=\"col-xs-offset-2 col-xs-8 lesson-step\">\n        <nav class=\"row\">\n            <button id=\"btn-prev\" class=\"btn btn-primary\">Prev</button>\n            <h1 class=\"nav-title\">$MISSING_TITLE</h1>\n            <button id=\"btn-next\" class=\"pull-right btn btn-primary\">Next</button>\n        </nav>\n        <div class=\"row flex-max\">\n            <div id=\"text\" class=\"col-xs-12\">\n            </div>\n        </div>\n    </div>\n</div>\n";
 },"useData":true});
 templates['teaching/lesson/generic/step_34.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
     return "partially ordered set";
@@ -961,7 +961,7 @@ templates['teaching/lesson/intro/step_16_ans.hbs'] = template({"compiler":[7,">=
     return "<p>Correct! Both \\(n_2\\) and \\(n_4\\) are <strong>predecessors</strong> of \\(n_5\\), so the values <strong>flowing out</strong> of them <strong>flow into</strong> \\(n_5\\):</p>\n<p>\n    \\begin{align}\n    \\text{In}(n_5) &= \\bigcup_{p \\in n_2, n_4} \\text{Out}(p) \\\\\n    &= \\text{Out}(n_2) \\cup \\text{Out}(n_4) \\\\\n    &= \\{ {\\tt ra_1} \\} \\cup \\{ {\\tt ra_2} \\} \\\\\n    &= \\{ {\\tt ra_1}, {\\tt ra_2} \\} \\\\\n    \\end{align}\n</p>\n\n";
 },"useData":true});
 templates['teaching/lesson/intro/main.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"row\">\n    <div class=\"col-xs-6 lesson-step\">\n        <nav class=\"row\">\n            <button id=\"btn-prev\" class=\"btn btn-primary\">Prev</button>\n            <h1 id=\"lesson-nav-title\">$MISSING_TITLE</h1>\n            <button id=\"btn-next\" class=\"pull-right btn btn-primary\">Next</button>\n        </nav>\n        <div class=\"row\">\n            <div id=\"text\" class=\"col-xs-12\">\n            </div>\n        </div>\n    </div>\n    <div id=\"cfg-canvas\" class=\"col-xs-6\">\n    </div>\n</div>\n";
+    return "<div class=\"row\">\n    <div class=\"col-xs-6 lesson-step\">\n        <nav class=\"row\">\n            <button id=\"btn-prev\" class=\"btn btn-primary\">Prev</button>\n            <h1 class=\"nav-title\">$MISSING_TITLE</h1>\n            <button id=\"btn-next\" class=\"pull-right btn btn-primary\">Next</button>\n        </nav>\n        <div class=\"row\">\n            <div id=\"text\" class=\"col-xs-12\">\n            </div>\n        </div>\n    </div>\n    <div id=\"cfg-canvas\" class=\"col-xs-6\">\n    </div>\n</div>\n";
 },"useData":true});
 templates['teaching/lesson/intro/step_11.iloc'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "addI rx, 1 => ra";
@@ -1183,7 +1183,7 @@ templates['teaching/lesson/roundrobin/step_31.hbs'] = template({"1":function(con
     + " traversal.</p>\n";
 },"useData":true});
 templates['teaching/lesson/roundrobin/main.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"row\">\n    <div class=\"col-xs-6 lesson-step\" style=\"max-width: 50%\">\n        <nav class=\"row\">\n            <button id=\"btn-prev\" class=\"btn btn-primary\">Prev</button>\n            <h1 id=\"lesson-nav-title\">$MISSING_TITLE</h1>\n            <button id=\"btn-next\" class=\"pull-right btn btn-primary\">Next</button>\n        </nav>\n        <div class=\"row flex-max\">\n            <div id=\"text\" class=\"col-xs-12\">\n            </div>\n        </div>\n        <div class=\"row margin-bottom\">\n            <div id=\"results-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n    </div>\n    <div id=\"cfg-canvas\" class=\"col-xs-6\">\n    </div>\n</div>\n";
+    return "<div class=\"row\">\n    <div class=\"col-xs-6 lesson-step\" style=\"max-width: 50%\">\n        <nav class=\"row\">\n            <button id=\"btn-prev\" class=\"btn btn-primary\">Prev</button>\n            <h1 class=\"nav-title\">$MISSING_TITLE</h1>\n            <button id=\"btn-next\" class=\"pull-right btn btn-primary\">Next</button>\n        </nav>\n        <div class=\"row flex-max\">\n            <div id=\"text\" class=\"col-xs-12\">\n            </div>\n        </div>\n        <div class=\"row margin-bottom\">\n            <div id=\"results-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n    </div>\n    <div id=\"cfg-canvas\" class=\"col-xs-6\">\n    </div>\n</div>\n";
 },"useData":true});
 templates['teaching/lesson/roundrobin/step_34.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
     return "reaching definitions";
@@ -1408,6 +1408,22 @@ templates['teaching/lesson/roundrobin/step_05.hbs'] = template({"1":function(con
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || alias2).call(alias1,"available_expression",{"name":"definition","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + " initialises every node except \\(n_0\\) to the set of <strong>all possible values</strong>!</p>\n";
 },"useData":true});
+templates['teaching/tests/main.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<div class=\"row\">\n    <div id=\"left-column\" class=\"col-xs-offset-2 col-xs-8 lesson-step\">\n        <nav class=\"row\">\n            <button id=\"btn-prev\" class=\"btn btn-primary\">Prev</button>\n            <button id=\"btn-submit\" class=\"pull-right btn btn-success\">Submit</button>\n            <button id=\"btn-next\" class=\"pull-right btn btn-primary\">Next</button>\n        </nav>\n        <div class=\"row flex-max\">\n            <div id=\"text\" class=\"col-xs-12\">\n            </div>\n        </div>\n    </div>\n</div>\n";
+},"useData":true});
+templates['teaching/tests/score.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+  return "<h1 id=\"test-score\" class=\"nav-title\">\n    Score:\n    <span class=\""
+    + alias4(((helper = (helper = helpers.grade || (depth0 != null ? depth0.grade : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"grade","hash":{},"data":data}) : helper)))
+    + "\">"
+    + alias4(((helper = (helper = helpers.score || (depth0 != null ? depth0.score : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"score","hash":{},"data":data}) : helper)))
+    + "</span>/"
+    + alias4(((helper = (helper = helpers.max_score || (depth0 != null ? depth0.max_score : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"max_score","hash":{},"data":data}) : helper)))
+    + "\n    <span class=\"percentage\">("
+    + alias4(((helper = (helper = helpers.score_percentage || (depth0 != null ? depth0.score_percentage : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"score_percentage","hash":{},"data":data}) : helper)))
+    + "%)</span>\n</h1>\n";
+},"useData":true});
 templates['test/cfg.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"row\">\n    <div id=\"left-column\" class=\"col-xs-3\">\n        <div class=\"row\">\n            <div id=\"sim-controls-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n    </div>\n    <div id=\"right-column\" class=\"col-xs-9\">\n        <div class=\"row flex flex-max\">\n            <div id=\"cfg-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n    </div>\n</div>\n";
 },"useData":true});
@@ -1423,8 +1439,10 @@ templates['test/lattice.iloc'] = template({"compiler":[7,">= 4.0.0"],"main":func
 templates['menu/main.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"row\">\n    <div class=\"col-xs-12\">\n        <div class=\"row\">\n            <div id=\"menu\" class=\"col-xs-6\">\n                <div class=\"row\">\n                    <div class=\"col-xs-12\">\n                        <h2>Simulations</h2>\n                        <p>\n                        <button class=\"btn btn-secondary btn-block\" id=\"btn-round-robin-simulator\">\n                            Round Robin Iterator\n                        </button>\n                        </p>\n                    </div>\n                </div>\n                <div class=\"row\">\n                    <div class=\"col-xs-12\">\n                        <h2>Testing</h2>\n                        <p>\n                            <button class=\"btn btn-secondary btn-block\" id=\"btn-lattice-testbed\">\n                                Lattices\n                            </button>\n                        </p>\n                        <p>\n                            <button class=\"btn btn-secondary btn-block\" id=\"btn-cfg-testbed\">\n                                CFG\n                            </button>\n                        </p>\n                    </div>\n                </div>\n            </div>\n            <div class=\"col-xs-6 well\">\n                <div id=\"description-canvas\">\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
 },"useData":true});
-templates['menu/btn-lesson.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+templates['menu/btn-lesson.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "<i class=\"fa fa-check-circle pull-right text-success complete-check\"></i>";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "<p>\n    <button id=\""
     + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
@@ -1432,9 +1450,25 @@ templates['menu/btn-lesson.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":fu
     + alias4(((helper = (helper = helpers.lesson || (depth0 != null ? depth0.lesson : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"lesson","hash":{},"data":data}) : helper)))
     + "\">\n        "
     + alias4(((helper = (helper = helpers.text || (depth0 != null ? depth0.text : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"text","hash":{},"data":data}) : helper)))
+    + " "
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.complete : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "\n    </button>\n</p>\n";
 },"useData":true});
 templates['menu/lesson_menu.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"row\">\n    <div id=\"lesson-menu\" class=\"col-xs-12\">\n        <h2>Lessons</h2>\n        <!-- lesson buttons -->\n    </div>\n</div>\n";
+},"useData":true});
+templates['menu/test_menu.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<div class=\"row\">\n    <div id=\"test-menu\" class=\"col-xs-12\">\n        <h2>Tests</h2>\n        <!-- lesson buttons -->\n    </div>\n</div>\n";
+},"useData":true});
+templates['menu/btn-test.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+  return "<p>\n    <button id=\""
+    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\" class=\"btn btn-secondary btn-block\" test=\""
+    + alias4(((helper = (helper = helpers.test || (depth0 != null ? depth0.test : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"test","hash":{},"data":data}) : helper)))
+    + "\">\n        "
+    + alias4(((helper = (helper = helpers.text || (depth0 != null ? depth0.text : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"text","hash":{},"data":data}) : helper)))
+    + "\n    </button>\n</p>\n";
 },"useData":true});
 })();

@@ -78,7 +78,16 @@ function MainView(kwargs) {
             }
         }
     }
-    
+
+    this.tests = {
+        complete: {
+            constructor: TestContentReviewView,
+            kwargs: {
+                title: "Content Review",
+            }
+        },
+    }
+
     this.show_lesson = function(lesson_id, step) {
         this.view_canvas.html("");
         this.view_canvas.show();
@@ -88,6 +97,7 @@ function MainView(kwargs) {
             this.view = new lesson.constructor(
                 $.extend(lesson.kwargs,
                          {
+                             id: lesson_id,
                              main_view: this,
                              canvas: this.view_canvas_selector
                          }
@@ -103,7 +113,33 @@ function MainView(kwargs) {
             throw TypeError("Lesson with index {0} does not exist.".format(lesson_id));
         }
     }
-    
+
+    this.show_test = function(test_id, q) {
+        this.view_canvas.html("");
+        this.view_canvas.show();
+
+        if (test_id in this.tests) {
+            var test = this.tests[test_id];
+            this.view = new test.constructor(
+                $.extend(test.kwargs,
+                         {
+                             id: test_id,
+                             main_view: this,
+                             canvas: this.view_canvas_selector
+                         }
+                        )
+            );
+        
+            this.view.init();
+
+            if (q!=undefined) {
+                this.view.goto_question(q);
+            }
+        } else {
+            throw TypeError("Test with index {0} does not exist.".format(test_id));
+        }
+    }
+
     this.show_round_robin_simulator = function(code) {
         this.view_canvas.html("");
         this.view_canvas.show();
@@ -126,7 +162,7 @@ function MainView(kwargs) {
         }
 
         if (!iloc_code) {
-            iloc_code = Handlebars.templates['teaching/lesson/01/loop.iloc']();
+            iloc_code = Handlebars.templates['teaching/test/01/loop.iloc']();
         }
         
         var simulator = new RoundRobinSimulator({
@@ -213,6 +249,7 @@ function MainView(kwargs) {
             main_view: this,
             canvas: this.view_canvas_selector,
             lessons: this.lessons,
+            tests: this.tests,
         });
 
         this.view.init();
@@ -221,6 +258,10 @@ function MainView(kwargs) {
     this.init = function() {
         var show_lesson = getParameterByName('lesson');
         var show_lesson_step = getParameterByName('step');
+        
+        var show_test = getParameterByName('test');
+        var show_test_question = getParameterByName('q');
+        
         var show_simulator = getParameterByName('simulator');
         var show_testbed = getParameterByName('testbed');
 
@@ -235,6 +276,15 @@ function MainView(kwargs) {
                 }
             }
             this.show_lesson(show_lesson, step);
+        } else if (show_test && (show_test in this.tests)) {
+            var question = undefined;
+            if (show_test_question) {
+                question = Number(show_test_question);
+                if (!(typeof question == 'number' && Math.floor(question)==question)) {
+                    question=undefined;
+                }
+            }
+            this.show_test(show_test, question);
         } else if (show_testbed) {
             this.show_testbed(show_testbed);
         } else {
@@ -260,16 +310,59 @@ function MenuView(kwargs) {
 
     var _this = this;
 
-    this.template_root = 'menu/'
-    
-    this.template               = this.get_template('main');
-    this.lesson_menu_template   = this.get_template('lesson_menu');
-    this.lesson_button_template = this.get_template('btn-lesson');
-    
     this.main_view = kwargs.main_view;
     
-    this.lessons = kwargs.lessons;
+    this.template_root = 'menu/'    
+    this.template = this.get_template('main');
     
+    /* Lessons */
+    this.lesson_menu_template   = this.get_template('lesson_menu');
+    this.lesson_button_template = this.get_template('btn-lesson');
+    this.lessons = kwargs.lessons;
+
+    this.show_lesson_menu = function() {
+        this.menu.append(this.lesson_menu_template());
+        this.lesson_menu = $('#lesson-menu');
+        for(id in this.lessons) {
+            var button_id = 'btn-lesson-{0}'.format(id);
+            // Create the button
+            this.lesson_menu.append(
+                this.lesson_button_template({
+                    id: button_id,
+                    text: this.lessons[id].kwargs.title,
+                    lesson: id,
+                    complete: Boolean(getCookie('lesson-{0}-complete'.format(id))),
+                })
+            );
+            // Set up on click action
+            $('#{0}'.format(button_id)).on('click', function() {
+                _this.main_view.show_lesson($(this).attr('lesson'));
+            });
+        }
+    }
+    
+    /* Tests */
+    this.test_menu_template   = this.get_template('test_menu');
+    this.test_button_template = this.get_template('btn-test');
+    this.tests = kwargs.tests;
+    
+    this.show_test_menu = function() {
+        this.menu.append(this.test_menu_template());
+        this.test_menu = $('#test-menu');
+        for(id in this.tests) {
+            console.log("PENIS!");
+            var button_id = 'btn-test-{0}'.format(id);
+            // Create the button
+            this.test_menu.append(
+                this.test_button_template({id: button_id, text: this.tests[id].kwargs.title, test: id})
+            );
+            // Set up on click action
+            $('#{0}'.format(button_id)).on('click', function() {
+                _this.main_view.show_test($(this).attr('test'));
+            });
+        }
+    }
+
     this.init = function() {
         $('#page-title').html("Main Menu");
         
@@ -281,24 +374,11 @@ function MenuView(kwargs) {
             _this.main_view.show_round_robin_simulator();
         });
 
-        /* Lessons */
-        
         // If lessons are available, create the menu
-        if (this.lessons) {
-            this.menu.append(this.lesson_menu_template());
-            this.lesson_menu = $('#lesson-menu');
-            for(id in this.lessons) {
-                var button_id = 'btn-lesson-{0}'.format(id);
-                // Create the button
-                this.lesson_menu.append(
-                    this.lesson_button_template({id: button_id, text: this.lessons[id].kwargs.title, lesson: id})
-                );
-                // Set up on click action
-                $('#{0}'.format(button_id)).on('click', function() {
-                    _this.main_view.show_lesson($(this).attr('lesson'));
-                });
-            }
-        }
+        if (this.lessons) { this.show_lesson_menu(); }
+        
+        // If tests are available, create the menu
+        if (this.tests) { this.show_test_menu(); }
 
         /* Testing */
         $('#btn-lattice-testbed').on('click', function() {
