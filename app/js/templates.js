@@ -101,13 +101,15 @@ templates['simulator/lattice/node.hbs'] = template({"compiler":[7,">= 4.0.0"],"m
     + "</tr>\n        </tbody>\n    </table>\n</div>\n";
 },"useData":true});
 templates['teaching/question/main.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
-    return "        <p>"
-    + container.escapeExpression(container.lambda(depth0, depth0))
+    var stack1;
+
+  return "        <p>"
+    + ((stack1 = container.lambda(depth0, depth0)) != null ? stack1 : "")
     + "</p>\n";
 },"3":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=container.lambda, alias2=container.escapeExpression;
 
-  return "            <button class=\"btn btn-primary btn-answer "
+  return "            <button class=\"btn btn-info btn-answer "
     + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.correct : depth0),{"name":"if","hash":{},"fn":container.program(4, data, 0),"inverse":container.program(6, data, 0),"data":data})) != null ? stack1 : "")
     + "\" answer_id=\""
     + alias2(alias1((depth0 != null ? depth0.id : depth0), depth0))
@@ -127,8 +129,26 @@ templates['teaching/question/main.hbs'] = template({"1":function(container,depth
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.answers : depth0),{"name":"each","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "    </div>\n    <p class=\"pick-text\"></p>\n</div>\n";
 },"useData":true});
-templates['teaching/question/canvas.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div id=\"question-canvas\" class=\"question row\">\n</div>";
+templates['teaching/question/canvas.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    var helper;
+
+  return "-"
+    + container.escapeExpression(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"id","hash":{},"data":data}) : helper)));
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<div id=\"question-canvas"
+    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.id : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "\" class=\"question row\">\n</div>\n";
+},"useData":true});
+templates['teaching/question/answer_correct_flag.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "    <i class=\"fa fa-check-circle position-right\"></i>\n";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "    <i class=\"fa fa-times-circle position-right\"></i>\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.correct : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "");
 },"useData":true});
 templates['teaching/progs/guessing.iloc'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "    load   rx     => rx\n    loadI  50     => rg\nL0: div    rg, 2  => rt\n    cbr_EQ rg, rx -> L5, L1\nL1: cbr_LT rg, rx -> L2, L3\nL2: add    rg, rt => rg\n    jump   L4\nL3: sub    rg, rt => rg\nL4: jump   L0\nL5: store  rx     => rx";
@@ -1414,6 +1434,9 @@ templates['teaching/lesson/roundrobin/step_05.hbs'] = template({"1":function(con
 templates['teaching/tests/main.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"row\">\n    <div id=\"left-column\" class=\"col-xs-offset-2 col-xs-8 lesson-step\">\n        <nav class=\"row\">\n            <button id=\"btn-prev\" class=\"btn btn-primary\">Prev</button>\n            <button id=\"btn-submit\" class=\"pull-right btn btn-success\">Submit</button>\n            <button id=\"btn-next\" class=\"pull-right btn btn-primary\">Next</button>\n        </nav>\n        <div class=\"row flex-max\">\n            <div id=\"text\" class=\"col-xs-12\">\n            </div>\n        </div>\n    </div>\n</div>\n";
 },"useData":true});
+templates['teaching/tests/intro.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<div class=\"row\">\n    <div class=\"col-xs-offset-2 col-xs-8\">\n        <h1>Test Rules</h1>\n\n        <p>Welcome! It's time to test your knowledge.</p>\n\n        <p>For each question, <strong>select an answer</strong> by clicking it. Use the <em>Next</em> and <em>Prev</em> buttons to <strong>navigate</strong> between questions.</p>\n\n        <p>You can <strong>change</strong> your selection at any time. You may <strong>revisit</strong> questions and change your answer if you wish.</p>\n\n        <p>In <strong>some</strong> questions you are allowed to select multiple answers. You will <strong>lose 1 point</strong> for every <strong>incorrect</strong> answer, but your score cannot become negative - that is, incorrect answers will not count against correct answers for <em>other</em> questions.</p>\n\n        <p>Click the <em>Start</em> button to continue. When you are satisfied with your answers, click the <em>Submit</em> button to finish the test.</p>\n\n        <div class=\"text-center\">\n            <button id=\"btn-test-start\" class=\"btn btn-primary\">Start</button>\n        </div>\n    </div>\n</div>\n";
+},"useData":true});
 templates['teaching/tests/score.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
@@ -1431,7 +1454,7 @@ templates['test/cfg.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(
     return "<div class=\"row\">\n    <div id=\"left-column\" class=\"col-xs-3\">\n        <div class=\"row\">\n            <div id=\"sim-controls-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n    </div>\n    <div id=\"right-column\" class=\"col-xs-9\">\n        <div class=\"row flex flex-max\">\n            <div id=\"cfg-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n    </div>\n</div>\n";
 },"useData":true});
 templates['test/lattice.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"row\">\n    <div id=\"left-column\" class=\"col-xs-3\">\n        <div class=\"row\">\n            <div id=\"sim-controls-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n    </div>\n    <div id=\"right-column\" class=\"col-xs-9\">\n        <div class=\"row flex\">\n            <div id=\"lattice-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n    </div>\n</div>\n";
+    return "<div class=\"row\">\n    <div id=\"left-column\" class=\"col-xs-3\">\n        <div class=\"row\">\n            <div id=\"sim-controls-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n    </div>\n    <div id=\"right-column\" class=\"col-xs-9\">\n        <div class=\"row flex-max\">\n            <div id=\"lattice-canvas\" class=\"col-xs-12\">\n            </div>\n        </div>\n    </div>\n</div>\n";
 },"useData":true});
 templates['test/cfg.iloc'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "L0: nop\n    loadI  1         => ra\n    cmp_GE ra   , rb => rc\n    cbr    rc        -> L1   , L2\nL1: i2i    ra        => rc\n    jump   L3\nL2: i2i    rb   , 1  => rc\nL3: nop";
@@ -1440,16 +1463,16 @@ templates['test/lattice.iloc'] = template({"compiler":[7,">= 4.0.0"],"main":func
     return "L0: nop\n    loadI  1         => ra\n    cmp_GE ra   , rb => rc\n    cbr    rc        -> L1   , L2\nL1: i2i    ra        => rc\n    jump   L3\nL2: i2i    rb   , 1  => rc\nL3: nop";
 },"useData":true});
 templates['menu/main.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"row\">\n    <div class=\"col-xs-12\">\n        <div class=\"row\">\n            <div id=\"menu\" class=\"col-xs-6\">\n                <div class=\"row\">\n                    <div class=\"col-xs-12\">\n                        <h2>Simulations</h2>\n                        <p>\n                        <button class=\"btn btn-secondary btn-block\" id=\"btn-round-robin-simulator\">\n                            Round Robin Iterator\n                        </button>\n                        </p>\n                    </div>\n                </div>\n                <div class=\"row\">\n                    <div class=\"col-xs-12\">\n                        <h2>Testing</h2>\n                        <p>\n                            <button class=\"btn btn-secondary btn-block\" id=\"btn-lattice-testbed\">\n                                Lattices\n                            </button>\n                        </p>\n                        <p>\n                            <button class=\"btn btn-secondary btn-block\" id=\"btn-cfg-testbed\">\n                                CFG\n                            </button>\n                        </p>\n                    </div>\n                </div>\n            </div>\n            <div class=\"col-xs-6 well\">\n                <div id=\"description-canvas\">\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
+    return "<div class=\"row\">\n    <div class=\"col-xs-12\">\n        <div class=\"row\">\n            <div id=\"menu\" class=\"col-xs-offset-3 col-xs-6\">\n                <div class=\"row\">\n                    <div class=\"col-xs-12\">\n                        <h2>Simulations</h2>\n                        <p>\n                        <button class=\"btn btn-menu btn-secondary btn-block\" id=\"btn-round-robin-simulator\">\n                            Round Robin Iterator\n                        </button>\n                        </p>\n                    </div>\n                </div>\n                <div class=\"row\">\n                    <div class=\"col-xs-12\">\n                        <h2>Testing</h2>\n                        <p>\n                            <button class=\"btn btn-menu btn-secondary btn-block\" id=\"btn-lattice-testbed\">\n                                Lattices\n                            </button>\n                        </p>\n                        <p>\n                            <button class=\"btn btn-menu btn-secondary btn-block\" id=\"btn-cfg-testbed\">\n                                CFG\n                            </button>\n                        </p>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
 },"useData":true});
 templates['menu/btn-lesson.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
-    return "<i class=\"fa fa-check-circle pull-right text-success complete-check\"></i>";
+    return "<i class=\"fa fa-check-circle position-right text-success complete-check\"></i>";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "<p>\n    <button id=\""
     + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
-    + "\" class=\"btn btn-secondary btn-block\" lesson=\""
+    + "\" class=\"btn btn-menu btn-secondary btn-block\" lesson=\""
     + alias4(((helper = (helper = helpers.lesson || (depth0 != null ? depth0.lesson : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"lesson","hash":{},"data":data}) : helper)))
     + "\">\n        "
     + alias4(((helper = (helper = helpers.text || (depth0 != null ? depth0.text : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"text","hash":{},"data":data}) : helper)))
@@ -1463,15 +1486,29 @@ templates['menu/lesson_menu.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":f
 templates['menu/test_menu.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"row\">\n    <div id=\"test-menu\" class=\"col-xs-12\">\n        <h2>Tests</h2>\n        <!-- lesson buttons -->\n    </div>\n</div>\n";
 },"useData":true});
-templates['menu/btn-test.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+templates['menu/btn-test.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+  return "            <span class=\""
+    + alias4(((helper = (helper = helpers.grade || (depth0 != null ? depth0.grade : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"grade","hash":{},"data":data}) : helper)))
+    + "\">"
+    + alias4(((helper = (helper = helpers.score || (depth0 != null ? depth0.score : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"score","hash":{},"data":data}) : helper)))
+    + "</span>/"
+    + alias4(((helper = (helper = helpers.max_score || (depth0 != null ? depth0.max_score : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"max_score","hash":{},"data":data}) : helper)))
+    + "\n            <span class=\"percentage\">("
+    + alias4(((helper = (helper = helpers.score_percentage || (depth0 != null ? depth0.score_percentage : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"score_percentage","hash":{},"data":data}) : helper)))
+    + "%)</span>\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "<p>\n    <button id=\""
     + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
-    + "\" class=\"btn btn-secondary btn-block\" test=\""
+    + "\" class=\"btn btn-secondary btn-menu btn-block\" test=\""
     + alias4(((helper = (helper = helpers.test || (depth0 != null ? depth0.test : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"test","hash":{},"data":data}) : helper)))
     + "\">\n        "
     + alias4(((helper = (helper = helpers.text || (depth0 != null ? depth0.text : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"text","hash":{},"data":data}) : helper)))
-    + "\n    </button>\n</p>\n";
+    + "\n        <span class=\"position-right\">\n"
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.score : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "        </span>\n    </button>\n</p>\n";
 },"useData":true});
 })();

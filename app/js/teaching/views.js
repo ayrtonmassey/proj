@@ -742,17 +742,12 @@ Lesson01View.prototype = Object.create(TutorialView.prototype);
 Lesson01View.prototype.constructor = Lesson01View
 
 var QFLAGS = {
-    DISABLE_INCORRECT_NONE: 0,
-    DISABLE_INCORRECT_ONE : 1,
-    DISABLE_INCORRECT_ALL : 2,
-    DISABLE_CORRECT_NONE  : 4,
-    DISABLE_CORRECT_ONE   : 8,
-    DISABLE_CORRECT_ALL   : 16,
-
     SHOW_INCORRECT_ONE : 1,
     SHOW_INCORRECT_ALL : 2,
     SHOW_CORRECT_ONE   : 4,
     SHOW_CORRECT_ALL   : 8,
+    MULTIPLE_SELECT    : 16,
+    SINGLE_SELECT      : 32,
 }
 
 function QuestionView(kwargs) {
@@ -760,16 +755,15 @@ function QuestionView(kwargs) {
 
     var _this = this;
 
+    this.id = kwargs.id;
+    
     this.answers = kwargs.answers;
-
     this.shuffle_answers = kwargs.shuffle_answers || false;
 
     this.correct_callback = kwargs.correct_callback || (function() {});
     this.incorrect_callback = kwargs.incorrect_callback || (function() {});
     
     this.show_on_click = kwargs.show_on_click || (QFLAGS.SHOW_CORRECT_ALL | QFLAGS.SHOW_INCORRECT_ONE);
-
-    this.disable_on_click = kwargs.disable_on_click || (QFLAGS.DISABLE_CORRECT_ALL | QFLAGS.DISABLE_INCORRECT_ONE);
 
     this.template_root = 'teaching/question/';
     this.template = this.get_template('main');
@@ -784,106 +778,200 @@ function QuestionView(kwargs) {
     }
     
     this.highlight_answers = function() {
-        $("button.btn-answer").each(function(){
+        this.canvas.find("button.btn-answer").each(function(){
             _this.highlight_elem($(this));
         });
     }
 
     this.highlight_answer = function(answer_id) {
-        var answer_btn = $("button.btn-answer[answer_id='{0}']".format(answer_id));
+        var answer_btn = this.canvas.find("button.btn-answer[answer_id='{0}']".format(answer_id));
         this.highlight_elem(answer_btn);
     }
 
-    this.all_answered = function() {
+    this.select_elem = function(elem, selected) {
+        if (selected) {
+            elem.addClass('btn-primary').removeClass('btn-info');
+        } else {
+            elem.addClass('btn-info').removeClass('btn-primary');
+        }
+    }
+    
+    this.select_answer = function(answer_id, val) {
+        var answer_btn = this.canvas.find("button.btn-answer[answer_id='{0}']".format(answer_id));
+        if (val==undefined) {
+            val = this.answers[answer_id].selected;
+        }
+        
+        this.select_elem(answer_btn, val);
+    }
+
+    this.set_answers_selected = function(flag) {
+        this.canvas.find("button.btn-answer").each(function() {
+            var answer_id = Number($(this).attr('answer_id'));
+            _this.answers[answer_id].selected=flag;
+            _this.select_answer(answer_id, flag);
+        });
+    }
+
+    
+    this.show_selected_answers = function() {
+        this.canvas.find("button.btn-answer").each(function() {
+            var answer_id = Number($(this).attr('answer_id'));
+            if (_this.answers[answer_id].selected) {
+                $(this).append(_this.get_template('answer_correct_flag')({
+                    correct: _this.answers[answer_id].correct,
+                }));
+            }
+        });
+    }
+
+    
+    this.set_answers_disabled = function(flag) {
+        this.canvas.find("button.btn-answer").each(function() {
+            $(this).prop('disabled', flag);
+        });
+    }
+    
+    this.all_correct_selected = function() {
         for (answer of this.answers) {
-            if (answer.answered == false) {
+            if (answer.correct && !answer.selected) {
                 return false;
             }
         }
         return true;
     }
 
-    this.all_correct_answered = function() {
-        for (answer of this.answers) {
-            if (answer.correct && !answer.answered) {
-                return false;
-            }
-        }
-        return true;
-    }
+    this.set_selected = function(elem) {
+        var id = Number(elem.attr('answer_id'));
+        var answer = this.answers[id];
 
-    this.set_answered = function(elem) {
-        id = elem.attr('answer_id');
-        this.answers[id].answered = true;
+        // Set as selected
+        answer.selected = !answer.selected;
+
+        // Display pick text
         if (this.answers[id].pick_text) {
             this.pick_text.html(this.answers[id].pick_text);
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.canvas.id]);
         } else {
             this.pick_text.html("");
         }
+
+        // Control highlighting / disabling of answers
+        if(this.show_on_click & QFLAGS.MULTIPLE_SELECT) {
+            this.select_answer(id);
+        } else if (this.show_on_click & QFLAGS.SINGLE_SELECT) {
+            if (!this.answers[id].selected) {
+                this.set_answers_selected(false);
+            } else {
+                this.set_answers_selected(false);
+                this.answers[id].selected=true;
+                this.select_answer(answer.id, true);
+            }
+        } else if (this.answers[id].correct) {
+            // Highlight answer
+            if(this.show_on_click & QFLAGS.SHOW_CORRECT_ALL) {
+                this.highlight_answers();
+                this.set_answers_disabled(true);
+            } else {
+                this.highlight_answer(id);
+                elem.prop('disabled', true);
+            }
+        } else {
+            //Highlight answer
+            if(this.show_on_click & QFLAGS.SHOW_INCORRECT_ALL) {
+                this.highlight_answers();
+                this.set_answers_disabled(true);
+            } else {
+                this.highlight_answer(id);
+                elem.prop('disabled', true);
+            }
+        }
+        
         return this.answers[id];
     }
     
     this.incorrect_answer = function(elem) {
-        var answer = this.set_answered(elem);
-        
-        if(this.show_on_click & QFLAGS.SHOW_INCORRECT_ALL) {
-            this.highlight_answers();
-        } else {
-            elem.addClass('btn-danger').removeClass('btn-primary');
-        }
-
-        if(this.disable_on_click & QFLAGS.DISABLE_INCORRECT_ALL) {
-            this.set_answers_disabled(true);
-        } else if(this.disable_on_click & QFLAGS.DISABLE_INCORRECT_ONE) {
-            elem.prop('disabled', true);
-        }
-        
+        var answer = this.set_selected(elem);
         this.incorrect_callback(answer);
     }
     
     this.correct_answer = function(elem) {
-        var answer = this.set_answered(elem);
-        
-        if(this.show_on_click & QFLAGS.SHOW_CORRECT_ALL) {
-            this.highlight_answers();
-        } else {
-            elem.addClass('btn-success').removeClass('btn-primary');
-        }
-        
-        if(this.disable_on_click & QFLAGS.DISABLE_CORRECT_ALL) {
-            this.set_answers_disabled(true);
-        } else if(this.disable_on_click & QFLAGS.DISABLE_CORRECT_ONE) {
-            elem.prop('disabled', true);
-        }
-        
+        var answer = this.set_selected(elem);
         this.correct_callback(answer);
     }
 
+    this.calculate_scores = function() {
+        // Calculate scores
+        this.score = 0;
+        for(answer of this.answers) {
+            if (answer.correct && answer.selected) {
+                this.score++;
+            } else if (!answer.correct && answer.selected) {
+                this.score--;
+            }
+        }
+
+        if(this.score < 0) {
+            this.score = 0
+        }
+        
+        if(this.max_score != 0) {
+            this.percentage = this.score / this.max_score;
+        } else {
+            this.max_score = 0;
+        }
+    }
+
+    this.submit = function() {
+        if (!this.submitted) {
+            this.calculate_scores();
+            this.highlight_answers();
+            this.set_answers_disabled(true);
+            this.submitted=true;
+            this.show_selected_answers();
+        }
+    }
+    
+    this.reset_scores = function() {
+        this.score = 0;
+        
+        this.max_score = 0;
+        for (answer of this.answers) {
+            if (answer.correct) {
+                this.max_score++;
+            }
+        }
+        
+        this.score_percentage = 0;
+    }
+
     this.reset_highlight = function() {
-        $("button.btn-answer").each(function() {
+        this.canvas.find("button.btn-answer").each(function() {
             $(this).removeClass('btn-success')
                 .removeClass('btn-danger')
-                .addClass('btn-primary');
+                .removeClass('btn-primary')
+                .addClass('btn-info');
         });
     }
 
-    this.set_answers_disabled = function(flag) {
-        $("button.btn-answer").each(function() {
-            $(this).prop('disabled', flag);
-        });
-    }
-    
-    this.reset = function() {
+    this.reset_answers = function() {
+        for (answer of this.answers) {
+            answer.selected = false;
+        }
         this.reset_highlight();
         this.set_answers_disabled(false);
     }
     
+    this.reset = function() {
+        this.submitted = false;
+        this.reset_answers();
+        this.reset_scores();
+    }
+    
     this.init = function() {
-
         var has_pick_text = false;
         for (var i=0; i < this.answers.length; i++) {
-            $.extend(this.answers[i], {id: i, answered: false});
+            this.answers[i] = $.extend(this.answers[i], {id: i, selected: false});
             has_pick_text |= (this.answers[i].pick_text ? true : false);
         }
 
@@ -902,18 +990,20 @@ function QuestionView(kwargs) {
             this.pick_text.hide();
         }
 
-        $("button.btn-answer").each(function(){
+        this.canvas.find("button.btn-answer").each(function(){
             if ($(this).hasClass('correct')) {
-                $(this).on('click', function() {
+                $(this).on('click', function(e) {
                     _this.correct_answer($(this));
                 });
             } else {
-                $(this).on('click', function() {
+                $(this).on('click', function(e) {
                     _this.incorrect_answer($(this));
                 });
             }
         });
 
         MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.canvas.id]);
+
+        this.reset();
     }
 }

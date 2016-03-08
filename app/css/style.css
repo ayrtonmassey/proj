@@ -40,12 +40,18 @@ footer {
     margin-bottom: 15px;
 }
 
+.position-right {
+    position: absolute;
+    line-height: 1.5;
+    right: 15px;
+}
+
 /* Base Page CSS */
 
 .canvas {
     flex: 1 1 auto;
     padding: 1em 2em;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     display: flex;
     flex-flow: column;
 }
@@ -576,12 +582,17 @@ g.label sub {
     flex-flow: row wrap;
     justify-content: space-around;
     align-items: center;
-    align-content: center;
+    align-content: stretch;
+}
+
+.btn-menu {
+    position: relative;
 }
 
 .btn-answer {
-    flex: 0 1 47.5%;
-    margin: 0.5em 0;
+    flex: 1 0 calc(50% - 1em);
+    margin: 0.5em 0.5em;
+    position: relative;
 }
 
 /* Tests */

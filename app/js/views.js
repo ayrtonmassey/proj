@@ -353,7 +353,15 @@ function MenuView(kwargs) {
             var button_id = 'btn-test-{0}'.format(id);
             // Create the button
             this.test_menu.append(
-                this.test_button_template({id: button_id, text: this.tests[id].kwargs.title, test: id})
+                this.test_button_template({
+                    id: button_id,
+                    text: this.tests[id].kwargs.title,
+                    test: id,
+                    score: getCookie('test-{0}-score'.format(id)),
+                    max_score: getCookie('test-{0}-max-score'.format(id)),
+                    score_percentage: getCookie('test-{0}-percentage'.format(id)),
+                    grade: 'A',
+                })
             );
             // Set up on click action
             $('#{0}'.format(button_id)).on('click', function() {

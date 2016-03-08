@@ -1,5 +1,11 @@
 <p>
-    <button id="{{id}}" class="btn btn-secondary btn-block" test="{{test}}">
+    <button id="{{id}}" class="btn btn-secondary btn-menu btn-block" test="{{test}}">
         {{text}}
+        <span class="position-right">
+        {{#if score}}
+            <span class="{{grade}}">{{score}}</span>/{{max_score}}
+            <span class="percentage">({{score_percentage}}%)</span>
+        {{/if}}
+        </span>
     </button>
 </p>

@@ -30,11 +30,17 @@ function TestView(kwargs) {
 
     this.get_scores = function() {
         var score=0;
-        for (question of this.questions) {
-            if (question.correct) score++;
+        var max_score=0;
+        for (question_view of this.question_views) {
+            score += question_view.score;
+            max_score += question_view.max_score;
         }
-
-        var score_percentage = Math.floor((score / this.questions.length) * 100);
+        
+        var score_percentage=0;
+        if (max_score != 0) {
+            score_percentage = Math.floor((score / max_score) * 100);
+        }
+        
         var grade;
         if (score_percentage >= 70) {
             grade = 'A';
@@ -51,60 +57,24 @@ function TestView(kwargs) {
         return {
             score: score,
             grade: grade,
-            max_score: this.questions.length,
+            max_score: max_score,
             score_percentage: score_percentage,
         }
     }
     
     this.show_question = function(question_id) {
-        _this.clear();
+        this.clear();
 
         if (this.submitted) {
-            _this.show_score();
-        }
-        
-        _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
-        
-        this.question_id = question_id;
-        var question=this.questions[this.question_id];
-
-        console.log(question.text);
-        
-        var question_view = new QuestionView({
-            canvas: '#question-canvas',
-            question: question.text,
-            answers: question.answers,
-            shuffle_answers: false,
-            correct_callback: function(answer) {
-                question.answered=true;
-                question.correct=true;
-                question.picked_answer=answer;
-            },
-            incorrect_callback: function(answer) {
-                question.answered=true;
-                question.correct=false;
-                question.picked_answer=answer;
-            },
-            show_on_click: QFLAGS.SHOW_CORRECT_ALL | QFLAGS.SHOW_INCORRECT_ONE,
-            disable_on_click: QFLAGS.DISABLE_CORRECT_ALL | QFLAGS.DISABLE_INCORRECT_ALL,
-        });
-        
-        question_view.init();
-
-        var picked_answer = question.picked_answer;
-        if (picked_answer != undefined) {
-            question_view.highlight_answer(picked_answer.id);
-            question_view.set_answers_disabled(true);
+            this.show_score();
         }
 
-        if (this.submitted) {
-            question_view.highlight_answers();
-            question_view.set_answers_disabled(true);
-        }
+        this.question_views[question_id].canvas.show();
     }
 
     this.goto_question = function(new_question_id) {
         if (new_question_id < this.questions.length && new_question_id >= 0) {
+            this.question_id = new_question_id;
             this.next_button.prop('disabled', false);
             this.show_question(new_question_id);
 
@@ -136,6 +106,10 @@ function TestView(kwargs) {
         this.submitted = true;
         this.submit_button.hide();
 
+        for(question_view of this.question_views) {
+            question_view.submit();
+        }
+
         var scores = this.get_scores();
 
         var current_score = Number(getCookie('test-{0}-score'.format(this.id, scores.score))) || 0;
@@ -151,33 +125,37 @@ function TestView(kwargs) {
 
     this.reset = function() {        
         this.prev_button.prop('disabled', true);
+        this.question_views = [];
 
         for (var i=0; i < this.questions.length; i++) {
-            this.questions[i] = $.extend(
-                this.questions[i],
-                {
-                    answers: shuffle(this.questions[i].answers),
-                    id: i,
-                    answered: false,
-                    correct: false,
-                }
-            );
+            var question_id = i;
+            this.text.append(Handlebars.templates['teaching/question/canvas.hbs']({id: ''+question_id}));
+            var question=this.questions[question_id];
+            this.question_views.push(new QuestionView({
+                canvas: '#question-canvas-{0}'.format(question_id),
+                question: question.text,
+                answers: question.answers,
+                shuffle_answers: true,
+                show_on_click: (question.multiple_select ? QFLAGS.MULTIPLE_SELECT : QFLAGS.SINGLE_SELECT),
+            }));
+            
+            this.question_views[i].init();
+            this.question_views[i].canvas.hide();
         }
 
         this.submitted = false;
         
         // Allow children to init contained components
         this.init_children();
-        
+
         this.goto_question(0);
     }
-    
-    this.init = function() {
-        this.canvas.html(this.template({title: this.title}));
 
+    this.start_test = function() {
+        this.canvas.html(this.template({title: this.title}));
+        
         this.text = $('#text');
         $('#page-title').html(this.title);
-        this.step_title = $("#test-nav-title");
         
         this.next_button = $('#btn-next');
         this.next_button.on('click', function() {
@@ -196,6 +174,14 @@ function TestView(kwargs) {
 
         this.reset();
     }
+    
+    this.init = function() {
+        this.canvas.html(this.get_template('intro')());
+
+        $('#btn-test-start').on('click', function() {
+            _this.start_test();
+        });
+    }
 }
 
 TestView.prototype = Object.create(View.prototype);
@@ -211,7 +197,9 @@ function TestContentReviewView(kwargs) {
     this.next_lesson = kwargs.next_lesson;
         
     this.clear = function() {
-        _this.text.html("");
+        for (question_view of this.question_views) {
+            question_view.canvas.hide();
+        }
     }
 
     this.update_math = function() {
@@ -221,40 +209,47 @@ function TestContentReviewView(kwargs) {
     this.questions = [
         {
             text: [
-                'Pick the answer that says Limes.',
+                'Which of the following conditions <strong>must</strong> be met for a data-flow to terminate? <em>You may select more than one.</em>',
             ],
             answers: [
-                { text: 'Limes', correct: true, },
-                { text: 'Pears', correct: false, },
-                { text: 'Oranges', correct: false, },
-                { text: 'Apples', correct: false, },
+                { text: '\\(F\\) contains the identity function', correct: true, },
+                { text: '\\(F\\) is closed under composition', correct: true, },
+                { text: '\\(F\\) is monotonic', correct: true, },
+                { text: 'There exists a partial order on the set of values', correct: true, },
+                { text: '\\(F\\) is distributive', correct: false, },
+                { text: '\\(\\land\\) contains the identity function', correct: false, },
+                { text: '\\(\\land\\) is either \\(\\cup\\) or \\(\\cap\\)', correct: false, },
+                { text: '\\(\\land\\) combines values from a node\'s predecessors', correct: false, },
             ],
+            multiple_select: true,
             setup_func: function() {
             }
         },
         {
             text: [
-                'Pick the answer that says Apples or Pears.',
+                'Pick the fruit.',
             ],
             answers: [
-                { text: 'Limes', correct: false, },
-                { text: 'Pears', correct: true, },
+                { text: 'Boranges', correct: false, },
+                { text: 'Horanges', correct: false, },
                 { text: 'Oranges', correct: false, },
-                { text: 'Apples', correct: true, },
+                { text: 'Lozenges', correct: true, },
             ],
+            multiple_select: false,
             setup_func: function() {
             }
         },
         {
             text: [
-                'Pick the answer that says Oranges.',
+                'Which direction is this? --->',
             ],
             answers: [
-                { text: 'Limes', correct: false, },
-                { text: 'Pears', correct: false, },
-                { text: 'Oranges', correct: true, },
-                { text: 'Apples', correct: false, },
+                { text: 'Up', correct: false, },
+                { text: 'Right', correct: true, },
+                { text: 'Left', correct: false, },
+                { text: 'Down', correct: false, },
             ],
+            multiple_select: false,
             setup_func: function() {
             }
         }
