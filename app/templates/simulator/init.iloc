@@ -1,0 +1,8 @@
+    load   rx     => ra
+    load   ry     => rb
+    loadI  0      => rc
+L1: add    ra, rc => rc
+    addI   rb, -1 => rb
+    cmp_LE rb, r0 => rd
+    cbr    rd     -> L2, L1
+L2: store  rc     => rz

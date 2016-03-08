@@ -162,7 +162,7 @@ function MainView(kwargs) {
         }
 
         if (!iloc_code) {
-            iloc_code = Handlebars.templates['teaching/test/01/loop.iloc']();
+            iloc_code = Handlebars.templates['simulator/init.iloc']();
         }
         
         var simulator = new RoundRobinSimulator({
