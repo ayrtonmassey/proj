@@ -1106,7 +1106,7 @@ function LatticeView(kwargs) {
     this.node_template = this.get_template('node');
 
     this.display_toggle = true;
-    this.show_toggle = kwargs.show_toggle;
+    this.show_toggle = kwargs.show_toggle || true;
     
     this.draw = function() {
         this.g.graph().transition = function(selection) {

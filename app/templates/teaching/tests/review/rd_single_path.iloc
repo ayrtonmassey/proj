@@ -1,0 +1,4 @@
+addI ra, 1  => ra
+addI rb, 2  => rb
+sub  ra, rb => rb
+subI rd, 10 => rd

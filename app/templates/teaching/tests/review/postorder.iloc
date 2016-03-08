@@ -1,0 +1,6 @@
+L0: cbr_GE ra, rb -> L1, L2
+L1: cbr_GE ra, rc -> L2, L3
+L2: addI   ra,  1 => ra
+    jump   L0
+L3: addI   rb,  1 => rb
+    subI   rc,  1 => rc
