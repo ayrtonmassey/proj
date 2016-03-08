@@ -350,7 +350,6 @@ function MenuView(kwargs) {
         this.menu.append(this.test_menu_template());
         this.test_menu = $('#test-menu');
         for(id in this.tests) {
-            console.log("PENIS!");
             var button_id = 'btn-test-{0}'.format(id);
             // Create the button
             this.test_menu.append(
