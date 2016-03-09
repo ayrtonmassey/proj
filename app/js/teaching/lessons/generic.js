@@ -246,8 +246,9 @@ function LessonGenericFrameworkView(kwargs) {
                     {text: '\\(f(x) = \\lfloor x \\rfloor \\)', correct: true,
                      pick_text: 'Correct! The floor function, \\( \\lfloor x \\rfloor \\), is equal to \\(x\\) rounded down to the nearest whole number. As x increases \\(f(x)\\) increases or stays the same.'},
                 ],
+                shuffle_answers: true,
                 correct_callback: function() {
-                    if (question_view.all_correct_answered()) {
+                    if (question_view.all_correct_selected()) {
                         question_view.highlight_answers();
                         question_view.set_answers_disabled(true);
                         _this.next_button.prop('disabled', false);
@@ -256,8 +257,6 @@ function LessonGenericFrameworkView(kwargs) {
                 show_on_click: QFLAGS.SHOW_CORRECT_ONE | QFLAGS.SHOW_INCORRECT_ONE,
                 disable_on_click: QFLAGS.DISABLE_CORRECT_ONE | QFLAGS.DISABLE_INCORRECT_ONE,
             });
-
-            console.log(QFLAGS.SHOW_CORRECT_ONE | QFLAGS.SHOW_INCORRECT_ONE);
             
             question_view.init();
         },

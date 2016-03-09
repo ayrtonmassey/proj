@@ -251,6 +251,7 @@ function LessonIntroView(kwargs) {
                     {text: '\\(\\{\\}\\)', correct: true},
                     {text: '\\(\\{\\texttt{rx}_1\\}\\)', correct: false}
                 ],
+                shuffle_answers: true,
                 correct_callback: function() {
                     _this.simulator.step_forward();
                     _this.text.append(_this.get_template('step_11_ans')());
@@ -281,6 +282,7 @@ function LessonIntroView(kwargs) {
                     {text: '\\(\\{\\}\\)', correct: false},
                     {text: '\\(\\{\\texttt{rx}_1\\}\\)', correct: false}
                 ],
+                shuffle_answers: true,
                 correct_callback: function() {
                     _this.simulator.step_forward();
                     _this.text.append(_this.get_template('step_12_ans')());
@@ -346,6 +348,7 @@ function LessonIntroView(kwargs) {
                     {text: '\\(\\{\\}\\)', correct: false},
                     {text: '\\(\\{\\texttt{ra}_1, \\texttt{ra}_2\\}\\)', correct: true}
                 ],
+                shuffle_answers: true,
                 correct_callback: function() {
                     _this.simulator.step_forward();
                     _this.text.append(_this.get_template('step_16_ans')());
@@ -391,6 +394,7 @@ function LessonIntroView(kwargs) {
                     {text: '\\(\\{\\}\\)', correct: false},
                     {text: '\\(\\{\\texttt{ra}\\}\\)', correct: false}
                 ],
+                shuffle_answers: true,
                 correct_callback: function() {
                     _this.simulator.step_forward();
                     _this.text.append(_this.get_template('step_17_ans')());
@@ -450,6 +454,7 @@ function LessonIntroView(kwargs) {
                     {text: '\\(\\{\\}\\)', correct: false},
                     {text: '\\(\\{\\texttt{ra}_1, \\texttt{rc}_1, \\texttt{ra}_2\\}\\)', correct: true}
                 ],
+                shuffle_answers: true,
                 correct_callback: function() {
                     _this.simulator.step_forward();
                     _this.text.append(_this.get_template('step_20_ans')());

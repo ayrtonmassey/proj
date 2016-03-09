@@ -128,6 +128,7 @@ function LessonRoundRobinView(kwargs) {
                     {text: '\\(\\{\\}\\)', correct: true},
                     {text: '\\(\\{\\texttt{0}\\}\\)', correct: false}
                 ],
+                shuffle_answers: true,                
                 correct_callback: function() {
                     _this.simulator.step_forward();
                     _this.text.append(_this.get_template('step_17_ans')());
@@ -166,6 +167,7 @@ function LessonRoundRobinView(kwargs) {
                     {text: '\\(\\{\\}\\)', correct: false},
                     {text: '\\(\\{\\texttt{0}\\}\\)', correct: false}
                 ],
+                shuffle_answers: true,
                 correct_callback: function() {
                     _this.simulator.step_forward();
                     _this.text.append(_this.get_template('step_18_ans')());
@@ -205,6 +207,7 @@ function LessonRoundRobinView(kwargs) {
                     {text: '\\(\\{\\}\\)', correct: false},
                     {text: '\\(\\{\\texttt{rc}_1, \\texttt{ra}_2\\}\\)', correct: false}
                 ],
+                shuffle_answers: true,
                 correct_callback: function() {
                     _this.simulator.step_forward();
                     _this.text.append(_this.get_template('step_19_ans')());
@@ -243,6 +246,7 @@ function LessonRoundRobinView(kwargs) {
                     {text: '\\(\\{\\}\\)', correct: false},
                     {text: '\\(\\{\\texttt{ra}_2, \\texttt{rc}_1\\}\\)', correct: true}
                 ],
+                shuffle_answers: true,
                 correct_callback: function() {
                     _this.simulator.step_forward();
                     _this.text.append(_this.get_template('step_20_ans')());
@@ -281,6 +285,7 @@ function LessonRoundRobinView(kwargs) {
                     {text: '\\(\\{\\}\\)', correct: false},
                     {text: '\\(\\{\\texttt{ra}_2, \\texttt{rc}_1\\}\\)', correct: true}
                 ],
+                shuffle_answers: true,
                 correct_callback: function() {
                     _this.simulator.step_forward();
                     _this.text.append(_this.get_template('step_21_ans')());
@@ -319,6 +324,7 @@ function LessonRoundRobinView(kwargs) {
                     {text: '\\(\\{\\texttt{rc}_1\\}\\)', correct: false},
                     {text: '\\(\\{\\texttt{rc}_1, \\texttt{ra}_2\\}\\)', correct: true}
                 ],
+                shuffle_answers: true,
                 correct_callback: function() {
                     _this.simulator.step_forward();
                     _this.text.append(_this.get_template('step_22_ans')());
@@ -357,6 +363,7 @@ function LessonRoundRobinView(kwargs) {
                     {text: '\\(\\{\\}\\)', correct: false},
                     {text: '\\(\\{\\texttt{ra}_2, \\texttt{rc}_1\\}\\)', correct: true}
                 ],
+                shuffle_answers: true,
                 correct_callback: function() {
                     _this.simulator.step_forward();
                     _this.text.append(_this.get_template('step_23_ans')());
@@ -395,6 +402,7 @@ function LessonRoundRobinView(kwargs) {
                     {text: '\\(\\{\\texttt{ra}_3, \\texttt{rc}_1\\}\\)', correct: false},
                     {text: '\\(\\{\\texttt{ra}_2, \\texttt{rc}_1\\}\\)', correct: true}
                 ],
+                shuffle_answers: true,
                 correct_callback: function() {
                     _this.simulator.step_forward();
                     _this.text.append(_this.get_template('step_24_ans')());
@@ -433,6 +441,7 @@ function LessonRoundRobinView(kwargs) {
                     {text: '\\(\\{\\texttt{rb}_1, \\texttt{ra}_2\\}\\)', correct: false},
                     {text: '\\(\\{\\texttt{ra}_2, \\texttt{rc}_1\\}\\)', correct: true}
                 ],
+                shuffle_answers: true,
                 correct_callback: function() {
                     _this.simulator.step_forward();
                     _this.text.append(_this.get_template('step_25_ans')());
@@ -471,6 +480,7 @@ function LessonRoundRobinView(kwargs) {
                     {text: '\\(\\{\\texttt{rb}_1, \\texttt{ra}_2\\}\\)', correct: false},
                     {text: '\\(\\{\\texttt{ra}_2, \\texttt{rc}_1\\}\\)', correct: false}
                 ],
+                shuffle_answers: true,
                 correct_callback: function() {
                     _this.simulator.step_forward();
                     _this.text.append(_this.get_template('step_26_ans')());
@@ -501,6 +511,7 @@ function LessonRoundRobinView(kwargs) {
                     {text: 'Yes', correct: true},
                     {text: 'No', correct: false}
                 ],
+                shuffle_answers: true,
                 correct_callback: function() {
                     _this.simulator.play();
                     _this.text.append(_this.get_template('step_27_ans')());
