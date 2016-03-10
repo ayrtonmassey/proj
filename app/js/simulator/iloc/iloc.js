@@ -94,7 +94,6 @@ var ILOC = {
 
         this.get_string_components = function() {
             var components = [
-                this.label || '',
                 this.opcode
             ]
             if (this.sources.length > 0) {
@@ -305,13 +304,13 @@ var ILOC = {
         this.get_string_components = function() {
             var components = this.operation_string_components();
             // Add Mem(
-            components[2] = 'Mem('+components[2];
+            components[1] = 'Mem('+components[1];
             // Add +
-            if(components[3] != '') {
-                components[3] = '+ ' + components[3];
+            if(components[2] != '') {
+                components[2] = '+ ' + components[2];
             }
             // Add )
-            components[3] = components[3]+')';
+            components[2] = components[2]+')';
             return components
         }
         
@@ -683,7 +682,7 @@ var ILOC = {
 
         this.to_code = function() {
             return this.nodes.map(function(node) {
-                var instruction_string = '{0} '.format((node.label ? node.label + ":" : "")).pad(" ", 5, true);
+                var instruction_string = '{0} '.format((node.label ? node.label + ":" : "")).pad(" ", 5, false);
                 instruction_string += node.operations.map(function(op) {
                     return op.opcode.pad(" ", 8) + op.sources.map(function(oper) {
                         return ((oper.type == ILOC.OPERAND_TYPES.register ? 'r' : '') + oper.name).pad(" ", 5);

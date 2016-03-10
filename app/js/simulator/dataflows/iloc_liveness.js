@@ -30,7 +30,6 @@ var uses = function (node, v_uses) {
                 operation.targets != undefined) {
                 ret = ret.concat(operation.targets);
             }
-            console.log(ret);
             return ret;
         })).filter(function(source) {
             // Filter to just registers (variables)

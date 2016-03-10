@@ -267,10 +267,8 @@ function CodeView(kwargs) {
         });
 
         $('#btn-share-copy-link').on('click', function() {
-            console.log("hah");
             _this.link_input.select();
             var successful = document.execCommand('copy');
-            console.log(successful);
         });
 
         this.code_alert = $('#code-alert');
@@ -376,7 +374,6 @@ function FrameworkView(kwargs) {
         this.framework_change_alert = $('#alert-framework-change').hide();
             
         this.change_btn = $('#btn-framework-change').on('click', function() {
-            console.log(_this.canvas.find('#input-framework-dfa'));
             var framework_id = _this.input_framework_dfa.val();
             var order_id     = _this.input_framework_order.val();
             
