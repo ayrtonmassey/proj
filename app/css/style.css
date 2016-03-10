@@ -82,6 +82,7 @@ footer {
     flex-direction: column;
     justify-content: start;
     align-items: stretch;
+    max-width: 25%;
 }
 
 #left-column > .row {
@@ -228,6 +229,7 @@ footer {
 }
 
 #code-alert {
+    margin-left: 0;
     position: relative;
     justify-content: space-between;
     padding: 5px;
@@ -252,6 +254,7 @@ footer {
 }
 
 .iloc {
+    white-space: nowrap;
     font-family: Monospace;
 }
 
@@ -283,6 +286,8 @@ table.table>tbody>tr>th {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 

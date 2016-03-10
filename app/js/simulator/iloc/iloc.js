@@ -303,14 +303,16 @@ var ILOC = {
         this.operation_string_components = this.get_string_components;
         this.get_string_components = function() {
             var components = this.operation_string_components();
-            // Add Mem(
-            components[1] = 'Mem('+components[1];
-            // Add +
-            if(components[2] != '') {
-                components[2] = '+ ' + components[2];
+            if (this.opcode != ILOC.MEMORY_LOAD_OPCODES.loadI.name) {
+                // Add Mem(
+                components[1] = 'Mem('+components[1];
+                // Add +
+                if(components[2] != '') {
+                    components[2] = '+ ' + components[2];
+                }
+                // Add )
+                components[2] = components[2]+')';
             }
-            // Add )
-            components[2] = components[2]+')';
             return components
         }
         
