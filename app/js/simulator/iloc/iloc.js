@@ -92,92 +92,419 @@ var ILOC = {
             return string;
         }
 
-        this.toHTML = function() {
-            var string = "<td>{0}</td>".format(this.opcode);
+        this.get_string_components = function() {
+            var components = [
+                this.label || '',
+                this.opcode
+            ]
             if (this.sources.length > 0) {
-                count = 0;
+                var count = 0;
                 // Print all the sources
                 for(s of this.sources) {
-                    string += "<td>{0}</td>".format(s.toHTML());
+                    components.push(s.toHTML());
                     count += 1;
                 }
                 // Pad up to 2 cols
                 while (count < 2) {
-                    string += "<td></td>";
+                    components.push("");
                     count += 1;
                 }
-                string += "<td>{0}</td>".format(this.operator_symbol);
+                components.push(this.operator_symbol);
             } else {
-                string += "<td></td><td></td><td></td>";
+                components = components.concat(['','','']);
             }
             if (this.targets.length > 0) {
-                count = 0;
+                var count = 0;
                 // Print all the sources
                 for(t of this.targets) {
-                    string += "<td>{0}</td>".format(t.toHTML());
+                    components.push(t.toHTML());
                     count += 1;
                 }
                 // Pad up to 2 cols
                 while (count < 2) {
-                    string += "<td></td>";
+                    components.push('');
                     count += 1;
                 }
             } else {
-                string += "<td></td><td></td>";
+                components = components.concat(['','']);
             }
-            return string;
+            return components
+        }
+        
+        this.toHTML = function() {
+            return this.get_string_components().map(function(e) {
+                return '<td>' + e + '</td>';
+            }).join('');
         }
 
+        this.check_operand_pattern = function check_operand_pattern(dest, operands, pattern) {
+            for (var i=0; i < operands.length; i++) {
+                if (pattern.charAt(i) == 'r' && operands[i].type != ILOC.OPERAND_TYPES.register) {
+                    throw new ReferenceError('{0} expected {1} {2} to be register, found {3}'.format(
+                        this.opcode,
+                        dest,
+                        i,
+                        operands[i].type
+                    ));
+                } else if (pattern.charAt(i) == 'n' && operands[i].type != ILOC.OPERAND_TYPES.num) {
+                    throw new ReferenceError('{0} expected {1} {2} to be num, found {3}'.format(
+                        this.opcode,
+                        dest,
+                        i,
+                        operands[i].type
+                    ));
+                } else if (pattern.charAt(i) == 'l' && operands[i].type != ILOC.OPERAND_TYPES.label) {
+                    throw new ReferenceError('{0} expected {1} {2} to be label, found {3}'.format(
+                        this.opcode,
+                        dest,
+                        i,
+                        operands[i].type
+                    ));
+                } else if (pattern.charAt(i) == 'c' && operands[i].type != ILOC.OPERAND_TYPES.cc) {
+                    throw new ReferenceError('{0} expected {1} {2} to be cc, found {3}'.format(
+                        this.opcode,
+                        dest,
+                        i,
+                        operands[i].type
+                    ));
+                }
+            }
+        }
     },
 
+    MEMORY_STORE_OPCODES: {
+        store: { 
+            name: 'store',
+            sources: 'r',
+            targets: 'r',
+        },
+        storeAI: { 
+            name: 'storeAI',
+            sources: 'r',
+            targets: 'rn',
+        },
+        storeAO: { 
+            name: 'storeAO',
+            sources: 'r',
+            targets: 'rr',
+        },
+        cstore: { 
+            name: 'cstore',
+            sources: 'r',
+            targets: 'r',
+        },
+        cstoreAI: { 
+            name: 'cstoreAI',
+            sources: 'r',
+            targets: 'rn',
+        },
+        cstoreAO: { 
+            name: 'cstoreAO',
+            sources: 'r',
+            targets: 'rr',
+        },
+    },
+
+    /*
+     * An Operation which stores to Memory.
+     *
+     * Inherits from Operation.
+     */
+    MemoryStoreOperation: function MemoryStoreOperation(kwargs) {
+        ILOC.Operation.call(this, kwargs);
+
+        // Store parent func
+        this.operation_string_components = this.get_string_components;
+        this.get_string_components = function() {
+            var components = this.operation_string_components();
+            // Add Mem(
+            components[components.length-2] = 'Mem('+components[components.length-2];
+            // Add +
+            if(components[components.length-1] != '') {
+                components[components.length-1] = '+ ' + components[components.length-1];
+            }
+            // Add )
+            components[components.length-1] = components[components.length-1]+')';
+            return components;
+        }
+        
+        this.operator_symbol = "=>";
+        if (!(ILOC.MEMORY_STORE_OPCODES.hasOwnProperty(this.opcode))) {
+            throw new ReferenceError("Invalid OpCode {0} assigned to MemoryStoreOperation".format(this.opcode))
+        }
+        
+        // Check number of operands
+        if (this.sources.length != ILOC.MEMORY_STORE_OPCODES[this.opcode].sources.length) {
+            throw new ReferenceError ('{0} expected {1} sources, found {2}'.format(
+                this.opcode,
+                ILOC.MEMORY_STORE_OPCODES[this.opcode].sources.length,
+                this.sources.length
+            ));
+        }
+
+        if (this.targets.length != ILOC.MEMORY_STORE_OPCODES[this.opcode].targets.length) {
+            throw new ReferenceError ('{0} expected {1} targets, found {2}'.format(
+                this.opcode,
+                ILOC.MEMORY_STORE_OPCODES[this.opcode].targets.length,
+                this.targets.length
+            ));
+        }
+
+        this.check_operand_pattern('source', this.sources, ILOC.MEMORY_STORE_OPCODES[this.opcode].sources);
+        this.check_operand_pattern('target', this.targets, ILOC.MEMORY_STORE_OPCODES[this.opcode].targets);
+    },
+
+    MEMORY_LOAD_OPCODES: {
+        load: { 
+            name: 'load',
+            sources: 'r',
+            targets: 'r',
+        },
+        loadAI: { 
+            name: 'loadAI',
+            sources: 'rn',
+            targets: 'r',
+        },
+        loadAO: { 
+            name: 'loadAO',
+            sources: 'rr',
+            targets: 'r',
+        },
+        cload: { 
+            name: 'cload',
+            sources: 'r',
+            targets: 'r',
+        },
+        cloadAI: { 
+            name: 'cloadAI',
+            sources: 'rn',
+            targets: 'r',
+        },
+        cloadAO: { 
+            name: 'cloadAO',
+            sources: 'rr',
+            targets: 'r',
+        },
+        loadI: { 
+            name: 'loadI',
+            sources: 'n',
+            targets: 'r',
+        },
+    },
+
+    /*
+     * An Operation which loads from Memory.
+     *
+     * Inherits from Operation.
+     */
+    MemoryLoadOperation: function MemoryLoadOperation(kwargs) {
+        ILOC.Operation.call(this, kwargs);
+
+        // Store parent func
+        this.operation_string_components = this.get_string_components;
+        this.get_string_components = function() {
+            var components = this.operation_string_components();
+            // Add Mem(
+            components[2] = 'Mem('+components[2];
+            // Add +
+            if(components[3] != '') {
+                components[3] = '+ ' + components[3];
+            }
+            // Add )
+            components[3] = components[3]+')';
+            return components
+        }
+        
+        this.operator_symbol = "=>";
+        if (!(ILOC.MEMORY_LOAD_OPCODES.hasOwnProperty(this.opcode))) {
+            throw new ReferenceError("Invalid OpCode {0} assigned to MemoryLoadOperation".format(this.opcode))
+        }
+        
+        // Check number of operands
+        if (this.sources.length != ILOC.MEMORY_LOAD_OPCODES[this.opcode].sources.length) {
+            throw new ReferenceError ('{0} expected {1} sources, found {2}'.format(
+                this.opcode,
+                ILOC.MEMORY_LOAD_OPCODES[this.opcode].sources.length,
+                this.sources.length
+            ));
+        }
+
+        if (this.targets.length != ILOC.MEMORY_LOAD_OPCODES[this.opcode].targets.length) {
+            throw new ReferenceError ('{0} expected {1} targets, found {2}'.format(
+                this.opcode,
+                ILOC.MEMORY_LOAD_OPCODES[this.opcode].targets.length,
+                this.targets.length
+            ));
+        }
+
+        this.check_operand_pattern('source', this.sources, ILOC.MEMORY_LOAD_OPCODES[this.opcode].sources);
+        this.check_operand_pattern('target', this.targets, ILOC.MEMORY_LOAD_OPCODES[this.opcode].targets);
+    },
+    
+    // Patterns: r = reg, n = num, l = label, c = comp
     NORMAL_OPCODES: {
-        add: 'add',
-        sub: 'sub',
-        mult: 'mult',
-        div: 'div',
-        addI: 'addI',
-        subI: 'subI',
-        rsubI: 'rsubI',
-        multI: 'multI',
-        divI: 'divI',
-        rdivI: 'rdivI',
-        and: 'and',
-        andI: 'andI',
-        or: 'or',
-        orI: 'orI',
-        xor: 'xor',
-        xorI: 'xorI',
-        lshift: 'lshift',
-        lshiftI: 'lshiftI',
-        rshift: 'rshift',
-        rshiftI: 'rshiftI',
-        load: 'load',
-        loadAI: 'loadAI',
-        loadAO: 'loadAO',
-        cload: 'cload',
-        cloadAI: 'cloadAI',
-        cloadAO: 'cloadAO',
-        loadI: 'loadI',
-        store: 'store',
-        storeAI: 'storeAI',
-        storeAO: 'storeAO',
-        cstore: 'cstore',
-        cstoreAI: 'cstoreAI',
-        cstoreAO: 'cstoreAO',
-        i2i: 'i2i',
-        c2c: 'c2c',
-        c2i: 'c2i',
-        i2c: 'i2c',
-        cmp_LT: 'cmp_LT',
-        cmp_LE: 'cmp_LE',
-        cmp_EQ: 'cmp_EQ',
-        cmp_GE: 'cmp_GE',
-        cmp_GT: 'cmp_GT',
-        cmp_NE: 'cmp_NE',
-        comp: 'comp',
-        tbl: 'tbl',
+        add: {
+            opcode : 'add',
+            sources: 'rr',
+            targets: 'r',
+        },
+        sub: {
+            name: 'sub',
+            sources: 'rr',
+            targets: 'r',
+        },
+        mult: { 
+            name: 'mult',
+            sources: 'rr',
+            targets: 'r',
+        },
+        div: { 
+            name: 'div',
+            sources: 'rr',
+            targets: 'r',
+        },
+        addI: { 
+            name: 'addI',
+            sources: 'rn',
+            targets: 'r',
+        },
+        subI: { 
+            name: 'subI',
+            sources: 'rn',
+            targets: 'r',
+        },
+        rsubI: { 
+            name: 'rsubI',
+            sources: 'rn',
+            targets: 'r',
+        },
+        multI: { 
+            name: 'multI',
+            sources: 'rn',
+            targets: 'r',
+        },
+        divI: { 
+            name: 'divI',
+            sources: 'rn',
+            targets: 'r',
+        },
+        rdivI: { 
+            name: 'rdivI',
+            sources: 'rn',
+            targets: 'r',
+        },
+        and: { 
+            name: 'and',
+            sources: 'rr',
+            targets: 'r',
+        },
+        andI: { 
+            name: 'andI',
+            sources: 'rn',
+            targets: 'r',
+        },
+        or: { 
+            name: 'or',
+            sources: 'rr',
+            targets: 'r',
+        },
+        orI: { 
+            name: 'orI',
+            sources: 'rn',
+            targets: 'r',
+        },
+        xor: { 
+            name: 'xor',
+            sources: 'rn',
+            targets: 'r',
+        },
+        xorI: { 
+            name: 'xorI',
+            sources: 'rn',
+            targets: 'r',
+        },
+        lshift: { 
+            name: 'lshift',
+            sources: 'rr',
+            targets: 'r',
+        },
+        lshiftI: { 
+            name: 'lshiftI',
+            sources: 'rn',
+            targets: 'r',
+        },
+        rshift: { 
+            name: 'rshift',
+            sources: 'rn',
+            targets: 'r',
+        },
+        rshiftI: { 
+            name: 'rshiftI',
+            sources: 'rn',
+            targets: 'r',
+        },
+        i2i: { 
+            name: 'i2i',
+            sources: 'r',
+            targets: 'r',
+        },
+        c2c: { 
+            name: 'c2c',
+            sources: 'r',
+            targets: 'r',
+        },
+        c2i: { 
+            name: 'c2i',
+            sources: 'r',
+            targets: 'r',
+        },
+        i2c: { 
+            name: 'i2c',
+            sources: 'r',
+            targets: 'r',
+        },
+        cmp_LT: { 
+            name: 'cmp_LT',
+            sources: 'rr',
+            targets: 'r',
+        },
+        cmp_LE: { 
+            name: 'cmp_LE',
+            sources: 'rr',
+            targets: 'r',
+        },
+        cmp_EQ: { 
+            name: 'cmp_EQ',
+            sources: 'rr',
+            targets: 'r',
+        },
+        cmp_GE: { 
+            name: 'cmp_GE',
+            sources: 'rr',
+            targets: 'r',
+        },
+        cmp_GT: { 
+            name: 'cmp_GT',
+            sources: 'rr',
+            targets: 'r',
+        },
+        cmp_NE: { 
+            name: 'cmp_NE',
+            sources: 'rr',
+            targets: 'r',
+        },
+        comp: { 
+            name: 'comp',
+            sources: 'rr',
+            targets: 'c',
+        },
+        tbl: { 
+            name: 'tbl',
+            sources: 'rl',
+            targets: '',
+        },
     },
-
+    
     /*
      * A NormalOperation.
      *
@@ -188,21 +515,81 @@ var ILOC = {
         
         this.operator_symbol = "=>";
         if (!(ILOC.NORMAL_OPCODES.hasOwnProperty(this.opcode))) {
-            throw ReferenceError("Invalid OpCode {0} assigned to NormalOperation".format(this.opcode))
+            throw new ReferenceError("Invalid OpCode {0} assigned to NormalOperation".format(this.opcode))
         }
+        
+        // Check number of operands
+        if (this.sources.length != ILOC.NORMAL_OPCODES[this.opcode].sources.length) {
+            throw new ReferenceError ('{0} expected {1} sources, found {2}'.format(
+                this.opcode,
+                ILOC.NORMAL_OPCODES[this.opcode].sources.length,
+                this.sources.length
+            ));
+        }
+
+        if (this.targets.length != ILOC.NORMAL_OPCODES[this.opcode].targets.length) {
+            throw new ReferenceError ('{0} expected {1} targets, found {2}'.format(
+                this.opcode,
+                ILOC.NORMAL_OPCODES[this.opcode].targets.length,
+                this.targets.length
+            ));
+        }
+
+        this.check_operand_pattern('source', this.sources, ILOC.NORMAL_OPCODES[this.opcode].sources);
+        this.check_operand_pattern('target', this.targets, ILOC.NORMAL_OPCODES[this.opcode].targets);
     },
 
     CONTROL_FLOW_OPCODES: {
-        nop: 'nop',
-        cbr: 'cbr',
-        jump: 'jump',
-        jumpI: 'jumpI',
-        cbr_LT: 'cbr_LT',
-        cbr_LE: 'cbr_LE',
-        cbr_EQ: 'cbr_EQ',
-        cbr_GE: 'cbr_GE',
-        cbr_GT: 'cbr_GT',
-        cbr_NE: 'cbr_NE',
+        nop: {
+            name: 'nop',
+            sources: '',
+            targets: '',
+        },
+        cbr: {
+            name: 'cbr',
+            sources: 'r',
+            targets: 'll',
+        },
+        jump: { 
+            name: 'jump',
+            sources: '',
+            targets: 'r',
+        },
+        jumpI: { 
+            name: 'jumpI',
+            sources: '',
+            targets: 'l',
+        },
+        cbr_LT: { 
+            name: 'cbr_LT',
+            sources: 'c',
+            targets: 'll',
+        },
+        cbr_LE: { 
+            name: 'cbr_LE',
+            sources: 'c',
+            targets: 'll',
+        },
+        cbr_EQ: { 
+            name: 'cbr_EQ',
+            sources: 'c',
+            targets: 'll',
+        },
+        cbr_GE: { 
+            name: 'cbr_GE',
+            sources: 'c',
+            targets: 'll',
+        },
+        cbr_GT: { 
+            name: 'cbr_GT',
+            sources: 'c',
+            targets: 'll',
+        },
+        cbr_NE: { 
+            name: 'cbr_NE',
+            sources: 'c',
+            targets: 'll',
+        },
     },
     
     /*
@@ -215,14 +602,35 @@ var ILOC = {
         
         this.operator_symbol = "->";
         if (!(ILOC.CONTROL_FLOW_OPCODES.hasOwnProperty(this.opcode))) {
-            throw ReferenceError("Invalid OpCode {0} assigned to ControlFlowOperation".format(this.opcode))
+            throw new ReferenceError("Invalid OpCode {0} assigned to ControlFlowOperation".format(this.opcode))
         }
+
+        // Check number of operands
+        if (this.sources.length != ILOC.CONTROL_FLOW_OPCODES[this.opcode].sources.length) {
+            throw new ReferenceError ('{0} expected {1} sources, found {2}'.format(
+                this.opcode,
+                ILOC.CONTROL_FLOW_OPCODES[this.opcode].sources.length,
+                this.sources.length
+            ));
+        }
+
+        if (this.targets.length != ILOC.CONTROL_FLOW_OPCODES[this.opcode].targets.length) {
+            throw new ReferenceError ('{0} expected {1} targets, found {2}'.format(
+                this.opcode,
+                ILOC.CONTROL_FLOW_OPCODES[this.opcode].targets.length,
+                this.targets.length
+            ));
+        }
+
+        this.check_operand_pattern('source', this.sources, ILOC.CONTROL_FLOW_OPCODES[this.opcode].sources);
+        this.check_operand_pattern('target', this.targets, ILOC.CONTROL_FLOW_OPCODES[this.opcode].targets);
     },
     
     OPERAND_TYPES : {
         register: 'register',
         num: 'num',
         label: 'label',
+        cc: 'cc',
     },
 
     /*
@@ -239,6 +647,8 @@ var ILOC = {
             switch(this.type) {
             case ILOC.OPERAND_TYPES.register:
                 return "r"+this.name + (this.index != undefined ? "_{0}".format(this.index) : "");
+            case ILOC.OPERAND_TYPES.cc:
+                return this.name + (this.index != undefined ? "_{0}".format(this.index) : "");
             default:
                 return this.name;
             }
@@ -248,6 +658,8 @@ var ILOC = {
             switch(this.type) {
             case ILOC.OPERAND_TYPES.register:
                 return "r"+this.name + (this.index != undefined ? "<sub>" + this.index + "</sub>" : "");
+            case ILOC.OPERAND_TYPES.cc:
+                return this.name + (this.index != undefined ? "<sub>" + this.index + "</sub>" : "");
             default:
                 return this.name;
             }
@@ -303,7 +715,7 @@ var ILOC = {
             for(o of n.operations) {
                 if(o instanceof ILOC.ControlFlowOperation) {
                     // If the node is a nop:
-                    if(o.opcode == ILOC.CONTROL_FLOW_OPCODES.nop) {
+                    if(o.opcode == ILOC.CONTROL_FLOW_OPCODES.nop.name) {
                         // If this node is not the last node:
                         if(graph.nodes.indexOf(n) < graph.nodes.length - 1) {
                             // Add an edge to the following node.
@@ -318,7 +730,9 @@ var ILOC = {
                     }
                 }
             }
-            if (n.operations[n.operations.length - 1] instanceof ILOC.NormalOperation) {
+            if (n.operations[n.operations.length - 1] instanceof ILOC.NormalOperation ||
+                n.operations[n.operations.length - 1] instanceof ILOC.MemoryStoreOperation ||
+                n.operations[n.operations.length - 1] instanceof ILOC.MemoryLoadOperation) {
                 // NormalOperations do not branch, so
                 // If this node is not the last node:
                 if(graph.nodes.indexOf(n) < graph.nodes.length - 1) {
@@ -349,6 +763,12 @@ ILOC.NormalOperation.prototype.constructor = ILOC.NormalOperation;
 
 ILOC.ControlFlowOperation.prototype = Object.create(ILOC.Operation.prototype);
 ILOC.ControlFlowOperation.prototype.constructor = ILOC.ControlFlowOperation;
+
+ILOC.MemoryStoreOperation.prototype = Object.create(ILOC.Operation.prototype);
+ILOC.MemoryStoreOperation.prototype.constructor = ILOC.MemoryStoreOperation;
+
+ILOC.MemoryLoadOperation.prototype = Object.create(ILOC.Operation.prototype);
+ILOC.MemoryLoadOperation.prototype.constructor = ILOC.MemoryLoadOperation;
 
 ILOC.Operand.prototype = Object.create(Node.prototype);
 ILOC.Operand.prototype.constructor = ILOC.Operand;

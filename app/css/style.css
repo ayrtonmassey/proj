@@ -204,7 +204,9 @@ footer {
 
 #code-canvas > .row {
     display: flex;
+    justify-content: center;
     flex: 1 1 auto;
+    width: 100%;
     margin-bottom: 1em;
 }
 
@@ -255,7 +257,7 @@ footer {
 
 table.iloc {
     font-family: Monospace;
-    width: 100%;
+    width: auto;
     margin-bottom: 0;
 }
 
@@ -319,6 +321,12 @@ table.table>tbody>tr>th {
 
 /* Menu */
 
+#menu-container {
+    display: flex;
+    flex-flow: column nowrap; 
+    justify-content: center;
+}
+
 #menu {
     display: flex;
     flex-direction: column;
@@ -343,7 +351,7 @@ table.table>tbody>tr>th {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    flex-justify: space-around;
+    flex-justify: flex-start;
 }
 
 #framework-title {

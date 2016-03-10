@@ -1,7 +1,8 @@
 var defgen = function (node, v_def) {
     var operations = node.operations.filter(function(operation) {
         // Filter to those which are assignments
-        return (operation instanceof ILOC.NormalOperation);
+        return (operation instanceof ILOC.NormalOperation ||
+                operation instanceof ILOC.MemoryLoadOperation);
     });
     
     var out_set = new ValueSet([]);
@@ -12,7 +13,9 @@ var defgen = function (node, v_def) {
             for(t of o.targets) {
                 // Then it generates each target t
                 // Add t to the out set
-                out_set.add(t);
+                if (t.type == ILOC.OPERAND_TYPES.register) {
+                    out_set.add(t);
+                }
             }
         }
     };
@@ -22,7 +25,8 @@ var defgen = function (node, v_def) {
 var defkill = function (node, v_def) {
     var operations = node.operations.filter(function(operation) {
         // Filter to those which are assignments
-        return (operation instanceof ILOC.NormalOperation);
+        return (operation instanceof ILOC.NormalOperation ||
+                operation instanceof ILOC.MemoryLoadOperation);
     });
     
     out_set = new ValueSet([]);
@@ -34,7 +38,7 @@ var defkill = function (node, v_def) {
             if(o.targets != undefined) {
                 for(t of o.targets) {
                     // If v is in this operation's targets:
-                    if(v.type == t.type && v.name == t.name && v.index != t.index) {
+                    if(t.type == ILOC.OPERAND_TYPES.register && v.type == t.type && v.name == t.name && v.index != t.index) {
                         // It redefines v
                         // Add it to the out set
                         out_set.add(v);

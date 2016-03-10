@@ -3,7 +3,8 @@ var defs = function (node, v_uses) {
     return new ValueSet(
         [].concat.apply([], node.operations.filter(function(operation) {
             // filter to just assignments
-            return (operation instanceof ILOC.NormalOperation);
+            return (operation instanceof ILOC.NormalOperation ||
+                    operation instanceof ILOC.MemoryLoadOperation);
         }).map(function(operation) {
             if (operation.targets != undefined) {
                 return operation.targets;
@@ -21,11 +22,16 @@ var uses = function (node, v_uses) {
     // Return all the source operands of this nodes' operations
     return new ValueSet(
         [].concat.apply([], node.operations.map(function(operation) {
+            var ret = [];
             if (operation.sources != undefined) {
-                return operation.sources;
-            } else {
-                return [];
+                ret = ret.concat(operation.sources);
             }
+            if (operation instanceof ILOC.MemoryStoreOperation &&
+                operation.targets != undefined) {
+                ret = ret.concat(operation.targets);
+            }
+            console.log(ret);
+            return ret;
         })).filter(function(source) {
             // Filter to just registers (variables)
             return (source.type == ILOC.OPERAND_TYPES.register)

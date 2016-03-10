@@ -47,7 +47,8 @@ function DFAFramework (kwargs) {
             return node.operations;
         })).filter(function(operation) {
             // Filter to those which are assignments
-            return (operation instanceof ILOC.NormalOperation);
+            return (operation instanceof ILOC.NormalOperation ||
+                    operation instanceof ILOC.MemoryLoadOperation);
         });
         
         // Return all the target operands of said operations
@@ -77,9 +78,11 @@ function DFAFramework (kwargs) {
                 if (operation.sources != undefined) {
                     ret = ret.concat(operation.sources);
                 }
-                // if (operation.targets != undefined) {
-                //     ret = ret.concat(operation.targets);
-                // }
+                if (operation instanceof ILOC.MemoryStoreOperation) {
+                    if (operation.targets != undefined) {
+                        ret = ret.concat(operation.targets);
+                    }
+                }
                 return ret;
             })).filter(function(variable) {
                 // Filter to just registers (variables)

@@ -36,7 +36,11 @@ iloc_parser = (function() {
         peg$startRuleFunctions = { IlocProgram: peg$parseIlocProgram },
         peg$startRuleFunction  = peg$parseIlocProgram,
 
-        peg$c0 = function(ins_list) { return new ILOC.IlocProgram({instructions: ins_list}); },
+        peg$c0 = function(ins_list) {
+                return new ILOC.IlocProgram({
+                    instructions: ins_list
+                });
+            },
         peg$c1 = ":",
         peg$c2 = { type: "literal", value: ":", description: "\":\"" },
         peg$c3 = function(l) { return l; },
@@ -50,12 +54,20 @@ iloc_parser = (function() {
                     return [ins]
                 };
             },
-        peg$c6 = function(op) { return new ILOC.Instruction({operations: [ op ]}); },
+        peg$c6 = function(op) {
+                return new ILOC.Instruction({
+                    operations: [ op ]
+                });
+            },
         peg$c7 = "[",
         peg$c8 = { type: "literal", value: "[", description: "\"[\"" },
         peg$c9 = "]",
         peg$c10 = { type: "literal", value: "]", description: "\"]\"" },
-        peg$c11 = function(op_list) { return new ILOC.Instruction({ operations: op_list }); },
+        peg$c11 = function(op_list) {
+                return new ILOC.Instruction({
+                    operations: op_list
+                });
+            },
         peg$c12 = ";",
         peg$c13 = { type: "literal", value: ";", description: "\";\"" },
         peg$c14 = function(op, op_list) { op_list.unshift(op); return op_list; },
@@ -63,35 +75,120 @@ iloc_parser = (function() {
         peg$c16 = function(op) { return op; },
         peg$c17 = "=>",
         peg$c18 = { type: "literal", value: "=>", description: "\"=>\"" },
-        peg$c19 = function(oc, s, t) { return new ILOC.NormalOperation({ opcode:oc, sources: s || [], targets: (t != undefined ? t.map(function(operand) { if (definition_counts[operand.name]==undefined) { definition_counts[operand.name] = 1 }; operand.index=definition_counts[operand.name]++; return operand; }) : []) }); },
+        peg$c19 = function(oc, s, t) {
+                try {
+                    if (ILOC.MEMORY_LOAD_OPCODES.hasOwnProperty(oc)) {
+                        return new ILOC.MemoryLoadOperation({
+                            opcode : oc,
+                            sources: s || [],
+                            targets: (
+                                t != undefined ?
+                                    t.map(function(operand) {
+                                        if (definition_counts[operand.name]==undefined) {
+                                            definition_counts[operand.name] = 1
+                                        };
+                                        operand.index = definition_counts[operand.name]++;
+                                        return operand;
+                                    }) : []
+                            )
+                        });                 
+                    } else if (ILOC.MEMORY_STORE_OPCODES.hasOwnProperty(oc)) {
+                        return new ILOC.MemoryStoreOperation({
+                            opcode : oc,
+                            sources: s || [],
+                            targets: t || [],
+                        });                 
+                    } else {
+                        return new ILOC.NormalOperation({
+                            opcode : oc,
+                            sources: s || [],
+                            targets: (
+                                t != undefined ?
+                                    t.map(function(operand) {
+                                        if (definition_counts[operand.name]==undefined) {
+                                            definition_counts[operand.name] = 1
+                                        };
+                                        operand.index = definition_counts[operand.name]++;
+                                        return operand;
+                                    }) : []
+                            )
+                        });
+                    }
+                } catch (ex) {
+                    error(ex.message);
+                }
+            },
         peg$c20 = "->",
         peg$c21 = { type: "literal", value: "->", description: "\"->\"" },
         peg$c22 = function(oc, s) { return s; },
-        peg$c23 = function(oc, s, t) { return new ILOC.ControlFlowOperation({opcode:oc, sources: s || [], targets: t || [], }); },
-        peg$c24 = function(oc) { return new ILOC.ControlFlowOperation({opcode:oc, sources: [], targets: []}); },
+        peg$c23 = function(oc, s, t) {
+                try {
+                    return new ILOC.ControlFlowOperation({
+                        opcode :oc,
+                        sources: s || [],
+                        targets: t || [],
+                    });
+                } catch (ex) {
+                    error(ex.message);
+                }
+            },
+        peg$c24 = function(oc) {
+                try {
+                    return new ILOC.ControlFlowOperation({
+                        opcode : oc,
+                        sources: [],
+                        targets: []});
+                } catch (ex) {
+                    error(ex.message);
+                }
+            },
         peg$c25 = ",",
         peg$c26 = { type: "literal", value: ",", description: "\",\"" },
         peg$c27 = function(r) { return r; },
         peg$c28 = function(n) { return n; },
-        peg$c29 = "r",
-        peg$c30 = { type: "literal", value: "r", description: "\"r\"" },
-        peg$c31 = /^[0-9a-z_]/i,
-        peg$c32 = { type: "class", value: "[0-9a-z_]i", description: "[0-9a-z_]i" },
-        peg$c33 = function(n) { return new ILOC.Operand({ type: ILOC.OPERAND_TYPES.register, name: n.join("") }); },
-        peg$c34 = function(n) { return new ILOC.Operand({ type: ILOC.OPERAND_TYPES.label, name: n.join("") }); },
-        peg$c35 = /^[0-9\-]/i,
-        peg$c36 = { type: "class", value: "[0-9-]i", description: "[0-9-]i" },
-        peg$c37 = function(n) { return new ILOC.Operand({ type: ILOC.OPERAND_TYPES.num, name: n.join("") }); },
-        peg$c38 = /^[a-z0-9_]/i,
-        peg$c39 = { type: "class", value: "[a-z0-9_]i", description: "[a-z0-9_]i" },
-        peg$c40 = function(n) { return n.join(""); },
-        peg$c41 = /^[ \t\r]/,
-        peg$c42 = { type: "class", value: "[ \\t\\r]", description: "[ \\t\\r]" },
-        peg$c43 = function(w) { return w; },
-        peg$c44 = /^[ \n\t\r]/,
-        peg$c45 = { type: "class", value: "[ \\n\\t\\r]", description: "[ \\n\\t\\r]" },
-        peg$c46 = "\n",
-        peg$c47 = { type: "literal", value: "\n", description: "\"\\n\"" },
+        peg$c29 = function(c) { return c; },
+        peg$c30 = "r",
+        peg$c31 = { type: "literal", value: "r", description: "\"r\"" },
+        peg$c32 = /^[0-9a-z_]/i,
+        peg$c33 = { type: "class", value: "[0-9a-z_]i", description: "[0-9a-z_]i" },
+        peg$c34 = function(n) {
+                return new ILOC.Operand({
+                    type: ILOC.OPERAND_TYPES.register,
+                    name: n.join("")
+                });
+            },
+        peg$c35 = function(n) {
+                return new ILOC.Operand({
+                    type: ILOC.OPERAND_TYPES.label,
+                    name: n.join("")
+                });
+            },
+        peg$c36 = /^[0-9\-]/i,
+        peg$c37 = { type: "class", value: "[0-9-]i", description: "[0-9-]i" },
+        peg$c38 = function(n) {
+                return new ILOC.Operand({
+                    type: ILOC.OPERAND_TYPES.num,
+                    name: n.join("")
+                });
+            },
+        peg$c39 = "cc",
+        peg$c40 = { type: "literal", value: "cc", description: "\"cc\"" },
+        peg$c41 = function(n) {
+                return new ILOC.Operand({
+                    type: ILOC.OPERAND_TYPES.cc,
+                    name: n,
+                });
+            },
+        peg$c42 = /^[a-z0-9_]/i,
+        peg$c43 = { type: "class", value: "[a-z0-9_]i", description: "[a-z0-9_]i" },
+        peg$c44 = function(n) { return n.join(""); },
+        peg$c45 = /^[ \t\r]/,
+        peg$c46 = { type: "class", value: "[ \\t\\r]", description: "[ \\t\\r]" },
+        peg$c47 = function(w) { return w; },
+        peg$c48 = /^[ \n\t\r]/,
+        peg$c49 = { type: "class", value: "[ \\n\\t\\r]", description: "[ \\n\\t\\r]" },
+        peg$c50 = "\n",
+        peg$c51 = { type: "literal", value: "\n", description: "\"\\n\"" },
 
         peg$currPos          = 0,
         peg$savedPos         = 0,
@@ -586,7 +683,7 @@ iloc_parser = (function() {
       s0 = peg$currPos;
       s1 = peg$parse_();
       if (s1 !== peg$FAILED) {
-        s2 = peg$parseNormalOp();
+        s2 = peg$parseAssignment();
         if (s2 !== peg$FAILED) {
           s3 = peg$parse_();
           if (s3 !== peg$FAILED) {
@@ -609,7 +706,7 @@ iloc_parser = (function() {
         s0 = peg$currPos;
         s1 = peg$parse_();
         if (s1 !== peg$FAILED) {
-          s2 = peg$parseControlFlowOp();
+          s2 = peg$parseBranch();
           if (s2 !== peg$FAILED) {
             s3 = peg$parse_();
             if (s3 !== peg$FAILED) {
@@ -633,7 +730,7 @@ iloc_parser = (function() {
       return s0;
     }
 
-    function peg$parseNormalOp() {
+    function peg$parseAssignment() {
       var s0, s1, s2, s3, s4, s5, s6, s7, s8, s9;
 
       s0 = peg$currPos;
@@ -704,7 +801,7 @@ iloc_parser = (function() {
       return s0;
     }
 
-    function peg$parseControlFlowOp() {
+    function peg$parseBranch() {
       var s0, s1, s2, s3, s4, s5, s6, s7;
 
       s0 = peg$currPos;
@@ -946,12 +1043,12 @@ iloc_parser = (function() {
           s0 = peg$currPos;
           s1 = peg$parse_();
           if (s1 !== peg$FAILED) {
-            s2 = peg$parselabel();
+            s2 = peg$parsecc();
             if (s2 !== peg$FAILED) {
               s3 = peg$parse_();
               if (s3 !== peg$FAILED) {
                 peg$savedPos = s0;
-                s1 = peg$c3(s2);
+                s1 = peg$c29(s2);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -964,6 +1061,30 @@ iloc_parser = (function() {
           } else {
             peg$currPos = s0;
             s0 = peg$FAILED;
+          }
+          if (s0 === peg$FAILED) {
+            s0 = peg$currPos;
+            s1 = peg$parse_();
+            if (s1 !== peg$FAILED) {
+              s2 = peg$parselabel();
+              if (s2 !== peg$FAILED) {
+                s3 = peg$parse_();
+                if (s3 !== peg$FAILED) {
+                  peg$savedPos = s0;
+                  s1 = peg$c3(s2);
+                  s0 = s1;
+                } else {
+                  peg$currPos = s0;
+                  s0 = peg$FAILED;
+                }
+              } else {
+                peg$currPos = s0;
+                s0 = peg$FAILED;
+              }
+            } else {
+              peg$currPos = s0;
+              s0 = peg$FAILED;
+            }
           }
         }
       }
@@ -978,30 +1099,30 @@ iloc_parser = (function() {
       s1 = peg$parse_();
       if (s1 !== peg$FAILED) {
         if (input.charCodeAt(peg$currPos) === 114) {
-          s2 = peg$c29;
+          s2 = peg$c30;
           peg$currPos++;
         } else {
           s2 = peg$FAILED;
-          if (peg$silentFails === 0) { peg$fail(peg$c30); }
+          if (peg$silentFails === 0) { peg$fail(peg$c31); }
         }
         if (s2 !== peg$FAILED) {
           s3 = [];
-          if (peg$c31.test(input.charAt(peg$currPos))) {
+          if (peg$c32.test(input.charAt(peg$currPos))) {
             s4 = input.charAt(peg$currPos);
             peg$currPos++;
           } else {
             s4 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c32); }
+            if (peg$silentFails === 0) { peg$fail(peg$c33); }
           }
           if (s4 !== peg$FAILED) {
             while (s4 !== peg$FAILED) {
               s3.push(s4);
-              if (peg$c31.test(input.charAt(peg$currPos))) {
+              if (peg$c32.test(input.charAt(peg$currPos))) {
                 s4 = input.charAt(peg$currPos);
                 peg$currPos++;
               } else {
                 s4 = peg$FAILED;
-                if (peg$silentFails === 0) { peg$fail(peg$c32); }
+                if (peg$silentFails === 0) { peg$fail(peg$c33); }
               }
             }
           } else {
@@ -1011,7 +1132,7 @@ iloc_parser = (function() {
             s4 = peg$parse_();
             if (s4 !== peg$FAILED) {
               peg$savedPos = s0;
-              s1 = peg$c33(s3);
+              s1 = peg$c34(s3);
               s0 = s1;
             } else {
               peg$currPos = s0;
@@ -1040,22 +1161,22 @@ iloc_parser = (function() {
       s1 = peg$parse_();
       if (s1 !== peg$FAILED) {
         s2 = [];
-        if (peg$c31.test(input.charAt(peg$currPos))) {
+        if (peg$c32.test(input.charAt(peg$currPos))) {
           s3 = input.charAt(peg$currPos);
           peg$currPos++;
         } else {
           s3 = peg$FAILED;
-          if (peg$silentFails === 0) { peg$fail(peg$c32); }
+          if (peg$silentFails === 0) { peg$fail(peg$c33); }
         }
         if (s3 !== peg$FAILED) {
           while (s3 !== peg$FAILED) {
             s2.push(s3);
-            if (peg$c31.test(input.charAt(peg$currPos))) {
+            if (peg$c32.test(input.charAt(peg$currPos))) {
               s3 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s3 = peg$FAILED;
-              if (peg$silentFails === 0) { peg$fail(peg$c32); }
+              if (peg$silentFails === 0) { peg$fail(peg$c33); }
             }
           }
         } else {
@@ -1065,7 +1186,7 @@ iloc_parser = (function() {
           s3 = peg$parse_();
           if (s3 !== peg$FAILED) {
             peg$savedPos = s0;
-            s1 = peg$c34(s2);
+            s1 = peg$c35(s2);
             s0 = s1;
           } else {
             peg$currPos = s0;
@@ -1090,22 +1211,22 @@ iloc_parser = (function() {
       s1 = peg$parse_();
       if (s1 !== peg$FAILED) {
         s2 = [];
-        if (peg$c35.test(input.charAt(peg$currPos))) {
+        if (peg$c36.test(input.charAt(peg$currPos))) {
           s3 = input.charAt(peg$currPos);
           peg$currPos++;
         } else {
           s3 = peg$FAILED;
-          if (peg$silentFails === 0) { peg$fail(peg$c36); }
+          if (peg$silentFails === 0) { peg$fail(peg$c37); }
         }
         if (s3 !== peg$FAILED) {
           while (s3 !== peg$FAILED) {
             s2.push(s3);
-            if (peg$c35.test(input.charAt(peg$currPos))) {
+            if (peg$c36.test(input.charAt(peg$currPos))) {
               s3 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s3 = peg$FAILED;
-              if (peg$silentFails === 0) { peg$fail(peg$c36); }
+              if (peg$silentFails === 0) { peg$fail(peg$c37); }
             }
           }
         } else {
@@ -1115,7 +1236,42 @@ iloc_parser = (function() {
           s3 = peg$parse_();
           if (s3 !== peg$FAILED) {
             peg$savedPos = s0;
-            s1 = peg$c37(s2);
+            s1 = peg$c38(s2);
+            s0 = s1;
+          } else {
+            peg$currPos = s0;
+            s0 = peg$FAILED;
+          }
+        } else {
+          peg$currPos = s0;
+          s0 = peg$FAILED;
+        }
+      } else {
+        peg$currPos = s0;
+        s0 = peg$FAILED;
+      }
+
+      return s0;
+    }
+
+    function peg$parsecc() {
+      var s0, s1, s2, s3;
+
+      s0 = peg$currPos;
+      s1 = peg$parse_();
+      if (s1 !== peg$FAILED) {
+        if (input.substr(peg$currPos, 2) === peg$c39) {
+          s2 = peg$c39;
+          peg$currPos += 2;
+        } else {
+          s2 = peg$FAILED;
+          if (peg$silentFails === 0) { peg$fail(peg$c40); }
+        }
+        if (s2 !== peg$FAILED) {
+          s3 = peg$parse_();
+          if (s3 !== peg$FAILED) {
+            peg$savedPos = s0;
+            s1 = peg$c41(s2);
             s0 = s1;
           } else {
             peg$currPos = s0;
@@ -1140,22 +1296,22 @@ iloc_parser = (function() {
       s1 = peg$parse_();
       if (s1 !== peg$FAILED) {
         s2 = [];
-        if (peg$c38.test(input.charAt(peg$currPos))) {
+        if (peg$c42.test(input.charAt(peg$currPos))) {
           s3 = input.charAt(peg$currPos);
           peg$currPos++;
         } else {
           s3 = peg$FAILED;
-          if (peg$silentFails === 0) { peg$fail(peg$c39); }
+          if (peg$silentFails === 0) { peg$fail(peg$c43); }
         }
         if (s3 !== peg$FAILED) {
           while (s3 !== peg$FAILED) {
             s2.push(s3);
-            if (peg$c38.test(input.charAt(peg$currPos))) {
+            if (peg$c42.test(input.charAt(peg$currPos))) {
               s3 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s3 = peg$FAILED;
-              if (peg$silentFails === 0) { peg$fail(peg$c39); }
+              if (peg$silentFails === 0) { peg$fail(peg$c43); }
             }
           }
         } else {
@@ -1165,7 +1321,7 @@ iloc_parser = (function() {
           s3 = peg$parse_();
           if (s3 !== peg$FAILED) {
             peg$savedPos = s0;
-            s1 = peg$c40(s2);
+            s1 = peg$c44(s2);
             s0 = s1;
           } else {
             peg$currPos = s0;
@@ -1188,26 +1344,26 @@ iloc_parser = (function() {
 
       s0 = peg$currPos;
       s1 = [];
-      if (peg$c41.test(input.charAt(peg$currPos))) {
+      if (peg$c45.test(input.charAt(peg$currPos))) {
         s2 = input.charAt(peg$currPos);
         peg$currPos++;
       } else {
         s2 = peg$FAILED;
-        if (peg$silentFails === 0) { peg$fail(peg$c42); }
+        if (peg$silentFails === 0) { peg$fail(peg$c46); }
       }
       while (s2 !== peg$FAILED) {
         s1.push(s2);
-        if (peg$c41.test(input.charAt(peg$currPos))) {
+        if (peg$c45.test(input.charAt(peg$currPos))) {
           s2 = input.charAt(peg$currPos);
           peg$currPos++;
         } else {
           s2 = peg$FAILED;
-          if (peg$silentFails === 0) { peg$fail(peg$c42); }
+          if (peg$silentFails === 0) { peg$fail(peg$c46); }
         }
       }
       if (s1 !== peg$FAILED) {
         peg$savedPos = s0;
-        s1 = peg$c43(s1);
+        s1 = peg$c47(s1);
       }
       s0 = s1;
 
@@ -1219,22 +1375,22 @@ iloc_parser = (function() {
 
       s0 = peg$currPos;
       s1 = [];
-      if (peg$c41.test(input.charAt(peg$currPos))) {
+      if (peg$c45.test(input.charAt(peg$currPos))) {
         s2 = input.charAt(peg$currPos);
         peg$currPos++;
       } else {
         s2 = peg$FAILED;
-        if (peg$silentFails === 0) { peg$fail(peg$c42); }
+        if (peg$silentFails === 0) { peg$fail(peg$c46); }
       }
       if (s2 !== peg$FAILED) {
         while (s2 !== peg$FAILED) {
           s1.push(s2);
-          if (peg$c41.test(input.charAt(peg$currPos))) {
+          if (peg$c45.test(input.charAt(peg$currPos))) {
             s2 = input.charAt(peg$currPos);
             peg$currPos++;
           } else {
             s2 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c42); }
+            if (peg$silentFails === 0) { peg$fail(peg$c46); }
           }
         }
       } else {
@@ -1242,7 +1398,7 @@ iloc_parser = (function() {
       }
       if (s1 !== peg$FAILED) {
         peg$savedPos = s0;
-        s1 = peg$c43(s1);
+        s1 = peg$c47(s1);
       }
       s0 = s1;
 
@@ -1254,26 +1410,26 @@ iloc_parser = (function() {
 
       s0 = peg$currPos;
       s1 = [];
-      if (peg$c44.test(input.charAt(peg$currPos))) {
+      if (peg$c48.test(input.charAt(peg$currPos))) {
         s2 = input.charAt(peg$currPos);
         peg$currPos++;
       } else {
         s2 = peg$FAILED;
-        if (peg$silentFails === 0) { peg$fail(peg$c45); }
+        if (peg$silentFails === 0) { peg$fail(peg$c49); }
       }
       while (s2 !== peg$FAILED) {
         s1.push(s2);
-        if (peg$c44.test(input.charAt(peg$currPos))) {
+        if (peg$c48.test(input.charAt(peg$currPos))) {
           s2 = input.charAt(peg$currPos);
           peg$currPos++;
         } else {
           s2 = peg$FAILED;
-          if (peg$silentFails === 0) { peg$fail(peg$c45); }
+          if (peg$silentFails === 0) { peg$fail(peg$c49); }
         }
       }
       if (s1 !== peg$FAILED) {
         peg$savedPos = s0;
-        s1 = peg$c43(s1);
+        s1 = peg$c47(s1);
       }
       s0 = s1;
 
@@ -1285,53 +1441,53 @@ iloc_parser = (function() {
 
       s0 = peg$currPos;
       s1 = [];
-      if (peg$c41.test(input.charAt(peg$currPos))) {
+      if (peg$c45.test(input.charAt(peg$currPos))) {
         s2 = input.charAt(peg$currPos);
         peg$currPos++;
       } else {
         s2 = peg$FAILED;
-        if (peg$silentFails === 0) { peg$fail(peg$c42); }
+        if (peg$silentFails === 0) { peg$fail(peg$c46); }
       }
       while (s2 !== peg$FAILED) {
         s1.push(s2);
-        if (peg$c41.test(input.charAt(peg$currPos))) {
+        if (peg$c45.test(input.charAt(peg$currPos))) {
           s2 = input.charAt(peg$currPos);
           peg$currPos++;
         } else {
           s2 = peg$FAILED;
-          if (peg$silentFails === 0) { peg$fail(peg$c42); }
+          if (peg$silentFails === 0) { peg$fail(peg$c46); }
         }
       }
       if (s1 !== peg$FAILED) {
         if (input.charCodeAt(peg$currPos) === 10) {
-          s2 = peg$c46;
+          s2 = peg$c50;
           peg$currPos++;
         } else {
           s2 = peg$FAILED;
-          if (peg$silentFails === 0) { peg$fail(peg$c47); }
+          if (peg$silentFails === 0) { peg$fail(peg$c51); }
         }
         if (s2 !== peg$FAILED) {
           s3 = [];
-          if (peg$c41.test(input.charAt(peg$currPos))) {
+          if (peg$c45.test(input.charAt(peg$currPos))) {
             s4 = input.charAt(peg$currPos);
             peg$currPos++;
           } else {
             s4 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c42); }
+            if (peg$silentFails === 0) { peg$fail(peg$c46); }
           }
           while (s4 !== peg$FAILED) {
             s3.push(s4);
-            if (peg$c41.test(input.charAt(peg$currPos))) {
+            if (peg$c45.test(input.charAt(peg$currPos))) {
               s4 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s4 = peg$FAILED;
-              if (peg$silentFails === 0) { peg$fail(peg$c42); }
+              if (peg$silentFails === 0) { peg$fail(peg$c46); }
             }
           }
           if (s3 !== peg$FAILED) {
             peg$savedPos = s0;
-            s1 = peg$c43(s1);
+            s1 = peg$c47(s1);
             s0 = s1;
           } else {
             peg$currPos = s0;
@@ -1351,7 +1507,7 @@ iloc_parser = (function() {
 
 
         var definition_counts = {};
-        var count = 0;
+        var op_count = 0;
 
 
     peg$result = peg$startRuleFunction();

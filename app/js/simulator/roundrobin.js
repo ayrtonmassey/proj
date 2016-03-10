@@ -51,8 +51,10 @@ function RoundRobinSimulator (kwargs) {
 
     this.sim_code = function(code) {
         this.code = code;
-        
+
+        // Should be caught by caller
         this.ast  = ILOC.parser.parse(this.code);
+        
         this.cfg  = ILOC.build_CFG(this.ast);
 
         this.value_domain = this.framework.distinct_values(this.cfg);

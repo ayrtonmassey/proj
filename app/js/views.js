@@ -242,6 +242,7 @@ function MainView(kwargs) {
             canvas: this.view_canvas_selector,
             lessons: this.lessons,
             tests: this.tests,
+            show_testbeds: false,
         });
 
         this.view.init();
@@ -312,6 +313,8 @@ function MenuView(kwargs) {
     this.lesson_button_template = this.get_template('btn-lesson');
     this.lessons = kwargs.lessons;
 
+    this.show_testbeds = kwargs.show_testbeds;
+
     this.show_lesson_menu = function() {
         this.menu.append(this.lesson_menu_template());
         this.lesson_menu = $('#lesson-menu');
@@ -331,6 +334,32 @@ function MenuView(kwargs) {
                 _this.main_view.show_lesson($(this).attr('lesson'));
             });
         }
+    }
+
+    this.show_simulator_menu = function() {
+
+        this.menu.append(this.get_template('simulator_menu')());
+    
+        /* Simulation */
+        $('#btn-round-robin-simulator').on('click', function() {
+            _this.main_view.show_round_robin_simulator();
+        });
+
+    }
+    
+    this.show_testbed_menu = function() {
+
+        this.menu.append(this.get_template('testbed_menu')());
+        
+        /* Testing */
+        $('#btn-lattice-testbed').on('click', function() {
+            _this.main_view.show_lattice_testbed();
+        });
+        
+        $('#btn-cfg-testbed').on('click', function() {
+            _this.main_view.show_cfg_testbed();
+        });
+        
     }
     
     /* Tests */
@@ -368,10 +397,7 @@ function MenuView(kwargs) {
         this.canvas.html(this.template());
         this.menu = $('#menu');
         
-        /* Simulation */
-        $('#btn-round-robin-simulator').on('click', function() {
-            _this.main_view.show_round_robin_simulator();
-        });
+        this.show_simulator_menu();
 
         // If lessons are available, create the menu
         if (this.lessons) { this.show_lesson_menu(); }
@@ -379,14 +405,7 @@ function MenuView(kwargs) {
         // If tests are available, create the menu
         if (this.tests) { this.show_test_menu(); }
 
-        /* Testing */
-        $('#btn-lattice-testbed').on('click', function() {
-            _this.main_view.show_lattice_testbed();
-        });
-
-        $('#btn-cfg-testbed').on('click', function() {
-            _this.main_view.show_cfg_testbed();
-        });
+        if (this.show_testbeds) { this.show_testbed_menu(); }
     }
 }
 

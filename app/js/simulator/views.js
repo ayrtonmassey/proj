@@ -179,10 +179,19 @@ function CodeView(kwargs) {
 
     this.edit_code = function() {
         this.code_editor.show();
+        
         this.code_edit_controls.show();
 
         this.code_display.hide();
         this.code_sim_controls.hide();
+
+        var h = $('.lines').height();
+        var codeLines = $('.codelines');
+        var lineNo = Number(codeLines.children().last().text());
+        while ( (codeLines.height() - h ) <= 0 ){
+	    codeLines.append("<div class='lineno'>" + lineNo + "</div>");
+	    lineNo++;
+	}
     }
 
     this.sim_code = function(code) {
@@ -194,8 +203,17 @@ function CodeView(kwargs) {
                 .addClass('alert-success')
                 .removeClass('alert-danger');
         } catch(err) {
+            if (!(err instanceof SyntaxError)) {
+                throw err;
+            }
             this.code_alert.show();
-            this.code_alert_content.html(err.message);
+            this.code_alert_content.html(
+                'line {0}, col {1}: {2}'.format(
+                    err.location.start.line,
+                    err.location.start.column,
+                    err.message
+                )
+            );
             this.code_alert
                 .addClass('alert-danger')
                 .removeClass('alert-success');
@@ -210,6 +228,7 @@ function CodeView(kwargs) {
         this.code_editor = $('#code-editor');
         this.code_editor.html(this.code_editor_template({code: this.code_text}));
         this.code_editor_textarea = $('#code-editor > textarea');
+        this.code_editor_textarea.linedtextarea();
         this.code_editor.hide();
         
         this.code_controls = $('#code-controls');
