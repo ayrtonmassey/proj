@@ -57,12 +57,12 @@ templates['simulator/cfg/node.hbs'] = template({"compiler":[7,">= 4.0.0"],"main"
     + "</tr>\n        </tbody>\n    </table>\n</div>\n";
 },"useData":true});
 templates['simulator/framework/main.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
-    var alias1=container.lambda, alias2=container.escapeExpression;
+    var helper, alias1=container.escapeExpression;
 
   return "                                    <option value="
-    + alias2(alias1((depth0 != null ? depth0.id : depth0), depth0))
+    + alias1(((helper = (helper = helpers.key || (data && data.key)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"key","hash":{},"data":data}) : helper)))
     + ">"
-    + alias2(alias1((depth0 != null ? depth0.name : depth0), depth0))
+    + alias1(container.lambda(depth0, depth0))
     + "</option>\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : {};
@@ -74,7 +74,7 @@ templates['simulator/framework/main.hbs'] = template({"1":function(container,dep
     + "                            </select>\n                        </div>\n                    </div>\n                </form>\n            </div>\n            <div class=\"modal-footer\">\n                <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n                <button type=\"button\" class=\"btn btn-primary\" id=\"btn-framework-change\">Save changes</button>\n            </div>\n        </div>\n    </div>\n</div>\n";
 },"useData":true});
 templates['simulator/code/main.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div id=\"code-display\" class=\"row\">\n</div>\n<div id=\"code-editor\" class=\"row\">\n</div>\n<div id=\"code-alert\" class=\"row alert alert-dismissable no-flex\">\n    <span id=\"code-alert-content\"></span>\n    <a id=\"btn-hide-alert\" class=\"close\">&times;</a>\n</div>\n<div id=\"code-controls\" class=\"row no-flex\">\n</div>\n";
+    return "<div id=\"code-display\" class=\"row\">\n</div>\n<div id=\"code-editor\" class=\"row\">\n</div>\n<div id=\"code-alert\" class=\"row alert alert-dismissable no-flex\">\n    <span id=\"code-alert-content\"></span>\n    <a id=\"btn-hide-alert\" class=\"close\">&times;</a>\n</div>\n<div id=\"code-controls\" class=\"row no-flex\">\n</div>\n\n<!-- Modal -->\n<div class=\"modal fade\" id=\"share-link-modal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\">\n    <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>\n                <h4 class=\"modal-title\" id=\"myModalLabel\">Share Simulation</h4>\n            </div>\n            <div class=\"modal-body\">\n                <form>\n                    <div class=\"form-group\">\n                        <label class=\"form-control-label\" for=\"input-share-link\">Link</label>\n                        <div class=\"input-group\">\n                            <input type=\"text\" class=\"form-control\" id=\"input-share-link\"></input>\n                            <span class=\"input-group-btn\">\n                                <button type=\"button\" id=\"btn-share-copy-link\" class=\"btn btn-primary\"><i class=\"fa fa-files-o\"></i></button>\n                            </span>\n                        </div>\n                    </div>\n                </form>\n            </div>\n            <div class=\"modal-footer\">\n                <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n            </div>\n        </div>\n    </div>\n</div>\n";
 },"useData":true});
 templates['simulator/code/display.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
     var alias1=container.escapeExpression;
@@ -92,7 +92,7 @@ templates['simulator/code/display.hbs'] = template({"1":function(container,depth
     + "    </tbody>\n</table>\n";
 },"useData":true});
 templates['simulator/code/controls.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div id=\"code-controls-edit\">\n    <button id=\"btn-sim\" class=\"btn btn-primary btn-sm\">Simulate</button>\n    <button id=\"btn-cancel-edit\" class=\"btn btn-danger btn-sm\">Cancel</button>\n</div>\n<div id=\"code-controls-sim\">\n    <button id=\"btn-edit\" class=\"btn btn-primary btn-sm\">Edit</button>\n</div>\n";
+    return "<div id=\"code-controls-edit\">\n    <button id=\"btn-sim\" class=\"btn btn-primary btn-sm\">Simulate <i class=\"fa fa-check-circle\"></i></button>\n    <button id=\"btn-cancel-edit\" class=\"btn btn-danger btn-sm\">Cancel <i class=\"fa fa-times-circle\"></i></button>\n</div>\n<div id=\"code-controls-sim\">\n    <button id=\"btn-edit\" class=\"btn btn-primary btn-sm\">Edit <i class=\"fa fa-pencil\"></i></button>\n    <button id=\"btn-share\" class=\"btn btn-success btn-sm\" type=\"button\" data-toggle=\"modal\" data-target=\"#share-link-modal\">Share <i class=\"fa fa-share-alt\"></i></button>\n</div>\n";
 },"useData":true});
 templates['simulator/code/editor.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper;

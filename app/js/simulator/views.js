@@ -53,16 +53,16 @@ function RoundRobinSimulatorView(kwargs) {
             parent: this,
         });
 
-        var orderings = [
-            { id: 'PREORDER',          name: 'Pre-order'},
-            { id: 'REVERSE_POSTORDER', name: 'Reverse Post-order'},
-            { id: 'POSTORDER',         name: 'Post-order'},
-        ]
+        var orderings = {
+            'PREORDER'         : 'Pre-order',
+            'REVERSE_POSTORDER': 'Reverse Post-order',
+            'POSTORDER'        : 'Post-order',
+        }
         
-        var dataflows = [
-            { id: 'LIVENESS_ANALYSIS',    name: 'Liveness Analysis'},
-            { id: 'REACHING_DEFINITIONS', name: 'Reaching Definitions'},
-        ]
+        var dataflows = {
+            'LIVENESS_ANALYSIS'   : 'Liveness Analysis',
+            'REACHING_DEFINITIONS': 'Reaching Definitions',
+        }
         
         this.framework_view = new FrameworkView({
             canvas: '#framework-canvas',
@@ -234,6 +234,26 @@ function CodeView(kwargs) {
             _this.edit_code();
         });
 
+        this.link_input = $('#input-share-link');
+        
+        this.code_sim_controls.find('#btn-share').on('click', function() {
+            _this.link_input.val("{0}?simulator{1}".format(
+                window.location.href.split('?')[0],
+                '&framework={0}&ordering={1}&code={2}'.format(
+                    encodeURIComponent(_this.simulator.framework.id),
+                    encodeURIComponent(_this.simulator.ordering),
+                    encodeURIComponent(_this.simulator.code)
+                )
+            ));
+        });
+
+        $('#btn-share-copy-link').on('click', function() {
+            console.log("hah");
+            _this.link_input.select();
+            var successful = document.execCommand('copy');
+            console.log(successful);
+        });
+
         this.code_alert = $('#code-alert');
         this.code_alert_content = $('#code-alert-content');
         
@@ -305,9 +325,9 @@ function FrameworkView(kwargs) {
         this.transfer_function.html(this.simulator.framework.transfer_latex);
         MathJax.Hub.Queue(["Typeset",MathJax.Hub,this.transfer_function.id]);
 
-        var order_html = this.simulator.order.map(function(i) {
+        var order_html = '{0}{1}'.format('<div class="order-index">{0}:</div>'.format(this.orderings[this.simulator.ordering]), this.simulator.order.map(function(i) {
             return '<div class="order-index node-{0}">{0}</div>'.format(i);
-        }).join('<div class="flex text-center">→</div>');
+        }).join('<div class="flex text-center">→</div>'));
 
         this.order.html(order_html);
         
@@ -316,7 +336,11 @@ function FrameworkView(kwargs) {
                 .removeClass("meet")
                 .removeClass("transfer");
         });
+
+        this.input_framework_dfa.find("option[value='{0}']".format(this.simulator.framework.id)).prop('selected',true);
+        this.input_framework_order.find("option[value='{0}']".format(this.simulator.ordering)).prop('selected',true);
     }
+    
     
     this.init = function() {
         this.canvas.html(this.template({ dataflows: this.dataflows, orderings: this.orderings }));
@@ -326,14 +350,16 @@ function FrameworkView(kwargs) {
         this.transfer_function = this.canvas.find('#framework-transfer');
         this.order             = this.canvas.find('#framework-order');
 
+        this.framework_modal        = $('#framework-settings-modal');
+        this.input_framework_dfa    = $('#input-framework-dfa');
+        this.input_framework_order  = $('#input-framework-order');
+        
         this.framework_change_alert = $('#alert-framework-change').hide();
             
         this.change_btn = $('#btn-framework-change').on('click', function() {
             console.log(_this.canvas.find('#input-framework-dfa'));
-            var framework_id = $('#input-framework-dfa').val();
-            var order_id     = $('#input-framework-order').val();
-            console.log(framework_id);
-            console.log(order_id);
+            var framework_id = _this.input_framework_dfa.val();
+            var order_id     = _this.input_framework_order.val();
             
             if (framework_id != undefined && order_id != undefined) {
                 var framework = DFA[framework_id];
@@ -341,6 +367,7 @@ function FrameworkView(kwargs) {
                 if (framework != undefined && order != undefined) {
                     _this.simulator.change_framework(framework, order);
                     _this.framework_change_alert.text("").hide();
+                    _this.framework_modal.modal('hide');
                 } else {
                     _this.framework_change_alert.text("DFA or ordering not recognised!").show();
                 }

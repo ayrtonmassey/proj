@@ -1,12 +1,12 @@
 var DFA = {
     // Directions
-    FORWARD: 'forward',
-    BACKWARD: 'backward',
+    FORWARD: 'FORWARD',
+    BACKWARD: 'BACKWARD',
     
-    // Orderings
-    POSTORDER: 'postorder',
-    PREORDER: 'preorder',
-    REVERSE_POSTORDER: 'reverse_postorder',
+    // ORDERINGS
+    POSTORDER: 'POSTORDER',
+    PREORDER: 'PREORDER',
+    REVERSE_POSTORDER: 'REVERSE_POSTORDER',
 
     // Functions
     MEET: 'meet',
@@ -39,6 +39,7 @@ function DFAFramework (kwargs) {
     this.local_sets = kwargs.local_sets;
     this.top = kwargs.top;
 
+    this.id = kwargs.id;
     DFA[kwargs.id] = this;
 
     this.find_definitions = function(cfg) {

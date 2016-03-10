@@ -140,36 +140,28 @@ function MainView(kwargs) {
         }
     }
 
-    this.show_round_robin_simulator = function(code) {
+    this.show_round_robin_simulator = function(code, framework, ordering) {
         this.view_canvas.html("");
         this.view_canvas.show();
 
-        var iloc_code;
-        if (code) {
-            try {
-                ILOC.parser.parse(code);
-                iloc_code = code;
-            } catch(ex) {
-                alert('Could not simulate given code: {0}'.format(ex.message));
-            }
-        } else if (getParameterByName('code') != null) {
-            try {
-                ILOC.parser.parse(getParameterByName('code'));
-                iloc_code = getParameterByName('code');
-            } catch(ex) {
-                alert('Could not simulate code given in URL: {0}'.format(ex.message));
-            }
+        // Get code
+        var iloc_code = code || getParameterByName('code') || Handlebars.templates['simulator/init.iloc']();
+        
+        try {
+            ILOC.parser.parse(iloc_code);
+        } catch(ex) {
+            alert('Could not simulate given code: {0}'.format(ex.message));
         }
 
-        if (!iloc_code) {
-            iloc_code = Handlebars.templates['simulator/init.iloc']();
-        }
+        // Get framework
+        var framework = framework || DFA[getParameterByName('framework')] || DFA.REACHING_DEFINITIONS;
+
+        // Get ordering
+        var ordering = ordering || ( getParameterByName('ordering') in DFA ? getParameterByName('ordering') : DFA.POSTORDER );
         
         var simulator = new RoundRobinSimulator({
-            framework: iloc_liveness,
-            ordering:  DFA.POSTORDER,
-            // framework:  iloc_reaching_definitions,
-            // ordering:   DFA.REVERSE_POSTORDER,
+            framework:  framework,
+            ordering:   ordering,
             code:       iloc_code,
             play_speed: 1000,
         });

@@ -8,3 +8,31 @@
 </div>
 <div id="code-controls" class="row no-flex">
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="share-link-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Share Simulation</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label class="form-control-label" for="input-share-link">Link</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="input-share-link"></input>
+                            <span class="input-group-btn">
+                                <button type="button" id="btn-share-copy-link" class="btn btn-primary"><i class="fa fa-files-o"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

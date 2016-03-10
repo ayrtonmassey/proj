@@ -5,6 +5,10 @@ html, body {
     flex-direction: column;
 }
 
+button i.fa {
+    line-height: 1.5;
+}
+
 .navbar .navbar-brand {
     z-index: 1;
 }
