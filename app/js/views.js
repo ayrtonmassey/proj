@@ -166,10 +166,10 @@ function MainView(kwargs) {
         }
         
         var simulator = new RoundRobinSimulator({
-            // framework: iloc_liveness,
-            // ordering:  DFA.POSTORDER,
-            framework:  iloc_reaching_definitions,
-            ordering:   DFA.REVERSE_POSTORDER,
+            framework: iloc_liveness,
+            ordering:  DFA.POSTORDER,
+            // framework:  iloc_reaching_definitions,
+            // ordering:   DFA.REVERSE_POSTORDER,
             code:       iloc_code,
             play_speed: 1000,
         });

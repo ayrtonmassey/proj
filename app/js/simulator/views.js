@@ -2,6 +2,8 @@ function SimulatorView(kwargs) {
     View.call(this, kwargs);
     
     this.simulator = kwargs.simulator;
+
+    this.parent = kwargs.parent;
     
     var _this = this;
     this.simulator.on('reset', function() {
@@ -43,28 +45,51 @@ function RoundRobinSimulatorView(kwargs) {
         this.results_view = new RoundRobinResultsView({
             canvas: '#results-canvas',
             simulator: this.simulator,
+            parent: this,
         });
         this.code_view = new CodeView({
             canvas: '#code-canvas',
             simulator: this.simulator,
+            parent: this,
         });
+
+        var orderings = [
+            { id: 'PREORDER',          name: 'Pre-order'},
+            { id: 'REVERSE_POSTORDER', name: 'Reverse Post-order'},
+            { id: 'POSTORDER',         name: 'Post-order'},
+        ]
+        
+        var dataflows = [
+            { id: 'LIVENESS_ANALYSIS',    name: 'Liveness Analysis'},
+            { id: 'REACHING_DEFINITIONS', name: 'Reaching Definitions'},
+        ]
+        
         this.framework_view = new FrameworkView({
             canvas: '#framework-canvas',
             simulator: this.simulator,
+            dataflows: dataflows,
+            orderings: orderings,
+            parent: this,
         });
+        
         this.sim_controls_view = new SimControlsView({
             canvas: '#sim-controls-canvas',
             simulator: this.simulator,
+            parent: this,
         });
+        
         this.lattice_view = new LatticeView({
             canvas: '#lattice-canvas',
             simulator: this.simulator,
+            parent: this,
         });
+        
         this.cfg_view = new CFGView({
             canvas: '#cfg-canvas',
             simulator: this.simulator,
             draw_points: CFG_FLAGS.SHOW_NO_POINTS,
             show_points_button: true,
+            parent: this,
         });
 
         this.results_view.init();
@@ -233,6 +258,9 @@ CodeView.prototype.constructor = CodeView
 function FrameworkView(kwargs) {
     SimulatorView.call(this, kwargs);
 
+    this.dataflows = kwargs.dataflows;
+    this.orderings = kwargs.orderings;
+
     this.template_root = 'simulator/framework/';
     this.template = this.get_template('main');
     
@@ -291,12 +319,35 @@ function FrameworkView(kwargs) {
     }
     
     this.init = function() {
-        this.canvas.html(this.template());
+        this.canvas.html(this.template({ dataflows: this.dataflows, orderings: this.orderings }));
         
-        this.title = $('#framework-title');
-        this.meet_function = $('#framework-meet');
-        this.transfer_function = $('#framework-transfer');
-        this.order = $('#framework-order');
+        this.title             = this.canvas.find('#framework-title');
+        this.meet_function     = this.canvas.find('#framework-meet');
+        this.transfer_function = this.canvas.find('#framework-transfer');
+        this.order             = this.canvas.find('#framework-order');
+
+        this.framework_change_alert = $('#alert-framework-change').hide();
+            
+        this.change_btn = $('#btn-framework-change').on('click', function() {
+            console.log(_this.canvas.find('#input-framework-dfa'));
+            var framework_id = $('#input-framework-dfa').val();
+            var order_id     = $('#input-framework-order').val();
+            console.log(framework_id);
+            console.log(order_id);
+            
+            if (framework_id != undefined && order_id != undefined) {
+                var framework = DFA[framework_id];
+                var order     = DFA[order_id];
+                if (framework != undefined && order != undefined) {
+                    _this.simulator.change_framework(framework, order);
+                    _this.framework_change_alert.text("").hide();
+                } else {
+                    _this.framework_change_alert.text("DFA or ordering not recognised!").show();
+                }
+            } else {
+                _this.framework_change_alert.text("Please select a valid data-flow and evaluation order!").show();
+            }
+        });
 
         var _this = this;
         this.simulator.on('update', function() {

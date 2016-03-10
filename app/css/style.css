@@ -342,6 +342,14 @@ table.table>tbody>tr>th {
     flex-justify: space-around;
 }
 
+#framework-title {
+    display: inline-block;
+    margin-right: 15px;
+    line-height: 1.5;
+    vertical-align: bottom;
+    margin-bottom: 0;
+}
+
 .order-index {
     flex: 1 1 3em;
     text-align: center;

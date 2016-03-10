@@ -43,6 +43,12 @@ function RoundRobinSimulator (kwargs) {
         this.events.register(event, callback);
     }
 
+    this.change_framework = function(framework, ordering) {
+        this.framework = framework;
+        this.ordering  = ordering;
+        this.sim_code(this.code);
+    }
+
     this.sim_code = function(code) {
         this.code = code;
         

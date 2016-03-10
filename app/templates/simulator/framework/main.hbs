@@ -1,6 +1,11 @@
 <div class="row">
     <div class="col-xs-12">
-        <h1 id="framework-title"></h1>
+        <div class="text-center">
+            <h1 id="framework-title"></h1>
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#framework-settings-modal">
+                <i class="fa fa-cog"></i> Change
+            </button>
+        </div>
     </div>
 </div>
 <div class="row">
@@ -17,4 +22,45 @@
 </div>
 <div class="row">
     <div id="framework-order" class="col-xs-12"></div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="framework-settings-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                <div id="alert-framework-change" class="alert alert-danger"></div>
+                <form>
+                    <div class="form-group row">
+                        <label class="col-sm-3 form-control-label" for="input-framework-dfa">Data-Flow</label>
+                        <div class="col-sm-9">
+                            <select type="text" class="form-control" id="input-framework-dfa">
+                                {{#each dataflows}}
+                                    <option value={{this.id}}>{{this.name}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 form-control-label" for="input-framework-order">Evaluation Order</label>
+                        <div class="col-sm-9">
+                            <select type="text" class="form-control" id="input-framework-order">
+                                {{#each orderings}}
+                                    <option value={{this.id}}>{{this.name}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btn-framework-change">Save changes</button>
+            </div>
+        </div>
+    </div>
 </div>

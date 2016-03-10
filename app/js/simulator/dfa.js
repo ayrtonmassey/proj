@@ -39,6 +39,8 @@ function DFAFramework (kwargs) {
     this.local_sets = kwargs.local_sets;
     this.top = kwargs.top;
 
+    DFA[kwargs.id] = this;
+
     this.find_definitions = function(cfg) {
         var operations = [].concat.apply([], cfg.nodes.map(function(node) {
             return node.operations;
