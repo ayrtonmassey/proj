@@ -203,9 +203,6 @@ function CodeView(kwargs) {
                 .addClass('alert-success')
                 .removeClass('alert-danger');
         } catch(err) {
-            if (!(err instanceof SyntaxError)) {
-                throw err;
-            }
             this.code_alert.show();
             this.code_alert_content.html(
                 'line {0}, col {1}: {2}'.format(
