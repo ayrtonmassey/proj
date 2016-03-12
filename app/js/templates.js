@@ -995,7 +995,7 @@ templates['teaching/lesson/intro/step_22.hbs'] = template({"compiler":[7,">= 4.0
     return "<ul>\n    <li>Data-flow analysis lets us <strong>gather information</strong> at points in a <strong>control-flow graph.</strong></li>\n    <li>We use <strong>data-flow equations</strong> to determine this information.</li>\n    <li>Information is defined in terms of <strong>in</strong> and <strong>out</strong> points for each node in the CFG.</li>\n    <li>This information is used during the <strong>optimisation</strong> stage in a compiler.</li>\n</ul>\n\n<p>Continue to the next lesson or return to the menu using the buttons below.</p>\n\n<p><a id=\"btn-goto-next-lesson\" class=\"btn btn-primary btn-block\">Next Lesson</a></p>\n<p><a id=\"btn-goto-menu\" class=\"btn btn-secondary btn-block\">Back to Menu</a></p>\n";
 },"useData":true});
 templates['teaching/lesson/intro/step_16_ans.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<p>Correct! Both \\(n_2\\) and \\(n_4\\) are <strong>predecessors</strong> of \\(n_5\\), so the values <strong>flowing out</strong> of them <strong>flow into</strong> \\(n_5\\):</p>\n<p>\n    \\begin{align}\n    \\text{In}(n_5) &= \\bigcup_{p \\in n_2, n_4} \\text{Out}(p) \\\\\n    &= \\text{Out}(n_2) \\cup \\text{Out}(n_4) \\\\\n    &= \\{ {\\tt ra_1} \\} \\cup \\{ {\\tt ra_2} \\} \\\\\n    &= \\{ {\\tt ra_1}, {\\tt ra_2} \\} \\\\\n    \\end{align}\n</p>\n\n";
+    return "<p>Correct! Both \\(n_3\\) and \\(n_5\\) are <strong>predecessors</strong> of \\(n_6\\), so the values <strong>flowing out</strong> of them <strong>flow into</strong> \\(n_6\\):</p>\n<p>\n    \\begin{align}\n    \\text{In}(n_6) &= \\bigcup_{p \\in n_3, n_5} \\text{Out}(p) \\\\\n    &= \\text{Out}(n_3) \\cup \\text{Out}(n_5) \\\\\n    &= \\{ {\\tt ra_1} \\} \\cup \\{ {\\tt ra_2} \\} \\\\\n    &= \\{ {\\tt ra_1}, {\\tt ra_2} \\} \\\\\n    \\end{align}\n</p>\n\n";
 },"useData":true});
 templates['teaching/lesson/intro/main.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"row\">\n    <div class=\"col-xs-6 lesson-step\">\n        <nav class=\"row\">\n            <button id=\"btn-prev\" class=\"btn btn-primary\">Prev</button>\n            <h1 class=\"nav-title\">$MISSING_TITLE</h1>\n            <button id=\"btn-next\" class=\"pull-right btn btn-primary\">Next</button>\n        </nav>\n        <div class=\"row\">\n            <div id=\"text\" class=\"col-xs-12\">\n            </div>\n        </div>\n    </div>\n    <div id=\"cfg-canvas\" class=\"col-xs-6\">\n    </div>\n</div>\n";
@@ -1004,7 +1004,7 @@ templates['teaching/lesson/intro/step_11.iloc'] = template({"compiler":[7,">= 4.
     return "addI rx, 1 => ra";
 },"useData":true});
 templates['teaching/lesson/intro/step_20.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<p>We evaluate \\(n_4\\), then <strong>start back at</strong> \\(n_0\\). Now we're ready to work out \\(\\text{In}(n_1)\\) again, this time using information we obtained from the last round.</p>\n";
+    return "<p>We evaluate \\(n_5\\), then <strong>start back at</strong> \\(n_0\\). Now we're ready to work out \\(\\text{In}(n_1)\\) again, this time using information we obtained from the last round.</p>\n";
 },"useData":true});
 templates['teaching/lesson/intro/step_12.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<p>Now try this question!</p>\n";
@@ -1013,16 +1013,16 @@ templates['teaching/lesson/intro/step_11_ans.hbs'] = template({"compiler":[7,">=
     return "<p>Correct! No values are flowing in to \\(n_0\\), so the \\(\\text{In}\\) set is the empty set.</p>\n";
 },"useData":true});
 templates['teaching/lesson/intro/step_16.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<p>This time, we have two branches <strong>meeting</strong> at a node \\(n_5\\). Nodes \\(n_0\\dots{}n_4\\) have been worked out for us.</p>\n";
+    return "<p>This time, we have two branches <strong>meeting</strong> at a node \\(n_6\\). Nodes \\(n_0\\dots{}n_5\\) have been worked out for us.</p>\n";
 },"useData":true});
 templates['teaching/lesson/intro/step_16.iloc'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "    cbr_EQ ra, rb -> L0, L1\nL0: loadI  2      => ra\n    jump   L2\nL1: loadI  3      => ra\n    jump   L2\nL2: i2i    ra     => rb\n";
+    return "    comp   ra, rb => cc\n    cbr_EQ cc     -> L0, L1\nL0: loadI  2      => ra\n    jumpI  L2\nL1: loadI  3      => ra\n    jumpI  L2\nL2: i2i    ra     => rb\n";
 },"useData":true});
 templates['teaching/lesson/intro/step_17.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<p>This time, the CFG has a loop (or <strong>back-edge</strong>). We've already worked out the sets for \\(n_0\\), so let's look at \\(\\text{In}(n_1)\\).</p>\n";
 },"useData":true});
 templates['teaching/lesson/intro/step_20_ans.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<p>Correct! We use the new value of \\(\\text{Out}(n_3)\\) when calculating \\(\\text{In}(n_1)\\):</p>\n<p>\n    \\begin{align}\n    \\text{In}(n_1) &= \\bigcup_{p \\in n_2, n_3} \\text{Out}(p) \\\\\n    &= \\text{Out}(n_2) \\cup \\text{Out}(n_3) \\\\\n    &= \\{ {\\tt ra_1} \\} \\cup \\{ {\\tt rc_1, ra_2} \\} \\\\\n    &= \\{ {\\tt ra_1}, {\\tt ra_2}, {\\tt rc_1} \\} \\\\\n    \\end{align}\n</p>\n\n";
+    return "<p>Correct! We use the new value of \\(\\text{Out}(n_3)\\) when calculating \\(\\text{In}(n_1)\\):</p>\n<p>\n    \\begin{align}\n    \\text{In}(n_1) &= \\bigcup_{p \\in n_0, n_4} \\text{Out}(p) \\\\\n    &= \\text{Out}(n_0) \\cup \\text{Out}(n_4) \\\\\n    &= \\{ {\\tt ra_1} \\} \\cup \\{ {\\tt rc_1, ra_2} \\} \\\\\n    &= \\{ {\\tt ra_1}, {\\tt ra_2}, {\\tt rc_1} \\} \\\\\n    \\end{align}\n</p>\n\n";
 },"useData":true});
 templates['teaching/lesson/intro/step_09.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<p>Let's try working out the sets for this graph. Remember the equation for \\(\\text{In}(n)\\):</p>\n\n<p>\\[\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)\\]</p>\n\n<p>This means, \"take the union of \\(\\text{Out}(p)\\) for all predecessors \\(p\\) of \\(n\\)\". There are no predecessors for \\(n_0\\):</p>\n\n<p>\n    \\begin{align}\n    \\text{In}(n_0) &= \\bigcup_{p \\in \\varnothing} \\text{Out}(p) \\\\\n                   &= \\varnothing \\\\\n    \\end{align}\n</p>\n\n<p>So the answer is the <strong>empty set</strong> (written \\(\\varnothing\\) or \\(\\{\\}\\)).</p>\n";
@@ -1041,7 +1041,7 @@ templates['teaching/lesson/intro/step_08.hbs'] = template({"1":function(containe
     + ":</p>\n\n<p>\n    \\begin{align}\n    \\text{In}(n)  &= \\bigcup_{p \\in preds} \\text{Out}(p) \\\\\n    \\text{Out}(n) &= \\text{DefGen}(n) \\cup \\big{(}\\text{In}(n) \\setminus \\text{DefKill}(n)\\big{)}\n    \\end{align}\n</p>\n";
 },"useData":true});
 templates['teaching/lesson/intro/step_17.iloc'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "    loadI  0      => ra\nL0: addI   ra, 1  => ra\n    subI   rc, 1  => rc\n    cbr_GE ra, rb -> L1, L0\nL1: addI   rb, rc => rb";
+    return "    loadI  0      => ra\nL0: addI   ra, 1  => ra\n    subI   rc, 1  => rc\n    comp   ra, rb => cc\n    cbr_GE cc     -> L1, L0\nL1: add    rb, rc => rb";
 },"useData":true});
 templates['teaching/lesson/intro/step_11.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<p>Now it's your turn. Look at the graph on the right, then answer the question below!</p>\n\n";
@@ -1068,7 +1068,7 @@ templates['teaching/lesson/intro/step_07.iloc'] = template({"compiler":[7,">= 4.
     return "loadI 7 => rx";
 },"useData":true});
 templates['teaching/lesson/intro/step_17_ans.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<p>Correct! Both \\(n_2\\) and \\(n_3\\) are <strong>predecessors</strong> of \\(n_1\\), because there is a <strong>back-edge</strong> from \\(n_3\\) to \\(n_1\\). Right now \\(n_3\\) is \\(\\varnothing\\), so:</p>\n\n<p>\n    \\begin{align}\n    \\text{In}(n_1) &= \\bigcup_{p \\in n_2, n_3} \\text{Out}(p) \\\\\n    &= \\text{Out}(n_2) \\cup \\text{Out}(n_3) \\\\\n    &= \\{ {\\tt ra_1} \\} \\cup \\varnothing \\\\\n    &= \\{ {\\tt ra_1} \\} \\\\\n    \\end{align}\n</p>\n\n";
+    return "<p>Correct! Both \\(n_0\\) and \\(n_4\\) are <strong>predecessors</strong> of \\(n_1\\), because there is a <strong>back-edge</strong> from \\(n_4\\) to \\(n_1\\). Right now \\(\\text{Out}(n_4)\\) is \\(\\varnothing\\), so:</p>\n\n<p>\n    \\begin{align}\n    \\text{In}(n_1) &= \\bigcup_{p \\in n_0, n_4} \\text{Out}(p) \\\\\n    &= \\text{Out}(n_0) \\cup \\text{Out}(n_4) \\\\\n    &= \\{ {\\tt ra_1} \\} \\cup \\varnothing \\\\\n    &= \\{ {\\tt ra_1} \\} \\\\\n    \\end{align}\n</p>\n\n";
 },"useData":true});
 templates['teaching/lesson/intro/step_12_ans.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
     return "generates";
@@ -1084,9 +1084,9 @@ templates['teaching/lesson/intro/step_19.hbs'] = template({"1":function(containe
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "<p>After calculating \\(\\text{Out}(n_3)\\), its values have changed. This means that our eariler calculation of \\(\\text{In}(n_1)\\) is now <strong>incorrect</strong>!</p>\n\n<p>Data-flow analysis is an "
+  return "<p>After calculating \\(\\text{Out}(n_4)\\), its values have changed. This means that our eariler calculation of \\(\\text{In}(n_1)\\) is now <strong>incorrect</strong>!</p>\n\n<p>Data-flow analysis is an "
     + ((stack1 = (helpers.definition || (depth0 && depth0.definition) || helpers.helperMissing).call(depth0 != null ? depth0 : {},"iterative",{"name":"definition","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + " process. We calculate value sets for each point <strong>in order</strong>, and <strong>repeat</strong> this analysis until our values <strong>stop changing</strong>. Since the value of \\(\\text{Out}(n_3)\\) has <strong>changed</strong>, we'll have to go back and fix \\(\\text{In}(n_1)\\).</p>\n";
+    + " process. We calculate value sets for each point <strong>in order</strong>, and <strong>repeat</strong> this analysis until our values <strong>stop changing</strong>. Since the value of \\(\\text{Out}(n_4)\\) has <strong>changed</strong>, we'll have to go back and fix \\(\\text{In}(n_1)\\).</p>\n";
 },"useData":true});
 templates['teaching/lesson/intro/step_07.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<p>When we talk about <strong style=\"color: #9a162c\">points</strong> in a CFG, we mean the points where control flows in and out of nodes in the graph, referred to as <strong>in</strong> and <strong>out</strong>.</p>\n";
@@ -1122,7 +1122,7 @@ templates['teaching/lesson/intro/step_01.hbs'] = template({"1":function(containe
     + " programs.</p>\n";
 },"useData":true});
 templates['teaching/lesson/intro/step_18.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<p>We continue our analysis until it's time to calculate \\(\\text{Out}(n_3)\\). Remember that we hadn't calculated it yet when we worked out \\(\\text{In}(n_1)\\).</p>\n";
+    return "<p>We continue our analysis until it's time to calculate \\(\\text{Out}(n_4)\\). Remember that we hadn't calculated it yet when we worked out \\(\\text{In}(n_1)\\).</p>\n";
 },"useData":true});
 templates['teaching/lesson/intro/step_13.iloc'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "    loadI 7     => rx\n    addI  rx, 1 => rx";
@@ -1171,7 +1171,7 @@ templates['teaching/lesson/intro/step_04.hbs'] = template({"1":function(containe
     + " instructions such as <code>cbr</code>, <code>cmp_GE</code>, and <code>jump</code> have <strong>multiple outgoing edges</strong>, one for each instruction we might jump to.</p>\n";
 },"useData":true});
 templates['teaching/lesson/intro/example.iloc'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "    loadI  2      => ra\n    loadI  3      => rb\nL0: cbr_LE ra, rb -> L1, L2\nL1: addI   ra, 1  => ra\n    jump   L3\nL2: addI   rb, 1  => rb\nL3: jump   L0\n";
+    return "    loadI  2      => ra\n    loadI  3      => rb\n    comp   ra, rb => cc\nL0: cbr_LE cc     -> L1, L2\nL1: addI   ra, 1  => ra\n    jumpI  L3\nL2: addI   rb, 1  => rb\nL3: jumpI  L0\n";
 },"useData":true});
 templates['teaching/lesson/intro/step_05.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
     return "control-flow graph";
@@ -1511,9 +1511,6 @@ templates['menu/lesson_menu.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":f
 },"useData":true});
 templates['menu/simulator_menu.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"row\">\n    <div class=\"col-xs-12\">\n        <h2>Simulations</h2>\n        <p>\n            <button class=\"btn btn-menu btn-secondary btn-block\" id=\"btn-round-robin-simulator\">\n                Round Robin Iterator\n            </button>\n        </p>\n    </div>\n</div>\n";
-},"useData":true});
-templates['menu/#testbed_menu.hbs#'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"row\">\n    <div class=\"col-xs-12\">\n        <h2>Testing</h2>\n        <p>\n            <button class=\"btn btn-menu btn-secondary btn-block\" id=\"btn-lattice-testbed\">\n                Lattices\n            </button>\n        </p>\n        <p>\n            <button class=\"btn btn-menu btn-secondary btn-block\" id=\"btn-cfg-testbed\">\n                CFG\n            </button>\n        </p>\n    </div>\n</div>s\n";
 },"useData":true});
 templates['menu/test_menu.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"row\">\n    <div id=\"test-menu\" class=\"col-xs-12\">\n        <h2>Tests</h2>\n        <!-- lesson buttons -->\n    </div>\n</div>\n";

@@ -320,14 +320,14 @@ function LessonIntroView(kwargs) {
             var iloc_code = _this.get_template('step_16', 'iloc')();
             _this.simulator.sim_code(iloc_code);            
 
-            _this.cfg_view.show_touched_points();
-            _this.simulator.advance(10);
+            _this.cfg_view.show_no_points();
+            _this.simulator.advance(12);
             _this.cfg_view.reset_highlight();
             
-            _this.cfg_view.add_point(_this.simulator.cfg.nodes[2], DFA.OUT);
-            _this.cfg_view.add_point(_this.simulator.cfg.nodes[4], DFA.OUT);
-            _this.cfg_view.add_point(_this.simulator.cfg.nodes[5], DFA.IN);
-            _this.cfg_view.remove_point(_this.simulator.cfg.nodes[2], DFA.IN);
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[3], DFA.OUT);
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[5], DFA.OUT);
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[6], DFA.IN);
+            _this.cfg_view.remove_point(_this.simulator.cfg.nodes[3], DFA.IN);
             _this.cfg_view.draw();
                         
             _this.text.append(_this.get_template('step_16')());
@@ -340,7 +340,7 @@ function LessonIntroView(kwargs) {
                 question: [
                     'The equation for \\(\\text{In}(n)\\) is:',
                     '\\[\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)\\]',
-                    'What is the value of \\(\\text{In}(n_5)\\)?',
+                    'What is the value of \\(\\text{In}(n_6)\\)?',
                 ],
                 answers: [
                     {text: '\\(\\{\\texttt{ra}_1\\}\\)', correct: false},
@@ -373,7 +373,7 @@ function LessonIntroView(kwargs) {
             _this.cfg_view.reset_highlight();
             
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[0], DFA.OUT);
-            _this.cfg_view.add_point(_this.simulator.cfg.nodes[3], DFA.OUT);
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[4], DFA.OUT);
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[1], DFA.IN);
             _this.cfg_view.remove_point(_this.simulator.cfg.nodes[0], DFA.IN);
             _this.cfg_view.draw();
@@ -411,10 +411,10 @@ function LessonIntroView(kwargs) {
             _this.text.append(_this.get_template('step_18')());
 
             _this.simulator.reset();
-            _this.simulator.advance(7);
+            _this.simulator.advance(9);
             
-            _this.cfg_view.add_point(_this.simulator.cfg.nodes[3], DFA.IN);
-            _this.cfg_view.add_point(_this.simulator.cfg.nodes[3], DFA.OUT);
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[4], DFA.IN);
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[4], DFA.OUT);
             _this.cfg_view.reset_highlight();
             
             _this.cfg_view.draw();
@@ -430,10 +430,10 @@ function LessonIntroView(kwargs) {
 
             _this.simulator.advance(4);
             
-            _this.cfg_view.remove_point(_this.simulator.cfg.nodes[3], DFA.IN);
+            _this.cfg_view.remove_point(_this.simulator.cfg.nodes[4], DFA.IN);
             _this.cfg_view.remove_point(_this.simulator.cfg.nodes[0], DFA.IN);
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[0], DFA.OUT);
-            _this.cfg_view.add_point(_this.simulator.cfg.nodes[3], DFA.OUT);
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[4], DFA.OUT);
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[1], DFA.IN);
             _this.cfg_view.draw();
             _this.cfg_view.reset_highlight();

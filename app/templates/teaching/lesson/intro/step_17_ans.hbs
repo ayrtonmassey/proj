@@ -1,9 +1,9 @@
-<p>Correct! Both \(n_2\) and \(n_3\) are <strong>predecessors</strong> of \(n_1\), because there is a <strong>back-edge</strong> from \(n_3\) to \(n_1\). Right now \(n_3\) is \(\varnothing\), so:</p>
+<p>Correct! Both \(n_0\) and \(n_4\) are <strong>predecessors</strong> of \(n_1\), because there is a <strong>back-edge</strong> from \(n_4\) to \(n_1\). Right now \(\text{Out}(n_4)\) is \(\varnothing\), so:</p>
 
 <p>
     \begin{align}
-    \text{In}(n_1) &= \bigcup_{p \in n_2, n_3} \text{Out}(p) \\
-    &= \text{Out}(n_2) \cup \text{Out}(n_3) \\
+    \text{In}(n_1) &= \bigcup_{p \in n_0, n_4} \text{Out}(p) \\
+    &= \text{Out}(n_0) \cup \text{Out}(n_4) \\
     &= \{ {\tt ra_1} \} \cup \varnothing \\
     &= \{ {\tt ra_1} \} \\
     \end{align}
