@@ -645,7 +645,7 @@ templates['teaching/lesson/generic/step_19.hbs'] = template({"compiler":[7,">= 4
     return "<p>That's it! When broken down the algorithm is fairly easy to understand.</p>\n";
 },"useData":true});
 templates['teaching/lesson/generic/step_25.iloc'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "    addI   ra, 1  => ra\n    cbr_GE ra, r0 -> L0, L1\nL0: sub    r0, ra => ra\nL1: i2i    ra     => rc";
+    return "    addI   ra, 1  => ra\n    comp   ra, r0 => cc\n    cbr_GE cc     -> L0, L1\nL0: sub    r0, ra => ra\nL1: i2i    ra     => rc";
 },"useData":true});
 templates['teaching/lesson/generic/step_07.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
     return "transfer function";

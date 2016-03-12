@@ -55,7 +55,9 @@ function DFAFramework (kwargs) {
         return new ValueSet(
             [].concat.apply([], operations.map(function(operation) {
                 if (operation.targets != undefined) {
-                    return operation.targets;
+                    return operation.targets.filter(function(operand) {
+                        return (operand.type == ILOC.OPERAND_TYPES.register);
+                    });
                 } else {
                     return [];
                 }

@@ -84,10 +84,12 @@ iloc_parser = (function() {
                             targets: (
                                 t != undefined ?
                                     t.map(function(operand) {
-                                        if (definition_counts[operand.name]==undefined) {
-                                            definition_counts[operand.name] = 1
-                                        };
-                                        operand.index = definition_counts[operand.name]++;
+                                        if(operand.type == ILOC.OPERAND_TYPES.register) {
+                                            if (definition_counts[operand.name]==undefined) {
+                                                definition_counts[operand.name] = 1
+                                            };
+                                            operand.index = definition_counts[operand.name]++;
+                                        }
                                         return operand;
                                     }) : []
                             )
@@ -105,10 +107,12 @@ iloc_parser = (function() {
                             targets: (
                                 t != undefined ?
                                     t.map(function(operand) {
-                                        if (definition_counts[operand.name]==undefined) {
-                                            definition_counts[operand.name] = 1
-                                        };
-                                        operand.index = definition_counts[operand.name]++;
+                                        if(operand.type == ILOC.OPERAND_TYPES.register) {
+                                            if (definition_counts[operand.name]==undefined) {
+                                                definition_counts[operand.name] = 1
+                                            };
+                                            operand.index = definition_counts[operand.name]++;
+                                        }
                                         return operand;
                                     }) : []
                             )
