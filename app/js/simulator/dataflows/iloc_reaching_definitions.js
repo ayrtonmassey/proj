@@ -30,24 +30,26 @@ var defkill = function (node, v_def) {
     });
     
     out_set = new ValueSet([]);
-    // For each value in v_def
-    for (v of v_def.values()) {
-        // Compare to each operation
-        for(o of operations) {
-            // If this operation has targets
-            if(o.targets != undefined) {
-                for(t of o.targets) {
-                    // If v is in this operation's targets:
-                    if(t.type == ILOC.OPERAND_TYPES.register && v.type == t.type && v.name == t.name && v.index != t.index) {
-                        // It redefines v
-                        // Add it to the out set
-                        out_set.add(v);
+    for(o of operations) {
+        // If this operation has targets
+        if(o.targets != undefined) {
+            for(t of o.targets) {
+                if (t.type == ILOC.OPERAND_TYPES.register) {
+                    for (v of v_def.values()) {
+                        // If v is in this operation's targets:
+                        if(v.type == t.type && v.name == t.name && v.index != t.index) {
+                            // It redefines v
+                            // Add v to the kill set
+                            out_set.add(v);
+                        }
                     }
+                    // Also add t
                     out_set.add(t);
                 }
             }
         }
-    };
+    }
+    
     return out_set;
 };
     
