@@ -1,5 +1,6 @@
     loadI  0      => ra
 L0: addI   ra, 1  => ra
     subI   rc, 1  => rc
-    cbr_GE ra, rb -> L1, L0
-L1: addI   rb, rc => rb
+    comp   ra, rb => cc
+    cbr_GE cc     -> L1, L0
+L1: add    rb, rc => rb
