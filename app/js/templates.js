@@ -1475,16 +1475,16 @@ templates['teaching/tests/intro.hbs'] = template({"compiler":[7,">= 4.0.0"],"mai
     return "<div class=\"row\">\n    <div class=\"col-xs-offset-2 col-xs-8\">\n        <h1>Test Rules</h1>\n\n        <p>Welcome! It's time to test your knowledge.</p>\n\n        <p>For each question, <strong>select an answer</strong> by clicking it. Use the <em>Next</em> and <em>Prev</em> buttons to <strong>navigate</strong> between questions.</p>\n\n        <p>You can <strong>change</strong> your selection at any time. You may <strong>revisit</strong> questions and change your answer if you wish.</p>\n\n        <p>In <strong>some</strong> questions you are allowed to select multiple answers. You will <strong>lose 1 point</strong> for every <strong>incorrect</strong> answer, but your score cannot become negative - that is, incorrect answers will not count against correct answers for <em>other</em> questions.</p>\n\n        <p>Click the <em>Start</em> button to continue. When you are satisfied with your answers, click the <em>Submit</em> button to finish the test.</p>\n\n        <div class=\"text-center\">\n            <button id=\"btn-test-start\" class=\"btn btn-primary\">Start</button>\n        </div>\n    </div>\n</div>\n";
 },"useData":true});
 templates['teaching/tests/review/rd_branch.iloc'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "    cbr_EQ rx, ry -> L0, L1\nL0: loadI  2      => rx\n    jump   L2\nL1: loadI  3      => rx\n    jump   L2\nL2: i2i    rx     => rz";
+    return "    comp   rx, rx => cc\n    cbr_EQ cc     -> L0, L1\nL0: loadI  2      => rx\n    jumpI  L2\nL1: loadI  3      => rx\n    jumpI  L2\nL2: i2i    rx     => rz";
 },"useData":true});
 templates['teaching/tests/review/rd_loop.iloc'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "    loadI  2      => ra\n    cbr_GE rx, 0  -> L0, L1\nL0: addI   rx, 1  => ra\n    jump   L2\nL1: loadI  0      => rb\nL2: multI  ra, 2  => rc\n    cbr_LT ry, rx -> L1, L3\nL3: nop";
+    return "L0: loadI 1      => ra\n    addI  ra, 1  => ra\n    jumpI L0";
 },"useData":true});
 templates['teaching/tests/review/rd_single_path.iloc'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "addI ra, 1  => ra\naddI rb, 2  => rb\nsub  ra, rb => rb\nsubI rd, 10 => rd";
 },"useData":true});
 templates['teaching/tests/review/postorder.iloc'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "L0: cbr_GE ra, rb -> L1, L2\nL1: cbr_GE ra, rc -> L2, L3\nL2: addI   ra,  1 => ra\n    jump   L0\nL3: addI   rb,  1 => rb\n    subI   rc,  1 => rc";
+    return "L0: loadI  1      => rb\n    comp   ra, rb => cc\n    cbr_GE cc     -> L0, L1\nL1: nop\n    ";
 },"useData":true});
 templates['teaching/tests/score.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;

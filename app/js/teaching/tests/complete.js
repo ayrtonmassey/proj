@@ -256,8 +256,8 @@ function TestContentReviewView(kwargs) {
 
         {
             text: [
-                'The CFG on the right shows a <strong>reaching definitions</strong> analysis in progress. What is the <strong>value</strong> of \\(\\text{In}(n_5)\\)?',
-                '<em>The values of \\(\\small{\\text{Out}(n_2)}\\) and \\(\\small{\\text{Out}(n_4)}\\) have been calculated for you.</em>',
+                'The CFG on the right shows a <strong>reaching definitions</strong> analysis in progress. What is the <strong>value</strong> of \\(\\text{In}(n_6)\\)?',
+                '<em>The values of \\(\\small{\\text{Out}(n_3)}\\) and \\(\\small{\\text{Out}(n_5)}\\) have been calculated for you.</em>',
             ],
             answers: [
                 { text: '\\(\\{ \\}\\)', correct: false, },
@@ -269,11 +269,11 @@ function TestContentReviewView(kwargs) {
             setup_func: function() {
                 _this.show_cfg();
                 _this.simulator.sim_code(_this.get_template('review/rd_branch','iloc')());
-                _this.simulator.advance(10);
+                _this.simulator.advance(12);
                 
-                _this.cfg_view.add_point(_this.simulator.cfg.nodes[2], DFA.OUT);
-                _this.cfg_view.add_point(_this.simulator.cfg.nodes[4], DFA.OUT);
-                _this.cfg_view.add_point(_this.simulator.cfg.nodes[5], DFA.IN);
+                _this.cfg_view.add_point(_this.simulator.cfg.nodes[3], DFA.OUT);
+                _this.cfg_view.add_point(_this.simulator.cfg.nodes[5], DFA.OUT);
+                _this.cfg_view.add_point(_this.simulator.cfg.nodes[6], DFA.IN);
                 
                 _this.cfg_view.reset_highlight();
                 _this.cfg_view.draw();
@@ -282,12 +282,12 @@ function TestContentReviewView(kwargs) {
 
         {
             text: [
-                'The CFG on the right shows a <strong>reaching definitions</strong> analysis in progress. What is the <strong>value</strong> of \\(\\text{In}(n_5)\\)?',
+                'The CFG on the right shows a <strong>reaching definitions</strong> analysis in progress. What is the <strong>value</strong> of \\(\\text{In}(n_0)\\)?',
             ],
             answers: [
-                { text: '\\(\\{ {\\tt ra_1}, {\\tt rb_1}, {\\tt ra_2} \\}\\)', correct: false, },
-                { text: '\\(\\{ {\\tt rb_1}, {\\tt rc_1}, {\\tt ra_2} \\}\\)', correct: false, },
-                { text: '\\(\\{ {\\tt ra_1}, {\\tt rb_1}, {\\tt rc_1}, {\\tt ra_2} \\}\\)', correct: true, },
+                { text: '\\(\\{ {\\tt ra_1}, {\\tt ra_2} \\}\\)', correct: true, },
+                { text: '\\(\\{ {\\tt ra_1} \\}\\)', correct: false, },
+                { text: '\\(\\{ {\\tt ra_2} \\}\\)', correct: false, },
                 { text: '\\(\\{ {\\tt ra_2} \\}\\)', correct: false, },
             ],
             multiple_select: false,
@@ -317,12 +317,12 @@ function TestContentReviewView(kwargs) {
                 'Which of the following represents a <strong>post-ordering</strong> (child-first) of the CFG on the right?',
             ],
             answers: [
-                { text: '\\([ n_0, n_3, n_2, n_5, n_4, n_1]\\)', correct: false, },
-                { text: '\\([ n_0, n_1, n_2, n_3, n_4, n_5]\\)', correct: false, },
-                { text: '\\([ n_2, n_3, n_4, n_5, n_0, n_1]\\)', correct: false, },
-                { text: '\\([ n_3, n_2, n_5, n_4, n_1, n_0]\\)', correct: true, },
+                { text: '\\([ n_1, n_0, n_2, n_3 ]\\)', correct: false, },
+                { text: '\\([ n_0, n_1, n_2, n_3 ]\\)', correct: false, },
+                { text: '\\([ n_3, n_2, n_0, n_1 ]\\)', correct: false, },
+                { text: '\\([ n_3, n_2, n_1, n_0 ]\\)', correct: true, },
             ],
-            multiple_select: true,
+            multiple_select: false,
             setup_func: function() {
                 _this.show_cfg();
                 _this.simulator.sim_code(_this.get_template('review/postorder','iloc')());

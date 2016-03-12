@@ -1,8 +1,3 @@
-    loadI  2      => ra
-    cbr_GE rx, 0  -> L0, L1
-L0: addI   rx, 1  => ra
-    jump   L2
-L1: loadI  0      => rb
-L2: multI  ra, 2  => rc
-    cbr_LT ry, rx -> L1, L3
-L3: nop
+L0: loadI 1      => ra
+    addI  ra, 1  => ra
+    jumpI L0
