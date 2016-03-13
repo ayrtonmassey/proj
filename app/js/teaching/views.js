@@ -5,7 +5,6 @@ function TutorialView(kwargs) {
     
     this.title = kwargs.title;
     this.id = kwargs.id;
-    console.log(this.id);
 
     this.clear = function() {
         throw ReferenceError("clear is not defined in class {0}".format(_this.constructor.name));
@@ -22,8 +21,23 @@ function TutorialView(kwargs) {
             this.next_button.prop('disabled', false);
             this.steps[this.step]();
         }
+        if(!this.hit_prev){
+            tracking.send(
+                'pageview',
+                'lesson-step',
+                this.id,
+                this.step
+            );
+        } else {
+            this.hit_prev = false;
+        }
         if (this.step >= this.steps.length - 1) {
             this.next_button.prop('disabled', true);
+            tracking.send(
+                'pageview',
+                'lesson-complete',
+                this.id
+            );
             setCookie("lesson-{0}-complete".format(this.id), true);
         }
         if (this.step > 0) {
@@ -37,6 +51,7 @@ function TutorialView(kwargs) {
     }
 
     this.prev = function() {
+        this.hit_prev=true;
         var new_step = this.step - 1;
         this.reset();
         this.advance(new_step);
@@ -66,6 +81,11 @@ function TutorialView(kwargs) {
     }
     
     this.init = function() {
+        tracking.send(
+            'pageview',
+            'lesson-start',
+            this.id
+        );
         this.canvas.html(this.template({title: this.title}));
 
         this.text = $('#text');
@@ -76,12 +96,24 @@ function TutorialView(kwargs) {
         
         this.next_button.on('click', function() {
             _this.next();
+            tracking.send(
+                'click',
+                'lesson-next',
+                this.id,
+                this.step
+            );
         });
 
         this.prev_button = $('#btn-prev');
         
         this.prev_button.on('click', function() {
             _this.prev();
+            tracking.send(
+                'click',
+                'lesson-prev',
+                this.id,
+                this.step
+            );
         });
 
         this.reset();
@@ -848,6 +880,16 @@ function QuestionView(kwargs) {
         // Set as selected
         answer.selected = !answer.selected;
 
+        if (answer.selected) {
+            tracking.send(
+                'click',
+                'question-select',
+                this.id,
+                answer.id,
+                answer.correct
+            );
+        }
+
         // Display pick text
         if (this.answers[id].pick_text) {
             this.pick_text.html(this.answers[id].pick_text);
@@ -929,6 +971,12 @@ function QuestionView(kwargs) {
             this.set_answers_disabled(true);
             this.submitted=true;
             this.show_selected_answers();
+            tracking.send(
+                'submit',
+                'question',
+                this.id,
+                this.score
+            );
         }
     }
     

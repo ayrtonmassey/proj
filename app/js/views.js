@@ -355,6 +355,7 @@ function MainView(kwargs) {
 
     this.show_data_collection = function() {
         this.view = new DataCollectionView({
+            id: 'data-collection',
             main_view: this,
             canvas: this.view_canvas_selector,
         });
@@ -537,6 +538,12 @@ function MenuView(kwargs) {
         if (this.tests) { this.show_test_menu(); }
 
         if (this.show_testbeds) { this.show_testbed_menu(); }
+        
+        tracking.send(
+            'pageview',
+            'menu',
+            'open'
+        );
     }
 }
 

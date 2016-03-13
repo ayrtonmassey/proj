@@ -60,7 +60,7 @@ var iloc_reaching_definitions = new DFAFramework({
         
         var meet_set = new ValueSet([]);
         
-        var preds  = cfg.nodes.filter(function(p) {
+        var preds = cfg.nodes.filter(function(p) {
             if(cfg.adjacency[p.index][node.index] == 1) {
                 return true;
             }

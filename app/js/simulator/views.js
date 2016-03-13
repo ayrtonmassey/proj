@@ -101,9 +101,21 @@ function RoundRobinSimulatorView(kwargs) {
 
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             _this.cfg_view.update();
+            tracking.send(
+                'click',
+                'simulator',
+                'tab-change',
+                $(this).attr('id')
+            );
         });
         
         this.simulator.reset();
+
+        tracking.send(
+            'pageview',
+            'simulator',
+            'open'
+        );
     }
 }
 
@@ -240,14 +252,29 @@ function CodeView(kwargs) {
         this.code_edit_controls.find('#btn-cancel-edit').on('click', function() {
             _this.reset();
             _this.display_code();
+            tracking.send(
+                'click',
+                'code',
+                'cancel-edit'
+            );
         });
         
         this.code_edit_controls.find('#btn-sim').on('click', function() {
             _this.sim_code(_this.code_editor_textarea.val());
+            tracking.send(
+                'click',
+                'code',
+                'sim'
+            );
         });
         
         this.code_sim_controls.find('#btn-edit').on('click', function() {
             _this.edit_code();
+            tracking.send(
+                'click',
+                'code',
+                'edit'
+            );
         });
 
         this.link_input = $('#input-share-link');
@@ -261,11 +288,21 @@ function CodeView(kwargs) {
                     encodeURIComponent(_this.simulator.code)
                 )
             ));
+            tracking.send(
+                'click',
+                'code',
+                'share-open-dialog'
+            );
         });
 
         $('#btn-share-copy-link').on('click', function() {
             _this.link_input.select();
             var successful = document.execCommand('copy');
+            tracking.send(
+                'click',
+                'code',
+                'share-copy-link'
+            );
         });
 
         this.code_alert = $('#code-alert');
@@ -381,6 +418,13 @@ function FrameworkView(kwargs) {
                     _this.simulator.change_framework(framework, order);
                     _this.framework_change_alert.text("").hide();
                     _this.framework_modal.modal('hide');
+                    tracking.send(
+                        'click',
+                        'framework',
+                        'change-settings',
+                        framework_id,
+                        order_id
+                    );
                 } else {
                     _this.framework_change_alert.text("DFA or ordering not recognised!").show();
                 }
@@ -630,22 +674,47 @@ function SimControlsView(kwargs) {
 
         this.fast_backward_button.off("click").click({view:this}, function(event) {
             event.data.view.simulator.fast_backward();
+            tracking.send(
+                'click',
+                'controls',
+                'fast_backward'
+            );
         });
         
         this.step_forward_button.off("click").click({view:this}, function(event) {
             event.data.view.simulator.step_forward();
+            tracking.send(
+                'click',
+                'controls',
+                'step_forward'
+            );
         });
         
         this.play_button.off("click").click({view:this}, function(event) {
             event.data.view.play();
+            tracking.send(
+                'click',
+                'controls',
+                'play'
+            );
         });
 
         this.pause_button.off("click").click({view:this}, function(event) {
             event.data.view.pause();
+            tracking.send(
+                'click',
+                'controls',
+                'pause'
+            );
         });
         
         this.fast_forward_button.off("click").click({view:this}, function(event) {
             event.data.view.simulator.fast_forward();
+            tracking.send(
+                'click',
+                'controls',
+                'fast_forward'
+            );
         });
         
         this.reset();
@@ -1145,18 +1214,36 @@ function CFGView(kwargs) {
                     .removeClass("btn-success")
                     .addClass("btn-info")
                     .removeClass("btn-danger");
+                tracking.send(
+                    'click',
+                    'cfg',
+                    'points-change',
+                    'current'
+                );
             } else if (_this.draw_points & CFG_FLAGS.SHOW_TOUCHED_POINTS) {
                 _this.show_no_points();
                 $(this).html("None")
                     .removeClass("btn-success")
                     .removeClass("btn-info")
                     .addClass("btn-danger");
+                tracking.send(
+                    'click',
+                    'cfg',
+                    'points-change',
+                    'none'
+                );
             } else {
                 _this.show_all_points();
                 $(this).html("All")
                     .addClass("btn-success")
                     .removeClass("btn-info")
                     .removeClass("btn-danger");
+                tracking.send(
+                    'click',
+                    'cfg',
+                    'points-change',
+                    'all'
+                );
             }
             
             _this.update();
@@ -1389,6 +1476,11 @@ function LatticeView(kwargs) {
                         $('#btn-lattice-collapse').html('<i class="fa fa-plus"></i>')
                             .removeClass("btn-danger")
                             .addClass("btn-success");
+                        tracking.send(
+                            'click',
+                            'lattice',
+                            'show'
+                        );
                     } else {
                         _this.display_toggle = true;
                         _this.svg.attr('style','');
@@ -1396,6 +1488,11 @@ function LatticeView(kwargs) {
                         $('#btn-lattice-collapse').html('<i class="fa fa-minus"></i>')
                             .addClass("btn-danger")
                             .removeClass("btn-success");
+                        tracking.send(
+                            'click',
+                            'lattice',
+                            'hide'
+                        );
                     }
                 });
             }

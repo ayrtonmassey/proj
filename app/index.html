@@ -18,6 +18,9 @@
 
         <!-- Ayrton Analytics -->
         <script src="js/tracking.js" type="text/javascript"></script>
+        <script>
+         start_load = new Date();
+        </script>
         <!-- End Google Analytics -->
     </head>
     <body>
@@ -95,5 +98,17 @@
         <script src="js/teaching/tests/complete.js" type="text/javascript"></script>
         <script src="js/views.js" type="text/javascript"></script>
         <script src="js/main.js" type="text/javascript"></script>
+        <script>
+         $(document).ready(function() {
+             end_load = new Date();
+             var load_ms = (end_load-start_load);
+             tracking.send(
+                 'load',
+                 'external-js',
+                 'ms',
+                 load_ms
+             );
+         });
+        </script>
     </body>
 </html>

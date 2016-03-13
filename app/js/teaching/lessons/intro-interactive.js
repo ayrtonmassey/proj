@@ -239,6 +239,7 @@ function LessonIntroView(kwargs) {
 
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
             var question_view = new QuestionView({
+                id: 'lesson-{0}-step-11'.format(_this.id),
                 canvas: '#question-canvas',
                 question: [
                     'The equation for \\(\\text{In}(n)\\) is:',
@@ -257,6 +258,7 @@ function LessonIntroView(kwargs) {
                     _this.text.append(_this.get_template('step_11_ans')());
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
                     _this.next_button.prop('disabled', false);
+                    this.submit();
                 }
             });
             
@@ -270,6 +272,7 @@ function LessonIntroView(kwargs) {
 
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
             var question_view = new QuestionView({
+                id: 'lesson-{0}-step-12'.format(_this.id),
                 canvas: '#question-canvas',
                 question: [
                     'The equation for \\(\\text{Out}(n)\\) is:',
@@ -288,6 +291,7 @@ function LessonIntroView(kwargs) {
                     _this.text.append(_this.get_template('step_12_ans')());
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
                     _this.next_button.prop('disabled', false);
+                    this.submit();
                 }
             });
             
@@ -336,6 +340,7 @@ function LessonIntroView(kwargs) {
 
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
             var question_view = new QuestionView({
+                id: 'lesson-{0}-step-16'.format(_this.id),
                 canvas: '#question-canvas',
                 question: [
                     'The equation for \\(\\text{In}(n)\\) is:',
@@ -354,6 +359,7 @@ function LessonIntroView(kwargs) {
                     _this.text.append(_this.get_template('step_16_ans')());
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
                     _this.next_button.prop('disabled', false);
+                    this.submit();
                 }
             });
             
@@ -382,6 +388,7 @@ function LessonIntroView(kwargs) {
 
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
             var question_view = new QuestionView({
+                id: 'lesson-{0}-step-17'.format(_this.id),
                 canvas: '#question-canvas',
                 question: [
                     'The equation for \\(\\text{In}(n)\\) is:',
@@ -400,6 +407,7 @@ function LessonIntroView(kwargs) {
                     _this.text.append(_this.get_template('step_17_ans')());
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
                     _this.next_button.prop('disabled', false);
+                    this.submit();
                 }
             });
             
@@ -442,6 +450,7 @@ function LessonIntroView(kwargs) {
 
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
             var question_view = new QuestionView({
+                id: 'lesson-{0}-step-20'.format(_this.id),
                 canvas: '#question-canvas',
                 question: [
                     'The equation for \\(\\text{In}(n)\\) is:',
@@ -460,6 +469,7 @@ function LessonIntroView(kwargs) {
                     _this.text.append(_this.get_template('step_20_ans')());
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
                     _this.next_button.prop('disabled', false);
+                    this.submit();
                 }
             });
             

@@ -95,6 +95,13 @@ function TestView(kwargs) {
             }
 
             this.update_math();
+
+            tracking.send(
+                'pageview',
+                'test-q',
+                this.id,
+                this.question_id
+            );
         }
     }
     
@@ -124,6 +131,14 @@ function TestView(kwargs) {
             setCookie("test-{0}-percentage".format(this.id), scores.score_percentage);
         }
         
+        tracking.send(
+            'submit',
+            'test',
+            this.id,
+            scores.score,
+            scores.score_percentage
+        );
+        
         this.goto_question(this.question_id);
     }
 
@@ -139,10 +154,11 @@ function TestView(kwargs) {
             this.text.append(Handlebars.templates['teaching/question/canvas.hbs']({id: ''+question_id}));
             var question=this.questions[question_id];
             this.question_views.push(new QuestionView({
+                id: 'test-{0}-q-{1}'.format(_this.id, i),
                 canvas: '#question-canvas-{0}'.format(question_id),
                 question: question.text,
                 answers: question.answers,
-                shuffle_answers: this.shuffle_answers,
+                shuffle_answers: _this.shuffle_answers,
                 show_on_click: (question.multiple_select ? QFLAGS.MULTIPLE_SELECT : QFLAGS.SINGLE_SELECT),
                 correct_callback: question.correct_callback,
                 incorrect_callback: question.incorrect_callback,
@@ -166,11 +182,23 @@ function TestView(kwargs) {
         this.next_button = $('#btn-next');
         this.next_button.on('click', function() {
             _this.next();
+            tracking.send(
+                'click',
+                'test-next',
+                this.id,
+                this.question_id
+            );
         });
 
         this.prev_button = $('#btn-prev');
         this.prev_button.on('click', function() {
             _this.prev();
+            tracking.send(
+                'click',
+                'test-prev',
+                this.id,
+                this.question_id
+            );
         });
 
         this.submit_button = $('#btn-submit');
@@ -179,6 +207,12 @@ function TestView(kwargs) {
         });
 
         this.reset();
+
+        tracking.send(
+            'pageview',
+            'test-start',
+            this.id
+        );
     }
     
     this.init = function() {
