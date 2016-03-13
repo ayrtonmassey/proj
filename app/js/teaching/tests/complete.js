@@ -332,7 +332,7 @@ function TestContentReviewView(kwargs) {
             multiple_select: false,
             setup_func: function() {
                 _this.show_cfg();
-                _this.cfg_view.show_all_points();
+                _this.cfg_view.show_no_points();
                 _this.simulator.sim_code(_this.get_template('review/rd_loop','iloc')());
             }
         },
@@ -365,6 +365,7 @@ function TestContentReviewView(kwargs) {
             multiple_select: false,
             setup_func: function() {
                 _this.show_cfg();
+                _this.show_no_points();
                 _this.simulator.sim_code(_this.get_template('review/postorder','iloc')());
             }
         },
