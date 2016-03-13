@@ -198,7 +198,7 @@ function LessonRoundRobinView(kwargs) {
             _this.cfg_view.reset_highlight();
             
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[0], DFA.OUT);
-            _this.cfg_view.add_point(_this.simulator.cfg.nodes[3], DFA.OUT);
+            _this.cfg_view.add_point(_this.simulator.cfg.nodes[4], DFA.OUT);
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[1], DFA.IN);
             
             _this.cfg_view.draw();
