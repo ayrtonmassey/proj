@@ -504,10 +504,20 @@ function LessonIntroView(kwargs) {
                 _this.main_view.show_lesson(
                     _this.next_lesson
                 );
+                tracking.send(
+                    'click',
+                    'lesson-goto-next',
+                    this.id
+                );
             });
             
             $('#btn-goto-menu').on('click', function() {
                 _this.main_view.show_menu();
+                tracking.send(
+                    'click',
+                    'lesson-goto-menu',
+                    this.id
+                );
             });
         }
     ];

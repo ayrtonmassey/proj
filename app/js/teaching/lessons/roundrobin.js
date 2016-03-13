@@ -123,6 +123,7 @@ function LessonRoundRobinView(kwargs) {
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
             _this.next_button.prop('disabled', true);
             var question_view = new QuestionView({
+                id: 'lesson-{0}-step-19'.format(_this.id),
                 canvas: '#question-canvas',
                 question: [
                     '\\[\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)\\]',
@@ -140,6 +141,7 @@ function LessonRoundRobinView(kwargs) {
                     _this.text.append(_this.get_template('step_19_ans')());
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
                     _this.next_button.prop('disabled', false);
+                    this.submit();
                 }
             });
             
@@ -162,6 +164,7 @@ function LessonRoundRobinView(kwargs) {
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
             _this.next_button.prop('disabled', true);
             var question_view = new QuestionView({
+                id: 'lesson-{0}-step-20'.format(_this.id),
                 canvas: '#question-canvas',
                 question: [
                     '\\[ \\text{Out}(n) = \\text{DefGen}(n) \\cup \\big{(}\\text{In}(n) \\setminus \\text{DefKill}(n)\\big{)} \\]',
@@ -179,6 +182,7 @@ function LessonRoundRobinView(kwargs) {
                     _this.text.append(_this.get_template('step_20_ans')());
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
                     _this.next_button.prop('disabled', false);
+                    this.submit();
                 }
             });
             
@@ -202,6 +206,7 @@ function LessonRoundRobinView(kwargs) {
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
             _this.next_button.prop('disabled', true);
             var question_view = new QuestionView({
+                id: 'lesson-{0}-step-21'.format(_this.id),
                 canvas: '#question-canvas',
                 question: [
                     '\\[\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)\\]',
@@ -219,6 +224,7 @@ function LessonRoundRobinView(kwargs) {
                     _this.text.append(_this.get_template('step_21_ans')());
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
                     _this.next_button.prop('disabled', false);
+                    this.submit();
                 }
             });
             
@@ -241,6 +247,7 @@ function LessonRoundRobinView(kwargs) {
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
             _this.next_button.prop('disabled', true);
             var question_view = new QuestionView({
+                id: 'lesson-{0}-step-22'.format(_this.id),
                 canvas: '#question-canvas',
                 question: [
                     '\\[ \\text{Out}(n) = \\text{DefGen}(n) \\cup \\big{(}\\text{In}(n) \\setminus \\text{DefKill}(n)\\big{)} \\]',
@@ -258,6 +265,7 @@ function LessonRoundRobinView(kwargs) {
                     _this.text.append(_this.get_template('step_22_ans')());
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
                     _this.next_button.prop('disabled', false);
+                    this.submit();
                 }
             });
             
@@ -280,6 +288,7 @@ function LessonRoundRobinView(kwargs) {
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
             _this.next_button.prop('disabled', true);
             var question_view = new QuestionView({
+                id: 'lesson-{0}-step-23'.format(_this.id),
                 canvas: '#question-canvas',
                 question: [
                     '\\[\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)\\]',
@@ -297,6 +306,7 @@ function LessonRoundRobinView(kwargs) {
                     _this.text.append(_this.get_template('step_23_ans')());
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
                     _this.next_button.prop('disabled', false);
+                    this.submit();
                 }
             });
             
@@ -319,6 +329,7 @@ function LessonRoundRobinView(kwargs) {
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
             _this.next_button.prop('disabled', true);
             var question_view = new QuestionView({
+                id: 'lesson-{0}-step-24'.format(_this.id),
                 canvas: '#question-canvas',
                 question: [
                     '\\[ \\text{Out}(n) = \\text{DefGen}(n) \\cup \\big{(}\\text{In}(n) \\setminus \\text{DefKill}(n)\\big{)} \\]',
@@ -336,6 +347,7 @@ function LessonRoundRobinView(kwargs) {
                     _this.text.append(_this.get_template('step_24_ans')());
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
                     _this.next_button.prop('disabled', false);
+                    this.submit();
                 }
             });
             
@@ -358,6 +370,7 @@ function LessonRoundRobinView(kwargs) {
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
             _this.next_button.prop('disabled', true);
             var question_view = new QuestionView({
+                id: 'lesson-{0}-step-25'.format(_this.id),
                 canvas: '#question-canvas',
                 question: [
                     '\\[\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)\\]',
@@ -375,6 +388,7 @@ function LessonRoundRobinView(kwargs) {
                     _this.text.append(_this.get_template('step_25_ans')());
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
                     _this.next_button.prop('disabled', false);
+                    this.submit();
                 }
             });
             
@@ -397,6 +411,7 @@ function LessonRoundRobinView(kwargs) {
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
             _this.next_button.prop('disabled', true);
             var question_view = new QuestionView({
+                id: 'lesson-{0}-step-26'.format(_this.id),
                 canvas: '#question-canvas',
                 question: [
                     '\\[ \\text{Out}(n) = \\text{DefGen}(n) \\cup \\big{(}\\text{In}(n) \\setminus \\text{DefKill}(n)\\big{)} \\]',
@@ -414,6 +429,7 @@ function LessonRoundRobinView(kwargs) {
                     _this.text.append(_this.get_template('step_26_ans')());
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
                     _this.next_button.prop('disabled', false);
+                    this.submit();
                 }
             });
             
@@ -436,6 +452,7 @@ function LessonRoundRobinView(kwargs) {
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
             _this.next_button.prop('disabled', true);
             var question_view = new QuestionView({
+                id: 'lesson-{0}-step-27'.format(_this.id),
                 canvas: '#question-canvas',
                 question: [
                     '\\[\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)\\]',
@@ -453,6 +470,7 @@ function LessonRoundRobinView(kwargs) {
                     _this.text.append(_this.get_template('step_27_ans')());
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
                     _this.next_button.prop('disabled', false);
+                    this.submit();
                 }
             });
             
@@ -475,6 +493,7 @@ function LessonRoundRobinView(kwargs) {
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
             _this.next_button.prop('disabled', true);
             var question_view = new QuestionView({
+                id: 'lesson-{0}-step-28'.format(_this.id),
                 canvas: '#question-canvas',
                 question: [
                     '\\[ \\text{Out}(n) = \\text{DefGen}(n) \\cup \\big{(}\\text{In}(n) \\setminus \\text{DefKill}(n)\\big{)} \\]',
@@ -492,6 +511,7 @@ function LessonRoundRobinView(kwargs) {
                     _this.text.append(_this.get_template('step_28_ans')());
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
                     _this.next_button.prop('disabled', false);
+                    this.submit();
                 }
             });
             
@@ -514,6 +534,7 @@ function LessonRoundRobinView(kwargs) {
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
             _this.next_button.prop('disabled', true);
             var question_view = new QuestionView({
+                id: 'lesson-{0}-step-29'.format(_this.id),
                 canvas: '#question-canvas',
                 question: [
                     '\\[\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)\\]',
@@ -531,6 +552,7 @@ function LessonRoundRobinView(kwargs) {
                     _this.text.append(_this.get_template('step_29_ans')());
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
                     _this.next_button.prop('disabled', false);
+                    this.submit();
                 }
             });
             
@@ -553,6 +575,7 @@ function LessonRoundRobinView(kwargs) {
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
             _this.next_button.prop('disabled', true);
             var question_view = new QuestionView({
+                id: 'lesson-{0}-step-30'.format(_this.id),
                 canvas: '#question-canvas',
                 question: [
                     '\\[ \\text{Out}(n) = \\text{DefGen}(n) \\cup \\big{(}\\text{In}(n) \\setminus \\text{DefKill}(n)\\big{)} \\]',
@@ -570,6 +593,7 @@ function LessonRoundRobinView(kwargs) {
                     _this.text.append(_this.get_template('step_30_ans')());
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
                     _this.next_button.prop('disabled', false);
+                    this.submit();
                 }
             });
             
@@ -586,6 +610,7 @@ function LessonRoundRobinView(kwargs) {
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
             _this.next_button.prop('disabled', true);
             var question_view = new QuestionView({
+                id: 'lesson-{0}-step-31'.format(_this.id),
                 canvas: '#question-canvas',
                 question: [
                     'We\'ve finished another round, and it looks like we\'ve got the right values now.',
@@ -601,6 +626,7 @@ function LessonRoundRobinView(kwargs) {
                     _this.text.append(_this.get_template('step_31_ans')());
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub,_this.text.id]);
                     _this.next_button.prop('disabled', false);
+                    this.submit();
                 }
             });
             
@@ -662,16 +688,31 @@ function LessonRoundRobinView(kwargs) {
                 _this.main_view.show_lesson(
                     _this.next_lesson
                 );
+                tracking.send(
+                    'click',
+                    'lesson-goto-next',
+                    this.id
+                );
             });
             
             $('#btn-goto-simulator').on('click', function() {
                 _this.main_view.show_round_robin_simulator(
                     _this.get_template('step_03', 'iloc')()
                 );
+                tracking.send(
+                    'click',
+                    'lesson-goto-simulator',
+                    this.id
+                );
             });
             
             $('#btn-goto-menu').on('click', function() {
                 _this.main_view.show_menu();
+                tracking.send(
+                    'click',
+                    'lesson-goto-menu',
+                    this.id
+                );
             });
         }
     ];

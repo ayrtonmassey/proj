@@ -228,6 +228,7 @@ function LessonGenericFrameworkView(kwargs) {
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
             _this.next_button.prop('disabled', true);
             var question_view = new QuestionView({
+                id: 'lesson-{0}-step-32'.format(_this.id),
                 canvas: '#question-canvas',
                 question: [
                     'Which of the following functions are monotonic?',
@@ -252,6 +253,7 @@ function LessonGenericFrameworkView(kwargs) {
                         question_view.highlight_answers();
                         question_view.set_answers_disabled(true);
                         _this.next_button.prop('disabled', false);
+                        this.submit();
                     }
                 },
                 show_on_click: QFLAGS.SHOW_CORRECT_ONE | QFLAGS.SHOW_INCORRECT_ONE,
@@ -337,10 +339,20 @@ function LessonGenericFrameworkView(kwargs) {
                 _this.main_view.show_round_robin_simulator(
                     _this.get_template('step_25', 'iloc')()
                 );
+                tracking.send(
+                    'click',
+                    'lesson-goto-simulator',
+                    this.id
+                );
             });
             
             $('#btn-goto-menu').on('click', function() {
                 _this.main_view.show_menu();
+                tracking.send(
+                    'click',
+                    'lesson-goto-menu',
+                    this.id
+                );
             });
         }
     ];
