@@ -1517,8 +1517,35 @@ templates['data_collection/main.hbs'] = template({"compiler":[7,">= 4.0.0"],"mai
 templates['data_collection/intro.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"row\">\n    <div class=\"col-xs-offset-3 col-xs-6\" style=\"font-size: 1rem\">\n\n        <h1>Notice</h1>\n\n        <p>Welcome! The aim of this software is to teach you, the user, about the topic of data-flow analysis. The software contains lessons, tests and a simulator to aid students' learning.</p>\n\n        <p>In order to analyse the software's effectiveness, I need to ask you a few questions. I will also be collecting <strong>anonymous</strong> usage data such as:</p>\n\n        <ul>\n            <li>Button clicks</li>\n            <li>Answers to questions</li>\n            <li>Pages visited</li>\n        </ul>\n\n        <p>None of this data can or will be used to identify you and no sensitive personal information is collected.</p>\n        \n        <p>By clicking the button below, you agree to allow this data to be used for the purpose of evaluating this software.</p>\n\n        <div class=\"text-center\">\n            <button id=\"btn-test-start\" class=\"btn btn-primary\">I accept the terms of this notice.</button>\n        </div>\n    </div>\n</div>\n";
 },"useData":true});
-templates['menu/main.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"row\">\n    <div id=\"menu-container\" class=\"col-xs-12\">\n        <div class=\"row\">\n            <div id=\"menu\" class=\"col-xs-offset-3 col-xs-6\">\n            </div>\n        </div>\n    </div>\n</div>\n";
+templates['menu/main.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    var helper;
+
+  return "&entry.1011373184="
+    + container.escapeExpression(((helper = (helper = helpers.experience || (depth0 != null ? depth0.experience : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"experience","hash":{},"data":data}) : helper)));
+},"3":function(container,depth0,helpers,partials,data) {
+    return "&entry.921657711=I+am+a+student.";
+},"5":function(container,depth0,helpers,partials,data) {
+    return "&entry.921657711=I+have+studied+Computer+Science+at+degree+level.";
+},"7":function(container,depth0,helpers,partials,data) {
+    return "&entry.921657711=I+have+studied+another+STEM+subject+at+degree+level.";
+},"9":function(container,depth0,helpers,partials,data) {
+    return "&entry.921657711=I+am+a+student+of+the+COPT+course+(UoE+Informatics+only)";
+},"11":function(container,depth0,helpers,partials,data) {
+    var helper;
+
+  return "&entry.1896825931="
+    + container.escapeExpression(((helper = (helper = helpers.userid || (depth0 != null ? depth0.userid : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"userid","hash":{},"data":data}) : helper)));
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {};
+
+  return "<div class=\"row\">\n    <div id=\"menu-container\" class=\"col-xs-12\">\n        <div class=\"row\">\n            <div id=\"menu\" class=\"col-xs-offset-3 col-xs-6\">\n            </div>\n            <div id=\"survey-link\" class=\"col-xs-3\" style=\"max-width: 300px; display: flex; flex-flow: column nowrap; justify-content: center;\">\n                    <p>In order to evaluate this software, I'd love your feedback. After using the software, <strong>please fill in a short survey</strong> using the link below!</p>\n                    <div class=\"text-center\">\n                        <a href=\"https://docs.google.com/forms/d/1oXITt4Zhv9nGVuz-_QbHvo-uB0KSIzi5L-n7_8Y0Qn8/viewform?"
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.experience : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.is_student : depth0),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.is_cs : depth0),{"name":"if","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.is_stem : depth0),{"name":"if","hash":{},"fn":container.program(7, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.is_copt : depth0),{"name":"if","hash":{},"fn":container.program(9, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.userid : depth0),{"name":"if","hash":{},"fn":container.program(11, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "\" class=\"btn btn-primary\">Go to Survey <i class=\"fa fa-share\"></i></a>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
 },"useData":true});
 templates['menu/btn-lesson.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
     return "<i class=\"fa fa-check-circle position-right text-success complete-check\"></i>";

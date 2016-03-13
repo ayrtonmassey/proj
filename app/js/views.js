@@ -39,6 +39,7 @@ function DataCollectionView(kwargs) {
                             'experience',
                             answer.ans_ident
                         );
+                        setCookie(answer.ans_ident, true);
                     }
                 }
             },
@@ -65,6 +66,7 @@ function DataCollectionView(kwargs) {
                             'background',
                             answer.ans_ident
                         );
+                        setCookie(answer.ans_ident, true);
                     }
                 }
             },
@@ -88,10 +90,20 @@ function DataCollectionView(kwargs) {
             this.next_button.off('click').on('click', function() {
                 _this.question_views[_this.question_id].submit();
                 _this.questions[_this.question_id].track_callback();
-                document.cookie = "data_collected=true;";
+                setCookie("data_collected",true);
                 _this.main_view.show_menu();
             });
         }
+    }
+
+    this.test_view_start_test = this.start_test;
+    this.start_test = function() {
+        this.test_view_start_test();
+        tracking.send(
+            'user-stats',
+            'data-collection-notice',
+            'accepted-terms'
+        );
     }
 
     this.init_children = function() {
@@ -497,8 +509,23 @@ function MenuView(kwargs) {
 
     this.init = function() {
         $('#page-title').html("Main Menu");
-        
-        this.canvas.html(this.template());
+
+        var experience;
+        if (getCookie("exp-advanced")){
+            experience="Advanced";
+        } else if (getCookie("exp-basic")){
+            experience="Basic";
+        } else if (getCookie("exp-none")){
+            experience="None+at+all";
+        }
+        this.canvas.html(this.template({
+            experience: experience,
+            is_copt: getCookie("usr-copt-student"),
+            is_student: getCookie("usr-uni-student"),
+            is_cs: getCookie("usr-cs-degree"),
+            is_stem: getCookie("usr-stem-degree"),
+            userid: getCookie("userid"),
+        }));
         this.menu = $('#menu');
         
         this.show_simulator_menu();

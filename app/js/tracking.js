@@ -11,7 +11,7 @@ tracking = {
         }
     },
     set_userid: function(userid) {
-        document.cookie = "userid=" + userid + ";";
+        setCookie("userid",userid);
         return userid;
     },
     get_userid: function() {

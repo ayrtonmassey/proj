@@ -116,3 +116,7 @@ function getCookie(name) {
   var parts = value.split("; " + name + "=");
   if (parts.length == 2) return parts.pop().split(";").shift();
 }
+
+function setCookie(name, val) {
+    return document.cookie = "{0}={1}; expires=Tue, 31 May 2016 12:00:00 UTC".format(name, val);
+}

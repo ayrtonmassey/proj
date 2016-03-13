@@ -119,9 +119,9 @@ function TestView(kwargs) {
         var current_score = Number(getCookie('test-{0}-score'.format(this.id, scores.score))) || 0;
         console.log("test-{0}-score={1}; test-{0}-max-score={2}; test-{0}-percentage={3};".format(this.id, scores.score, scores.max_score, scores.percentage));
         if (current_score < scores.score) {
-            document.cookie = "test-{0}-score={1};".format(this.id, scores.score);
-            document.cookie = "test-{0}-max-score={1};".format(this.id, scores.max_score);
-            document.cookie = "test-{0}-percentage={1};".format(this.id, scores.score_percentage);
+            setCookie("test-{0}-score".format(this.id),      scores.score);
+            setCookie("test-{0}-max-score".format(this.id),  scores.max_score);
+            setCookie("test-{0}-percentage".format(this.id), scores.score_percentage);
         }
         
         this.goto_question(this.question_id);

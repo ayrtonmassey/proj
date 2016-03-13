@@ -24,7 +24,7 @@ function TutorialView(kwargs) {
         }
         if (this.step >= this.steps.length - 1) {
             this.next_button.prop('disabled', true);
-            document.cookie="lesson-{0}-complete={1}".format(this.id, true);
+            setCookie("lesson-{0}-complete".format(this.id), true);
         }
         if (this.step > 0) {
             this.prev_button.prop('disabled', false);
