@@ -1,5 +1,5 @@
 DB_NAME     = 'proj'
 DB_USERNAME = 'postgres'
-DB_PASSWORD = 'postgres'
+DB_PASSWORD = 'p84ZRFPC'
 DB_HOST     = 'localhost'
 DB_PORT     = '5432'
