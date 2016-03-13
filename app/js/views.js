@@ -1,37 +1,130 @@
-function View(kwargs) {
-    this.canvas = $(kwargs.canvas);
-    this.parent = kwargs.parent;
-    
-    var _this = this
+function DataCollectionView(kwargs) {
+    TestView.call(this, kwargs);
+    var _this = this;
 
-    this.get_template = function(template_name, extension) {
-        var extension = extension || 'hbs';
-        return Handlebars.templates['{0}{1}.{2}'.format(this.template_root, template_name, extension)];
-    }
-    
-    this.init = function() {
-        throw new ReferenceError("function {0}.init() has not been implemented.".format(_this.constructor.name));
-    }
-
-    this.template = function() {
-        throw new ReferenceError("field {0}.template has not been defined.".format(_this.constructor.name));
-    }
-}
-
-/*
-function TemplateView(kwargs) {    
-    View.call(this, kwargs);
-
-    this.template = Handlebars.templates['template.hbs']
-
-    this.init = function() {
+    this.main_view = kwargs.main_view;
         
+    this.clear = function() {
+        for (var question_view of this.question_views) {
+            question_view.canvas.hide();
+        }
+    }
+
+    this.update_math = function() {
+    }
+    
+    this.template_root = 'data_collection/';
+    this.template = this.get_template('main');
+
+    this.shuffle_answers = false;
+
+    this.questions = [
+        {
+            text: [
+                'How would you rate your knowledge of data-flow analysis?',
+            ],
+            answers: [
+                { text: 'None at all', correct: true, ans_ident: 'exp-none' },
+                { text: 'Basic', correct: true, ans_ident: 'exp-basic' },
+                { text: 'Advanced', correct: true, ans_ident: 'exp-advanced' },
+            ],
+            multiple_select: false,
+            setup_func: function() {
+            },
+            track_callback: function() {
+                for (var answer of this.answers) {
+                    if (answer.selected) {
+                        tracking.send(
+                            'user-stats',
+                            'experience',
+                            answer.ans_ident
+                        );
+                    }
+                }
+            },
+        },
+
+        {
+            text: [
+                'Please select all that apply (you may select none, if none apply).',
+            ],
+            answers: [
+                { text: 'I am a student of the COPT course (UoE Informatics only).', correct: true, ans_ident: 'usr-copt-student' },
+                { text: 'I am a student at a university.', correct: true, ans_ident: 'usr-uni-student' },
+                { text: 'I have studied Computer Science at degree level.', correct: true, ans_ident: 'usr-cs-degree' },
+                { text: 'I have studied a STEM subject at degree level.', correct: true, ans_ident: 'usr-stem-degree' },
+            ],
+            multiple_select: true,
+            setup_func: function() {
+            },
+            track_callback: function() {
+                for (var answer of this.answers) {
+                    if(answer.selected) {
+                        tracking.send(
+                            'user-stats',
+                            'background',
+                            answer.ans_ident
+                        );
+                    }
+                }
+            },
+        },
+    ];
+
+    this.test_view_goto_question = this.goto_question;
+    this.goto_question = function(new_question_id) {
+        this.test_view_goto_question(new_question_id);
+        if (!this.questions[this.question_id].multiple_select) {
+            this.next_button.prop('disabled',true);
+        }
+    }
+    
+    this.test_view_next = this.next;
+    this.next = function() {
+        this.test_view_next();
+        // If it's the last question, make next goto menu
+        if (this.question_id == this.questions.length - 1) {
+            this.next_button.prop('disabled', false);
+            this.next_button.off('click').on('click', function() {
+                _this.question_views[_this.question_id].submit();
+                _this.questions[_this.question_id].track_callback();
+                document.cookie = "data_collected=true;";
+                _this.main_view.show_menu();
+            });
+        }
+    }
+
+    this.init_children = function() {
+        this.next_button.off('click').on('click', function() {
+            _this.question_views[_this.question_id].submit();
+            _this.questions[_this.question_id].track_callback();
+            _this.next();
+        });
+
+        for (question of this.questions) {
+            if (!question.multiple_select) {
+                question.correct_callback = (function(ans) {
+                    if (!ans.selected) {
+                        _this.next_button.prop('disabled',true);
+                    } else {
+                        _this.next_button.prop('disabled',false);
+                    }
+                })
+                question.incorrect_callback = (function(ans) {
+                    if (!ans.selected) {
+                        _this.next_button.prop('disabled',true);
+                    } else {
+                        _this.next_button.prop('disabled',false);
+                    }
+                })
+            }
+        }
     }
 }
 
-TemplateView.prototype = Object.create(View.prototype);
-TemplateView.prototype.constructor = TemplateView
-*/
+DataCollectionView.prototype = Object.create(TestView.prototype);
+DataCollectionView.prototype.constructor = DataCollectionView
+
 
 function MainView(kwargs) {
     View.call(this, kwargs);
@@ -248,6 +341,15 @@ function MainView(kwargs) {
         this.view.init();
     }
 
+    this.show_data_collection = function() {
+        this.view = new DataCollectionView({
+            main_view: this,
+            canvas: this.view_canvas_selector,
+        });
+
+        this.view.init();        
+    }
+
     this.init = function() {
         var show_lesson = getParameterByName('lesson');
         var show_lesson_step = getParameterByName('step');
@@ -257,8 +359,10 @@ function MainView(kwargs) {
         
         var show_simulator = getParameterByName('simulator');
         var show_testbed = getParameterByName('testbed');
-
-        if(show_simulator=='' || show_simulator==true) {
+        
+        if(!getCookie('data_collected')) {
+            this.show_data_collection();
+        } else if(show_simulator=='' || show_simulator==true) {
             this.show_round_robin_simulator();
         } else if (show_lesson && (show_lesson in this.lessons)) {
             var step = undefined;

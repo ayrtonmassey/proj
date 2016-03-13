@@ -622,6 +622,13 @@ g.label sub {
     position: relative;
 }
 
+.answers-col .btn-answer {
+    flex: 1 0 100%;
+    margin: 0.5em 0.5em;
+    position: relative;
+}
+
+
 /* Tests */
 
 #test-score {

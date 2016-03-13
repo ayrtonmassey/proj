@@ -8,7 +8,9 @@ function TestView(kwargs) {
     this.title = kwargs.title;
 
     this.template_root = 'teaching/tests/';
-    this.template = this.get_template('main');    
+    this.template = this.get_template('main');
+
+    this.shuffle_answers = true;
 
     this.clear = function() {
         throw ReferenceError("clear is not defined in class {0}".format(_this.constructor.name));
@@ -128,7 +130,10 @@ function TestView(kwargs) {
     this.reset = function() {        
         this.prev_button.prop('disabled', true);
         this.question_views = [];
-
+        
+        // Allow children to init contained components
+        this.init_children();
+        
         for (var i=0; i < this.questions.length; i++) {
             var question_id = i;
             this.text.append(Handlebars.templates['teaching/question/canvas.hbs']({id: ''+question_id}));
@@ -137,8 +142,10 @@ function TestView(kwargs) {
                 canvas: '#question-canvas-{0}'.format(question_id),
                 question: question.text,
                 answers: question.answers,
-                shuffle_answers: true,
+                shuffle_answers: this.shuffle_answers,
                 show_on_click: (question.multiple_select ? QFLAGS.MULTIPLE_SELECT : QFLAGS.SINGLE_SELECT),
+                correct_callback: question.correct_callback,
+                incorrect_callback: question.incorrect_callback,
             }));
             
             this.question_views[i].init();
@@ -146,9 +153,6 @@ function TestView(kwargs) {
         }
 
         this.submitted = false;
-        
-        // Allow children to init contained components
-        this.init_children();
 
         this.goto_question(0);
     }
@@ -196,7 +200,6 @@ function TestContentReviewView(kwargs) {
     var _this = this;
 
     this.main_view = kwargs.main_view;
-    this.next_lesson = kwargs.next_lesson;
         
     this.clear = function() {
         this.hide_cfg();
