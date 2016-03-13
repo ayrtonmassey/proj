@@ -284,6 +284,7 @@ function TestContentReviewView(kwargs) {
                 _this.show_cfg();
                 _this.simulator.sim_code(_this.get_template('review/rd_single_path','iloc')());
                 _this.simulator.advance(5);
+                _this.cfg_view.show_no_points();
                 _this.cfg_view.add_point(_this.simulator.cfg.nodes[2], DFA.IN);
                 _this.cfg_view.add_point(_this.simulator.cfg.nodes[2], DFA.OUT);
                 _this.cfg_view.reset_highlight();
@@ -305,6 +306,7 @@ function TestContentReviewView(kwargs) {
             multiple_select: false,
             setup_func: function() {
                 _this.show_cfg();
+                _this.cfg_view.show_no_points();
                 _this.simulator.sim_code(_this.get_template('review/rd_branch','iloc')());
                 _this.simulator.advance(12);
                 
@@ -322,14 +324,15 @@ function TestContentReviewView(kwargs) {
                 'The CFG on the right shows a <strong>reaching definitions</strong> analysis in progress. What is the <strong>value</strong> of \\(\\text{In}(n_0)\\)?',
             ],
             answers: [
-                { text: '\\(\\{ {\\tt ra_1}, {\\tt ra_2} \\}\\)', correct: true, },
+                { text: '\\(\\{ {\\tt ra_1}, {\\tt ra_2} \\}\\)', correct: false, },
                 { text: '\\(\\{ {\\tt ra_1} \\}\\)', correct: false, },
-                { text: '\\(\\{ {\\tt ra_2} \\}\\)', correct: false, },
-                { text: '\\(\\{ {\\tt ra_2} \\}\\)', correct: false, },
+                { text: '\\(\\{ {\\tt ra_2} \\}\\)', correct: true, },
+                { text: '\\(\\{ \\}\\)', correct: false, },
             ],
             multiple_select: false,
             setup_func: function() {
                 _this.show_cfg();
+                _this.cfg_view.show_all_points();
                 _this.simulator.sim_code(_this.get_template('review/rd_loop','iloc')());
             }
         },
