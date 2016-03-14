@@ -127,7 +127,7 @@ var iloc_reaching_definitions = new DFAFramework({
         defkill: defkill,
     },
     direction: DFA.FORWARD,
-    top: new ValueSet([]),
+    top: DFA.NONE,
     name: "Reaching Definitions",
     id: "REACHING_DEFINITIONS",
 });

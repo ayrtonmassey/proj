@@ -60,8 +60,9 @@ function RoundRobinSimulatorView(kwargs) {
         }
         
         var dataflows = {
-            'LIVENESS_ANALYSIS'   : 'Liveness Analysis',
-            'REACHING_DEFINITIONS': 'Reaching Definitions',
+            'LIVENESS_ANALYSIS'    : 'Liveness Analysis',
+            'REACHING_DEFINITIONS' : 'Reaching Definitions',
+            'AVAILABLE_EXPRESSIONS': 'Available Expressions',
         }
         
         this.framework_view = new FrameworkView({

@@ -122,13 +122,42 @@ function RoundRobinSimulator (kwargs) {
     this.reset = function() {
         this.reset_state();
 
+        // Set top value
+        switch(this.framework.top) {
+        case DFA.ALL:
+            this.top=this.value_domain;
+            break;
+        case DFA.NONE:
+            this.top=new ValueSet([]);
+            break;
+        default:
+            throw new ReferenceError("Unknown framework top value: expected 'all' or 'none', got {0}".format(this.framework.top));
+        }
+
+        switch(this.framework.boundary) {
+        case DFA.ALL:
+            this.boundary=this.value_domain;
+            break;
+        case DFA.NONE:
+            this.boundary=new ValueSet([]);
+            break;
+        default:
+            throw new ReferenceError("Unknown framework top value: expected 'all' or 'none', got {0}".format(this.framework.top));
+        }
+        
         while(this.state.order_index < this.order.length) {
             var node = this.cfg.nodes[this.order[this.state.order_index]];
-            node.sets.meet     = new ValueSet(this.framework.top.values());
-            node.sets.transfer = new ValueSet(this.framework.top.values());
+            node.sets.meet     = new ValueSet(this.top.values());
+            node.sets.transfer = new ValueSet(this.top.values());
             this.state.order_index++;
             this.state.read_nodes = [];
             this.state.modified_nodes = [];
+        }
+
+        if (this.framework.direction == DFA.FORWARD) {
+            this.cfg.nodes[0].sets.meet = new ValueSet(this.boundary.values());
+        } else {
+            this.cfg.nodes[this.cfg.postorder()[0]].sets.meet = new ValueSet(this.boundary.values());
         }
 
         this.state.changed=true;

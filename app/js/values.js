@@ -37,7 +37,7 @@ function ValueSet(iterable) {
 
 
     /* 
-     *  Add `item` to this ValueSet, if it is not present.
+     *  Add all items from `value_set` to this ValueSet, if they are not present.
      */
     this.add_all = function(value_set) {
         for (item of value_set.values()) {
@@ -48,11 +48,24 @@ function ValueSet(iterable) {
     }
 
     /* 
-     *  Add `item` to this ValueSet, if it is not present.
+     *  Compute the union of this ValueSets with `v2`.
      */
     this.union = function(v2) {
         var v1 = new ValueSet(this.values());
         v1.add_all(v2);
+        return v1;
+    }
+
+    /* 
+     *  Compute the intersection of this ValueSet with `v2`.
+     */
+    this.intersect = function(v2) {
+        var v1 = new ValueSet([]);
+        for (v of this.values()) {
+            if (v2.has(v)) {
+                v1.add(v);
+            }
+        }
         return v1;
     }
     

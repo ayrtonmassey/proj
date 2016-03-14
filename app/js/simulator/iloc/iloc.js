@@ -679,6 +679,35 @@ var ILOC = {
         }
     },
 
+    OPCODE_SYMBOLS: {
+        'add'    : '+',
+        'addI'   : '+',
+        'mul'    : '*',
+        'mulI'   : '*',
+        'sub'    : '-',
+        'subI'   : '-',
+        'rsubI'  : '-',
+        'div'    : '/',
+        'divI'   : '/',
+        'rdivI'  : '/',
+        'and'    : '&',
+        'andI'   : '&',
+        'or'     : '|',
+        'orI'    : '|',
+        'xor'    : '&oplus;',
+        'xorI'   : '&oplus;',
+        'rshift' : '>>',
+        'rshiftI': '>>',
+        'lshift' : '<<',
+        'lshiftI': '<<',
+        'cmp_LE' : '<=',
+        'cmp_LT' : '<',
+        'cmp_GE' : '>=',
+        'cmp_GT' : '>',
+        'cmp_NE' : '!=',
+        'cmp_EQ' : '==',
+    },
+
     CFG: function CFG(kwargs) {
         Graph.call(this, kwargs);
 

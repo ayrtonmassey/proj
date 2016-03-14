@@ -22,9 +22,14 @@ var DFA = {
 
     HIGHLIGHT: 'highlight',
 
+    // Top/Bot Sets
+    ALL: 'all',
+    NONE: 'none',
+
     // Value Sets
     VARIABLES: 'variables',
     DEFINITIONS: 'definitions',
+    EXPRESSIONS: 'expressions',
 }
 
 function DFAFramework (kwargs) {
@@ -37,6 +42,7 @@ function DFAFramework (kwargs) {
     this.direction = kwargs.direction;
     this.value_domain = kwargs.value_domain;
     this.local_sets = kwargs.local_sets;
+    this.boundary = kwargs.boundary || kwargs.top;
     this.top = kwargs.top;
 
     this.id = kwargs.id;
@@ -92,6 +98,31 @@ function DFAFramework (kwargs) {
             })
         );
     }
+
+    this.find_expressions = function(cfg) {
+        var operations = [].concat.apply([], graph.nodes.map(function(node) {
+            return node.operations.map(function(operation) {
+                return operation;
+            });
+        }))
+
+        // Return all the source operands of said operations
+        return new ValueSet(
+            [].concat.apply([], operations.map(function(operation) {
+                var ret = [];
+                if (operation instanceof ILOC.NormalOperation &&
+                    operation.opcode in ILOC.OPCODE_SYMBOLS) {
+                    var expr = new Expression({
+                        lhs: operation.sources[0],
+                        rhs: operation.sources[1],
+                        opcode: operation.opcode,
+                    });
+                    ret.push(expr);
+                }
+                return ret;
+            }))
+        );
+    }
     
     this.distinct_values = function(cfg) {
         switch(this.value_domain) {
@@ -99,6 +130,8 @@ function DFAFramework (kwargs) {
             return this.find_definitions(cfg);
         case DFA.VARIABLES:
             return this.find_variables(cfg);
+        case DFA.EXPRESSIONS:
+            return this.find_expressions(cfg);
         default:
             throw new ReferenceError("Unrecognised value set {0} in {1}".format(this.value_domain, this.constructor.name));
         }
@@ -114,8 +147,19 @@ function DFAFramework (kwargs) {
 
     this.build_lattice = function(cfg) {
         var value_sets = this.lattice_value_sets(cfg);
+        var top;
+        switch(this.top) {
+        case DFA.ALL:
+            top=this.distinct_values(cfg);
+            break;
+        case DFA.NONE:
+            top=new ValueSet([]);
+            break;
+        default:
+            throw new ReferenceError("Unknown lattice top value: expected 'all' or 'none', got {0}".format(this.top));
+        }
         var lattice = new Lattice({
-            top       : this.top,
+            top       : top,
             value_sets: value_sets,
             meet_op   : this.meet_op,
         });
@@ -123,6 +167,48 @@ function DFAFramework (kwargs) {
         return lattice;
     }
 }
+
+/*
+ * An Operand.
+ */
+function Expression(kwargs) {
+    ValueMixin.call(this, kwargs);
+    
+    this.lhs = kwargs.lhs;
+    this.rhs = kwargs.rhs;
+    this.opcode = kwargs.opcode;
+    
+    this.toString = function() {
+        return '{0} {1} {2}'.format(
+            this.lhs.toString(),
+            ILOC.OPCODE_SYMBOLS[this.opcode],
+            this.rhs.toString()
+        )
+    }
+    
+    this.toHTML = function() {
+        return '{0} {1} {2}'.format(
+            this.lhs.toHTML(),
+            ILOC.OPCODE_SYMBOLS[this.opcode],
+            this.rhs.toHTML()
+        )
+    }
+
+    this.compare=function(v2) {
+        if(v2 instanceof Expression) {
+            return (
+                (this.lhs.name == v2.lhs.name) &&
+                    (this.lhs.type == v2.lhs.type) &&
+                    (this.rhs.name == v2.rhs.name) &&
+                    (this.rhs.type == v2.rhs.type) &&
+                    (ILOC.OPCODE_SYMBOLS[this.opcode] == ILOC.OPCODE_SYMBOLS[v2.opcode])
+            );
+        } else {
+            return false;
+        }
+    }
+}
+
 
 function Lattice (kwargs) {
     Graph.call(this, kwargs);
@@ -139,7 +225,7 @@ function Lattice (kwargs) {
                 return node;
             }
         }
-        throw new ReferenceError("Could not find node with value set {0} in this lattice.".format(value_set.toString));
+        throw new ReferenceError("Could not find node with value set {0} in this lattice.".format(value_set.toString()));
     }
 
     this.transitive_reduction = function() {
@@ -166,12 +252,20 @@ function Lattice (kwargs) {
         });
         this.add_node(top);
 
+        if (this.top.values().length > 0) {
+            this.add_node(new LatticeNode({
+                value_set: new ValueSet([]),
+            }));
+        }
+
         // Create all the nodes
         for(var i = 0; i < this.value_sets.length; i++) {
-            var node = new LatticeNode({
-                value_set: new ValueSet(this.value_sets[i].values()),
-            });
-            this.add_node(node);
+            if (!compare_value_sets(this.value_sets[i], this.top)) {
+                var node = new LatticeNode({
+                    value_set: new ValueSet(this.value_sets[i].values()),
+                });
+                this.add_node(node);
+            }
         }
 
         // Find the meet of equally-ordered values
