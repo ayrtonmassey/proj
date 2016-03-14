@@ -137,6 +137,34 @@ function DataCollectionView(kwargs) {
 DataCollectionView.prototype = Object.create(TestView.prototype);
 DataCollectionView.prototype.constructor = DataCollectionView
 
+function SinglePageView(kwargs) {
+    View.call(this, kwargs);
+
+    var _this = this;
+
+    this.id = kwargs.id;
+    
+    this.template_root = 'staticpage/';
+    this.template = this.get_template('canvas');
+    
+    this.canvas = $(kwargs.canvas);
+    this.title = kwargs.title;
+    this.content_template = kwargs.content;
+    
+    this.init = function() {
+        $('#page-title').html(this.title);
+
+        this.canvas.html(this.template({content: this.content_template()}));
+
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub,this.canvas.id]);
+        
+        tracking.send(
+            'pageview',
+            this.id,
+            'open'
+        );
+    }    
+}
 
 function MainView(kwargs) {
     View.call(this, kwargs);
@@ -191,6 +219,20 @@ function MainView(kwargs) {
                 title: "Content Review",
             }
         },
+    }
+
+    this.show_iloc_help = function() {
+        this.view_canvas.html("")
+        this.view_canvas.show();
+        
+        this.view = new SinglePageView({
+            id: 'iloc-help',
+            content: Handlebars.templates['iloc-help/main.hbs'],
+            title: "Introduction to ILOC",
+            canvas: this.view_canvas_selector,
+        });
+        
+        this.view.init();
     }
 
     this.show_lesson = function(lesson_id, step) {
@@ -538,6 +580,10 @@ function MenuView(kwargs) {
         if (this.tests) { this.show_test_menu(); }
 
         if (this.show_testbeds) { this.show_testbed_menu(); }
+
+        $('#btn-iloc-help').on('click', function() {
+                _this.main_view.show_iloc_help();
+        });
         
         tracking.send(
             'pageview',

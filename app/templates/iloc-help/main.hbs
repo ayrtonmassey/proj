@@ -1,0 +1,434 @@
+<h1>Introduction to ILOC</h1>
+
+<p>This app uses the ILOC language from the book <em>Engineering a Compiler</em> by
+Keith Cooper and Linda Torczon in both its examples and
+simulation. This page contains instructions for understanding ILOC and
+writing your own ILOC programs.</p>
+
+<h2>Operands</h2>
+
+<p>ILOC is an assembly-like language with a 3-valued instruction set. Possible operands for instructions are:</p>
+
+<ul>
+    <li>Registers, identified by r followed by a name e.g. <code>ra</code>.</li>
+    <li>Integer constants, identified by their numerical representation e.g. <code>0</code>, <code>3302</code></li>
+    <li>Labels, identified by any string excluding those starting with <code>r</code> e.g. <code>Label0</code> or <code>start</code></li>
+    <li>The comparison result register, always named <code>cc</code></li>
+</ul>
+
+<h2>Instructions</h2>
+
+<p>There are two main types of instructions: assignments and branches.</p>
+<p><strong>Assignment</strong> instructions use the <code>=&gt;</code> operator and have the following format:</p>
+
+<pre>
+label: opcode source_1, source_2 => dest_1, dest_2
+</pre>
+
+<p>for example,</p>
+
+<pre>
+L0: addI    ra, 1  => rb
+    rshift  ra, rb => ra
+    storeAO ra     => rb, rc
+</pre>
+
+<p><strong>Branching</strong> instructions use the </code>-&gt;</code> and have the following format:</p>
+
+<pre>
+label: opcode source_1, source_2 -> label_1, label_2
+</pre>
+
+<p>for example,</p>
+
+<pre>
+loopend: jumpI loopstart
+         cbr_LT cc -> label0, label1
+</pre>
+
+<p>You can combine these instructions to create your own ILOC programs.</p>
+
+<h2>Example Program</h2>
+
+<pre>
+      loadI  0      => ra
+      loadI  1      => rb
+      comp   ra, rb => cc
+      cbr_GE cc     -> if, else
+if:   addI   ra, 1  => rb
+      jumpI  fi
+else: addI   rb, 1  => ra
+      jumpI  fi
+fi:   mul    ra, rb => rc
+      store  rc     => rc
+</pre>
+
+<p>This program represents an if/else condition. Note the use of <code>comp</code> to assign the condition code register <strong>before</strong> branching.</p>
+
+<h2>Branching Syntax</h2>
+
+<p>A number of branching statements and methods are available. The most common is a simple jump:</p>
+
+<pre>
+jumpI label
+</pre>
+
+<p>To do a conditional branch, you have two options. The first is to compare two registers using <code>comp</code>, then branch based on the value of <code>cc</code>:</p>
+
+<pre>
+      comp   ra, rb => cc
+      cbr_GE cc     -> if, else
+if:   addI   ra, 1  => rb
+      jumpI  fi
+else: addI   rb, 1  => ra
+      jumpI  fi
+</pre>
+
+<p>The alternative is to compare two values using an opcode such as <code>cmp_GE</code> and then use <code>cbr</code> to branch based on the result register:</p>
+
+<pre>
+      cmp_GE ra, rb => rc
+      cbr    rc     -> if, else
+if:   addI   ra, 1  => rb
+      jumpI  fi
+else: addI   rb, 1  => ra
+      jumpI  fi
+</pre>
+
+<h2>Available Opcodes</h2>
+
+<p>The following table lists the available opcodes and their meaning. Use the links below to jump to the relevant section.</p>
+
+<ul>
+    <li><a href="#arithmetic">Arithmetic Operations</a></li>
+    <li><a href="#bitwise">Bitwise Operations</a></li>
+    <li><a href="#memory">Memory Operations</a></li>
+    <li><a href="#branch">Branching Operations</a></li>
+    <li><a href="#register-branch">Register Branching</a></li>
+    <li><a href="#comparison-branch">Comparison Branching</a></li>
+</ul>
+    
+
+<h3><a name="arithmetic"></a>Arithmetic Operations</h3>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Opcode</th>
+            <th>Sources</th>
+            <th>Targets</th>
+            <th>Meaning</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>add</code>
+            <td>\(r_1, r_2\)</td>
+            <td>\(r_3\)</td>
+            <td>\(r_1 + r_2 \Rightarrow r_3\)</td>
+        </tr>
+        <tr>
+            <td><code>sub</code>
+            <td>\(r_1, r_2\)</td>
+            <td>\(r_3\)</td>
+            <td>\(r_1 - r_2 \Rightarrow r_3\)</td>
+        </tr>
+        <tr>
+            <td><code>mult</code>
+            <td>\(r_1, r_2\)</td>
+            <td>\(r_3\)</td>
+            <td>\(r_1 * r_2 \Rightarrow r_3\)</td>
+        </tr>
+        <tr>
+            <td><code>div</code>
+            <td>\(r_1, r_2\)</td>
+            <td>\(r_3\)</td>
+            <td>\(r_1 / r_2 \Rightarrow r_3\)</td>
+        </tr>
+        <tr>
+            <td><code>addI</code>
+            <td>\(r_1, c_2\)</td>
+            <td>\(r_3\)</td>
+            <td>\(r_1 + c_2 \Rightarrow r_3\)</td>
+        </tr>
+        <tr>
+            <td><code>subI</code>
+            <td>\(r_1, c_2\)</td>
+            <td>\(r_3\)</td>
+            <td>\(r_1 + c_2 \Rightarrow r_3\)</td>
+        </tr>
+        <tr>
+            <td><code>rsubI</code>
+            <td>\(r_1, c_2\)</td>
+            <td>\(r_3\)</td>
+            <td>\(c_2 - r_1 \Rightarrow r_3\)</td>
+        </tr>
+        <tr>
+            <td><code>mulI</code>
+            <td>\(r_1, c_2\)</td>
+            <td>\(r_3\)</td>
+            <td>\(r_1 * c_2 \Rightarrow r_3\)</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3><a name="bitwise"></a>Bitwise Operations</h3>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Opcode</th>
+            <th>Sources</th>
+            <th>Targets</th>
+            <th>Meaning</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>divI</code>
+            <td>\(r_1, c_2\)</td>
+            <td>\(r_3\)</td>
+            <td>\(r_1 / c_2 \Rightarrow r_3\)</td>
+        </tr>
+        <tr>
+            <td><code>rdivI</code>
+            <td>\(r_1, c_2\)</td>
+            <td>\(r_3\)</td>
+            <td>\(c_2 / r_1 \Rightarrow r_3\)</td>
+        </tr>
+        <tr>
+            <td><code>lshift</code>
+            <td>\(r_1, r_2\)</td>
+            <td>\(r_3\)</td>
+            <td>\(r_1 \ll r_2 \Rightarrow r_3\)</td>
+        </tr>
+        <tr>
+            <td><code>lshiftI</code>
+            <td>\(r_1, c_2\)</td>
+            <td>\(r_3\)</td>
+            <td>\(r_1 \ll c_2 \Rightarrow r_3\)</td>
+        </tr>
+        <tr>
+            <td><code>rshift</code>
+            <td>\(r_1, r_2\)</td>
+            <td>\(r_3\)</td>
+            <td>\(r_1 \gg r_2 \Rightarrow r_3\)</td>
+        </tr>
+        <tr>
+            <td><code>rshiftI</code>
+            <td>\(r_1, c_2\)</td>
+            <td>\(r_3\)</td>
+            <td>\(r_1 \gg c_2 \Rightarrow r_3\)</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3><a name="memory"></a>Memory Operations</h3>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Opcode</th>
+            <th>Sources</th>
+            <th>Targets</th>
+            <th>Meaning</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>load</code>
+            <td>\(r_1\)</td>
+            <td>\(r_2\)</td>
+            <td>\(\text{Memory}(r_1) \Rightarrow r_2\)</td>
+        </tr>
+        <tr>
+            <td><code>loadAI</code>
+            <td>\(r_1, c_2\)</td>
+            <td>\(r_3\)</td>
+            <td>\(\text{Memory}(r_1 + c_2) \Rightarrow r_3\)</td>
+        </tr>
+        <tr>
+            <td><code>loadAO</code>
+            <td>\(r_1, r_2\)</td>
+            <td>\(r_3\)</td>
+            <td>\(\text{Memory}(r_1 + r_2) \Rightarrow r_3\)</td>
+        </tr>
+        <tr>
+            <td><code>loadI</code>
+            <td>\(c_1\)</td>
+            <td>\(r_2\)</td>
+            <td>\(c_1 \Rightarrow r_2\)</td>
+        </tr>
+        <tr>
+            <td><code>store</code>
+            <td>\(r_1\)</td>
+            <td>\(r_2\)</td>
+            <td>\(r_1 \Rightarrow \text{Memory}(r_2)\)</td>
+        </tr>
+        <tr>
+            <td><code>storeAI</code>
+            <td>\(r_1\)</td>
+            <td>\(r_2, c_3\)</td>
+            <td>\(r_1 \Rightarrow \text{Memory}(r_2 + c_3)\)</td>
+        </tr>
+        <tr>
+            <td><code>storeA0</code>
+            <td>\(r_1\)</td>
+            <td>\(r_2, r_3\)</td>
+            <td>\(r_1 \Rightarrow \text{Memory}(r_2 + r_3)\)</td>
+        </tr>
+        <tr>
+            <td><code>i2i</code>
+            <td>\(r_1\)</td>
+            <td>\(r_2\)</td>
+            <td>\(r_1 \Rightarrow r_2\)</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3><a name="branch"></a>Branching Operations</h3>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Opcode</th>
+            <th>Sources</th>
+            <th>Targets</th>
+            <th>Meaning</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>jump</code>
+            <td>\(-\)</td>
+            <td>\(r_1\)</td>
+            <td>jump to value of \(r_1\)</td>
+        </tr>
+        <tr>
+            <td><code>jumpI</code>
+            <td>\(-\)</td>
+            <td>\(l_1\)</td>
+            <td>jump to \(l_1\)</td>
+        </tr>
+        <tr>
+            <td><code>tbl</code>
+            <td>\(r_1, l_2\)</td>
+            <td>\(-\)</td>
+            <td>\(r_1\) might hold \(r_2\)</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3><a name="register-branch"></a>Register Branching Operations</h3>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Opcode</th>
+            <th>Sources</th>
+            <th>Targets</th>
+            <th>Meaning</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>cmp_LT</code>
+            <td>\(r_1, r_2\)</td>
+            <td>\(r_3\)</td>
+            <td>\(true \Rightarrow r_3\) if \(r_1 < r_2\) OR \(false \Rightarrow r_3\) if \(r_1 \ge r_2\)</td>
+        </tr>
+        <tr>
+            <td><code>cmp_LE</code>
+            <td>\(r_1, r_2\)</td>
+            <td>\(r_3\)</td>
+            <td>\(true \Rightarrow r_3\) if \(r_1 \le r_2\) OR \(false \Rightarrow r_3\) if \(r_1 > r_2\)</td>
+        </tr>
+        <tr>
+            <td><code>cmp_GT</code>
+            <td>\(r_1, r_2\)</td>
+            <td>\(r_3\)</td>
+            <td>\(true \Rightarrow r_3\) if \(r_1 > r_2\) OR \(false \Rightarrow r_3\) if \(r_1 \le r_2\)</td>
+        </tr>
+        <tr>
+            <td><code>cmp_GE</code>
+            <td>\(r_1, r_2\)</td>
+            <td>\(r_3\)</td>
+            <td>\(true \Rightarrow r_3\) if \(r_1 \ge r_2\) OR \(false \Rightarrow r_3\) if \(r_1 < r_2\)</td>
+        </tr>
+        <tr>
+            <td><code>cmp_EQ</code>
+            <td>\(r_1, r_2\)</td>
+            <td>\(r_3\)</td>
+            <td>\(true \Rightarrow r_3\) if \(r_1 = r_2\) OR \(false \Rightarrow r_3\) if \(r_1 != r_2\)</td>
+        </tr>
+        <tr>
+            <td><code>cmp_NE</code>
+            <td>\(r_1, r_2\)</td>
+            <td>\(r_3\)</td>
+            <td>\(true \Rightarrow r_3\) if \(r_1 \neq r_2\) OR \(false \Rightarrow r_3\) if \(r_1 = r_2\)</td>
+        </tr>
+        <tr>
+            <td><code>cbr</code>
+            <td>\(r_1\)</td>
+            <td>\(l_2, l_3\)</td>
+            <td>if \(r_1=true\) jump to \(l_2\), else jump to \(l_3\)</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3><a name="comparison-branch"></a>Comparison Branching Operations</h3>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Opcode</th>
+            <th>Sources</th>
+            <th>Targets</th>
+            <th>Meaning</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>comp</code>
+            <td>\(r_1, r_2\)</td>
+            <td>\(cc\)</td>
+            <td>\(sets cc\)</td>
+        </tr>
+        <tr>
+            <td><code>cbr_LT</code>
+            <td>\(cc\)</td>
+            <td>\(l_1, l_2\)</td>
+            <td>if \(cc={\tt LT}\), jump to \(l_1\), else jump to \(l_2\)</td>
+        </tr>
+        <tr>
+            <td><code>cbr_LE</code>
+            <td>\(cc\)</td>
+            <td>\(l_1, l_2\)</td>
+            <td>if \(cc={\tt LE}\), jump to \(l_1\), else jump to \(l_2\)</td>
+        </tr>
+        <tr>
+            <td><code>cbr_GT</code>
+            <td>\(cc\)</td>
+            <td>\(l_1, l_2\)</td>
+            <td>if \(cc={\tt GT}\), jump to \(l_1\), else jump to \(l_2\)</td>
+        </tr>
+        <tr>
+            <td><code>cbr_GE</code>
+            <td>\(cc\)</td>
+            <td>\(l_1, l_2\)</td>
+            <td>if \(cc={\tt GE}\), jump to \(l_1\), else jump to \(l_2\)</td>
+        </tr>
+        <tr>
+            <td><code>cbr_EQ</code>
+            <td>\(cc\)</td>
+            <td>\(l_1, l_2\)</td>
+            <td>if \(cc={\tt EQ}\), jump to \(l_1\), else jump to \(l_2\)</td>
+        </tr>
+        <tr>
+            <td><code>cbr_NE</code>
+            <td>\(cc\)</td>
+            <td>\(l_1, l_2\)</td>
+            <td>if \(cc={\tt NE}\), jump to \(l_1\), else jump to \(l_2\)</td>
+        </tr>
+    </tbody>
+</table>
