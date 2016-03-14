@@ -112,7 +112,7 @@ var iloc_liveness = new DFAFramework({
     },
     value_domain: DFA.VARIABLES,
     direction: DFA.BACKWARD,
-    top: new ValueSet([]),
+    top: DFA.NONE,
     name: "Liveness Analysis",
     id: "LIVENESS_ANALYSIS",
 });

@@ -142,7 +142,7 @@ var iloc_avail_expressions = new DFAFramework({
         
         return {read_nodes: read_nodes, modified_nodes: modified_nodes };
     },
-    meet_latex: "\\[\\text{In}(n) = \\bigcup_{p \\in preds} \\text{Out}(p)\\]",
+    meet_latex: "\\[\\text{In}(n) = \\bigcap_{p \\in preds} \\text{Out}(p)\\]",
     transfer_latex: "\\[\\text{Out}(n) = \\text{DEExpr}(n) \\cup \\big{(}\\text{In}(n) \\setminus \\text{ExprKill}(n)\\big{)}\\]",
     local_sets: {
         deexpr: deexpr,
