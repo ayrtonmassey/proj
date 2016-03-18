@@ -1,0 +1,38 @@
+\contentsline {chapter}{\numberline {1}Introduction}{7}
+\contentsline {section}{\numberline {1.1}Data-Flow Analysis}{7}
+\contentsline {section}{\numberline {1.2}Motivations}{7}
+\contentsline {section}{\numberline {1.3}Objectives}{8}
+\contentsline {section}{\numberline {1.4}Summary of Contributions}{9}
+\contentsline {chapter}{\numberline {2}Background}{11}
+\contentsline {section}{\numberline {2.1}Introduction to Data-Flow Analysis}{11}
+\contentsline {subsection}{\numberline {2.1.1}Control-flow Graph}{11}
+\contentsline {subsection}{\numberline {2.1.2}A Simple Example}{12}
+\contentsline {subsection}{\numberline {2.1.3}Lattices}{13}
+\contentsline {subsection}{\numberline {2.1.4}Types of Data-Flow Analysis}{14}
+\contentsline {section}{\numberline {2.2}A General Framework}{14}
+\contentsline {section}{\numberline {2.3}Algorithms for Analysis}{14}
+\contentsline {subsection}{\numberline {2.3.1}Iterative Algorithm}{14}
+\contentsline {section}{\numberline {2.4}Intermediate Language for Optimising Compilers}{15}
+\contentsline {chapter}{\numberline {3}Related Work}{17}
+\contentsline {section}{\numberline {3.1}Compiler Simulation}{17}
+\contentsline {section}{\numberline {3.2}Compiler Visualisation}{17}
+\contentsline {section}{\numberline {3.3}Interactive Learning Environments}{17}
+\contentsline {chapter}{\numberline {4}Data-Flow Analysis Simulation}{19}
+\contentsline {section}{\numberline {4.1}Data-Flow Framework}{19}
+\contentsline {section}{\numberline {4.2}Algorithms for Analysis}{19}
+\contentsline {subsection}{\numberline {4.2.1}Iterative Algorithm}{19}
+\contentsline {subsection}{\numberline {4.2.2}Structural Algorithm}{19}
+\contentsline {section}{\numberline {4.3}Intermediate Language for Optimising Compilers}{19}
+\contentsline {subsection}{\numberline {4.3.1}Parsing Expression Grammar}{20}
+\contentsline {subsection}{\numberline {4.3.2}Control-Flow Graphs}{20}
+\contentsline {chapter}{\numberline {5}Data-Flow Analysis Visualisation}{21}
+\contentsline {section}{\numberline {5.1}Data-Flow Framework}{21}
+\contentsline {section}{\numberline {5.2}Simulator}{21}
+\contentsline {section}{\numberline {5.3}Control-Flow Graph}{21}
+\contentsline {section}{\numberline {5.4}Lattice}{21}
+\contentsline {chapter}{\numberline {6}Interactive Learning}{23}
+\contentsline {section}{\numberline {6.1}User-defined Programs}{23}
+\contentsline {section}{\numberline {6.2}Interactive Tutorials}{23}
+\contentsline {section}{\numberline {6.3}Experimental Sandbox}{23}
+\contentsline {chapter}{\numberline {7}Evaluation}{25}
+\contentsline {chapter}{Bibliography}{27}

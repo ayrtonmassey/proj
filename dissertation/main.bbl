@@ -1,0 +1,31 @@
+\def\germ{\frak} \def\scr{\cal} \ifx\documentclass\undefinedcs
+  \def\bf{\fam\bffam\tenbf}\def\rm{\fam0\tenrm}\fi % f**k-amstex!
+  \def\defaultdefine#1#2{\expandafter\ifx\csname#1\endcsname\relax
+  \expandafter\def\csname#1\endcsname{#2}\fi} \defaultdefine{Bbb}{\bf}
+  \defaultdefine{frak}{\bf} \defaultdefine{=}{\B} % doublef**k-amstex!!
+  \defaultdefine{mathfrak}{\frak} \defaultdefine{mathbb}{\bf}
+  \defaultdefine{mathcal}{\cal}
+  \defaultdefine{beth}{BETH}\defaultdefine{cal}{\bf} \def\bbfI{{\Bbb I}}
+  \def\mbox{\hbox} \def\text{\hbox} \def\om{\omega} \def\Cal#1{{\bf #1}}
+  \def\pcf{pcf} \defaultdefine{cf}{cf} \defaultdefine{reals}{{\Bbb R}}
+  \defaultdefine{real}{{\Bbb R}} \def\restriction{{|}} \def\club{CLUB}
+  \def\w{\omega} \def\exist{\exists} \def\se{{\germ se}} \def\bb{{\bf b}}
+  \def\equivalence{\equiv} \let\lt< \let\gt>
+\begin{thebibliography}{2}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Rimsa et~al.(2011)Rimsa, d'Amorim, and Pereira]{TaintedFlow}
+A.~Rimsa, M.~d'Amorim, and F.~Pereira.
+\newblock {Tainted Flow Analysis on e-SSA-form Programs}.
+\newblock \emph{International Conference on Compiler Construction}, 2011.
+
+\bibitem[Cooper and Torczon(2011)]{eac}
+K.~Cooper and L.~Torczon.
+\newblock \emph{{Engineering a Compiler}}.
+\newblock Morgan Kaufmann Publishers, 2nd edition, 2011.
+
+\end{thebibliography}
