@@ -1,0 +1,150 @@
+\ifglsentryexists{latex}{}%
+{%
+\gls@defglossaryentry{latex}%
+{%
+name={latex},%
+sort={latex},%
+type={main},%
+first={latex},%
+firstplural={latexs},%
+text={latex},%
+plural={latexs},%
+description={Is a mark up language specially suited for scientific documents},%
+descriptionplural={Is a mark up language specially suited for scientific documents},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={},%
+longplural={},%
+short={},%
+shortplural={},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{maths}{}%
+{%
+\gls@defglossaryentry{maths}%
+{%
+name={mathematics},%
+sort={mathematics},%
+type={main},%
+first={mathematics},%
+firstplural={mathematicss},%
+text={mathematics},%
+plural={mathematicss},%
+description={Mathematics is what mathematicians do},%
+descriptionplural={Mathematics is what mathematicians do},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={},%
+longplural={},%
+short={},%
+shortplural={},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{formula}{}%
+{%
+\gls@defglossaryentry{formula}%
+{%
+name={formula},%
+sort={formula},%
+type={main},%
+first={formula},%
+firstplural={formulas},%
+text={formula},%
+plural={formulas},%
+description={A mathematical expression},%
+descriptionplural={A mathematical expression},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={},%
+longplural={},%
+short={},%
+shortplural={},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{gcd}{}%
+{%
+\gls@defglossaryentry{gcd}%
+{%
+name={GCD},%
+sort={GCD},%
+type={main},%
+first={Greatest Common Divisor\glsspace (GCD)},%
+firstplural={Greatest Common Divisors\glsspace (GCDs)},%
+text={GCD},%
+plural={GCDs},%
+description={Greatest Common Divisor},%
+descriptionplural={Greatest Common Divisor\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Greatest Common Divisor},%
+longplural={Greatest Common Divisors},%
+short={GCD},%
+shortplural={GCDs},%
+counter={page},%
+parent={},%
+%
+}%
+}%
+\ifglsentryexists{lcm}{}%
+{%
+\gls@defglossaryentry{lcm}%
+{%
+name={LCM},%
+sort={LCM},%
+type={main},%
+first={Least Common Multiple\glsspace (LCM)},%
+firstplural={Least Common Multiples\glsspace (LCMs)},%
+text={LCM},%
+plural={LCMs},%
+description={Least Common Multiple},%
+descriptionplural={Least Common Multiple\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Least Common Multiple},%
+longplural={Least Common Multiples},%
+short={LCM},%
+shortplural={LCMs},%
+counter={page},%
+parent={},%
+%
+}%
+}%

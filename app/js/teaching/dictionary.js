@@ -31,7 +31,6 @@ var DICTIONARY = {
     direction: "The direction in which data flows; for example, if values are propagated from the entry of the CFG to the exit the analysis is in the forward direction.",
     forward_analysis: "An analysis in which the values at a node depend upon the values at that node's predecessors, such as reaching definitions.",
     backward_analysis: "An analysis in which the values at a node depend upon the values at that node's successors, such as liveness analysis.",
-    meet_semilattice: "A structure which defines the ordering of values according to a meet function.",
     terminate: "An algorithm terminates if there is some condition under which it will stop executing. The opposite of becoming stuck in an infinite loop.",
     meet_function: "A function which defines how values are propagated between nodes in a control-flow graph.",
     transfer_function: "A function which defines how values are propagated through nodes in a control-flow graph.",
