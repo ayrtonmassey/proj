@@ -11,7 +11,7 @@
   \setlength{\TPVertModule}{1mm}
 
 \usepackage{tikz}
-\usetikzlibrary{arrows,arrows.meta,decorations.markings}
+\usetikzlibrary{arrows.meta,decorations.markings}
 \usepackage{wrapfig}
 \usepackage{amsmath}
 \usepackage{caption}
@@ -24,7 +24,7 @@
 \tikzset{vertex/.style = {shape=circle,draw,minimum size=1.5em}}
 \tikzset{edge/.style = {
     >=Stealth,
-    -{>[scale=1.5]},
+    -{>[scale=0.8]},
   }
 }
 
@@ -77,11 +77,17 @@
   environment would prove invaluable to students encountering the
   topic for the first time.
 
-  This report describes a interactive system to simulate and visualise
-  forms of data-flow analysis on simple assembly-like
-  programs. Variations of the system are compared and contrasted by
-  exploring user interaction and measuring the achievement of learning
-  outcomes of students using this system.  }
+  This report describes the design and implementation of an
+  interactive system to simulate and visualise forms of data-flow
+  analysis on simple assembly-like programs. The system is evaluated
+  by in terms of user experience and the achievement of learning
+  outcomes, through self-assessment and by examining usage data
+  collected during the evaluation period.
+
+  %TODO: Outcome
+  The software proved (successful/unsuccessful) in providing a tool
+  for increasing the learning capacity of the subjects.
+}
 
 \maketitle
 
@@ -152,12 +158,13 @@ and provides a brief summary of contributions.
     to teach students the basic principles of data-flow analysis in
     compilers.
     
-    This would take the form of a web application using modules which
-    could be combined in different ways, for example to present a
-    series of tutorials on data-flow analysis or to provide a sandbox
-    environment to explore. The application would cover a range of
-    topics from the basics of data-flow analysis to algorithms and
-    frameworks for solving generic data-flow problems.
+    This would take the form of a web application using visual
+    components which could be combined in different ways, for example
+    to present a series of tutorials on data-flow analysis or to
+    provide a sandbox environment to explore. The content of the
+    application would cover a range of topics from the basics of
+    data-flow analysis to algorithms and frameworks for solving
+    generic data-flow problems.
     
     The application would be aimed at students of the Compiler
     Optimisations course and as such would be based on material from
