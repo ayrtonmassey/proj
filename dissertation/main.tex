@@ -65,6 +65,20 @@
           determines how data flows {\em between} nodes in a \gls{cfg}}
 }
 
+%%Graph Theory
+
+\newglossaryentry{region}
+{
+        name=region,
+        description={A set of nodes in a graph which includes a {\em header} node which \gls{dominate}s all other nodes in the region\cite[p. 669]{dragonbook}}
+}
+
+\newglossaryentry{dominate}
+{
+        name=dominate,
+        description={In a \gls{cfg} a node $n_i$ is said to dominate a node $n_j$ if every path from $n_0$ (the entry node) to $n_j$ must go through $n_i$\cite[p. 478]{eac}}
+}
+
 %%Generic Frameworks 
 \newglossaryentry{hassediagram}
 {
@@ -107,7 +121,7 @@
 {
         name=fixed-point,
         description={A computation in which the required process is
-          repeated until the state stops changing.}
+          repeated until the state stops changing}
 }
 
 
@@ -116,38 +130,71 @@
 \newglossaryentry{reachingdefinition}
 {
         name=reaching definition,
-        description={A definition of a variable 'reaches' a block if there exists at least one path from its definition to the block along which it is not overwritten}
+        description={A definition of a variable {\em reaches} a block if there exists at least one path from its definition to the block along which it is not overwritten}
 }
 
 \newglossaryentry{livenessanalysis}
 {
         name=liveness analysis,
-        description={A variable is 'live' if its current value will be used later in the program's execution}
+        description={A variable is {\em live} if its current value will be used later in the program's execution}
 }
 
 \newglossaryentry{availableexpression}
 {
         name=available expression,
-        description={An expression is 'available' if it has been computed along all paths leading to the current node}
+        description={An expression is {\em available} if it has been computed along all paths leading to the current node}
 }
 
 
  
 \newacronym{cfg}{CFG}{control-flow graph}
 
+%% Text
+\usepackage{color}
+
+%% Math
+\usepackage{amsmath}
+
+%% Figures
+\usepackage{caption}
+\usepackage{capt-of}
+\usepackage{wrapfig}
+\usepackage[bottom]{footmisc}
 \usepackage[absolute,overlay]{textpos}
   \setlength{\TPHorizModule}{1mm}
   \setlength{\TPVertModule}{1mm}
 
+\usepackage{listings}
+
+%% Algorithm listings
+\newcounter{nalg}[chapter] % defines algorithm counter for chapter-level
+\renewcommand{\thenalg}{\thechapter .\arabic{nalg}} %defines appearance of the algorithm counter
+\DeclareCaptionLabelFormat{algocaption}{Algorithm \thenalg} % defines a new caption label as Algorithm x.y
+
+\lstnewenvironment{algorithm}[1][] %defines the algorithm listing environment
+{   
+    \refstepcounter{nalg} %increments algorithm number
+    \captionsetup{labelformat=algocaption,labelsep=colon} %defines the caption setup for: it ises label format as the declared caption label above and makes label and caption text to be separated by a ':'
+    \lstset{ %this is the stype
+        frame=tB,
+        numbers=left, 
+        numberstyle=\tiny,
+        basicstyle=\scriptsize, 
+        keywordstyle=\color{black}\bfseries\em,
+        keywords={,input, output, return, datatype, function, in, if,
+          else, foreach, while, begin, end, for, each, is, not, of } %add the keywords you want, or load a language as Rubens explains in his comment above.
+        numbers=left,
+        xleftmargin=.04\textwidth,
+        #1 % this is to add specific settings to an usage of this environment (for instnce, the caption and referable label)
+    }
+}
+{}
+
+%% Graphs
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,decorations.markings}
-\usepackage{wrapfig}
-\usepackage{amsmath}
-\usepackage{caption}
-\usepackage{capt-of}
-\usepackage{color}
-% \documentclass[minf,frontabs,twoside,singlespacing,parskip,deptreport]{infthesis}  % for MInf
 
+%% Tikz Styles
 \tikzstyle{block} = [rectangle, draw, text width=6em, text centered, rounded corners, minimum height=1em]
 \tikzstyle{set} = [rectangle, text width=6em, text centered, rounded corners, minimum height=1em]
 \tikzset{vertex/.style = {shape=circle,draw,minimum size=1.5em}}
@@ -161,6 +208,7 @@
   \draw[magenta, fill=magenta!90] (#1) circle (0.5mm);
 }
 
+%% Superscript natbib citations
 \makeatletter
 \renewcommand\NAT@citesuper[3]{\ifNAT@swa
 \if*#2*\else#2\NAT@spacechar\fi
@@ -565,7 +613,7 @@ reader and to demonstrate my own understanding of the topic.
         %TODO: REFERENCE
         We can express the semi-lattice using a {\em \gls{hassediagram}}, shown in fig. \ref{meethasse}.
 
-        \begin{wrapfigure}[12]{o}{7cm}
+        \begin{wrapfigure}[12]{o}{6.4cm}
           \vspace{-5mm}
           \begin{tikzpicture}[y=-1cm]            
             % vertices
@@ -607,24 +655,26 @@ reader and to demonstrate my own understanding of the topic.
         initially paired with $undef$. When it is assigned a constant
         value, we assign it that value. If it is later assigned
         another value, we assign it $nonconst$. This can be expressed
-        as the meet function seen in fig. \ref{constmeet}.
+        as the meet function, $\land$, seen in fig. \ref{constmeet}.
         
         The values form a semi-lattice, as seen in
         fig. \ref{consthasse}.
 
+        \rule{\textwidth}{0.1mm}
+
         \begin{figure}[h]
         \begin{align*}
-        nonconst \land c &= nonconst & \text{for any constant} \; c \\
-        c \land d &= nonconst &\text{for any constants} \; c \neq d \\
-        c \land undef &= c &\text{for any constant} \; c \\
-        nonconst \land undef &= nonconst & \\
-        x \land x &= x &\text{for any value} \; x
+        nonconst \land c     & = nonconst & \text{for any constant} \; c         \\
+        c \land d            & = nonconst & \text{for any constants} \; c \neq d \\
+        c \land undef        & = c        & \text{for any constant} \; c         \\
+        nonconst \land undef & = nonconst &                                      \\
+        x \land x            & = x        & \text{for any value} \; x
         \end{align*}
         \caption{Equations describing the constant propagation meet function.}
         \label{constmeet}
         \end{figure}
         
-        \begin{figure}[b]
+        \begin{figure}[h]
           \centering
           \begin{tikzpicture}[y=-1cm]
             
@@ -663,10 +713,67 @@ reader and to demonstrate my own understanding of the topic.
     \pagebreak
     
     \section{Algorithms for Analysis}
-    Blah Blah
+    There exist a number of algorithms for performing
+    \gls{dataflowanalysis}. In this section, I will give a brief
+    overview of the methods proposed in the related reading \cite{eac}
+    \cite{dragonbook}.
 
-	\subsection{Iterative Algorithm}
-	Blah Blah
+	\subsection{Round-Robin Iterative Algorithm}
+        The simplest algorithm used to solve \gls{dataflow} problems
+        is the round-robin iterative method. We consider each node of
+        the \gls{cfg} in turn, calculating the In and Out sets using
+        our \gls{dataflowequations}. This is a \gls{fixedpoint}
+        computation: we iterate until our value sets stop changing
+        between iterations. Algorithm \ref{algo:rd_iterative} shows
+        the round-robin iterative method for solving
+        \gls{reachingdefinition}s.
+
+        \begin{figure}[h]
+          \begin{algorithm}[caption={Iterative Round-Robin Method for Reaching Definitions}, label={algo:rd_iterative},escapeinside={||},mathescape=true]
+for each (node |$n$| in the CFG)
+    In(|$n$|) = |$\emptyset$|;
+end
+
+while (changes to any sets occur)
+    for each (node |$n$| in the CFG)
+        In(|$n$|)  = |$\cup$\textsubscript{predecessors $p$ of $n$}|Out(|$p$|);
+        Out(|$n$|) = DefGen(|$n$|) $\cup$ (In|$(n)$| $\setminus$ DefKill(|$n$|));
+    end
+end
+          \end{algorithm}
+        \end{figure}
+
+	\subsection{Worklist Algorithm}
+        The above solution holds value in its simplicity, but it is
+        trivial to find a more efficient solution. A node's sets will
+        only change if the Out sets of its predecessors change. Thus,
+        we may use a worklist: starting with the initial node, we
+        calculate the Out set for that node; if it changes we add the
+        node's successors to the list. We continue this process until
+        the worklist is empty. Algorithm \ref{algo:rd_worklist} shows
+        the worklist method for solving \gls{reachingdefinition}s.
+
+        \begin{figure}[h]
+          \begin{algorithm}[caption={Worklist  Method for Reaching Definitions}, label={algo:rd_worklist},escapeinside={||},mathescape=true]
+worklist = [ n|$_{0}$| ];
+
+while (worklist is not empty)
+    n = pop(worklist);
+    In(|$n$|)  = |$\cup$\textsubscript{predecessors $p$ of $n$}|Out(|$p$|);
+    Out(|$n$|) = DefGen(|$n$|) $\cup$ (In|$(n)$| $\setminus$ DefKill(|$n$|));
+    if (Out(|$n$|) has changed) append n to worklist;
+end
+          \end{algorithm}
+        \end{figure}
+
+	\subsection{Structural Algorithm}
+        A third algorithm takes an entirely different
+        approach. Instead of iterating over each node, we perform a
+        number of simple transformations on the graph in order to
+        reduce it to a single \gls{region}. We then expand each node,
+        calculating the In and Out sets of our reduced nodes as we
+        expand them. A more detailed explanation of this concept may
+        be found in the {\em dragon book}\cite[p. 673]{dragonbook}.
 
     \section{Data-Flow Frameworks}
 
@@ -688,24 +795,28 @@ reader and to demonstrate my own understanding of the topic.
 
           \subsection{Algorithm for General Frameworks}
 
-          The following algorithm, adapted from the one in the {\em
-            dragon book}\cite[p. 691]{dragonbook} to compute the value
+          Algorithm \ref{algo:general}, adapted from the one in the {\em
+            dragon book}\cite[p. 691]{dragonbook}, computes the value
           sets at each node using the elements of our general
-          framework:
+          framework.
 
-          \begin{figure}[!ht]
+          \begin{figure}[b]
             \centering
             \vspace{-5mm}
-            \begin{align*}
-              & \text{Transfer}_{BOUNDARY} = v_{BOUNDARY};\\
-              & {\bf for} \, ( \text{each block} \: B \: \text{in the CFG} ) \; \text{Transfer}_{B} = \top;\\
-              & {\bf while} \, ( \text{changes to any} \: \text{Transfer} \: \text{occur} ) \: \{\\
-              & \quad \quad {\bf for} \, (\text{each block} \: B \: \text{in the CFG} ) \: \{\\
-              & \quad \quad \quad \quad \text{Meet}_{B} \hspace{0.59cm} = \land_{\text{priors} \, P \, \text{of} \,  B} \, \text{Transfer}_{P};\\
-              & \quad \quad \quad \quad \text{Transfer}_{B} = F_{B}(In_{B});\\
-              & \quad \quad \}\\
-              & \}
-            \end{align*}
+          \begin{algorithm}[caption={Data-Flow Analysis of General Frameworks}, label={algo:general},escapeinside={||},mathescape=true]
+Transfer|$_{BOUNDARY}$| = v|$_{BOUNDARY}$|;
+
+for each (block |$B$| in the CFG)
+    Transfer|$_{B}$| = |$\top$|;
+end
+
+while (changes to any Transfer occur)
+    for each (block |$B$| in the CFG)
+        Meet|$_{B}$|     = |$\land$\textsubscript{priors $P$ of $B$}| Transfer|$_{P}$|;
+        Transfer|$_{B}$| = |$F_{B}$|(In|$_{B}$|);
+    end
+end
+          \end{algorithm}
             \caption{Algorithm for Data-Flow Analysis of General Frameworks}
           \end{figure}
 
@@ -713,7 +824,7 @@ reader and to demonstrate my own understanding of the topic.
           {\em dragon book} does, we may call them \Gls{meet} and
           \Gls{transfer}. This allows us to generalise our algorithm
           to both forward and backward analyses; in the forward
-          direction Meet is In, whereas in the backward direction it
+          direction Meet is In whereas in the backward direction it
           is Out (and vice-versa for Transfer).
 
           We first initialise the Transfer set using the boundary
@@ -765,10 +876,12 @@ reader and to demonstrate my own understanding of the topic.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Related Work}
-Blah Blah
+In this chapter I will discuss the merits and drawbacks of related
+work and identify aspects of said work which can be applied to this
+project.
 
 	\section{Compiler Simulation}
-	Blah Blah
+	
 
 	\section{Compiler Visualisation}
 	Blah Blah
@@ -788,9 +901,6 @@ Blah Blah
 	Blah Blah
 
 	\subsection{Iterative Algorithm}
-	Blah Blah
-    
-    	\subsection{Structural Algorithm}
 	Blah Blah
         
 	\section{Intermediate Language for Optimising Compilers}
@@ -846,13 +956,12 @@ Blah Blah
 
 \chapter{Types of Data-Flow Analysis}\label{analysistypes}
 
-Table \ref{dfatypes} covers a selection of data-flow analyses and lists some of their applications.
-
-\begin{center}
+\bgroup
+  \vspace{-5mm}
   \begin{tabular}{|l|p{5cm}|p{5cm}|}
     \hline
     {\bf Data-Flow}                         & {\bf Purpose}                                                                                              & {\bf Applications}                                                                              \\ \hline
-    Dominators                              & Computes the set of nodes which dominate the current node.                                                 & Computing SSA form.                                                                             \\ \hline
+    Dominators                              & Computes the set of nodes which \gls{dominate} the current node.                                           & Computing SSA form.                                                                             \\ \hline
     \Gls{reachingdefinition}s               & Computes the set of variable definitions which are available at points in the CFG.                         & Generating def-use chains for other analyses.                                                   \\ \hline
     \Gls{livenessanalysis}                  & Computes the set of variables whose current value will be used at a later point in the control flow graph. & Register allocation. Identifying useless store operations. Identifying uninitialised variables. \\ \hline
     \Gls{availableexpression}s              & Identifies expressions which been computed at a previous point in the CFG.                                 & Code motion.                                                                                    \\ \hline
@@ -861,8 +970,8 @@ Table \ref{dfatypes} covers a selection of data-flow analyses and lists some of 
     Copy Propagation                        & Computes the set of variables whose values have been copied from another variable.                         & Dead code elimination. Code motion.                                                             \\ \hline
     Tainted Flow Analysis\cite{TaintedFlow} & Identifies unsafe operations which have been passed unsanitized {\em (tainted)} input as a parameter.      & Preventing security vulnerabilities such as SQL injection and XSS attacks.                      \\ \hline
   \end{tabular}
-  \captionof{table}{Types of data-flow analysis.}\label{dfatypes}
-\end{center}
+  \captionof{table}{Types of data-flow analysis.}
+\egroup
 
 
 \end{appendices}

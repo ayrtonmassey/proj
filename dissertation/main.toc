@@ -9,10 +9,12 @@
 \contentsline {subsection}{\numberline {2.1.2}A Simple Example}{6}
 \contentsline {subsection}{\numberline {2.1.3}Lattices}{6}
 \contentsline {section}{\numberline {2.2}Algorithms for Analysis}{8}
-\contentsline {subsection}{\numberline {2.2.1}Iterative Algorithm}{8}
-\contentsline {section}{\numberline {2.3}Data-Flow Frameworks}{8}
-\contentsline {subsection}{\numberline {2.3.1}Algorithm for General Frameworks}{8}
-\contentsline {subsection}{\numberline {2.3.2}Conditions for Termination}{9}
+\contentsline {subsection}{\numberline {2.2.1}Round-Robin Iterative Algorithm}{8}
+\contentsline {subsection}{\numberline {2.2.2}Worklist Algorithm}{8}
+\contentsline {subsection}{\numberline {2.2.3}Structural Algorithm}{9}
+\contentsline {section}{\numberline {2.3}Data-Flow Frameworks}{9}
+\contentsline {subsection}{\numberline {2.3.1}Algorithm for General Frameworks}{9}
+\contentsline {subsection}{\numberline {2.3.2}Conditions for Termination}{10}
 \contentsline {chapter}{\numberline {3}Related Work}{11}
 \contentsline {section}{\numberline {3.1}Compiler Simulation}{11}
 \contentsline {section}{\numberline {3.2}Compiler Visualisation}{11}
@@ -21,9 +23,8 @@
 \contentsline {section}{\numberline {4.1}Data-Flow Framework}{13}
 \contentsline {section}{\numberline {4.2}Algorithms for Analysis}{13}
 \contentsline {subsection}{\numberline {4.2.1}Iterative Algorithm}{13}
-\contentsline {subsection}{\numberline {4.2.2}Structural Algorithm}{13}
 \contentsline {section}{\numberline {4.3}Intermediate Language for Optimising Compilers}{13}
-\contentsline {subsection}{\numberline {4.3.1}Parsing Expression Grammar}{14}
+\contentsline {subsection}{\numberline {4.3.1}Parsing Expression Grammar}{13}
 \contentsline {subsection}{\numberline {4.3.2}Control-Flow Graphs}{14}
 \contentsline {chapter}{\numberline {5}Data-Flow Analysis Visualisation}{15}
 \contentsline {section}{\numberline {5.1}Data-Flow Framework}{15}
