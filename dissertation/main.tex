@@ -145,8 +145,23 @@
         description={An expression is {\em available} if it has been computed along all paths leading to the current node}
 }
 
-
+%% Evaluation
  
+\newglossaryentry{likertscale}
+{
+        name=Likert scale,
+        description={A method of gauging opinion on a topic,
+consisting of a collection of Likert items. Each Likert item contains
+a statement followed by an odd number of responses, containing an
+equal number of positive and negative responses balanced such that the
+difference between responses is uniform. An example Likert item is the
+oft-used Strongly Agree / Strongly Disagree scale, which may be
+weighted from from 1-5. The Likert scale is the sum of weights of
+responses to Likert items}
+}
+
+
+%% Acronyms
 \newacronym{cfg}{CFG}{control-flow graph}
 
 %% Text
@@ -328,10 +343,11 @@ and provides a brief summary of contributions.
     evaluated, and examine the resulting solution.
     
     As lecturer of the Compiler Optimisations course at the University
-    of Edinburgh, Hugh desired a system which could teach students the
-    foundations of the course in a more interactive format than
-    standard lectures. The system should be suitable for hosting on
-    the course web page to make it accessible to all students.
+    of Edinburgh, Dr. Leather desired a system which could teach
+    students the foundations of the course in a more interactive
+    format than standard lectures. The system should be suitable for
+    hosting on the course web page to make it accessible to all
+    students.
     
     My personal interest in this project stemmed from a desire to use
     my practical skills to increase my capacity for understanding
@@ -357,8 +373,8 @@ and provides a brief summary of contributions.
     
     The application would be aimed at students of the Compiler
     Optimisations course and as such would be based on material from
-    the course textbook {\em Engineering a Compiler (2nd
-      Edition)}\cite{eac} by Keith D. Cooper and Linda Torczon. The
+    the course textbook {\em Engineering a Compiler, 2nd
+      ed.}\cite{eac} by Keith D. Cooper and Linda Torczon. The
     application could then be extended to cover the topic in more
     depth using content from {\em Compilers: Principles, Techniques
       and Tools, 1st ed.}\cite{dragonbook} by Alfred V. Aho, Ravi
@@ -412,15 +428,15 @@ and provides a brief summary of contributions.
     (p. ). %TODO: Which page?
 
     Detailed explanations of the terminology mentioned above can be
-    found in chapter \ref{background-chap}. A quick summary of terms
-    can be found in the glossary in appendix \ref{glossary}.
+    found in chapter \ref{chap:background}. A quick summary of terms
+    can be found in the glossary in appendix \ref{appx:glossary}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Background}
-In this chapter I will briefly cover the necessary background
-information required to understand this project, both to inform the
-reader and to demonstrate my own understanding of the topic.
+\chapter{Background}\label{chap:background}
+This chapter briefly covers the necessary background information
+required to understand this project, both to inform the reader and to
+demonstrate understanding of the topic.
 
     \section{Introduction to Data-Flow Analysis}
     Data-flow analysis computes information about data flowing {\em
@@ -428,7 +444,7 @@ reader and to demonstrate my own understanding of the topic.
     \gls{controlflowgraph}. Many types of analysis can be performed
     and the information gathered can be used to inform the decisions
     of optimising compilers. A brief list of analyses and their
-    purposes can be found in appendix \ref{analysistypes}.
+    purposes can be found in appendix \ref{appx:analysistypes}.
     
         \subsection{Control-flow Graph}
 
@@ -462,7 +478,7 @@ reader and to demonstrate my own understanding of the topic.
             \end{tikzpicture}
             \captionsetup{width=8cm,justification=justified}
             \captionof{figure}{A control-flow graph.}
-            \label{cfgexample}
+            \label{fig:cfgexample}
         \end{textblock}
 
         \hfill\begin{minipage}{\dimexpr\textwidth-6cm}
@@ -474,7 +490,7 @@ reader and to demonstrate my own understanding of the topic.
           have multiple outward edges if it is a branching
           instruction. Branches may point backward in the
           control-flow. An example of a simple \gls{controlflowgraph}
-          can be seen in fig. \ref{cfgexample}.
+          can be seen in fig. \ref{fig:cfgexample}.
           
           \vspace{0.26cm}
 
@@ -497,14 +513,14 @@ reader and to demonstrate my own understanding of the topic.
         there is no intermediate assignment to the same variable along
         the path from the definition of the variable to the point $p$.
         
-        Let us take the example in fig. \ref{cfgexample}. The first
+        Let us take the example in fig. \ref{fig:cfgexample}. The first
         node defines the variable {\tt a}. We shall refer to this
         definition of {\tt a} as {\tt a\textsubscript{1}}. The
         definition of {\tt a} reaches each point in the
         \gls{controlflowgraph} as it is never re-defined. The
         definition {\tt c\textsubscript{1}}, however, does not reach
         the exit node as {\tt c} is re-defined by {\tt
-          c\textsubscript{2}}. The graph in fig. \ref{rdcfg} shows the
+          c\textsubscript{2}}. The graph in fig. \ref{fig:rdcfg} shows the
         set of reaching definitions at each point in the program. We
         have combined the {\em in} and {\em out} points to save space.
         
@@ -557,7 +573,7 @@ reader and to demonstrate my own understanding of the topic.
           \end{tikzpicture}
           \captionsetup{justification=centering}
           \caption{A \gls{controlflowgraph}.}
-          \label{rdcfg}
+          \label{fig:rdcfg}
         \end{wrapfigure}
         
         Data-flows have {\em direction}. Reaching definitions is a
@@ -611,7 +627,7 @@ reader and to demonstrate my own understanding of the topic.
         \vspace{-1cm}
         
         %TODO: REFERENCE
-        We can express the semi-lattice using a {\em \gls{hassediagram}}, shown in fig. \ref{meethasse}.
+        We can express the semi-lattice using a {\em \gls{hassediagram}}, shown in fig. \ref{fig:meethasse}.
 
         \begin{wrapfigure}[12]{o}{6.4cm}
           \vspace{-5mm}
@@ -645,7 +661,7 @@ reader and to demonstrate my own understanding of the topic.
           \end{tikzpicture}
           \captionsetup{width=6cm, justification=centering}
           \caption{A \gls{hassediagram} for the meet function $a \land b = a \cup b$.}
-          \label{meethasse}
+          \label{fig:meethasse}
         \end{wrapfigure}
         
         %TODO: REFERENCE
@@ -655,10 +671,10 @@ reader and to demonstrate my own understanding of the topic.
         initially paired with $undef$. When it is assigned a constant
         value, we assign it that value. If it is later assigned
         another value, we assign it $nonconst$. This can be expressed
-        as the meet function, $\land$, seen in fig. \ref{constmeet}.
+        as the meet function, $\land$, seen in fig. \ref{fig:constmeet}.
         
         The values form a semi-lattice, as seen in
-        fig. \ref{consthasse}.
+        fig. \ref{fig:consthasse}.
 
         \rule{\textwidth}{0.1mm}
 
@@ -671,7 +687,7 @@ reader and to demonstrate my own understanding of the topic.
         x \land x            & = x        & \text{for any value} \; x
         \end{align*}
         \caption{Equations describing the constant propagation meet function.}
-        \label{constmeet}
+        \label{fig:constmeet}
         \end{figure}
         
         \begin{figure}[h]
@@ -707,7 +723,7 @@ reader and to demonstrate my own understanding of the topic.
             
           \end{tikzpicture}
           \caption{A \gls{hassediagram} for the meet function described in fig \ref{constmeet}.}
-          \label{consthasse}
+          \label{fig:consthasse}
         \end{figure}
         
     \pagebreak
@@ -718,7 +734,7 @@ reader and to demonstrate my own understanding of the topic.
     overview of the methods proposed in the related reading \cite{eac}
     \cite{dragonbook}.
 
-	\subsection{Round-Robin Iterative Algorithm}
+        \subsection{Round-Robin Iterative Algorithm}
         The simplest algorithm used to solve \gls{dataflow} problems
         is the round-robin iterative method. We consider each node of
         the \gls{cfg} in turn, calculating the In and Out sets using
@@ -743,7 +759,7 @@ end
           \end{algorithm}
         \end{figure}
 
-	\subsection{Worklist Algorithm}
+        \subsection{Worklist Algorithm}
         The above solution holds value in its simplicity, but it is
         trivial to find a more efficient solution. A node's sets will
         only change if the Out sets of its predecessors change. Thus,
@@ -766,14 +782,14 @@ end
           \end{algorithm}
         \end{figure}
 
-	\subsection{Structural Algorithm}
+        \subsection{Structural Algorithm}
         A third algorithm takes an entirely different
         approach. Instead of iterating over each node, we perform a
         number of simple transformations on the graph in order to
         reduce it to a single \gls{region}. We then expand each node,
         calculating the In and Out sets of our reduced nodes as we
         expand them. A more detailed explanation of this concept may
-        be found in the {\em dragon book}\cite[p. 673]{dragonbook}.
+        be found in the {\em Dragon Book}\cite[p. 673]{dragonbook}.
 
     \section{Data-Flow Frameworks}
 
@@ -782,27 +798,27 @@ end
     problems by specifying the following constraints\cite[p. 680]{dragonbook}:
 
     \begin{itemize}
-      \item The {\em \gls{domain}} of values on which to operate;
-      \item The {\em \gls{direction}} in which data flows;
-      \item A set of {\em \gls{dataflowequations}} including the {\em
-          \gls{meetoperator}} $\land$ and the set of {\em
-          \gls{transfer} functions} $F$\footnote{The function
-          corresponding to a particular node/block $B$ is denoted $F_{B}$};
-      \item The {\em \gls{boundary}} value $v_{BOUNDARY}$ specifying
-        the value at the entry or exit to the \gls{cfg}; and
-      \item The {\em initial value}, $\top$, at each point in the graph.
-      \end{itemize}
+    \item The {\em \gls{domain}} of values on which to operate;
+    \item The {\em \gls{direction}} in which data flows;
+    \item A set of {\em \gls{dataflowequations}} including the {\em
+        \gls{meetoperator}} $\land$ and the set of {\em
+        \gls{transfer} functions} $F$\footnote{The function
+        corresponding to a particular node/block $B$ is denoted $F_{B}$};
+    \item The {\em \gls{boundary}} value $v_{BOUNDARY}$ specifying
+      the value at the entry or exit to the \gls{cfg}; and
+    \item The {\em initial value}, $\top$, at each point in the graph.
+    \end{itemize}
+    
+        \subsection{Algorithm for General Frameworks}
 
-          \subsection{Algorithm for General Frameworks}
+        Algorithm \ref{algo:general}, adapted from the one in the {\em
+          Dragon Book}\cite[p. 691]{dragonbook}, computes the value
+        sets at each node using the elements of our general
+        framework.
 
-          Algorithm \ref{algo:general}, adapted from the one in the {\em
-            dragon book}\cite[p. 691]{dragonbook}, computes the value
-          sets at each node using the elements of our general
-          framework.
-
-          \begin{figure}[b]
-            \centering
-            \vspace{-5mm}
+        \begin{figure}[b]
+          \centering
+          \vspace{-5mm}
           \begin{algorithm}[caption={Data-Flow Analysis of General Frameworks}, label={algo:general},escapeinside={||},mathescape=true]
 Transfer|$_{BOUNDARY}$| = v|$_{BOUNDARY}$|;
 
@@ -817,99 +833,298 @@ while (changes to any Transfer occur)
     end
 end
           \end{algorithm}
-            \caption{Algorithm for Data-Flow Analysis of General Frameworks}
-          \end{figure}
+          \caption{Algorithm for Data-Flow Analysis of General Frameworks}
+        \end{figure}
 
-          Instead of referring to the value sets as In and Out as the
-          {\em dragon book} does, we may call them \Gls{meet} and
-          \Gls{transfer}. This allows us to generalise our algorithm
-          to both forward and backward analyses; in the forward
-          direction Meet is In whereas in the backward direction it
-          is Out (and vice-versa for Transfer).
+        Instead of referring to the value sets as In and Out as the
+        {\em Dragon Book} does, we may call them \Gls{meet} and
+        \Gls{transfer}. This allows us to generalise our algorithm to
+        both forward and backward analyses; in the forward direction
+        Meet is In whereas in the backward direction it is Out (and
+        vice-versa for Transfer).
+        
+        We first initialise the Transfer set using the boundary
+        condition, then initialise each node's transfer set to our
+        initial value $\top$.
+        
+        Next, we perform a \gls{fixedpoint} computation on the
+        \gls{cfg}, evaluating each node's \Gls{meet} and
+        \Gls{transfer} sets using our \gls{dataflowequations} until
+        the sets stop changing.
 
-          We first initialise the Transfer set using the boundary
-          condition, then initialise each node's transfer set to our
-          initial value $\top$.
+        The \gls{meet} is taken over a node's {\em priors}: in the
+        forward direction, the node's predecessors; in the backward
+        direction, the node's successors.
 
-          Next, we perform a \gls{fixedpoint} computation on the
-          \gls{cfg}, evaluating each node's \Gls{meet} and
-          \Gls{transfer} sets using our \gls{dataflowequations} until
-          the sets stop changing.
+        This algorithm can be applied to any framework. In fact, all
+        of the \gls{dataflow} problems in appendix
+        \ref{appx:analysistypes} may be solved using this process.
 
-          The \gls{meet} is taken over a node's {\em priors}: in the
-          forward direction, the node's predecessors; in the backward
-          direction, the node's successors.
-
-          This algorithm can be applied to any framework. In fact, all
-          of the \gls{dataflow} problems in appendix
-          \ref{analysistypes} may be solved using this process.
-
-          \subsection{Conditions for Termination}
+        \subsection{Conditions for Termination}
           
-          We must be careful when constructing our general
-          frameworks. If our value sets continuously change we may
-          never reach a \gls{fixedpoint} and thus our computation will
-          never halt.
+        We must be careful when constructing our general
+        frameworks. If our value sets continuously change we may never
+        reach a \gls{fixedpoint} and thus our computation will never
+        halt.
 
-          To avoid this, our frameworks must satisfy the following
-          conditions\cite[p. 684]{dragonbook}:
+        To avoid this, our frameworks must satisfy the following
+        conditions\cite[p. 684]{dragonbook}:
 
-          \begin{itemize}
-          \item The set of \gls{transfer} functions, $F$, contains
-            the identity function\footnote{The identity function maps
-              its input to its output, i.e. $F(x)=x$};
-          \item $F$ is closed under composition: that is, for any two
-            functions $f$ and $g$, $f(g(x))$ is also in $F$;
-          \item $F$ is monotone; and
-          \item The \gls{domain} and the \gls{meetoperator}, $\land$, must
-            form a \gls{meetsemilattice}.
-          \end{itemize}
+        \begin{itemize}
+        \item The set of \gls{transfer} functions, $F$, contains
+          the identity function\footnote{The identity function maps
+            its input to its output, i.e. $F(x)=x$};
+        \item $F$ is closed under composition: that is, for any two
+          functions $f$ and $g$, $f(g(x))$ is also in $F$;
+        \item $F$ is monotone; and
+        \item The \gls{domain} and the \gls{meetoperator}, $\land$, must
+          form a \gls{meetsemilattice}.
+        \end{itemize}
 
-          These conditions ensure that during every iteration of the
-          algorithm the values at each point will either become {\em
-            smaller} (with respect to the partial ordering) or stay
-          the same. Since $F$ is monotone, all of the sets must
-          eventually stop changing {\bf or} reach the bottom element
-          of the lattice, $\bot$, at which point they cannot change
-          any further.
+        These conditions ensure that during every iteration of the
+        algorithm the values at each point will either become {\em
+          smaller} (with respect to the partial ordering) or stay the
+        same. Since $F$ is monotone, all of the sets must eventually
+        stop changing {\bf or} reach the bottom element of the
+        lattice, $\bot$, at which point they cannot change any
+        further.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Related Work}
 In this chapter I will discuss the merits and drawbacks of related
-work and identify aspects of said work which can be applied to this
+work and identify aspects of said work which may be applied to this
 project.
 
-	\section{Compiler Simulation}
-	
+    \section{Introduction}
 
-	\section{Compiler Visualisation}
-	Blah Blah
+    Although there exists a wide range of literature dealing with
+    data-flow analysis in compilers {\em independent} of interactive
+    tutoring and vice-versa, I believe that the combination of the two
+    has yet to be explored. Therefore, I have widened my research to
+    two main areas: the topic of \gls{dataflowanalysis}, and
+    advancements in interactive tutoring software.
+    
+    Chapter \ref{chap:background} provides a brief introduction to
+    \gls{dataflowanalysis} with reference to two major textbooks; the
+    first, {\em Engineering a Compiler, 2nd ed.}\cite{eac} by Keith
+    D. Cooper and Linda Torczon, serves as an excellent introduction
+    to the topic and a brief overview of some of the more complex
+    elements. The second, {\em Compilers: Principles, Techniques and
+      Tools, 1st ed.}\cite{dragonbook} (often referred to as the {\em
+      Dragon Book}) provides a more theoretical discussion of the
+    material.
+    
+    This chapter discusses the second area of research, advancements
+    in interactive tutoring software.
 
-	\section{Interactive Learning Environments}
-	Blah Blah
+    \section{Simulators as an Interactive Teaching Tool}
+
+    In his article {\em Evaluating A System Simulator For Computer
+      Architecture Teaching And Learning Support}\cite{mustafa2010},
+    Mustafa discusses the design \& implementation of a system
+    which integrates the simulation of a compiler, CPU and operating
+    system to aid in the teaching of undergraduate computer
+    architecture and operating systems modules.
+
+    Although brief, the article provides valuable insight into the
+    design and evaluation of such teaching software. The primary
+    source of feedback came from an opinion survey using a 5-point
+    \gls{likertscale} for quantitative analysis and open-ended questions
+    for qualitative feedback. In addition, students were administered
+    a test to assess their knowledge pre- and post- use of the system.
+
+    The evaluation results highlight an important point to consider
+    when designing teaching software; over 20\% of respondents
+    indicated that they spent more time learning how to use the
+    software than they did completing the given exercises. An equal
+    number of students reported that the simulator left them {\em more
+      confused} than before. In addition, 7.1\% of respondents said
+    that the simulator was too complicated to use effectively in their
+    tutorials.
+
+    However, the converse of these results gives a positive outlook
+    for this project: 72.4\% of respondents disagreed with the above
+    statements and 79.3\% believed that the system {\em did} improve
+    their understanding of the topics covered in lectures. Over 95\%
+    of responents agreed that the simulator was a useful tool in
+    understanding the material. Perhaps there is potential to achieve
+    similar results when extending the concept to
+    \gls{dataflowanalysis}.
+
+    \section{Learning and Teaching Styles}
+
+    A 1988 report by Richard M. Felder and Linda K. Silverman,
+    entitled {\em ``Learning and Teaching Styles in Engineering
+      Education''}\cite{felder1988}, categorizes students' learning
+    methods and describes ways in which professors may target specific
+    categories in their teaching strategy.
+
+    Felder refers to the {\em learning modalities} (or VAK) model proposed
+    by Walter Burke Barbe, which defines three {\em modalities}:
+
+    \begin{itemize}
+    \item {\bf visual} -- those who learn best by viewing images and
+      diagrams;
+    \item {\bf auditory} -- those who learn best by listening or
+      speaking aloud; and
+    \item {\bf kinaesthetic} -- those who learn best by actively
+      experiencing things, learning by doing.
+    \end{itemize}
+
+    The report claims that most people of college age and above, our
+    intended audience, identify as {\em visual} learners -- those who
+    benefit from charts, diagrams and such -- whereas the presentation
+    of content in university courses is primarily {\em auditory} (via
+    lectures) or a visual representation of auditory information
+    (i.e. words or mathematical formulae).
+
+    The survey results from Mustafa\cite[p. 103]{mustafa2010} support this
+    observation: although only a small sample (N=54) responded, 31\%
+    of respondents identified as visual learners, while a mere 6\%
+    identified as auditory learners. The majority of students (52\%)
+    identified as kinaesthetic learners, indicating that taking a
+    hands-on approach is a valuable tool for learning.
+
+    It should be noted that Felder discounts kinaesthetic learning
+    from his report as he considers the {\em learning by doing} to be
+    a separate category, perceiving the remaining attributes of
+    kinaesthetic learning (taste, smell, touch) to have little value
+    in engineering. A later observation by Felder agrees with Mustafa,
+    stating that engineers are ``more likely to be active than
+    reflective learners'' \cite[p. 678]{felder1988}.
+
+        \subsection{Ability to Identify Own Learning Style}
+
+        In her PhD dissertation {\em ``Individual Differences in
+          Learning: Predicting One's More Effective Learning
+          Modality''} \cite{farr1970}, Beatrice J. Farr claims that
+        students are able to accurately predict the learning style in
+        which they perform best:
+
+        \begin{quote}
+          ``An experiment with 72 college students confirmed that
+          individuals could accurately predict the modality in which
+          they could demonstrate superior learning performance. The
+          data also revealed that it is advantageous to learn and be
+          tested in the same modality and that such an advantage is
+          reduced when learning and testing are both conducted in an
+          individual's preferred modality.''\cite[p. 242]{dunn1979}
+        \end{quote}
+
+        Coffield\cite[p. 120]{coffield2004} disagrees with this, based
+        on an observation by Merrill\cite{merrill2000} that ``most
+        students are unaware of their learning styles and so, if they
+        are left to their own devices, they are most unlikely to start
+        learning in new ways''. This would indicate that basing
+        teaching methods on a student's preferences is damaging to
+        their education. This is, however, a misinterpretation; the
+        actual text of Merrill reads:
+
+        \begin{quote}
+          ``... a student must engage in those activities ... that are
+          required for them to acquire a particular kind of knowledge
+          or skill ... Most students are unaware of these fundamental
+          instructional (learning) strategies and hence left to their
+          own are unlikely to engage in learning activities most
+          appropriate for acquiring a particular kind of knowledge or
+          skill.''\cite[p. 4]{merrill2000}
+        \end{quote}
+
+        Merrill later argues that the optimal strategy for teaching is
+        primarily decided by the content being taught, and secondarily
+        by the learner's preferred style \cite[p. 4]{merrill2000}. By
+        not knowing the most effective strategy for learning the
+        content they are studying, a student limits his or her
+        potential. However, the appropriate strategy {\em should} in
+        fact be tailored to the student's preferred learning style to
+        obtain the best results.
+
+        \subsection{Criticism of Matching}
+
+        Some of the criticism levied at the concept of learning styles
+        is that the idea of {\em matching} -- exclusively teaching a
+        student based on his or her preferred learning style -- is
+        harmful to a student's education. Although Coffield's
+        \cite[p. 120]{coffield2004} reasoning is flawed, the
+        conclusion drawn by him and Merrill \cite[p. 4]{merrill2000}
+        is sound: by allowing students to exclusively use their
+        preferred way of learning, we risk them missing out on more
+        effective methods of study.
+
+        Returning to the report by Felder, the following quote:
+
+        \begin{quote}
+          ``... a study carried out by the Socony-Vacuum Oil Company
+          that concludes that students retain 10 percent of what they
+          read, 26 percent of what they hear, 30 percent of what they
+          see, 50 percent of what they see and hear, 70 percent of
+          what they say, and 90 percent of what they say as they do
+          something.''\cite[p. 677]{felder1988}
+        \end{quote}
+
+        indicates that by relying solely upon auditory methods,
+        professors can only hope to convey as little as 26\% of the
+        desired material to their students.
+
+        Felder advocates using a mixture of teaching methods in order
+        to appeal to all students' preferred learning styles.
+
+    \section{Summary}
+
+    While there may be some disagreement over the validity of learning
+    styles or modalities, even its critics seem to agree that there is
+    value in varying the methods of teaching in use. At present, the
+    only available resources for learning \gls{dataflowanalysis} are
+    lecture slides, videos and textbooks. These are primarily auditory
+    and sometimes visual methods of teaching, with little kinaesthetic
+    learning involved. There is a clear need for interactivity;
+    although 52\% of students identified as learning best through
+    activity\cite[p. 103]{mustafa2010}, there is almost no support for
+    this method of study.
+
+    Given the relative success of the examples discussed in this
+    chapter and the apparent lack of any such resources for
+    \gls{dataflowanalysis}, I believe there is a strong precedent for
+    this project and as such intend to develop a system to fulfil this
+    role.
+
+    However, it is important to note the mistakes made by the examples
+    discussed here. The simulator designed by Mustafa was deemed too
+    complex\cite[p. 103]{mustafa2010} by over 20\% of
+    respondents. This must be avoided if I am to create an effective
+    learning resource.
+
+    %TODO: Learn more things
+
+    In order to evaluate the success of my system I will build upon
+    the methods presented by Mustafa, aggregating opinion using a
+    \gls{likertscale} and using this data to judge overall
+    satisfaction with the software and identify specific areas for
+    improvement.
+    
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Data-Flow Analysis Simulation}
 Blah Blah
 
-	\section{Data-Flow Framework}
-	Blah Blah
+    \section{Data-Flow Framework}
+    Blah Blah
 
-        \section{Algorithms for Analysis}
-	Blah Blah
-
-	\subsection{Iterative Algorithm}
-	Blah Blah
-        
-	\section{Intermediate Language for Optimising Compilers}
-	Blah Blah
+    \section{Algorithms for Analysis}
+    Blah Blah
     
-    	\subsection{Parsing Expression Grammar}
-	Blah Blah
+        \subsection{Iterative Algorithm}
+        Blah Blah
     
-    	\subsection{Control-Flow Graphs}
+    \section{Intermediate Language for Optimising Compilers}
+    Blah Blah
+    
+        \subsection{Parsing Expression Grammar}
+        Blah Blah
+    
+        \subsection{Control-Flow Graphs}
         Blah Blah
 
 
@@ -950,11 +1165,11 @@ Blah Blah
 
 \begin{appendices}
 
-\chapter{Terminology}\label{glossary}
+\chapter{Terminology}\label{appx:glossary}
 
 \printglossaries
 
-\chapter{Types of Data-Flow Analysis}\label{analysistypes}
+\chapter{Types of Data-Flow Analysis}\label{appx:analysistypes}
 
 \bgroup
   \vspace{-5mm}

@@ -11,7 +11,7 @@
   \defaultdefine{real}{{\Bbb R}} \def\restriction{{|}} \def\club{CLUB}
   \def\w{\omega} \def\exist{\exists} \def\se{{\germ se}} \def\bb{{\bf b}}
   \def\equivalence{\equiv} \let\lt< \let\gt>
-\begin{thebibliography}{3}
+\begin{thebibliography}{9}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -32,5 +32,42 @@ K.~Cooper and L.~Torczon.
 A.~V. Aho, R.~Sethi, and J.~D. Ullman.
 \newblock \emph{{Compilers: Principles, Techniques and Tools}}.
 \newblock Addison-Wesley Publishing Company, 1st edition, 1986.
+
+\bibitem[Mustafa(2010)]{mustafa2010}
+B.~Mustafa.
+\newblock {Evaluating A System Simulator For Computer Architecture Teaching And
+  Learning Support}.
+\newblock \emph{Innovation in Teaching and Learning in Information and Computer
+  Sciences}, 9\penalty0 (1):\penalty0 100--104, 2010.
+
+\bibitem[Felder and Silverman(1988)]{felder1988}
+R.~M. Felder and L.~K. Silverman.
+\newblock {Learning and Teaching Styles In Engineering Education}.
+\newblock \emph{Engineering Education}, 78\penalty0 (7):\penalty0 674--681,
+  1988.
+
+\bibitem[Farr(1970)]{farr1970}
+B.J. Farr.
+\newblock \emph{Individual Differences in Learning: Predicting One's More
+  Effective Learning Modality}.
+\newblock PhD thesis, Catholic University of America, 1970.
+
+\bibitem[Dunn and Dunn(1979)]{dunn1979}
+R.~S. Dunn and K.~J. Dunn.
+\newblock {Learning Styles / Teaching Styles: Should They... Can They... Be
+  Matched?}
+\newblock \emph{Educational Leadership}, 36:\penalty0 238 -- 244, 1979.
+
+\bibitem[Coffield et~al.(2004)Coffield, Moseley, Hall, and
+  Ecclestone]{coffield2004}
+F.~Coffield, D.~Moseley, E.~Hall, and K.~Ecclestone.
+\newblock \emph{{Learning styles and pedagogy in post-16 learning}}.
+\newblock The Learning and Skills Research Centre, 2004.
+
+\bibitem[Merrill(2000)]{merrill2000}
+M.~D. Merrill.
+\newblock {Instructional Strategies and Learning Styles: Which takes
+  Precedence?}
+\newblock \emph{Trends and Issues in Instructional Technology}, 2000.
 
 \end{thebibliography}
