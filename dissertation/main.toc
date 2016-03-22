@@ -17,31 +17,37 @@
 \contentsline {subsection}{\numberline {2.3.2}Conditions for Termination}{10}
 \contentsline {chapter}{\numberline {3}Related Work}{11}
 \contentsline {section}{\numberline {3.1}Introduction}{11}
-\contentsline {section}{\numberline {3.2}Simulators as an Interactive Teaching Tool}{11}
-\contentsline {section}{\numberline {3.3}Learning and Teaching Styles}{12}
-\contentsline {subsection}{\numberline {3.3.1}Ability to Identify Own Learning Style}{13}
-\contentsline {subsection}{\numberline {3.3.2}Criticism of Matching}{13}
-\contentsline {section}{\numberline {3.4}Summary}{14}
-\contentsline {chapter}{\numberline {4}Data-Flow Analysis Simulation}{15}
-\contentsline {section}{\numberline {4.1}Data-Flow Framework}{15}
-\contentsline {section}{\numberline {4.2}Algorithms for Analysis}{15}
-\contentsline {subsection}{\numberline {4.2.1}Iterative Algorithm}{15}
-\contentsline {section}{\numberline {4.3}Intermediate Language for Optimising Compilers}{15}
-\contentsline {subsection}{\numberline {4.3.1}Parsing Expression Grammar}{15}
-\contentsline {subsection}{\numberline {4.3.2}Control-Flow Graphs}{16}
-\contentsline {chapter}{\numberline {5}Data-Flow Analysis Visualisation}{17}
-\contentsline {section}{\numberline {5.1}Data-Flow Framework}{17}
-\contentsline {section}{\numberline {5.2}Simulator}{17}
-\contentsline {section}{\numberline {5.3}Control-Flow Graph}{17}
-\contentsline {section}{\numberline {5.4}Lattice}{17}
-\contentsline {chapter}{\numberline {6}Interactive Learning}{19}
-\contentsline {section}{\numberline {6.1}User-defined Programs}{19}
-\contentsline {section}{\numberline {6.2}Interactive Tutorials}{19}
-\contentsline {section}{\numberline {6.3}Experimental Sandbox}{19}
-\contentsline {chapter}{\numberline {7}Evaluation}{21}
-\contentsline {chapter}{Appendices}{23}
-\contentsline {chapter}{\numberline {A}Terminology}{23}
-\contentsline {section}{\numberline {A.1}Glossary}{23}
-\contentsline {section}{\numberline {A.2}Acronyms}{24}
-\contentsline {chapter}{\numberline {B}Types of Data-Flow Analysis}{25}
-\contentsline {chapter}{Bibliography}{27}
+\contentsline {section}{\numberline {3.2}Online Learning Platforms}{11}
+\contentsline {section}{\numberline {3.3}Simulators as a Teaching Aid}{13}
+\contentsline {section}{\numberline {3.4}Learning and Teaching Styles}{13}
+\contentsline {subsection}{\numberline {3.4.1}Ability to Identify Own Learning Style}{14}
+\contentsline {subsection}{\numberline {3.4.2}Criticism of Learning Modalities}{15}
+\contentsline {section}{\numberline {3.5}Summary}{15}
+\contentsline {chapter}{\numberline {4}Design}{17}
+\contentsline {section}{\numberline {4.1}Introduction}{17}
+\contentsline {section}{\numberline {4.2}Design Constraints}{17}
+\contentsline {subsection}{\numberline {4.2.1}Technical Constraints}{18}
+\contentsline {subsection}{\numberline {4.2.2}Content Constraints}{18}
+\contentsline {chapter}{\numberline {5}Data-Flow Analysis Simulation}{19}
+\contentsline {section}{\numberline {5.1}Data-Flow Framework}{19}
+\contentsline {section}{\numberline {5.2}Algorithms for Analysis}{19}
+\contentsline {subsection}{\numberline {5.2.1}Iterative Algorithm}{19}
+\contentsline {section}{\numberline {5.3}Intermediate Language for Optimising Compilers}{19}
+\contentsline {subsection}{\numberline {5.3.1}Parsing Expression Grammar}{19}
+\contentsline {subsection}{\numberline {5.3.2}Control-Flow Graphs}{20}
+\contentsline {chapter}{\numberline {6}Data-Flow Analysis Visualisation}{21}
+\contentsline {section}{\numberline {6.1}Data-Flow Framework}{21}
+\contentsline {section}{\numberline {6.2}Simulator}{21}
+\contentsline {section}{\numberline {6.3}Control-Flow Graph}{21}
+\contentsline {section}{\numberline {6.4}Lattice}{21}
+\contentsline {chapter}{\numberline {7}Interactive Learning}{23}
+\contentsline {section}{\numberline {7.1}User-defined Programs}{23}
+\contentsline {section}{\numberline {7.2}Interactive Tutorials}{23}
+\contentsline {section}{\numberline {7.3}Experimental Sandbox}{23}
+\contentsline {chapter}{\numberline {8}Evaluation}{25}
+\contentsline {chapter}{Appendices}{27}
+\contentsline {chapter}{\numberline {A}Terminology}{27}
+\contentsline {section}{\numberline {A.1}Glossary}{27}
+\contentsline {section}{\numberline {A.2}Acronyms}{28}
+\contentsline {chapter}{\numberline {B}Types of Data-Flow Analysis}{29}
+\contentsline {chapter}{Bibliography}{31}

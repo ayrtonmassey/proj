@@ -166,12 +166,17 @@ responses to Likert items}
 
 %% Text
 \usepackage{color}
+\usepackage[hyphens]{url}
 
 %% Math
 \usepackage{amsmath}
 
 %% Figures
 \usepackage{caption}
+\captionsetup{%
+  figurename=fig.,
+  tablename=tab.
+}
 \usepackage{capt-of}
 \usepackage{wrapfig}
 \usepackage[bottom]{footmisc}
@@ -235,7 +240,7 @@ responses to Likert items}
 
 \pagenumbering{roman}
 
-\title{Data-Flow Analysis:\\Simulation and Visualisation}
+\title{An Interactive Learning Platform for Compiler Data-Flow Analysis}
 
 \author{Ayrton Massey}
 
@@ -730,8 +735,8 @@ demonstrate understanding of the topic.
     
     \section{Algorithms for Analysis}
     There exist a number of algorithms for performing
-    \gls{dataflowanalysis}. In this section, I will give a brief
-    overview of the methods proposed in the related reading \cite{eac}
+    \gls{dataflowanalysis}. This section contains a brief overview of
+    the methods proposed in the related reading \cite{eac}
     \cite{dragonbook}.
 
         \subsection{Round-Robin Iterative Algorithm}
@@ -892,24 +897,23 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Related Work}
-In this chapter I will discuss the merits and drawbacks of related
-work and identify aspects of said work which may be applied to this
-project.
+This chapter will discuss the merits and drawbacks of related work and
+identify aspects of said work which may be applied to this project.
 
     \section{Introduction}
 
     Although there exists a wide range of literature dealing with
     data-flow analysis in compilers {\em independent} of interactive
-    tutoring and vice-versa, I believe that the combination of the two
-    has yet to be explored. Therefore, I have widened my research to
-    two main areas: the topic of \gls{dataflowanalysis}, and
-    advancements in interactive tutoring software.
+    tutoring and vice-versa, the combination of the two has yet to be
+    explored. Therefore, research has been widened to two main areas:
+    the topic of \gls{dataflowanalysis}, and advancements in
+    interactive tutoring software.
     
-    Chapter \ref{chap:background} provides a brief introduction to
+    Chapter \ref{chap:background} provided a brief introduction to
     \gls{dataflowanalysis} with reference to two major textbooks; the
     first, {\em Engineering a Compiler, 2nd ed.}\cite{eac} by Keith
     D. Cooper and Linda Torczon, serves as an excellent introduction
-    to the topic and a brief overview of some of the more complex
+    to the topic and an overview of some of the more complex
     elements. The second, {\em Compilers: Principles, Techniques and
       Tools, 1st ed.}\cite{dragonbook} (often referred to as the {\em
       Dragon Book}) provides a more theoretical discussion of the
@@ -918,7 +922,73 @@ project.
     This chapter discusses the second area of research, advancements
     in interactive tutoring software.
 
-    \section{Simulators as an Interactive Teaching Tool}
+    \section{Online Learning Platforms}
+
+    In recent years there has been a surge in online learning
+    platforms such as Khan Academy and Coursera which deliver a series
+    of lectures or tutorials over the internet.
+
+    The videos are very similar in format to a traditional lecture,
+    consisting of a voice-over accompanied by related imagery or
+    text-based slides. However, the advantage over the traditional
+    format is two-fold: the ability to view the content at the
+    student's convenience, rather than in a specific location and time
+    slot, allows students to organise their learning around their own
+    schedule. Users are also able to replay portions of the class they
+    have missed or struggled to understand. In this way, learning may
+    be tailored to a student's specific needs.
+
+    These platforms often integrate an interactive or practical
+    element into their teaching; whilst services such as Coursera
+    offer feedback through the more traditional peer-assessed
+    hand-in\cite{aboutcoursera}, others such as Khan Academy and
+    HackerRank provide live demos and code interpreters to develop
+    understanding.
+
+    For example, in its series on linked lists\cite{hrlinkedlist},
+    HackerRank presents the user with a series of coding
+    challenges. The user inputs code to solve a given problem
+    (fig. \ref{fig:hrlinkedlist}), such as reversing a linked list,
+    and the site verifies their solution. Khan Academy's introduction
+    to binary search\cite{khanbinsearch} demonstrates the increase in
+    efficiency with a visual representation of both linear and binary
+    search (fig. \ref{fig:khanbinsearch}), allowing the user to step
+    through each and compare the number of steps taken for themselves.
+
+    These demonstrations enable a different kind of learning than that
+    which can be found in the classroom. Students are able to use
+    their intuition to form their own understanding of the material
+    and take a much more active role in their own development. This
+    kind of learning, referred to as {\em kinaesthetic} learning, can
+    be incredibly effective (see \S\ref{sec:matching}).
+
+    There are some drawbacks to this model: whilst students may learn
+    at their own pace, the only information available is that on the
+    page or in the video they are watching. If they have any questions
+    or struggle to understand the material as presented, there is no
+    lecturer or teaching assistant to provide alternate explanations
+    or answer queries. Some platforms provide discussion forums for
+    peer support, but this can result in ``the blind leading the
+    blind'' -- without an expert hand to guide them, students may
+    cement incorrect knowledge, defeating the purpose of the learning
+    platform.
+
+    \begin{figure}[b]
+      \hspace{2mm}
+      \begin{minipage}{.48\textwidth}
+        \includegraphics[width=\textwidth, trim=20 20 0 30]{img/hackerrank.png}
+        \captionsetup{width=\textwidth, justification=centering}
+        \captionof{figure}{Code editor from HackerRank\cite{hrlinkedlist}}\label{fig:hrlinkedlist}
+      \end{minipage}%
+      \quad
+      \begin{minipage}{.48\textwidth}
+        \includegraphics[width=\textwidth, trim=0 -37 0 -37]{img/khansearch.png}
+        \captionsetup{width=\textwidth, justification=centering}
+        \captionof{figure}{Binary search visualisation from Khan Academy\cite{khanbinsearch}}\label{fig:khanbinsearch}
+      \end{minipage}
+    \end{figure}
+
+    \section{Simulators as a Teaching Aid}
 
     In his article {\em Evaluating A System Simulator For Computer
       Architecture Teaching And Learning Support}\cite{mustafa2010},
@@ -938,30 +1008,29 @@ project.
     when designing teaching software; over 20\% of respondents
     indicated that they spent more time learning how to use the
     software than they did completing the given exercises. An equal
-    number of students reported that the simulator left them {\em more
-      confused} than before. In addition, 7.1\% of respondents said
-    that the simulator was too complicated to use effectively in their
+    number of students reported that the simulator left them more
+    confused than before. In addition, 7.1\% of respondents said that
+    the simulator was too complicated to use effectively in their
     tutorials.
 
     However, the converse of these results gives a positive outlook
     for this project: 72.4\% of respondents disagreed with the above
-    statements and 79.3\% believed that the system {\em did} improve
-    their understanding of the topics covered in lectures. Over 95\%
-    of responents agreed that the simulator was a useful tool in
-    understanding the material. Perhaps there is potential to achieve
-    similar results when extending the concept to
-    \gls{dataflowanalysis}.
+    statements and 79.3\% believed that the system improved their
+    understanding of the topics covered in lectures. Over 95\% of
+    responents agreed that the simulator was more useful than reading
+    textbooks or searching the internet in helping them understand the
+    material.
 
     \section{Learning and Teaching Styles}
 
     A 1988 report by Richard M. Felder and Linda K. Silverman,
-    entitled {\em ``Learning and Teaching Styles in Engineering
-      Education''}\cite{felder1988}, categorizes students' learning
+    entitled {\em Learning and Teaching Styles in Engineering
+      Education}\cite{felder1988}, categorizes students' learning
     methods and describes ways in which professors may target specific
     categories in their teaching strategy.
 
-    Felder refers to the {\em learning modalities} (or VAK) model proposed
-    by Walter Burke Barbe, which defines three {\em modalities}:
+    Felder refers to the learning modalities (or VAK) model proposed
+    by Walter Burke Barbe, which defines three modalities:
 
     \begin{itemize}
     \item {\bf visual} -- those who learn best by viewing images and
@@ -972,12 +1041,12 @@ project.
       experiencing things, learning by doing.
     \end{itemize}
 
-    The report claims that most people of college age and above, our
-    intended audience, identify as {\em visual} learners -- those who
-    benefit from charts, diagrams and such -- whereas the presentation
-    of content in university courses is primarily {\em auditory} (via
-    lectures) or a visual representation of auditory information
-    (i.e. words or mathematical formulae).
+    The report claims that most people of college age and above, the
+    intended audience of this project, identify as {\em visual}
+    learners -- those who benefit from charts, diagrams and such. In
+    contrast, the presentation of content in university courses is
+    primarily {\em auditory} (via lectures) or a visual representation
+    of auditory information (i.e. words or mathematical formulae).
 
     The survey results from Mustafa\cite[p. 103]{mustafa2010} support this
     observation: although only a small sample (N=54) responded, 31\%
@@ -989,10 +1058,10 @@ project.
     It should be noted that Felder discounts kinaesthetic learning
     from his report as he considers the {\em learning by doing} to be
     a separate category, perceiving the remaining attributes of
-    kinaesthetic learning (taste, smell, touch) to have little value
-    in engineering. A later observation by Felder agrees with Mustafa,
-    stating that engineers are ``more likely to be active than
-    reflective learners'' \cite[p. 678]{felder1988}.
+    kinaesthetic learning to have little value in engineering. A later
+    observation by Felder agrees with Mustafa, stating that engineers
+    are ``more likely to be active than reflective learners''
+    \cite[p. 678]{felder1988}.
 
         \subsection{Ability to Identify Own Learning Style}
 
@@ -1032,15 +1101,15 @@ project.
         \end{quote}
 
         Merrill later argues that the optimal strategy for teaching is
-        primarily decided by the content being taught, and secondarily
-        by the learner's preferred style \cite[p. 4]{merrill2000}. By
-        not knowing the most effective strategy for learning the
-        content they are studying, a student limits his or her
-        potential. However, the appropriate strategy {\em should} in
-        fact be tailored to the student's preferred learning style to
-        obtain the best results.
+        decided first and foremost by the content being taught, then
+        fine-tuned to the learner's preferred style
+        \cite[p. 4]{merrill2000}. By not knowing the most effective
+        strategy for learning the content they are studying, a student
+        limits his or her potential. However, the appropriate strategy
+        {\em should} in fact be tailored to the student's preferred
+        learning style to obtain the best results.
 
-        \subsection{Criticism of Matching}
+        \subsection{Criticism of Learning Modalities}\label{sec:matching}
 
         Some of the criticism levied at the concept of learning styles
         is that the idea of {\em matching} -- exclusively teaching a
@@ -1049,26 +1118,25 @@ project.
         \cite[p. 120]{coffield2004} reasoning is flawed, the
         conclusion drawn by him and Merrill \cite[p. 4]{merrill2000}
         is sound: by allowing students to exclusively use their
-        preferred way of learning, we risk them missing out on more
-        effective methods of study.
+        preferred way of learning, students are at risk of missing out
+        on more effective methods of study.
 
-        Returning to the report by Felder, the following quote:
+        Felder's report mentions a study carried out by the
+        Socony-Vacuum Oil Company, which concludes that:
 
         \begin{quote}
-          ``... a study carried out by the Socony-Vacuum Oil Company
-          that concludes that students retain 10 percent of what they
-          read, 26 percent of what they hear, 30 percent of what they
-          see, 50 percent of what they see and hear, 70 percent of
-          what they say, and 90 percent of what they say as they do
+          ``...students retain 10 percent of what they read, 26
+          percent of what they hear, 30 percent of what they see, 50
+          percent of what they see and hear, 70 percent of what they
+          say, and 90 percent of what they say as they do
           something.''\cite[p. 677]{felder1988}
         \end{quote}
 
-        indicates that by relying solely upon auditory methods,
+        This indicates that by relying solely upon auditory methods,
         professors can only hope to convey as little as 26\% of the
-        desired material to their students.
-
-        Felder advocates using a mixture of teaching methods in order
-        to appeal to all students' preferred learning styles.
+        desired material to their students. Felder advocates using a
+        mixture of teaching methods in order to appeal to all
+        students' preferred learning styles.
 
     \section{Summary}
 
@@ -1076,38 +1144,124 @@ project.
     styles or modalities, even its critics seem to agree that there is
     value in varying the methods of teaching in use. At present, the
     only available resources for learning \gls{dataflowanalysis} are
-    lecture slides, videos and textbooks. These are primarily auditory
+    lecture slides, videos and textbooks. These are mostly auditory
     and sometimes visual methods of teaching, with little kinaesthetic
-    learning involved. There is a clear need for interactivity;
+    learning involved. There is a clear need for more active study;
     although 52\% of students identified as learning best through
-    activity\cite[p. 103]{mustafa2010}, there is almost no support for
-    this method of study.
+    kinaesthetic learning\cite[p. 103]{mustafa2010}, there is almost
+    no support for this method of study.
 
     Given the relative success of the examples discussed in this
     chapter and the apparent lack of any such resources for
-    \gls{dataflowanalysis}, I believe there is a strong precedent for
-    this project and as such intend to develop a system to fulfil this
+    \gls{dataflowanalysis}, there is a strong precedent for this
+    project and as such a system will be developed to fulfil this
     role.
 
     However, it is important to note the mistakes made by the examples
     discussed here. The simulator designed by Mustafa was deemed too
-    complex\cite[p. 103]{mustafa2010} by over 20\% of
-    respondents. This must be avoided if I am to create an effective
-    learning resource.
+    complex\cite[p. 103]{mustafa2010} and a detriment to their
+    learning by over 20\% of respondents. This project will seek to
+    ensure that that content is clear and concise on order to produce
+    an effective learning resource.
 
-    %TODO: Learn more things
-
-    In order to evaluate the success of my system I will build upon
+    To evaluate the success of the system this project will build upon
     the methods presented by Mustafa, aggregating opinion using a
-    \gls{likertscale} and using this data to judge overall
+    \gls{likertscale} and examining this data to judge overall
     satisfaction with the software and identify specific areas for
     improvement.
-    
 
+
+\chapter{Design}
+This chapter discusses the overall design and architecture of the
+system, including motivations for design choices and solutions to
+conceptual problems.
+
+    \section{Introduction}
+    The original goal of this project was to produce an online
+    simulation of \gls{dataflowanalysis} to show students how
+    data-flow works. As discovered in the related reading, however, a
+    large portion of users of a similar system found it to be too
+    complex and claimed to have spent more time studying the software
+    itself than the topic at hand. The literature also raised another
+    key point; a wide variety of learning techniques are necessary to
+    gain a true understanding of a topic.
+
+    For these reasons the proposal has been modified to create a
+    comprehensive learning platform. In addition to the simulator the
+    software will provide supporting lectures to explain the basic
+    concepts and gradually introduce each element of the simulation.
+
+    By slowly exposing the components to the student and providing a
+    variety of ways in which to explore the material, it is hoped that
+    the system will prove a valuable tool for learning alongside
+    existing resources such as textbooks and lectures.
+
+    \section{Design Constraints}
+    In this section, design constraints are identified and potential
+    solutions are suggested.
+
+        \subsection{Technical Constraints}
+        As the original intention was to make such a system available
+        to COPT students available via the University, the following
+        technical considerations must be made:
+
+        \begin{itemize}
+        \item The system must be distributed to all students in some format;
+        \item This format must be functional on and compatible with a
+          wide range of devices owned by said students;
+        \item The system must be secure and require little
+          maintenance; and
+        \item The system must be hosted on some platform available to
+          the University.
+        \end{itemize}
+
+        In order to meet these criteria the system must rely on as
+        little technology as possible. The easier the platform is to
+        host and distribute, the more likely it is to be made
+        available to students -- a system which uses new technology
+        and requires its own dedicated hosting would be more difficult
+        to set up and maintain than one which can be deployed to
+        existing hardware. It is necessary to ensure that the system
+        is secure to avoid damaging University or student property.
+
+        For these reasons the following constraints have been applied
+        to the project:
+        
+        \begin{itemize}
+        \item The application will be developed using client-side
+          technologies available in all web browsers, including
+          JavaScript, HTML and CSS, which may be distributed using a
+          standard web server such as the one already used to host the
+          course webpage.
+        \item Use of popular libraries and frameworks such as jQuery
+          and Bootstrap will be encouraged, as this will:
+          \begin{itemize}
+          \item reduce load times, since the user has likely already
+            downloaded the required files; and
+          \item provide security and robustness due to those projects'
+            wide use and active development.
+          \end{itemize}
+        \end{itemize}
+          
+        \subsection{Content Constraints}
+        To be viable as a learning platform, the system must:
+        
+        \begin{itemize}
+        \item Enable access to a range of methods of study;
+        \item Provide comprehensive coverage of the topic at hand;
+        \item Ensure the content included is correct, clear and concise; and
+        \item Maintain a shallow learning curve, gradually introducing
+          students to each topic or element of the simulation.
+        \end{itemize}
+
+    
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Data-Flow Analysis Simulation}
-Blah Blah
+This chapter discusses the implementation of the
+\gls{dataflowanalysis} simulation -- the back-end elements which
+control the logic and state of the analysis, which is then interpreted
+by the visual elements described in chapter \ref{chap:visualisation}.
 
     \section{Data-Flow Framework}
     Blah Blah
@@ -1129,7 +1283,7 @@ Blah Blah
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Data-Flow Analysis Visualisation}
+\chapter{Data-Flow Analysis Visualisation}\label{chap:visualisation}
 Blah Blah
 
     \section{Data-Flow Framework}

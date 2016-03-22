@@ -11,7 +11,7 @@
   \defaultdefine{real}{{\Bbb R}} \def\restriction{{|}} \def\club{CLUB}
   \def\w{\omega} \def\exist{\exists} \def\se{{\germ se}} \def\bb{{\bf b}}
   \def\equivalence{\equiv} \let\lt< \let\gt>
-\begin{thebibliography}{9}
+\begin{thebibliography}{12}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -32,6 +32,27 @@ K.~Cooper and L.~Torczon.
 A.~V. Aho, R.~Sethi, and J.~D. Ullman.
 \newblock \emph{{Compilers: Principles, Techniques and Tools}}.
 \newblock Addison-Wesley Publishing Company, 1st edition, 1986.
+
+\bibitem[Coursera(2015)]{aboutcoursera}
+Coursera.
+\newblock About coursera.
+\newblock \url{https://www.coursera.org/about/}, 2015.
+\newblock Accessed: 2015-09-20.
+
+\bibitem[{HackerRank}(2015)]{hrlinkedlist}
+{HackerRank}.
+\newblock Reverse a linked list: Challenges.
+\newblock \url{https://www.hackerrank.com/challenges/reverse-a-linked-list/},
+  2015.
+\newblock Accessed: 2015-09-21.
+
+\bibitem[{Khan Academy}(2015)]{khanbinsearch}
+{Khan Academy}.
+\newblock Implementing binary search of an array.
+\newblock
+  \url{https://www.khanacademy.org/computing/computer-science/algorithms/binary-search/a/implementing-binary-search-of-an-array},
+  2015.
+\newblock Accessed: 2015-09-21.
 
 \bibitem[Mustafa(2010)]{mustafa2010}
 B.~Mustafa.
