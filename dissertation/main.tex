@@ -164,6 +164,9 @@ responses to Likert items}
 %% Acronyms
 \newacronym{cfg}{CFG}{control-flow graph}
 
+%% Acronyms
+\newacronym{copt}{COPT}{Compiler Optimisations}
+
 %% Text
 \usepackage{color}
 \usepackage[hyphens]{url}
@@ -196,11 +199,10 @@ responses to Likert items}
     \refstepcounter{nalg} %increments algorithm number
     \captionsetup{labelformat=algocaption,labelsep=colon} %defines the caption setup for: it ises label format as the declared caption label above and makes label and caption text to be separated by a ':'
     \lstset{ %this is the stype
-        frame=tB,
-        numbers=left, 
-        numberstyle=\tiny,
-        basicstyle=\scriptsize, 
-        keywordstyle=\color{black}\bfseries\em,
+        numbers=left,
+        numberstyle=\scriptsize,
+        basicstyle=\footnotesize,
+        keywordstyle=\color{black}\bfseries,
         keywords={,input, output, return, datatype, function, in, if,
           else, foreach, while, begin, end, for, each, is, not, of } %add the keywords you want, or load a language as Rubens explains in his comment above.
         numbers=left,
@@ -347,7 +349,7 @@ and provides a brief summary of contributions.
     as the \gls{dataflow} in question or the order in which nodes are
     evaluated, and examine the resulting solution.
     
-    As lecturer of the Compiler Optimisations course at the University
+    As lecturer of the \gls{copt} course at the University
     of Edinburgh, Dr. Leather desired a system which could teach
     students the foundations of the course in a more interactive
     format than standard lectures. The system should be suitable for
@@ -376,14 +378,14 @@ and provides a brief summary of contributions.
     \gls{dataflowanalysis} to algorithms and frameworks for solving
     generic \gls{dataflow} problems.
     
-    The application would be aimed at students of the Compiler
-    Optimisations course and as such would be based on material from
-    the course textbook {\em Engineering a Compiler, 2nd
-      ed.}\cite{eac} by Keith D. Cooper and Linda Torczon. The
-    application could then be extended to cover the topic in more
-    depth using content from {\em Compilers: Principles, Techniques
-      and Tools, 1st ed.}\cite{dragonbook} by Alfred V. Aho, Ravi
-    Sethi and Jeffery D. Ullman.
+    The application would be aimed at students of the \gls{copt}
+    course and as such would be based on material from the course
+    textbook {\em Engineering a Compiler, 2nd ed.}\cite{eac} by Keith
+    D. Cooper and Linda Torczon. The application could then be
+    extended to cover the topic in more depth using content from {\em
+      Compilers: Principles, Techniques and Tools, 1st
+      ed.}\cite{dragonbook} by Alfred V. Aho, Ravi Sethi and Jeffery
+    D. Ullman.
     
     Users would be able to interact with the system by providing
     simple assembly-like programs, altering parameters of the analysis
@@ -821,10 +823,7 @@ end
         sets at each node using the elements of our general
         framework.
 
-        \begin{figure}[b]
-          \centering
-          \vspace{-5mm}
-          \begin{algorithm}[caption={Data-Flow Analysis of General Frameworks}, label={algo:general},escapeinside={||},mathescape=true]
+        \begin{algorithm}[caption={Data-Flow Analysis of General Frameworks}, label={algo:general},escapeinside={||},mathescape=true]
 Transfer|$_{BOUNDARY}$| = v|$_{BOUNDARY}$|;
 
 for each (block |$B$| in the CFG)
@@ -837,9 +836,7 @@ while (changes to any Transfer occur)
         Transfer|$_{B}$| = |$F_{B}$|(In|$_{B}$|);
     end
 end
-          \end{algorithm}
-          \caption{Algorithm for Data-Flow Analysis of General Frameworks}
-        \end{figure}
+       \end{algorithm}
 
         Instead of referring to the value sets as In and Out as the
         {\em Dragon Book} does, we may call them \Gls{meet} and
@@ -1186,23 +1183,22 @@ conceptual problems.
     key point; a wide variety of learning techniques are necessary to
     gain a true understanding of a topic.
 
-    For these reasons the proposal has been modified to create a
+    For these reasons the proposal has been extended to create a
     comprehensive learning platform. In addition to the simulator the
     software will provide supporting lectures to explain the basic
-    concepts and gradually introduce each element of the simulation.
-
-    By slowly exposing the components to the student and providing a
-    variety of ways in which to explore the material, it is hoped that
-    the system will prove a valuable tool for learning alongside
-    existing resources such as textbooks and lectures.
+    concepts and gradually introduce each element of the
+    simulation. These lectures will include visual and interactive
+    elements to engage the user through a range of learning styles. It
+    is hoped that the system will prove a valuable tool for learning
+    alongside existing resources such as textbooks and lectures.
 
     \section{Design Constraints}
     In this section, design constraints are identified and potential
     solutions are suggested.
 
         \subsection{Technical Constraints}
-        As the original intention was to make such a system available
-        to COPT students available via the University, the following
+        As the intention isto make such a system available to
+        \gls{copt} students via the University, the following
         technical considerations must be made:
 
         \begin{itemize}
@@ -1223,25 +1219,6 @@ conceptual problems.
         to set up and maintain than one which can be deployed to
         existing hardware. It is necessary to ensure that the system
         is secure to avoid damaging University or student property.
-
-        For these reasons the following constraints have been applied
-        to the project:
-        
-        \begin{itemize}
-        \item The application will be developed using client-side
-          technologies available in all web browsers, including
-          JavaScript, HTML and CSS, which may be distributed using a
-          standard web server such as the one already used to host the
-          course webpage.
-        \item Use of popular libraries and frameworks such as jQuery
-          and Bootstrap will be encouraged, as this will:
-          \begin{itemize}
-          \item reduce load times, since the user has likely already
-            downloaded the required files; and
-          \item provide security and robustness due to those projects'
-            wide use and active development.
-          \end{itemize}
-        \end{itemize}
           
         \subsection{Content Constraints}
         To be viable as a learning platform, the system must:
@@ -1254,14 +1231,45 @@ conceptual problems.
           students to each topic or element of the simulation.
         \end{itemize}
 
+        To make the project worthwhile, the system must offer
+        something to students which has not previously been
+        available. If the content delivered by the platform is
+        incomplete, incorrect or too difficult to understand, the
+        system will not present a viable alternative method of study.
+
+    \section{Tools \& Technologies}
+    
+    To meet the technical constraints placed on the project, the
+    application will be developed using client-side technologies
+    available in all web browsers including JavaScript, HTML and CSS.
+    These static files may be distributed over HTTP using any standard
+    web server such as the one already used to host the course
+    webpage.
+
+    Use of popular libraries and frameworks such as jQuery and
+    Bootstrap will be encouraged as this provides many benefits. The
+    user will experience reduced load times since they have likely
+    already downloaded the required files, and such libraries will
+    provide security and robustness due to their wide use and active
+    development. Likewise, the more popular a library is the more
+    documentation and resources will be available to help me develop
+    the best possible system.
+    
+    The specific technologies used in each component are detailed in
+    the implementation (chapters \ref{chap:impl-simulation},
+    \ref{chap:impl-visualisation} \& \ref{chap:impl-teaching}).
+
+    \section{System Architecture}
+    
+
     
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Data-Flow Analysis Simulation}
+\chapter{Data-Flow Analysis Simulation}\label{chap:impl-simulation}
 This chapter discusses the implementation of the
 \gls{dataflowanalysis} simulation -- the back-end elements which
 control the logic and state of the analysis, which is then interpreted
-by the visual elements described in chapter \ref{chap:visualisation}.
+by the visual elements described in chapter \ref{chap:impl-visualisation}.
 
     \section{Data-Flow Framework}
     Blah Blah
@@ -1283,7 +1291,7 @@ by the visual elements described in chapter \ref{chap:visualisation}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Data-Flow Analysis Visualisation}\label{chap:visualisation}
+\chapter{Data-Flow Analysis Visualisation}\label{chap:impl-visualisation}
 Blah Blah
 
     \section{Data-Flow Framework}
@@ -1300,7 +1308,7 @@ Blah Blah
     
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Interactive Learning}
+\chapter{Interactive Learning}\label{chap:impl-teaching}
 
     \section{User-defined Programs}
     Blah Blah
