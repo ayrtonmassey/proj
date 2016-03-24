@@ -677,10 +677,6 @@ var ILOC = {
                 return false;
             }
         }
-
-        this.key=function() {
-            return "ILOC.Operand,{0},{1},{2}".format(this.name, this.type, this.index);
-        }
     },
 
     OPCODE_SYMBOLS: {
