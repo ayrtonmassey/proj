@@ -207,6 +207,10 @@ function Expression(kwargs) {
             return false;
         }
     }
+
+    this.key=function() {
+        return "Expression,{0},{1},{2},{3},{4}".format(ILOC.OPCODE_SYMBOLS[this.opcode], this.lhs.name, this.lhs.type, this.rhs.name, this.rhs.type);
+    }
 }
 
 

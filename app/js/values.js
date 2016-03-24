@@ -8,31 +8,29 @@
  */
 function ValueSet(iterable) {
 
-    this.array = [];
+    this.map = new Map([]);
 
     /* 
      *  Returns the values of this ValueSet, as an array.
      */
     this.values = function() {
-        return this.array;
+        return this.map.values();
     }
 
     /* 
      *  Returns the size of this ValueSet.
      *  
-     *  Simply returns the length of the backing array.
+     *  Simply returns the length of the backing map.
      */
     this.size = function() {
-        return this.array.length;
+        return this.map.size;
     }
 
     /* 
      *  Add `item` to this ValueSet, if it is not present.
      */
     this.add = function(item) {
-        if (!this.has(item)) {
-            this.array.push(item);
-        }
+        this.map.set(item.key(), item);
     }
 
 
@@ -41,9 +39,7 @@ function ValueSet(iterable) {
      */
     this.add_all = function(value_set) {
         for (item of value_set.values()) {
-            if (!this.has(item)) {
-                this.array.push(item);
-            }
+            this.add(item);
         }
     }
 
@@ -77,12 +73,7 @@ function ValueSet(iterable) {
      *  equal.
      */
     this.delete = function(item) {
-        for(var i = 0; i < this.array.length; i++) {
-            if(compare_values(this.array[i],item)) {
-                this.array.splice(i,1);
-                return;
-            }
-        }
+        this.map.delete(item.key());
     }
 
     /* 
@@ -93,12 +84,7 @@ function ValueSet(iterable) {
      *  equal.
      */
     this.has = function(item) {
-        for(v of this.values()) {
-            if(compare_values(v,item)) {
-                return true;
-            }
-        }
-        return false;
+        return this.map.has(item.key());
     }
     
     /*
@@ -133,12 +119,12 @@ function ValueSet(iterable) {
 /*
  *  Compare two values.
  *
- *  Compares two values using the compare() function of the first
- *  Value. This allows us to check equality between two separate
- *  instances which represent the same value.
+ *  Compares two values using their key() functions. This allows us to
+ *  check equality between two separate instances which represent the
+ *  same value.
  */ 
 function compare_values(v1, v2) {
-    return v1.compare(v2);
+    return v1.key() == v2.key();
 }
 
 /*
@@ -172,8 +158,8 @@ function compare_value_sets(v1,v2) {
  *
  */
 function ValueMixin(kwargs) {
-    this.compare=function(v2){
-        throw new ReferenceError("function compare not defined in {0}".format(this.constructor.name))
+    this.key=function(){
+        throw new ReferenceError("function key not defined in {0}".format(this.constructor.name))
     }
 
     this.toHTML=function(){
