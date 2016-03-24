@@ -166,6 +166,7 @@ responses to Likert items}
 \newacronym{ast}{AST}{abstract syntax tree}
 \newacronym{api}{API}{application programming interface}
 \glsunset{api}
+\newacronym{es6}{ES6}{ECMAScript 6}
 \newacronym{copt}{COPT}{Compiler Optimisations}
 
 %% Text
@@ -1486,7 +1487,7 @@ by the visual elements described in chapter
     instance. For the purposes of this simulation it would be useful
     to compare objects which share some attributes but refer to
     different instances; for example, when operating on sets of
-    variables it would be useful to consider two operands of different
+    operands it would be useful to consider two operands of different
     instructions as the same if they refer to the same variable.
 
     For this reason the simulator uses a new {\tt ValueSet} data
@@ -1499,7 +1500,9 @@ by the visual elements described in chapter
     equality using this identifier, so that two objects may be
     considered equal based on selected attributes.
 
-    The {\tt ValueSet} supports the following operations:
+    The {\tt ValueSet} supports the following operations, with
+    estimated time complexities based on the description of {\tt Map}s
+    in the \gls{es6} specification\cite{es6-maps}:
 
     \begin{figure}[!ht]
       \centering
@@ -1523,13 +1526,18 @@ by the visual elements described in chapter
     \item A set of {\em \gls{dataflowequations}} including the {\em
         \gls{meetoperator}} $\land$ and the set of {\em
         \gls{transfer} functions} $F$.
-    \item The {\em \gls{boundary}} value $v_{BOUNDARY}$ specifying the
-      value at the entry or exit to the \gls{cfg}; and
+    \item The {\em \gls{boundary}} value specifying the initial value
+      at the entry or exit to the \gls{cfg}; and
     \item The {\em initial value}, $\top$, at each point in the graph.
     \end{itemize}
 
-    The meet and transfer functions operate on 
+    The meet and transfer functions operate on {\tt
+      ValueSets}. Frameworks must also specify the following additional
+    information:
 
+    \begin{itemize}
+      \item
+    \end{itemize}
 
     \section{Algorithms for Analysis}
     Blah Blah
