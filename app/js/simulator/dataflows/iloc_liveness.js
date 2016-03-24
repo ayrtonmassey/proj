@@ -78,19 +78,7 @@ var iloc_liveness = new DFAFramework({
         var read_nodes = [];
         var modified_nodes = [];
 
-        var transfer_set = new ValueSet(node.sets.use.values()); // transfer_set = use[B]
-
-        var meet_set = new ValueSet(node.sets.meet.values()); // meet_set = out[B]
-        
-        for(v of node.sets.def.values()) {
-            meet_set.delete(v);
-        } // meet_set = out[B] - def[B]
-        
-        for(v of meet_set.values()) {
-            transfer_set.add(v); // transfer_set = use[B] U (out[B] - def[B])
-        }
-
-        node.sets.transfer = transfer_set;
+        node.sets.transfer = node.sets.use.union(node.sets.meet.difference(node.sets.def));
 
         read_nodes.push({
             node: node,

@@ -92,20 +92,8 @@ var iloc_reaching_definitions = new DFAFramework({
     transfer: function(node, cfg) {
         var read_nodes = [];
         var modified_nodes = [];
-        
-        var transfer_set = new ValueSet(node.sets.defgen.values()); // transfer_set = gen[B]
 
-        var meet_set = new ValueSet(node.sets.meet.values()); // meet_set = in[B]
-
-        for(v of node.sets.defkill.values()) {
-            meet_set.delete(v);
-        } // meet_set = in[B] - kill[B]
-        
-        for(v of meet_set.values()) {
-            transfer_set.add(v); // transfer_set = gen[B] U (in[B] - kill[B])
-        }
-
-        node.sets.transfer = transfer_set;
+        node.sets.transfer = node.sets.defgen.union(node.sets.meet.difference(node.sets.defkill)); // gen[B] U (in[B] - kill[B])
 
         read_nodes.push({
             node: node,

@@ -57,6 +57,17 @@ function ValueSet(iterable) {
     }
 
     /* 
+     *  Compute the difference of this ValueSet with `v2`.
+     */
+    this.difference = function(v2) {
+        var v1 = new ValueSet(this.values());
+        for (v of v2.values()) {
+            v1.delete(v);
+        }
+        return v1;
+    }
+    
+    /* 
      *  Compute the intersection of this ValueSet with `v2`.
      */
     this.intersect = function(v2) {
