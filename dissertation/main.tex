@@ -163,13 +163,15 @@ responses to Likert items}
 
 %% Acronyms
 \newacronym{cfg}{CFG}{control-flow graph}
-
-%% Acronyms
+\newacronym{ast}{AST}{abstract syntax tree}
+\newacronym{api}{API}{application programming interface}
+\glsunset{api}
 \newacronym{copt}{COPT}{Compiler Optimisations}
 
 %% Text
 \usepackage{color}
 \usepackage[hyphens]{url}
+\renewcommand{\labelitemii}{$\circ$}
 
 %% Math
 \usepackage{amsmath}
@@ -214,7 +216,7 @@ responses to Likert items}
 
 %% Graphs
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta,decorations.markings}
+\usetikzlibrary{arrows.meta,decorations.markings,positioning,calc}
 
 %% Tikz Styles
 \tikzstyle{block} = [rectangle, draw, text width=6em, text centered, rounded corners, minimum height=1em]
@@ -476,8 +478,7 @@ demonstrate understanding of the topic.
               \draw[edge] (n5) to (n6.north);
               \draw[edge] (n6) to (n7);
               \draw[edge] (n7) to (n8);
-              \draw[edge] (n7.east) -| ++(2.5, 0) |- (2.5, -0.8)
-              -| (n1.north);
+              \draw[edge] (n7.east) -| ++(2.5, 0) |- (2.5, -0.8) -| (n1.north);
 
               \cfgpoint[n3.south];
               \cfgpoint[n6.north];
@@ -798,7 +799,7 @@ end
         expand them. A more detailed explanation of this concept may
         be found in the {\em Dragon Book}\cite[p. 673]{dragonbook}.
 
-    \section{Data-Flow Frameworks}
+    \section{Data-Flow Frameworks}\label{sec:background-frameworks}
 
     It is possible to model \gls{dataflow} problems using a generic
     framework. This allows us to use the same algorithm for multiple
@@ -893,7 +894,7 @@ end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Related Work}
+\chapter{Related Work}\label{chap:relatedwork}
 This chapter will discuss the merits and drawbacks of related work and
 identify aspects of said work which may be applied to this project.
 
@@ -1169,7 +1170,7 @@ identify aspects of said work which may be applied to this project.
 
 
 \chapter{Design}
-This chapter discusses the overall design and architecture of the
+This chapter discusses the high-level design and architecture of the
 system, including motivations for design choices and solutions to
 conceptual problems.
 
@@ -1219,49 +1220,228 @@ conceptual problems.
         to set up and maintain than one which can be deployed to
         existing hardware. It is necessary to ensure that the system
         is secure to avoid damaging University or student property.
+
+        The application could be developed using purely client-side
+        technologies such as JavaScript, HTML and CSS. These static
+        files may be distributed over HTTP using any standard web
+        server such as the one already used to host the course
+        webpage. Efforts must be made to keep the performance of the
+        system consistent across a range of web browsers and devices;
+        although all modern web browsers are capable of interpreting
+        these types of content there are subtle differences which may
+        break functionality on one platform but not others.
+
+        Use of popular libraries and frameworks such as jQuery and
+        Bootstrap will be encouraged as this provides a number of
+        benefits. The user will experience reduced load times since
+        they have likely already downloaded the required files, and
+        such libraries will provide security and robustness due to
+        their wide use and active development. Likewise, the more
+        popular a library is the more documentation and resources will
+        be available to aid in developing the best possible system.
+        
+        The specific technologies used in each are detailed in
+        the implementation (chapters \ref{chap:impl-simulation},
+        \ref{chap:impl-visualisation} \& \ref{chap:impl-teaching}).
+
           
         \subsection{Content Constraints}
         To be viable as a learning platform, the system must:
         
         \begin{itemize}
-        \item Enable access to a range of methods of study;
+        \item Appeal to a range of learning styles;
         \item Provide comprehensive coverage of the topic at hand;
-        \item Ensure the content included is correct, clear and concise; and
+        \item Ensure the content included is correct, clear and
+          concise; and
         \item Maintain a shallow learning curve, gradually introducing
           students to each topic or element of the simulation.
         \end{itemize}
 
-        To make the project worthwhile, the system must offer
-        something to students which has not previously been
-        available. If the content delivered by the platform is
-        incomplete, incorrect or too difficult to understand, the
-        system will not present a viable alternative method of study.
+        Extending the proposed system into a comprehensive learning
+        platform will provide a range of ways in which to study
+        \gls{dataflowanalysis}. Students will have the choice to use
+        the areas of the software which most appeal to them and
+        content will be presented using a mixture of interactive,
+        visual and textual formats.
 
-    \section{Tools \& Technologies}
-    
-    To meet the technical constraints placed on the project, the
-    application will be developed using client-side technologies
-    available in all web browsers including JavaScript, HTML and CSS.
-    These static files may be distributed over HTTP using any standard
-    web server such as the one already used to host the course
-    webpage.
+        As the aim is to assist students of the \gls{copt} course,
+        coverage of topics will be prioritised based on their
+        inclusion in the course syllabus and whether they are required
+        to understand the simulation:
 
-    Use of popular libraries and frameworks such as jQuery and
-    Bootstrap will be encouraged as this provides many benefits. The
-    user will experience reduced load times since they have likely
-    already downloaded the required files, and such libraries will
-    provide security and robustness due to their wide use and active
-    development. Likewise, the more popular a library is the more
-    documentation and resources will be available to help me develop
-    the best possible system.
-    
-    The specific technologies used in each component are detailed in
-    the implementation (chapters \ref{chap:impl-simulation},
-    \ref{chap:impl-visualisation} \& \ref{chap:impl-teaching}).
+        \begin{itemize}
+        \item Basic principles of data-flow analysis;
+        \item A few simple data-flows, including:
+          \begin{itemize}
+          \item Reaching Definitions
+          \item Liveness Analysis
+          \item Available Expressions
+          \end{itemize}
+        \item Round-robin fixed-point algorithm;
+        \item Effect of orderings on analysis efficiency;
+        \item Generic frameworks for data-flow analysis;
+        \item Hasse diagrams and lattice representation of values; and
+        \item Conditions for analysis termination.
+        \end{itemize}        
+
+        If the content delivered by the platform is incomplete,
+        incorrect or too difficult to understand, the system will not
+        present a viable alternative method of study. When evaluating
+        the system it will be important to assess the clarity and
+        presentation of the material, and the ease of use of the
+        platform as a whole.
+
 
     \section{System Architecture}
+    This system will be divided into three main sections:
+
+    \begin{itemize}
+    \item A \gls{dataflowanalysis} simulator, which controls the logic
+      and state behind an analysis;
+    \item Visual components which display the state of the
+      simulation and allow users to interface with it; and
+    \item Interactive components such as navigation, text pages,
+      simulation controls and answerable questions.
+    \end{itemize}
+
+    The simulator forms the back-end of the system -- that is,
+    elements not directly visible to the user. The front-end
+    components will expose elements of the back-end, visualising the
+    state of the simulation and allowing the user to interact with
+    it. See fig. \ref{fig:sysarch} for a visual representation.
+    
+    Object-oriented design will be paramount, allowing functionality
+    to be extended and shared between similar elements. In addition to
+    speeding up development of the system by reducing the need to
+    duplicate code, this is generally good design practice. Components
+    will be written as re-usable modules which can be combined in
+    different ways, for example to present the user with a series of
+    lectures or an interactive simulation. See
+    \S\ref{sec:design-interface} for more details on the user
+    interface.
+   
+    \begin{figure}[!ht]
+      \centering
+      \scalebox{0.8}{
+        \begin{tikzpicture}[x=1mm, y=-1mm,
+          person/.pic={%
+            \node (-head) [circle, minimum size=4*\pgfkeysvalueof{/cfr/soul base dimension}] {};
+            \node (-torso) [below=0pt of -head, rectangle, rounded corners=.4*\pgfkeysvalueof{/cfr/soul base dimension}, minimum width=3.5*\pgfkeysvalueof{/cfr/soul base dimension}, minimum height=6*\pgfkeysvalueof{/cfr/soul base dimension}] {};
+            \node (-right arm) [right=0pt of -torso.north east, yshift=-3.1*\pgfkeysvalueof{/cfr/soul base dimension}, rectangle, minimum width=\pgfkeysvalueof{/cfr/soul base dimension}, minimum height=6*\pgfkeysvalueof{/cfr/soul base dimension}, rounded corners=.4*\pgfkeysvalueof{/cfr/soul base dimension}] {};
+            \node (-left arm) [left=0pt of -torso.north west, yshift=-3.1*\pgfkeysvalueof{/cfr/soul base dimension}, rectangle, minimum width=\pgfkeysvalueof{/cfr/soul base dimension}, minimum height=6*\pgfkeysvalueof{/cfr/soul base dimension}, rounded corners=.4*\pgfkeysvalueof{/cfr/soul base dimension}] {};
+            \node (-left leg) [below=0pt of -torso.south, rectangle, minimum width=1.5*\pgfkeysvalueof{/cfr/soul base dimension}, minimum height=6*\pgfkeysvalueof{/cfr/soul base dimension}, rounded corners=.2*\pgfkeysvalueof{/cfr/soul base dimension}, anchor=north east] {};
+            \node (-right leg) [below=0pt of -torso.south, rectangle, minimum width=1.5*\pgfkeysvalueof{/cfr/soul base dimension}, minimum height=6*\pgfkeysvalueof{/cfr/soul base dimension}, rounded corners=.2*\pgfkeysvalueof{/cfr/soul base dimension}, anchor=north west] {};
+            \draw [rounded corners=.2*\pgfkeysvalueof{/cfr/soul base dimension}] (-right leg.south) -- (-right leg.south west) -- (-left leg.south east) -- (-left leg.south west)  -- (-torso.south west) [rounded corners=.4*\pgfkeysvalueof{/cfr/soul base dimension}] -- (-left arm.south east) -- (-left arm.south west) -- (-left arm.north west) -- (-torso.north west) -- ($(-head.south) - (.5*\pgfkeysvalueof{/cfr/soul base dimension},0)$) arc [start angle=255.5, end angle=-74.5, radius=2*\pgfkeysvalueof{/cfr/soul base dimension}] -- (-torso.north east) -- (-right arm.north east) -- (-right arm.south east)  -- (-right arm.south west) [rounded corners=.2*\pgfkeysvalueof{/cfr/soul base dimension}] -- (-torso.south east)  -- (-right leg.south east) -- (-right leg.south west);
+          }
+          ]
+          % vertices
+          \tikzstyle{group} = [rectangle, draw, text centered, rounded corners, densely dotted, below right]
+          \tikzstyle{cluster} = [rectangle, draw, text width=60mm, text centered, rounded corners, dashed, below right]
+          \tikzstyle{clusterlabel} = [text width=60mm, minimum height=10mm, text centered, below]
+          \tikzstyle{component} = [rectangle, draw, text width=50mm, text centered, rounded corners, minimum height=7mm, below right]
+
+          \node[group, text width=135mm, minimum height=56mm] (backend) at (0,0) {};
+          \node[clusterlabel, text width=100mm] at (backend.north) {Back-end Components};
+
+          \node[cluster, minimum height=42mm, below = 10mm of backend.north] (simulator) {};
+          \node[clusterlabel] at (simulator.north) {Simulator};
+          \node[component, below=10mm of simulator.north] (sfwk)  {Data-Flow Framework};
+          \node[component, below=20mm of simulator.north] (scfg)  {Program CFG};
+          \node[component, below=30mm of simulator.north] (salgo) {Analysis Algorithm};
+
+          \node[group, text width=135mm, minimum height=76mm, below=5mm of backend.south] (frontend) {};
+          \node[clusterlabel, text width=100mm] at (frontend.north) {Front-end Components};
+
+          \node[cluster, minimum height=62mm, below left=10mm and 2mm of frontend.north] (visual) {};
+          \node[clusterlabel] at (visual.north) {Visual Components};
+          \node[component, below=10mm of visual.north] (vcfg)   {Visual CFG};
+          \node[component, below=20mm of visual.north] (vhasse) {Hasse Diagram};
+          \node[component, below=30mm of visual.north] (vres)   {Table of Results};
+          \node[component, below=40mm of visual.north] (vlst)   {Code Listing};
+          \node[component, below=50mm of visual.north] (vfwk)   {Framework Properties};
+
+          \node[cluster, minimum height=52mm, below right=10mm and 2mm of frontend.north] (interface) {};
+          \node[clusterlabel] at (interface.north) {Interactive Components};
+          \node[component, below=10mm of interface.north] (imenu) {Navigation};
+          \node[component, below=20mm of interface.north] (itext) {Text Pages};
+          \node[component, below=30mm of interface.north] (iques) {Questions};
+          \node[component, below=40mm of interface.north] (icont) {Simulation Controls};
+          
+          \pgfkeyssetvalue{/cfr/soul base dimension}{5pt}
+          \pic (user) [below=5mm of frontend.south] {person};
+
+          % \draw[edge] (simulator) .. controls ([xshift=-4cm] simulator) and ([xshift=4cm] visual) .. (visual);
+
+          \draw[-{>[scale=2.5]}] ($ (interface.north) + (8, 0) $) |- (simulator.east) node [near start, right, text width=30mm, text centered] {\footnotesize User actions update simulation};
+          \draw[-{>[scale=2.5]}] (simulator.west) -| ($ (visual.north) +  (-8, 0) $) node [near end, left, text width=25mm, text centered] {\footnotesize Updates propagated to visual components};
+          \draw[-{>[scale=2.5]}] ($ (user-right arm.east) + (2, 0)$) -| ($ (interface.south) + (8,0) $) node [midway, above right, text width=28mm, text centered] {\footnotesize User interacts with front-end};
+          \draw[-{>[scale=2.5]}] ($ (visual.south) + (-8, 0) $) |- ($ (user-left arm.west) + (-2, 0)$) node [midway, above left, text width=28mm, text centered] {\footnotesize User receives visual feedback};
+        \end{tikzpicture}
+      }
+      \captionsetup{justification=centering}
+      \caption{An overview of the planned system architecture.}\label{fig:sysarch}
+    \end{figure}
+
+
+    \section{User Interface Design}\label{sec:design-interface}
+
     
 
+    \section{Data Collection}
+
+    To evaluate the system anonymous usage data will be collected. A
+    variety of web platforms exist for this purpose including Google
+    Analytics and Piwik. However, these platforms are intended for
+    large-scale data collection and as such are not suited for the
+    fine-grained analysis necessary in the evaluation of this
+    project. As an example, it is not possible to link tracked events
+    to specific users or view a complete list of triggered events
+    using Google Analytics. Furthermore, extended use of these
+    platforms often comes at significant financial cost. It is also
+    important to consider the ethical issues that may arise from
+    sharing usage data with companies like Google; using such a
+    platform would require a much deeper discussion around user
+    privacy and use of the data for financial gain.
+
+    Developing a custom event-tracking \gls{api} would allow full
+    control of the data collected both in terms of accessing the raw
+    data and maintaining user privacy.
+
+    The data model must be able to store the following on a per-user
+    basis:
+
+    \begin{itemize}
+    \item Page views;
+    \item Button clicks and interactions with components;
+    \item Page load times; and
+    \item Question attempts and overall scores.
+    \end{itemize}
+
+    All of these can be modeled using an API with a single
+    endpoint\footnote{An endpoint is a URL at which a particular API
+      service may be accessed, e.g. \url{api.com/users/} may provide
+      access to user data} based on the Google Analytics event
+    model. Each {\tt event} record has the following fields:
+
+    \begin{itemize}
+    \item A {\tt tracking token} used to group events by user;
+    \item A {\tt type} such as page view or button click;
+    \item The {\tt datetime} at which the event occurred; and
+    \item Four levels of categorization: {\tt category}, {\tt action},
+      {\tt label}, and {\tt value}. Each field can be used to group
+      similar events and store values such as question scores or which
+      element was clicked. The actual content of these fields does not
+      matter as long as the grouping is consistent.
+    \end{itemize}
+
+    The tracking token will be generated when the user first visits
+    the page and persist across visits to the site. Storing this token
+    will enable analysis of how a user's actions affect their
+    achievement of learning outcomes, such as whether completing a
+    given tutorial or using a simulator component increases question
+    scores in the related topic. It will be possible to determine
+    which elements of the software users find difficult to understand
+    based on their interactions with each component.
     
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1269,10 +1449,87 @@ conceptual problems.
 This chapter discusses the implementation of the
 \gls{dataflowanalysis} simulation -- the back-end elements which
 control the logic and state of the analysis, which is then interpreted
-by the visual elements described in chapter \ref{chap:impl-visualisation}.
+by the visual elements described in chapter
+\ref{chap:impl-visualisation}.
+
+    \section{Overview}
+    The implementation of the simulator is based upon the concept of a
+    general framework as described in
+    \S\ref{sec:background-frameworks} of this report and \S10.11 of
+    the {\em Dragon Book}\cite{dragonbook}. The simulator takes as
+    input a program written in the ILOC language, a \gls{dataflow}
+    framework and an order in which to evaluate nodes. It parses the
+    program into an \gls{ast} and uses this to build a \gls{cfg}, then
+    performs an analysis on said graph using the round-robin
+    \gls{fixedpoint} algorithm for general frameworks (algorithm
+    \ref{algo:general}).
+
+    Playback of the simulation can be controlled through the
+    simulator's \gls{api}. Function calls which update the state of
+    the simulation trigger an event handling system to update the
+    visual components. However, the simulation is entirely independent
+    of the rest of the system; re-using it in another project is as
+    simple as copying the directory containing the simulator code and
+    including the required libraries.
+
+    The simulator is implemented entirely in JavaScript and makes use
+    of some jQuery features and a set of helper functions gathered
+    from sources such as StackOverflow. Snippets of code taken from
+    external sources are explicitly commented as such in the source
+    code and will be mentioned here.
+
+    \section{Value Sets}
+
+    JavaScript includes a native {\tt Set} data structure for
+    representing collections of unique objects. Unfortunately, two
+    objects are only seen as equal if they refer to the exact same
+    instance. For the purposes of this simulation it would be useful
+    to compare objects which share some attributes but refer to
+    different instances; for example, when operating on sets of
+    variables it would be useful to consider two operands of different
+    instructions as the same if they refer to the same variable.
+
+    For this reason the simulator uses a new {\tt ValueSet} data
+    structure, backed by a native JavaScript {\tt Map}. The {\tt
+      ValueSet} stores objects which inherit from a {\tt
+      ValueMixin}\footnote{A mixin class contains methods which may be
+      inherited by another class, but is not necessarily the parent of
+      that class.}, which defines a {\tt key} function to obtain a
+    unique identifier for a given object. Objects are checked for
+    equality using this identifier, so that two objects may be
+    considered equal based on selected attributes.
+
+    The {\tt ValueSet} supports the following operations:
+
+    \begin{figure}[!ht]
+      \centering
+      \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        size   & add    & delete & has    & union  & intersect \\ \hline
+        $O(1)$ & $O(1)$ & $O(1)$ & $O(1)$ & $O(n)$ & $O(n)$    \\ \hline
+      \end{tabular}
+    \end{figure}
+
+    
 
     \section{Data-Flow Framework}
-    Blah Blah
+    
+    Each data-flow framework defines the elements outlined in
+    \S\ref{sec:background-frameworks}, namely:
+
+    \begin{itemize}
+    \item The {\em \gls{domain}} of values on which to operate;
+    \item The {\em \gls{direction}} in which data flows;
+    \item A set of {\em \gls{dataflowequations}} including the {\em
+        \gls{meetoperator}} $\land$ and the set of {\em
+        \gls{transfer} functions} $F$.
+    \item The {\em \gls{boundary}} value $v_{BOUNDARY}$ specifying the
+      value at the entry or exit to the \gls{cfg}; and
+    \item The {\em initial value}, $\top$, at each point in the graph.
+    \end{itemize}
+
+    The meet and transfer functions operate on 
+
 
     \section{Algorithms for Analysis}
     Blah Blah
@@ -1324,6 +1581,10 @@ Blah Blah
 \chapter{Evaluation}
 Blah Blah
 
+% use the following and \cite{} as above if you use BibTeX
+% otherwise generate bibtem entries
+\bibliographystyle{unsrtnat}
+\bibliography{mybibfile}
 
 \begin{appendices}
 
@@ -1352,10 +1613,5 @@ Blah Blah
 
 
 \end{appendices}
-
-% use the following and \cite{} as above if you use BibTeX
-% otherwise generate bibtem entries
-\bibliographystyle{unsrtnat}
-\bibliography{mybibfile}
 
 \end{document}
