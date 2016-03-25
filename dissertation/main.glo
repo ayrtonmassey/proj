@@ -28,6 +28,7 @@
 \glossaryentry{control-flow graph?\glossentry{controlflowgraph}|setentrycounter[]{page}\glsnumberformat}{6}
 \glossaryentry{meet?\glossentry{meet}|setentrycounter[]{page}\glsnumberformat}{6}
 \glossaryentry{transfer?\glossentry{transfer}|setentrycounter[]{page}\glsnumberformat}{6}
+\glossaryentry{local information?\glossentry{localinformation}|setentrycounter[]{page}\glsnumberformat}{6}
 \glossaryentry{transfer?\glossentry{transfer}|setentrycounter[]{page}\glsnumberformat}{6}
 \glossaryentry{data-flow?\glossentry{dataflow}|setentrycounter[]{page}\glsnumberformat}{6}
 \glossaryentry{meet semi-lattice?\glossentry{meetsemilattice}|setentrycounter[]{page}\glsnumberformat}{6}
@@ -80,11 +81,14 @@
 \glossaryentry{meet operator?\glossentry{meetoperator}|setentrycounter[]{page}\glsnumberformat}{24}
 \glossaryentry{transfer?\glossentry{transfer}|setentrycounter[]{page}\glsnumberformat}{24}
 \glossaryentry{boundary?\glossentry{boundary}|setentrycounter[]{page}\glsnumberformat}{24}
-\glossaryentry{control-flow graph?\glossentry{controlflowgraph}|setentrycounter[]{page}\glsnumberformat}{35}
-\glossaryentry{data-flow?\glossentry{dataflow}|setentrycounter[]{page}\glsnumberformat}{35}
-\glossaryentry{data-flow?\glossentry{dataflow}|setentrycounter[]{page}\glsnumberformat}{35}
-\glossaryentry{dominate?\glossentry{dominate}|setentrycounter[]{page}\glsnumberformat}{36}
-\glossaryentry{dominate?\glossentry{dominate}|setentrycounter[]{page}\glsnumberformat}{37}
-\glossaryentry{reaching definition?\glossentry{reachingdefinition}|setentrycounter[]{page}\glsnumberformat}{37}
-\glossaryentry{liveness analysis?\glossentry{livenessanalysis}|setentrycounter[]{page}\glsnumberformat}{37}
-\glossaryentry{available expression?\glossentry{availableexpression}|setentrycounter[]{page}\glsnumberformat}{37}
+\glossaryentry{meet?\glossentry{meet}|setentrycounter[]{page}\glsnumberformat}{25}
+\glossaryentry{transfer?\glossentry{transfer}|setentrycounter[]{page}\glsnumberformat}{25}
+\glossaryentry{transfer?\glossentry{transfer}|setentrycounter[]{page}\glsnumberformat}{25}
+\glossaryentry{control-flow graph?\glossentry{controlflowgraph}|setentrycounter[]{page}\glsnumberformat}{37}
+\glossaryentry{data-flow?\glossentry{dataflow}|setentrycounter[]{page}\glsnumberformat}{37}
+\glossaryentry{data-flow?\glossentry{dataflow}|setentrycounter[]{page}\glsnumberformat}{37}
+\glossaryentry{dominate?\glossentry{dominate}|setentrycounter[]{page}\glsnumberformat}{38}
+\glossaryentry{dominate?\glossentry{dominate}|setentrycounter[]{page}\glsnumberformat}{39}
+\glossaryentry{reaching definition?\glossentry{reachingdefinition}|setentrycounter[]{page}\glsnumberformat}{39}
+\glossaryentry{liveness analysis?\glossentry{livenessanalysis}|setentrycounter[]{page}\glsnumberformat}{39}
+\glossaryentry{available expression?\glossentry{availableexpression}|setentrycounter[]{page}\glsnumberformat}{39}

@@ -44,6 +44,14 @@
           of the \gls{cfg} to the exit point) or backward (the opposite)}
 }
 
+\newglossaryentry{localinformation}
+{
+        name=local information,
+        description={Information specific to a given node in the CFG, e.g.
+          in \gls{reachingdefinition}s DefGen is the set of definitions
+          which a given node generates.}
+}
+
 \newglossaryentry{dataflowequations}
 {
         name=data-flow equations,
@@ -163,6 +171,8 @@ responses to Likert items}
 
 %% Acronyms
 \newacronym{cfg}{CFG}{control-flow graph}
+\newacronym{peg}{PEG}{Parsing Expression Grammar}
+\newacronym{iloc}{ILOC}{Intermediate Language for Optimising Compilers}
 \newacronym{ast}{AST}{abstract syntax tree}
 \newacronym{api}{API}{application programming interface}
 \glsunset{api}
@@ -171,6 +181,7 @@ responses to Likert items}
 
 %% Text
 \usepackage{color}
+\usepackage[dvipsnames]{xcolor}
 \usepackage[hyphens]{url}
 \renewcommand{\labelitemii}{$\circ$}
 
@@ -178,6 +189,10 @@ responses to Likert items}
 \usepackage{amsmath}
 
 %% Figures
+\usepackage{tabularx}
+\newcolumntype{m}{>{\arraybackslash$}c<{$}}     % centre-align math column
+\newcolumntype{M}{>{\arraybackslash$}l<{$}}     % left-align math column
+\newcolumntype{C}{>{\centering\arraybackslash}X}% fill-width centre-align column
 \usepackage{caption}
 \captionsetup{%
   figurename=fig.,
@@ -191,6 +206,36 @@ responses to Likert items}
   \setlength{\TPVertModule}{1mm}
 
 \usepackage{listings}
+
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  keywordstyle=\color{Magenta}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{Violet}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{darkgray}\ttfamily,
+  stringstyle=\color{Red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\lstset{
+   language=JavaScript,
+   extendedchars=true,
+   basicstyle=\footnotesize\ttfamily,
+   showstringspaces=false,
+   showspaces=false,
+   numbers=left,
+   numberstyle=\scriptsize,
+   tabsize=2,
+   breaklines=true,
+   showtabs=false,
+   xleftmargin=.04\textwidth,
+}
+
 
 %% Algorithm listings
 \newcounter{nalg}[chapter] % defines algorithm counter for chapter-level
@@ -207,9 +252,12 @@ responses to Likert items}
         basicstyle=\footnotesize,
         keywordstyle=\color{black}\bfseries,
         keywords={,input, output, return, datatype, function, in, if,
-          else, foreach, while, begin, end, for, each, is, not, of } %add the keywords you want, or load a language as Rubens explains in his comment above.
+          else, foreach, while, begin, end, for, each, is, not, of, true, false, } %add the keywords you want, or load a language as Rubens explains in his comment above.
+        ndkeywords{this,},
+        ndkeywordstyle=\color{black}\bfseries,
         numbers=left,
         xleftmargin=.04\textwidth,
+        tabsize=4,
         #1 % this is to add specific settings to an usage of this environment (for instnce, the caption and referable label)
     }
 }
@@ -597,12 +645,15 @@ demonstrate understanding of the topic.
         \vspace{-7mm}
         \begin{align*}
           \textnormal{In}(n)  & = \bigcup_{p \in preds} \textnormal{Out}(n) \\
-          \textnormal{Out}(n) & = \textnormal{DefGen}(n) \cup (\textnormal{In}(n) \setminus \textnormal{Out}(n))
+          \textnormal{Out}(n) & = \textnormal{DefGen}(n) \cup (\textnormal{In}(n) \setminus \textnormal{DefKill}(n))
         \end{align*}
         
         The equations for $\text{In}(n)$ and $\text{Out}(n)$ are often
         referred to as {\em \gls{meet}} and {\em \gls{transfer}}
-        functions. In a forward flow problem the meet function
+        functions. Other symbols such as $\text{DefGen}(n)$ and
+        $\text{DefKill}(n)$ are referred to as \gls{localinformation},
+        as they are constant values containing information about the
+        current node. In a forward flow problem the meet function
         combines the {\em out} sets of a node's predecessors to form
         its {\em in} set. The \gls{transfer} function computes a
         node's {\em out} set from its {\em in} set and information
@@ -731,7 +782,7 @@ demonstrate understanding of the topic.
             \draw[edge] (s7.south) -- (s8.north);
             
           \end{tikzpicture}
-          \caption{A \gls{hassediagram} for the meet function described in fig \ref{constmeet}.}
+          \caption{A \gls{hassediagram} for the meet function described in fig \ref{fig:constmeet}.}
           \label{fig:consthasse}
         \end{figure}
         
@@ -826,10 +877,10 @@ end
         framework.
 
         \begin{algorithm}[caption={Data-Flow Analysis of General Frameworks}, label={algo:general},escapeinside={||},mathescape=true]
-Transfer|$_{BOUNDARY}$| = v|$_{BOUNDARY}$|;
+Meet|$_{BOUNDARY}$| = v|$_{BOUNDARY}$|;
 
 for each (block |$B$| in the CFG)
-    Transfer|$_{B}$| = |$\top$|;
+    Meet|$_{B}$| = |$\top$|;
 end
 
 while (changes to any Transfer occur)
@@ -1473,11 +1524,9 @@ by the visual elements described in chapter
     simple as copying the directory containing the simulator code and
     including the required libraries.
 
-    The simulator is implemented entirely in JavaScript and makes use
-    of some jQuery features and a set of helper functions gathered
-    from sources such as StackOverflow. Snippets of code taken from
-    external sources are explicitly commented as such in the source
-    code and will be mentioned here.
+    The simulator is implemented entirely in JavaScript. Snippets of
+    code taken from external sources are explicitly commented as such
+    in the source code and will be mentioned here.
 
     \section{Value Sets}
 
@@ -1491,31 +1540,43 @@ by the visual elements described in chapter
     instructions as the same if they refer to the same variable.
 
     For this reason the simulator uses a new {\tt ValueSet} data
-    structure, backed by a native JavaScript {\tt Map}. The {\tt
+    structure, backed by a native JavaScript {\tt array}. The {\tt
       ValueSet} stores objects which inherit from a {\tt
       ValueMixin}\footnote{A mixin class contains methods which may be
       inherited by another class, but is not necessarily the parent of
-      that class.}, which defines a {\tt key} function to obtain a
-    unique identifier for a given object. Objects are checked for
-    equality using this identifier, so that two objects may be
-    considered equal based on selected attributes.
+      that class.} and must define a {\tt compare} function. Objects
+    are checked for equality using this function so that two objects
+    may be considered equal based on selected attributes.
 
-    The {\tt ValueSet} supports the following operations, with
-    estimated time complexities based on the description of {\tt Map}s
-    in the \gls{es6} specification\cite{es6-maps}:
+    {\tt ValueSet}s support the following operations, listed here
+    along with their estimated worst-case time complexities:
 
-    \begin{figure}[!ht]
+    \begin{table}[!ht]
       \centering
-      \begin{tabular}{|c|c|c|c|c|c|}
+      \def\arraystretch{1.2}
+      \begin{tabularx}{0.8\textwidth}{|C|C|C|C|}
         \hline
-        size   & add    & delete & has    & union  & intersect \\ \hline
-        $O(1)$ & $O(1)$ & $O(1)$ & $O(1)$ & $O(n)$ & $O(n)$    \\ \hline
-      \end{tabular}
-    \end{figure}
+            {\tt s.size()} & {\tt s.add(v)} & {\tt s.delete(v)} & {\tt s.has(v)} \\ \hline
+            $O(1)$         & $O(|s|)$       & $O(|s|)$          & $O(|s|)$       \\ \hline
+      \end{tabularx}
+      \\[2mm]
+      \begin{tabularx}{0.8\textwidth}{|C|C|C|}
+        \hline
+            {\tt s.union(t)}   & {\tt s.intersect(t)} & {\tt s.difference(t)} \\ \hline
+            $O(|s| \cdot |t|)$ & $O(|s| \cdot |t|)$   & $O(|s| \cdot |t|)$    \\ \hline
+      \end{tabularx}
+    \end{table}
 
+    Using an alternate backing structure such as a hash table would
+    provide constant-time implementations of {\tt has}, {\tt add} and
+    {\tt delete}, and thus also improve the run-time of operations
+    which make use of these functions ({\tt union}, {\tt intersect}
+    and {\tt difference}). Given that the expected user input will
+    only operate on small {\tt ValueSet}s this is not a major concern,
+    but a potential improvement that should be noted for future
+    development.
     
-
-    \section{Data-Flow Framework}
+    \section{Data-Flow Frameworks}
     
     Each data-flow framework defines the elements outlined in
     \S\ref{sec:background-frameworks}, namely:
@@ -1536,20 +1597,117 @@ by the visual elements described in chapter
     information:
 
     \begin{itemize}
-      \item
+    \item A name and identifier;
+    \item \LaTeX\ representations of the \gls{meet} and \gls{transfer} functions; and
+    \item JavaScript functions to compute local information
+      independent from the \gls{transfer} function.
     \end{itemize}
 
-    \section{Algorithms for Analysis}
-    Blah Blah
+    This allows properties of the framework to be displayed by the
+    visual components in addition to the values calculated at each
+    point.
     
-        \subsection{Iterative Algorithm}
-        Blah Blah
+    \section{Simulation Algorithm}
+    Algorithm \ref{algo:general_impl} shows a disassembled version of
+    algorithm \ref{algo:general}. The functions can be combined to
+    enable a step-by-step evaluation or automatic playback.
+
+    \begin{algorithm}[caption={Implementation of General Framework Algorithm}, label={algo:general_impl},escapeinside={||},mathescape=true]
+function reset():
+    B = entry node of CFG
+    B.meet = framework.boundary
+    for (node N of cfg):
+        N.meet = framework.top
+    step    = |{\tt MEET}|
+    changed = false
+
+function iterate():
+    if (step is |{\tt MEET}|):
+        B.meet, changed = framework.meet(b, this.cfg)
+        step = |{\tt TRANSFER}|
+    else:
+        B.transfer, changed = framework.transfer(b)
+        step = |{\tt MEET}|
+        B    = next node
+    \end{algorithm}
+
+    To demonstrate, listing \ref{lst:autoplay} shows the implementation of
+    automatic playback:
+
+    \begin{lstlisting}[language=JavaScript, caption={JavaScript Implementation of Automatic Playback}, label={lst:autoplay}]
+this.play = function() {
+  this.state.paused = false;
+  var _this = this;
+  (function foo() {
+    if (!_this.state.paused && !_this.state.finished) {
+      // If the user hasn't pressed pause and we're not finished
+      _this.iterate();                   // Step forward
+      _this.events.trigger('update');    // Update visual components
+      setTimeout(foo, _this.play_speed); // Repeat after interval
+    }
+  })();
+}
+    \end{lstlisting}
     
-    \section{Intermediate Language for Optimising Compilers}
-    Blah Blah
-    
+    \section{Understanding Programs}
+    The simulation operates on programs written in the \gls{iloc}, as
+    described in {\em Engineering a
+      Compiler}\cite[appx.~A]{eac}. \gls{iloc} is an assembly-like
+    language designed for toy compilers; it is both simple to parse
+    and human-readable. This makes it the perfect input language for
+    the learning platform, with the added benefit that students will
+    be able to step through examples from the textbook using the
+    simulator.
+
         \subsection{Parsing Expression Grammar}
-        Blah Blah
+        The description of \gls{iloc} in {\em Engineering a Compiler}
+        describes a simple \gls{peg} for the language. I have extended
+        the grammar rules as follows:
+
+        \begin{figure}[!ht]
+          \centering
+          \begin{tabular}{M m M}
+            Operation     & \rightarrow & NormalOp                                                       \\
+                          & |           & ControlFlowOp                                                  \\
+                          & |           & MemoryLoadOp                                                   \\
+                          & |           & MemoryStoreOp                                                  \\
+                          &             &                                                                \\
+            MemoryLoadOp  & \rightarrow & LoadOpcode \; OperandList \; \Rightarrow \; OperandList        \\
+            MemoryStoreOp & \rightarrow & StoreOpcode \; OperandList \; \Rightarrow \; OperandList       \\
+            NormalOp      & \rightarrow & NormalOpcode \; OperandList \; \Rightarrow \; OperandList      \\
+            ControlFlowOp & \rightarrow & ControlFlowOpcode \; OperandList \; \Rightarrow \; OperandList \\
+                          &             &                                                                \\
+            LoadOpCode    & \rightarrow & \text{loadI}                                                   \\
+                          & |           & \text{loadAO}                                                  \\
+                          & |           & ...                                                            \\
+                          &             &                                                                \\
+            StoreOpCode   & \rightarrow & \text{storeI}                                                  \\
+                          & |           & \text{storeAO}                                                 \\
+                          & |           & ...                                                            \\
+                          &             &                                                                \\
+            Operand       & |           & \texttt{register}                                              \\
+                          & |           & \texttt{num}                                                   \\
+                          & |           & \texttt{label}                                                 \\
+                          & |           & \texttt{cc}                                                    \\
+          \end{tabular}
+          \caption{Extended ILOC Parsing Expression Grammar}
+        \end{figure}
+        
+        The reason for these changes is that ILOC allows the user to
+        write to three types of storage: registers, main memory and
+        comparison flags. Changing the grammar allows disambiguation
+        between operations which write to or read from different types
+        of storage in the abstract syntax tree. This is an important
+        distinction to make because the built-in data-flows only
+        consider register accesses when calculating value sets at each
+        point (see \S\ref{sec:builtin_dataflows} for an explanation).
+
+        The full extended ILOC grammar is listed in appendix
+        \ref{appx:iloc_grammar}.
+
+        \subsection{Abstract Syntax Tree}
+
+        The parse tree obtained from the \gls{peg}
     
         \subsection{Control-Flow Graphs}
         Blah Blah
