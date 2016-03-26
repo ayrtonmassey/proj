@@ -11,7 +11,7 @@
   \defaultdefine{real}{{\Bbb R}} \def\restriction{{|}} \def\club{CLUB}
   \def\w{\omega} \def\exist{\exists} \def\se{{\germ se}} \def\bb{{\bf b}}
   \def\equivalence{\equiv} \let\lt< \let\gt>
-\begin{thebibliography}{15}
+\begin{thebibliography}{20}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -35,7 +35,7 @@ A.~V. Aho, R.~Sethi, and J.~D. Ullman.
 
 \bibitem[Coursera(2015)]{aboutcoursera}
 Coursera.
-\newblock About coursera.
+\newblock {About Coursera}.
 \newblock \url{https://www.coursera.org/about/}, 2015.
 \newblock Accessed: 2015-09-20.
 
@@ -69,8 +69,8 @@ R.~M. Felder and L.~K. Silverman.
 
 \bibitem[Farr(1970)]{farr1970}
 B.J. Farr.
-\newblock \emph{Individual Differences in Learning: Predicting One's More
-  Effective Learning Modality}.
+\newblock \emph{{Individual Differences in Learning: Predicting One's More
+  Effective Learning Modality}}.
 \newblock PhD thesis, Catholic University of America, 1970.
 
 \bibitem[Dunn and Dunn(1979)]{dunn1979}
@@ -93,15 +93,45 @@ M.~D. Merrill.
 
 \bibitem[{David Majda}(2016)]{pegjs}
 {David Majda}.
-\newblock Peg.js -- parser generator for javascript.
+\newblock {PEG.js -- Parser Generator for JavaScript}.
 \newblock \url{http://pegjs.org/}, 2016.
 \newblock Accessed: 2016-03-25.
 
 \bibitem[{Troels Knak-Nielsen}(2016)]{snippet:combinations}
 {Troels Knak-Nielsen}.
-\newblock Calculate all combinations (permutations).
+\newblock {Calculate All Combinations (permutations)}.
 \newblock \url{https://dzone.com/articles/calculate-all-combinations}, 2016.
 \newblock Accessed: 2016-03-25.
+
+\bibitem[{Google Inc.}(2016)]{angularjs}
+{Google Inc.}
+\newblock {AngularJS -- Superheroic JavaScript MVW Framework}.
+\newblock \url{https://angularjs.org/}, 2016.
+\newblock Accessed: 2016-03-26.
+
+\bibitem[{Chris Pettitt}(2016)]{dagre-demos}
+{Chris Pettitt}.
+\newblock {cpettitt/dagre-d3 Wiki}.
+\newblock \url{https://github.com/cpettitt/dagre-d3/wiki#demos}, 2016.
+\newblock Accessed: 2016-03-26.
+
+\bibitem[{Cytoscape Consortium}(2015)]{cytoscapejs}
+{Cytoscape Consortium}.
+\newblock {Cytoscape.js}.
+\newblock \url{http://js.cytoscape.org/}, 2015.
+\newblock Accessed: 2016-03-26.
+
+\bibitem[{Almende B.V}(2016)]{vis.js}
+{Almende B.V}.
+\newblock {vis.js}.
+\newblock \url{http://visjs.org/}, 2016.
+\newblock Accessed: 2016-03-26.
+
+\bibitem[{Alan Williamson}(2016)]{jquerylinedtextarea}
+{Alan Williamson}.
+\newblock {jQuery Lined TextArea}.
+\newblock \url{http://alan.blog-city.com/jquerylinedtextarea.htm}, 2016.
+\newblock Accessed: 2016-03-26.
 
 \bibitem[{Wikipedia}(2016)]{wikipedia:contextfreegrammar}
 {Wikipedia}.

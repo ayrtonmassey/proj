@@ -180,6 +180,17 @@
         description={A context-free grammar describes a formal language using rules of the form $A \rightarrow \alpha$, in which $A$ is a single non-terminal symbol and $\alpha$ is a series of terminal or non-terminal symbols. The grammar is ``context-free'' in that its rules may be applied regardless of the context of the non-terminal $A$\cite{wikipedia:contextfreegrammar}}
 }
 
+%% Web Applications
+
+
+\newglossaryentry{singlepageapp}
+{
+        name=single page app,
+        description={a web application in which the page is only loaded once, after which
+          JavaScript is used to update the content and asynchronous calls are
+          used to request more data.}
+}
+
 %% Evaluation
  
 \newglossaryentry{likertscale}
@@ -1365,9 +1376,9 @@ conceptual problems.
         popular a library is the more documentation and resources will
         be available to aid in developing the best possible system.
         
-        The specific technologies used in each are detailed in
-        the implementation (chapters \ref{chap:impl-simulation},
-        \ref{chap:impl-visualisation} \& \ref{chap:impl-teaching}).
+        The specific technologies used in each are detailed in the
+        implementation (chapters \ref{chap:impl-backend} \&
+        \ref{chap:impl-frontend}).
 
           
         \subsection{Content Constraints}
@@ -1418,22 +1429,12 @@ conceptual problems.
 
 
     \section{System Architecture}
-    This system will be divided into three main sections:
-
-    \begin{itemize}
-    \item A \gls{dataflowanalysis} simulator, which controls the logic
-      and state behind an analysis;
-    \item Visual components which display the state of the
-      simulation and allow users to interface with it; and
-    \item Interactive components such as navigation, text pages,
-      simulation controls and answerable questions.
-    \end{itemize}
-
-    The simulator forms the back-end of the system -- that is,
-    elements not directly visible to the user. The front-end
-    components will expose elements of the back-end, visualising the
-    state of the simulation and allowing the user to interact with
-    it. See fig. \ref{fig:sysarch} for a visual representation.
+    This system is divided into two main areas of development.  The
+    back-end of the system controls the logic and state of a data-flow
+    analysis simulation. The front-end components will hook into and
+    expose elements of the back-end, visualising the state of the
+    simulation and allowing the user to interact with it. See
+    fig. \ref{fig:sysarch} for a visual representation.
     
     Object-oriented design will be paramount, allowing functionality
     to be extended and shared between similar elements. In addition to
@@ -1444,6 +1445,13 @@ conceptual problems.
     lectures or an interactive simulation. See
     \S\ref{sec:design-interface} for more details on the user
     interface.
+
+    Each component needs to be be self contained; it should be
+    possible to instantiate more than one of each type of component at
+    once, including the simulator itself. This would allow, say,
+    displaying the annotated control-flow graphs of two simulations
+    side-by-side. The simulation will also be independent of the user
+    interface so that it may be adapted for re-use in other projects.
    
     \begin{figure}[!ht]
       \centering
@@ -1460,8 +1468,8 @@ conceptual problems.
           }
           ]
           % vertices
-          \tikzstyle{group} = [rectangle, draw, text centered, rounded corners, densely dotted, below right]
-          \tikzstyle{cluster} = [rectangle, draw, text width=60mm, text centered, rounded corners, dashed, below right]
+          \tikzstyle{group} = [rectangle, draw, text centered, rounded corners, dash pattern=on 2pt off 3pt, below right]
+          \tikzstyle{cluster} = [rectangle, draw, text width=60mm, text centered, rounded corners, densely dotted, below right]
           \tikzstyle{clusterlabel} = [text width=60mm, minimum height=10mm, text centered, below]
           \tikzstyle{component} = [rectangle, draw, text width=50mm, text centered, rounded corners, minimum height=7mm, below right]
 
@@ -1570,12 +1578,12 @@ point\footnote{An endpoint is a URL at which a particular API
     
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Data-Flow Analysis Simulation}\label{chap:impl-simulation}
+\chapter{Back-End Implementation}\label{chap:impl-backend}
 This chapter discusses the implementation of the
 \gls{dataflowanalysis} simulation -- the back-end elements which
-control the logic and state of the analysis, which is then interpreted
-by the visual elements described in chapter
-\ref{chap:impl-visualisation}.
+control the logic and state of the analysis, which is then presented
+by the user interface components described in chapter
+\ref{chap:impl-frontend}.
 
     \section{Overview}
     The implementation of the simulator is based upon the concept of a
@@ -1783,7 +1791,7 @@ this.play = function() {
     the program. The following sections describe this process in more
     detail.
 
-        \subsection{Parsing Expression Grammar}\label{sec:peg}
+        \subsubsection{Parsing Expression Grammar}\label{sec:peg}
 
         A \gls{peg} is very similar to a \gls{contextfreegrammar} in
         that it describes a formal language using a set of rules for
@@ -2156,34 +2164,296 @@ for $i$ from 0 to length($sets$)
         over other structures such as an adjacency list.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Data-Flow Analysis Visualisation}\label{chap:impl-visualisation}
-Blah Blah
+\chapter{Front-End Implementation}\label{chap:impl-frontend}
+This chapter discusses the implementation of the front-end elements
+which make up the user interface, including the visualisation and
+interactive teaching components.
 
-    \section{Data-Flow Framework}
-    Blah Blah
-    
-    \section{Simulator}
-    Blah Blah
-    
-    \section{Control-Flow Graph}
-    Blah Blah
-    
-    \section{Lattice}
-    Blah Blah
-    
+    \section{Overview}
+    The implementation of the user interface components uses a modular
+    design. Each element is a {\tt View}, a component which renders
+    content to a HTML element referred to as that component's
+    canvas. An inheritance model is used so that functionality is
+    shared between {\tt View}s, for example, each of the visual
+    components inherits from {\tt SimulatorView}, which handles
+    registering callback functions with a simulator's event handler.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Interactive Learning}\label{chap:impl-teaching}
+    The front-end is implemented using JavaScript, HTML and CSS. A
+    number of libraries provide additional functionality, including:
 
-    \section{User-defined Programs}
-    Blah Blah
+    \begin{itemize}
+    \item d3.js and the extension dagre-d3 to draw directed graphs;
+    \item jQuery and extensions such as tipsy for navigation and
+      visual elements;
+    \item MathJax for rendering of \LaTeX\ math formulae;
+    \item Handlebars.js for HTML templating; and
+    \item Bootstrap v4 alpha for page layout and theming.
+    \end{itemize}
+
+    \section{View Model}
     
-    \section{Interactive Tutorials}
-    Blah Blah
+    Each user interface component is implemented as its own class, or
+    {\tt View}. A {\tt View} component renders HTML content inside
+    another HTML element referred to as its canvas. Multiple {\tt
+      View}s may exist at one time, and a {\tt View} may contain other
+    views. 
+
+    Beside from the individual view classes, there are multiple types
+    of {\tt View}; for example, all of the visual components inherit
+    from the {\tt SimulatorView} class. Each {\tt SimulatorView} is
+    required to implement callback functions for the {\tt update} and
+    {\tt reset} events.  These functions are called by the simulator's
+    event handler when an event is triggered, which may cause the
+    component to be re-rendered or the information contained within to
+    be modified.
     
-    \section{Experimental Sandbox}
-    Blah Blah
+    In addition to specifying the interface for various classes, the
+    {\tt View} model allows functionality to be shared between
+    components. The {\tt TutorialView} class implements navigation
+    through and display an interactive tutorial, so that each one need
+    only implement functions to control the content shown at each
+    step.
+
+    This model is a very simple implementation of what is known as a
+    \gls{singlepageapp}: a web application in which the page is only
+    loaded once, after which JavaScript is used to update the page
+    content and asynchronous calls request more data from the
+    server. Some existing libraries are based around this concept; for
+    example AngularJS\cite{angularjs} provides a similar framework for
+    creating \gls{singlepageapp}s using re-usable components.
     
+    \section{Visual Components}
+    This section describes the implementation of the components which
+    visualise the simulation, including the choice of any libraries
+    and frameworks and the changes that were made from the original
+    design.
+
+        \subsection{Control-Flow Graphs}  
+        \Gls{controlflowgraph}s are rendered using the dagre-d3
+        extension for the graph visualisation library d3.js. An SVG
+        component is created and the nodes and edges added to the
+        dagre-d3 graph. The layout of the graph is handled entirely by
+        the graphing library.
+
+        The dagre-d3 library was chosen due to the strength of the
+        demonstrations on the project's website\cite{dagre-demos}. The
+        available examples showed graphs very similar to the desired
+        result, with only a small set of \gls{api} calls required to
+        draw a simple control-flow graph. Given more time, perhaps
+        using a more fully-featured graphing library such as
+        Cytoscape.js \cite{cytoscapejs} or vis.js \cite{vis.js} would
+        improve the aesthetics and performance of the
+        component. However, dagre-d3 is more than adequate for a proof
+        of concept.
+
+        \begin{figure}[!h]
+          \begin{minipage}{.58\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{img/cfg-vis.png}
+            \captionof{figure}{Control-Flow Graph Visualisation}\label{fig:cfg-vis}
+          \end{minipage}
+          \quad
+          \begin{minipage}{.38\textwidth}
+            \centering
+            \includegraphics[width=\textwidth, trim=0 0 0 60]{img/lattice.png}
+            \captionsetup{width=6cm, justification=centering}
+            \captionof{figure}{Hasse Diagram Visualisation}\label{fig:lattice}
+          \end{minipage}
+        \end{figure}
+
+        To reduce clutter in the graph, the user has three options for
+        displaying nodes: {\em current}, in which only the points
+        relating to the current step are shown; {\em all}, in which
+        every point is displayed; or {\em none}, in which only the
+        nodes of the \gls{cfg} are shown. Fig. \ref{fig:cfg-vis} shows
+        the \gls{cfg} in the {\em current} setting.
+
+        A system was devised to allow dynamic insertion and removal of
+        points from the \gls{cfg}. In addition to automatically
+        displaying nodes based on the settings described above, the
+        component's \gls{api} can be used to add or remove specific
+        points. This allows the tutorial examples to display the exact
+        information required rather than relying on the simulation to
+        provide the correct results.
+
+        As the user steps through a simulation, nodes and points in
+        the \gls{cfg} are highlighted to visually relate them to
+        actions occurring in other components. This is shown by
+        fig. \ref{fig:cfg-vis}; the transfer function is reading
+        information, shown in light blue, from In$(n_7)$ and modifying
+        Out($n_7$), shown in dark blue.
+
+        \subsection{Hasse Diagrams}
+
+        The \gls{hassediagram} component is implemented using much the
+        same system as the \gls{controlflowgraph}s. An SVG component
+        is created, the nodes and edges are added to a dagre-d3 graph
+        and the result is rendered to the screen.
+
+        As the user steps through a simulation, nodes in the diagram
+        are highlighted to visually relate them to actions occurring
+        in other components -- during the meet phase, the sets being
+        considered are highlighted in light green and the resulting
+        set in dark green.
+
+        \subsection{Table of Results}
+        The table of results, which displays the set of values at each
+        point, is simply a HTML table containing the required
+        information. Various layouts were considered for this table,
+        with the final design shown in fig. \ref{fig:tableofresults}.
+
+        \begin{figure}[!ht]
+          \centering
+          \includegraphics[width=\textwidth]{img/tableofresults.png}
+          \caption{Current Table Layout}\label{fig:tableofresults}
+        \end{figure}
+
+        This design could be improved by changing the layout of the
+        table when viewed on small screen sizes. In the current layout
+        the entire table becomes scrollable if it is too large for its
+        canvas. Perhaps changing the table so that only the rounds
+        become scrollable (see fig. \ref{fig:tablescroll})
+        would improve its readability; however, the amount of time
+        required to implement this was deemed better spent on
+        implementing other functionality as the cases in which it is
+        required are uncommon.
+
+        \begin{figure}[!ht]
+          \centering
+          \includegraphics[width=13cm]{img/tablescroll.png}
+          \caption{Alternate Table Layout with Scrollable Rounds}\label{fig:tablescroll}
+        \end{figure}
+
+        \subsection{Code Display}
+        The code display handles displaying ILOC programs, with visual
+        links to other components sharing the simulation. This is
+        handled by a simple HTML table, as each ILOC instruction has a
+        maximum of 7 fields: label, opcode, two sources, the
+        $\rightarrow$ or $\Rightarrow$ symbol, and two
+        targets. Aligning each token in the instruction allows the
+        code to be read much more easily than if the raw text were
+        displayed on screen. Fig. \ref{fig:code-display} shows the
+        code display component.
+
+        \begin{figure}[!ht]
+          \hspace{2mm}
+          \begin{minipage}{.48\textwidth}
+            \includegraphics[width=\textwidth, trim=-15 -35 -15 0]{img/codedisplay.png}
+            \captionsetup{width=\textwidth, justification=centering}
+            \captionof{figure}{Default Code Display}\label{fig:code-display}
+          \end{minipage}%
+          \quad
+          \begin{minipage}{.48\textwidth}
+            \includegraphics[width=\textwidth]{img/codeedit.png}
+            \captionsetup{width=\textwidth, justification=centering}
+            \captionof{figure}{Editing Code in the Simulator}\label{fig:code-edit}
+          \end{minipage}
+        \end{figure}
+
+        \begin{figure}[!ht]
+          \centering
+          \includegraphics[width=8cm]{img/code-share.png}
+          \caption{Share Code Dialog}\label{fig:code-share}
+        \end{figure}
+
+        In the simulator interface this view also handles editing or
+        sharing code with others. Figures \ref{fig:code-edit} \&
+        \ref{fig:code-share} show this in action. If the user enters
+        invalid code an error message is displayed using line and
+        column information obtained from PEGjs. Line numbers are
+        displayed in the text area to help the user identify the
+        source of the error; this functionality is provided by the
+        jQuery Lined TextArea\cite{jquerylinedtextarea} plugin. The
+        additional whitespace is added by the simulator to improve
+        readability, but is not necessary.
+        
+
+    \section{Interactive Components}
+    This section describes the implementation of the interactive
+    components which allow the user to interact with the system,
+    including the choice of any libraries and frameworks and the
+    changes that were made from the original design.
+
+        \subsection{Simulator Controls}
+
+        \begin{figure}[!ht]
+          \centering
+          \includegraphics[width=4cm, trim=0 0 0 0]{img/simcontrols.png}
+          \captionsetup{width=4cm, justification=centering}
+          \caption{Simulator Controls}\label{fig:simcontrols}
+        \end{figure}
+
+        The simulator controls simply activate the playback functions
+        in the simulator through its \gls{api}. The controls can be
+        embedded in any other view, so whilst their main use is in the
+        simulator interface it is also possible to include them in
+        interactive tutorials or tests.
+
+        \subsection{Questions}
+        The {\tt QuestionView} class was designed to be adapted to as
+        many situations as possible. Each question displays a number
+        of possible answer, and has a variety of configuration
+        options:
+
+        \begin{itemize}
+        \item The order in which answers should be presented (or
+          shuffled).
+        \item Whether a question allows multiple answer choices.
+        \item Which answers should be revealed upon selecting an
+          answer, if any.
+        \item Which answers should be disabled upon selecting an
+          answer, if any.
+        \end{itemize}
+
+        The question and its answers are rendered using the MathJax
+        library to display mathematical formulae. Submitting a
+        question reveals the nature of each answer (correct or
+        incorrect) and marks those selected by the user. Answers may
+        be assigned flavour text which is displayed upon selection to
+        provide the user with instant, detailed feedback. Two example
+        questions are shown in figures \ref{fig:multi-choice-q} \&
+        \ref{fig:answered-q}
+
+        \begin{figure}[!ht]
+          \hspace{2mm}
+          \begin{minipage}{.43\textwidth}
+            \includegraphics[width=\textwidth]{img/multiple-choice-q.png}
+            \captionsetup{width=\textwidth, justification=centering}
+            \captionof{figure}{A multiple-choice {\tt QuestionView}.}\label{fig:multi-choice-q}
+          \end{minipage}%
+          \quad
+          \begin{minipage}{.53\textwidth}
+            \includegraphics[width=\textwidth, trim=0 0 0 22]{img/answered-q.png}
+            \captionsetup{width=\textwidth, justification=centering}
+            \captionof{figure}{A {\tt QuestionView} after it has been submitted.}\label{fig:answered-q}
+          \end{minipage}
+        \end{figure}
+
+        The highly configurable nature of the questions allows them to
+        be re-used across the app. In {\tt TutorialView}s the answers
+        are revealed immediately, whereas in {\tt TestView}s the test
+        must be submitted before the user is given feedback. {\tt
+          QuestionView}s are also used in the evaluation to collect
+        categorization information from the user.
+
+        Two callback functions can be passed to the {\tt QuestionView}
+        to control the application's behaviour upon selecting an
+        answer. This function can perform such actions as allowing the
+        user to proceed by enabling navigation buttons, or altering
+        neighbouring components to provide visual feedback.
+            
+    \section{User Interface}
+    This section discusses the implemented user interface and
+    describes any changes made from the proposed design. These changes
+    and the use of any libraries and frameworks are justified.
+    
+        \subsection{Menus}
+
+        \subsection{Simulation Interface}
+
+        \subsection{Tutorial Interface}
+
+        \subsection{Testing Interface}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Evaluation}
