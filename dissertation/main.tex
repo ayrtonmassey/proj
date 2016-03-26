@@ -52,6 +52,26 @@
           which a given node generates.}
 }
 
+\newglossaryentry{bitvector}
+{
+        name=bit-vector \gls{dataflow},
+        description={\Gls{dataflow}s in which
+          values come as single items, and are either included or
+          excluded in each set. Such \gls{dataflow}s may be
+          represented by a vector of bits, each bit representing a
+          value and a 0 or 1 indicating the presence or absence of
+          that value in the set.}
+}
+
+\newglossaryentry{tuplevalued}
+{
+        name=tuple-valued \gls{dataflow},
+        description={\Gls{dataflow}s in which the values
+          come in tuples; for example, in constant propagation each
+          variable is paired with a value indicating whether it holds
+          a constant.}
+}
+
 \newglossaryentry{dataflowequations}
 {
         name=data-flow equations,
@@ -133,7 +153,6 @@
 }
 
 
-
 %% Types of Analysis
 \newglossaryentry{reachingdefinition}
 {
@@ -151,6 +170,14 @@
 {
         name=available expression,
         description={An expression is {\em available} if it has been computed along all paths leading to the current node}
+}
+
+%% Parsing
+
+\newglossaryentry{contextfreegrammar}
+{
+        name=context-free grammar,
+        description={A context-free grammar describes a formal language using rules of the form $A \rightarrow \alpha$, in which $A$ is a single non-terminal symbol and $\alpha$ is a series of terminal or non-terminal symbols. The grammar is ``context-free'' in that its rules may be applied regardless of the context of the non-terminal $A$\cite{wikipedia:contextfreegrammar}}
 }
 
 %% Evaluation
@@ -173,6 +200,7 @@ responses to Likert items}
 \newacronym{cfg}{CFG}{control-flow graph}
 \newacronym{peg}{PEG}{Parsing Expression Grammar}
 \newacronym{iloc}{ILOC}{Intermediate Language for Optimising Compilers}
+\glsunset{iloc}
 \newacronym{ast}{AST}{abstract syntax tree}
 \newacronym{api}{API}{application programming interface}
 \glsunset{api}
@@ -189,14 +217,15 @@ responses to Likert items}
 \usepackage{amsmath}
 
 %% Figures
+\usepackage[section]{placeins}
 \usepackage{tabularx}
-\newcolumntype{m}{>{\arraybackslash$}c<{$}}     % centre-align math column
-\newcolumntype{M}{>{\arraybackslash$}l<{$}}     % left-align math column
-\newcolumntype{C}{>{\centering\arraybackslash}X}% fill-width centre-align column
+\newcolumntype{C}{>{\centering\arraybackslash}X} % center column
+\newcolumntype{T}[1]{>{\arraybackslash$\tt}{#1}<{$}} % math column
+\newcolumntype{M}[1]{>{\arraybackslash$}{#1}<{$}} % math column
 \usepackage{caption}
 \captionsetup{%
-  figurename=fig.,
-  tablename=tab.
+  figurename=Fig.,
+  tablename=Table
 }
 \usepackage{capt-of}
 \usepackage{wrapfig}
@@ -209,25 +238,43 @@ responses to Likert items}
 
 \lstdefinelanguage{JavaScript}{
   keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
-  keywordstyle=\color{Magenta}\bfseries,
+  keywordstyle=\color{darkgray}\bfseries,
   ndkeywords={class, export, boolean, throw, implements, import, this},
-  ndkeywordstyle=\color{Violet}\bfseries,
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{Gray}\ttfamily,
+  stringstyle=\color{Gray}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\lstdefinelanguage{ILOC}{
+  keywords={addI, cbr_LE, comp, storeAO,},
+  keywordstyle=\color{darkgray}\bfseries,
+  ndkeywords={cc},
+  ndkeywordstyle=\color{darkgray}\bfseries,
   identifierstyle=\color{black},
   sensitive=false,
   comment=[l]{//},
   morecomment=[s]{/*}{*/},
   commentstyle=\color{darkgray}\ttfamily,
-  stringstyle=\color{Red}\ttfamily,
+  stringstyle=\color{Gray}\ttfamily,
   morestring=[b]',
   morestring=[b]"
 }
 
+
 \lstset{
-   language=JavaScript,
    extendedchars=true,
    basicstyle=\footnotesize\ttfamily,
    showstringspaces=false,
    showspaces=false,
+   keywordstyle=\color{black}\bfseries,
+   ndkeywordstyle=\color{black}\bfseries,
+   identifierstyle=\color{black},
    numbers=left,
    numberstyle=\scriptsize,
    tabsize=2,
@@ -239,11 +286,14 @@ responses to Likert items}
 
 %% Algorithm listings
 \newcounter{nalg}[chapter] % defines algorithm counter for chapter-level
-\renewcommand{\thenalg}{\thechapter .\arabic{nalg}} %defines appearance of the algorithm counter
+\newcounter{oldlstlisting}[chapter] % defines algorithm counter for chapter-level
+\renewcommand{\thenalg}{\thechapter .\arabic{lstlisting}} %defines appearance of the algorithm counter
 \DeclareCaptionLabelFormat{algocaption}{Algorithm \thenalg} % defines a new caption label as Algorithm x.y
 
 \lstnewenvironment{algorithm}[1][] %defines the algorithm listing environment
 {   
+    \setcounter{oldlstlisting}{\value{lstlisting}}
+    \setcounter{lstlisting}{\value{nalg}}
     \refstepcounter{nalg} %increments algorithm number
     \captionsetup{labelformat=algocaption,labelsep=colon} %defines the caption setup for: it ises label format as the declared caption label above and makes label and caption text to be separated by a ':'
     \lstset{ %this is the stype
@@ -252,22 +302,26 @@ responses to Likert items}
         basicstyle=\footnotesize,
         keywordstyle=\color{black}\bfseries,
         keywords={,input, output, return, datatype, function, in, if,
-          else, foreach, while, begin, end, for, each, is, not, of, true, false, } %add the keywords you want, or load a language as Rubens explains in his comment above.
+          else, foreach, while, begin, end, for, each, has, is, not, true, false, } %add the keywords you want, or load a language as Rubens explains in his comment above.
         ndkeywords{this,},
         ndkeywordstyle=\color{black}\bfseries,
         numbers=left,
+        comment=[l]{//},
+        commentstyle=\color{Gray},
         xleftmargin=.04\textwidth,
         tabsize=4,
         #1 % this is to add specific settings to an usage of this environment (for instnce, the caption and referable label)
     }
 }
-{}
+{\setcounter{lstlisting}{\value{oldlstlisting}}}
 
 %% Graphs
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,decorations.markings,positioning,calc}
 
 %% Tikz Styles
+\tikzstyle{tree} = [rectangle, draw, text centered, rounded corners, minimum width=4mm, minimum height=6mm, below right]
+\tikzstyle{atom} = [rectangle, draw, text centered, minimum width=6mm, minimum height=6mm, font=\tt\small]
 \tikzstyle{block} = [rectangle, draw, text width=6em, text centered, rounded corners, minimum height=1em]
 \tikzstyle{set} = [rectangle, text width=6em, text centered, rounded corners, minimum height=1em]
 \tikzset{vertex/.style = {shape=circle,draw,minimum size=1.5em}}
@@ -460,7 +514,7 @@ and provides a brief summary of contributions.
     \item Simulation of pre-defined \gls{dataflow}s using generic
       framework models. (p. )%TODO: Which page?
     \item Simulation of user-defined programs using the
-      ILOC\cite[appx.~A]{eac} language from {\em Engineering a
+      \gls{iloc}\cite[appx.~A]{eac} language from {\em Engineering a
         Compiler}. (p. )%TODO: Which page?
     \item Simulation using the round-robin iterative algorithm (p.
       ) %TODO: Which page?
@@ -561,11 +615,11 @@ demonstrate understanding of the topic.
 
         \end{minipage}
 
-	\subsection{A Simple Example}
+	\subsection{A Simple Example}\label{sec:simpleexample}
 	An oft-used example of \gls{dataflowanalysis} is that of {\em
-          \gls{reachingdefinition}s}, which we will demonstrate here due to
-        its simplicity. \Gls{reachingdefinition}s computes the set of
-        variable definitions which are are available at a given
+          \gls{reachingdefinition}s}, which we will demonstrate here
+        due to its simplicity. \Gls{reachingdefinition}s computes the
+        set of variable definitions which are are available at a given
         point. A definition is said to {\em reach} a point $p$ if
         there is no intermediate assignment to the same variable along
         the path from the definition of the variable to the point $p$.
@@ -580,7 +634,11 @@ demonstrate understanding of the topic.
           c\textsubscript{2}}. The graph in fig. \ref{fig:rdcfg} shows the
         set of reaching definitions at each point in the program. We
         have combined the {\em in} and {\em out} points to save space.
-        
+                
+        Data-flows have {\em direction}. Reaching definitions is a
+        {\em forward flow problem}; values flow from the entry node of
+        the \gls{cfg} to the exit node.
+
         \begin{wrapfigure}[21]{i}{6.5cm}
           \centering
           \vspace{-5mm}
@@ -597,6 +655,12 @@ demonstrate understanding of the topic.
             \node[set] (s4) at (3 , 7) {\tt \{a\textsubscript{1}, b\textsubscript{1}, c\textsubscript{2}\}};
             \node[block] (n5) at (0 , 8) {\tt return c};
        	    \node[set] (s5) at (3 , 9) {\tt \{a\textsubscript{1}, b\textsubscript{1}, c\textsubscript{2}\}};
+
+            \node[above=0mm of n1.north west] (an1) {$n_1$};
+            \node[above=0mm of n2.north west] (an2) {$n_2$};
+            \node[above=0mm of n3.north west] (an3) {$n_3$};
+            \node[above=0mm of n4.north west] (an4) {$n_4$};
+            \node[above=0mm of n5.north west] (an5) {$n_5$};
             
             %edges
             \draw[edge] (n1) to (n2);
@@ -632,10 +696,6 @@ demonstrate understanding of the topic.
           \caption{A \gls{controlflowgraph}.}
           \label{fig:rdcfg}
         \end{wrapfigure}
-        
-        Data-flows have {\em direction}. Reaching definitions is a
-        {\em forward flow problem}; values flow from the entry node of
-        the \gls{cfg} to the exit node.
 
         The values at each point are determined using {\em data-flow
           equations}. For example, the equations for reaching
@@ -660,7 +720,7 @@ demonstrate understanding of the topic.
         obtained from the node itself, thereby {\em transferring}
         values through a node.
 
-	\subsection{Lattices}
+	\subsection{Lattices}\label{sec:background_lattices}
 	Sets in a \gls{dataflow} problem have a partial order. This
         can be expressed using a structure known as a {\em
           \gls{meetsemilattice}}. A \gls{meetsemilattice} consists of
@@ -687,10 +747,10 @@ demonstrate understanding of the topic.
         \vspace{-1cm}
         
         %TODO: REFERENCE
-        We can express the semi-lattice using a {\em \gls{hassediagram}}, shown in fig. \ref{fig:meethasse}.
+        The semi-lattice can be expressed using a {\em \gls{hassediagram}}, shown in fig. \ref{fig:meethasse}.
 
-        \begin{wrapfigure}[12]{o}{6.4cm}
-          \vspace{-5mm}
+        \begin{figure}[h]
+          \centering
           \begin{tikzpicture}[y=-1cm]            
             % vertices
        	    \node[set, label={[distance=1cm]0:$(\top)$}] (s1) at (2 , 0.0) {$\emptyset$};
@@ -719,24 +779,44 @@ demonstrate understanding of the topic.
             \draw[edge] (s7.south) -- (s8.north);
             
           \end{tikzpicture}
-          \captionsetup{width=6cm, justification=centering}
+          \captionsetup{justification=centering}
           \caption{A \gls{hassediagram} for the meet function $a \land b = a \cup b$.}
           \label{fig:meethasse}
-        \end{wrapfigure}
+        \end{figure}
         
-        %TODO: REFERENCE
-        Some data-flows deal with sets of pairs of values. In constant
-        propagation, we pair a variable with one of three elements:
-        $undef (\top)$, $nonconst (\bot)$ and $const$. A variable is
-        initially paired with $undef$. When it is assigned a constant
-        value, we assign it that value. If it is later assigned
-        another value, we assign it $nonconst$. This can be expressed
-        as the meet function, $\land$, seen in fig. \ref{fig:constmeet}.
+        \subsection{Bit-Vector Data-Flows}
         
-        The values form a semi-lattice, as seen in
-        fig. \ref{fig:consthasse}.
+        The \gls{dataflow}s present in the system described in this
+        project are commonly known as \gls{bitvector}s. In these
+        problems values are single items, such as a variable or
+        definition. A set of values can be represented as a vector of
+        bits, each bit representing a particular value and a 0 or 1
+        indicating the presence or absence of that value. The
+        \gls{reachingdefinition}s example from the previous section is
+        a \gls{bitvector} problem. Fig. \ref{fig:bitvector} shows how
+        this can be applied to the example in
+        \S\ref{sec:simpleexample}.
 
-        \rule{\textwidth}{0.1mm}
+        \begin{figure}[!ht]
+          \centering
+          \begin{tabular}{M{r} M{c} T{r} T{c} T{c} T{c} T{c} T{l}}
+                            &   &    & a_1 & b_1 & c_1 & c_2 &    \\
+            \text{Out}(n_5) & = & \{ & 1   & 1   & 0   & 1   & \} \\
+          \end{tabular}
+          \caption{A bit-vector for the \gls{cfg} in fig. \ref{fig:rdcfg}}\label{fig:bitvector}
+        \end{figure}
+
+        % TODO: Reference
+        \Gls{tuplevalued}s consider values as tuples instead of single
+        items. One such example is constant propagation, in which
+        variables are paired with one of three elements:
+        $undef\;(\top)$, $nonconst\;(\bot)$ and $const$. A variable is
+        initially paired with $undef$. When it is assigned a constant
+        value, we assign it that particular value. If it is later
+        assigned another value, we assign it $nonconst$. This can be
+        expressed as the meet function, $\land$, seen in
+        fig. \ref{fig:constmeet}. The values form the semi-lattice in
+        fig. \ref{fig:consthasse}.
 
         \begin{figure}[h]
         \begin{align*}
@@ -808,14 +888,11 @@ demonstrate understanding of the topic.
           \begin{algorithm}[caption={Iterative Round-Robin Method for Reaching Definitions}, label={algo:rd_iterative},escapeinside={||},mathescape=true]
 for each (node |$n$| in the CFG)
     In(|$n$|) = |$\emptyset$|;
-end
 
 while (changes to any sets occur)
     for each (node |$n$| in the CFG)
         In(|$n$|)  = |$\cup$\textsubscript{predecessors $p$ of $n$}|Out(|$p$|);
         Out(|$n$|) = DefGen(|$n$|) $\cup$ (In|$(n)$| $\setminus$ DefKill(|$n$|));
-    end
-end
           \end{algorithm}
         \end{figure}
 
@@ -838,7 +915,6 @@ while (worklist is not empty)
     In(|$n$|)  = |$\cup$\textsubscript{predecessors $p$ of $n$}|Out(|$p$|);
     Out(|$n$|) = DefGen(|$n$|) $\cup$ (In|$(n)$| $\setminus$ DefKill(|$n$|));
     if (Out(|$n$|) has changed) append n to worklist;
-end
           \end{algorithm}
         \end{figure}
 
@@ -881,14 +957,11 @@ Meet|$_{BOUNDARY}$| = v|$_{BOUNDARY}$|;
 
 for each (block |$B$| in the CFG)
     Meet|$_{B}$| = |$\top$|;
-end
 
 while (changes to any Transfer occur)
     for each (block |$B$| in the CFG)
         Meet|$_{B}$|     = |$\land$\textsubscript{priors $P$ of $B$}| Transfer|$_{P}$|;
         Transfer|$_{B}$| = |$F_{B}$|(In|$_{B}$|);
-    end
-end
        \end{algorithm}
 
         Instead of referring to the value sets as In and Out as the
@@ -1470,7 +1543,7 @@ conceptual problems.
     \end{itemize}
 
     All of these can be modeled using an API with a single
-    endpoint\footnote{An endpoint is a URL at which a particular API
+point\footnote{An endpoint is a URL at which a particular API
       service may be accessed, e.g. \url{api.com/users/} may provide
       access to user data} based on the Google Analytics event
     model. Each {\tt event} record has the following fields:
@@ -1509,12 +1582,12 @@ by the visual elements described in chapter
     general framework as described in
     \S\ref{sec:background-frameworks} of this report and \S10.11 of
     the {\em Dragon Book}\cite{dragonbook}. The simulator takes as
-    input a program written in the ILOC language, a \gls{dataflow}
-    framework and an order in which to evaluate nodes. It parses the
-    program into an \gls{ast} and uses this to build a \gls{cfg}, then
-    performs an analysis on said graph using the round-robin
-    \gls{fixedpoint} algorithm for general frameworks (algorithm
-    \ref{algo:general}).
+    input a program written in the \gls{iloc} language, a
+    \gls{dataflow} framework and an order in which to evaluate
+    nodes. It parses the program into an \gls{ast} and uses this to
+    build a \gls{cfg}, then performs an analysis on said graph using
+    the round-robin \gls{fixedpoint} algorithm for general frameworks
+    (algorithm \ref{algo:general}).
 
     Playback of the simulation can be controlled through the
     simulator's \gls{api}. Function calls which update the state of
@@ -1554,17 +1627,21 @@ by the visual elements described in chapter
     \begin{table}[!ht]
       \centering
       \def\arraystretch{1.2}
+      \scalebox{0.9}{
       \begin{tabularx}{0.8\textwidth}{|C|C|C|C|}
         \hline
             {\tt s.size()} & {\tt s.add(v)} & {\tt s.delete(v)} & {\tt s.has(v)} \\ \hline
             $O(1)$         & $O(|s|)$       & $O(|s|)$          & $O(|s|)$       \\ \hline
       \end{tabularx}
+    }
       \\[2mm]
+      \scalebox{0.9}{
       \begin{tabularx}{0.8\textwidth}{|C|C|C|}
         \hline
             {\tt s.union(t)}   & {\tt s.intersect(t)} & {\tt s.difference(t)} \\ \hline
             $O(|s| \cdot |t|)$ & $O(|s| \cdot |t|)$   & $O(|s| \cdot |t|)$    \\ \hline
       \end{tabularx}
+    }
     \end{table}
 
     Using an alternate backing structure such as a hash table would
@@ -1613,28 +1690,48 @@ by the visual elements described in chapter
     enable a step-by-step evaluation or automatic playback.
 
     \begin{algorithm}[caption={Implementation of General Framework Algorithm}, label={algo:general_impl},escapeinside={||},mathescape=true]
-function reset():
+function reset()
     B = entry node of CFG
     B.meet = framework.boundary
-    for (node N of cfg):
-        N.meet = framework.top
+    for each (node in the cfg)
+        node.meet = framework.top
     step    = |{\tt MEET}|
     changed = false
 
-function iterate():
-    if (step is |{\tt MEET}|):
+function iterate()
+    if (step is |{\tt MEET}|)
         B.meet, changed = framework.meet(b, this.cfg)
         step = |{\tt TRANSFER}|
-    else:
+    else
         B.transfer, changed = framework.transfer(b)
         step = |{\tt MEET}|
         B    = next node
     \end{algorithm}
 
-    To demonstrate, listing \ref{lst:autoplay} shows the implementation of
-    automatic playback:
+    To demonstrate, listings and \ref{lst:fast_forward} and
+    \ref{lst:autoplay} show the implementation of some of the playback
+    functions. In the fast forward function, the simulation is
+    advanced until it is complete before triggering an update event
+    which is propagated to other components of the system. In the
+    automatic playback function, a function is called at set time
+    intervals which advances the simulation by one iteration, then
+    triggers the update. Controlling when update events are triggered
+    events helps prevent slowdown from unnecessary re-rendering of
+    components.
 
-    \begin{lstlisting}[language=JavaScript, caption={JavaScript Implementation of Automatic Playback}, label={lst:autoplay}]
+    \begin{figure}[!ht]
+      \begin{lstlisting}[language=JavaScript, caption={JavaScript Implementation of Fast Forward}, label={lst:fast_forward}]
+this.fast_forward = function() {
+  while(!this.state.finished) {
+    this.iterate();
+  }
+  this.events.trigger('update');
+}
+      \end{lstlisting}
+    \end{figure}
+
+    \begin{figure}
+      \begin{lstlisting}[language=JavaScript, caption={JavaScript Implementation of Automatic Playback}, label={lst:autoplay}]
 this.play = function() {
   this.state.paused = false;
   var _this = this;
@@ -1642,76 +1739,421 @@ this.play = function() {
     if (!_this.state.paused && !_this.state.finished) {
       // If the user hasn't pressed pause and we're not finished
       _this.iterate();                   // Step forward
-      _this.events.trigger('update');    // Update visual components
-      setTimeout(foo, _this.play_speed); // Repeat after interval
+      _this.events.trigger('update');    // Update components
+      setTimeout(foo, _this.play_speed); // Repeat at interval
     }
   })();
 }
-    \end{lstlisting}
+      \end{lstlisting}
+    \end{figure}
     
     \section{Understanding Programs}
-    The simulation operates on programs written in the \gls{iloc}, as
-    described in {\em Engineering a
-      Compiler}\cite[appx.~A]{eac}. \gls{iloc} is an assembly-like
-    language designed for toy compilers; it is both simple to parse
-    and human-readable. This makes it the perfect input language for
-    the learning platform, with the added benefit that students will
-    be able to step through examples from the textbook using the
+    The simulation operates on programs written in \gls{iloc}, as
+    described in {\em Engineering a Compiler}
+    \cite[appx.~A]{eac}. \gls{iloc} is an assembly-like language
+    designed for toy compilers as it is both simple to parse and
+    human-readable. This makes it the perfect input language for the
+    learning platform, with the added benefit that students will be
+    able to step through examples from the textbook using the
     simulator.
 
-        \subsection{Parsing Expression Grammar}
-        The description of \gls{iloc} in {\em Engineering a Compiler}
-        describes a simple \gls{peg} for the language. I have extended
-        the grammar rules as follows:
+    The simulator supports the following ILOC features:
 
-        \begin{figure}[!ht]
-          \centering
-          \begin{tabular}{M m M}
-            Operation     & \rightarrow & NormalOp                                                       \\
-                          & |           & ControlFlowOp                                                  \\
-                          & |           & MemoryLoadOp                                                   \\
-                          & |           & MemoryStoreOp                                                  \\
-                          &             &                                                                \\
-            MemoryLoadOp  & \rightarrow & LoadOpcode \; OperandList \; \Rightarrow \; OperandList        \\
-            MemoryStoreOp & \rightarrow & StoreOpcode \; OperandList \; \Rightarrow \; OperandList       \\
-            NormalOp      & \rightarrow & NormalOpcode \; OperandList \; \Rightarrow \; OperandList      \\
-            ControlFlowOp & \rightarrow & ControlFlowOpcode \; OperandList \; \Rightarrow \; OperandList \\
-                          &             &                                                                \\
-            LoadOpCode    & \rightarrow & \text{loadI}                                                   \\
-                          & |           & \text{loadAO}                                                  \\
-                          & |           & ...                                                            \\
-                          &             &                                                                \\
-            StoreOpCode   & \rightarrow & \text{storeI}                                                  \\
-                          & |           & \text{storeAO}                                                 \\
-                          & |           & ...                                                            \\
-                          &             &                                                                \\
-            Operand       & |           & \texttt{register}                                              \\
-                          & |           & \texttt{num}                                                   \\
-                          & |           & \texttt{label}                                                 \\
-                          & |           & \texttt{cc}                                                    \\
-          \end{tabular}
-          \caption{Extended ILOC Parsing Expression Grammar}
-        \end{figure}
+    \begin{itemize}
+    \item The entire set of opcodes listed in {\em Engineering a
+        Compiler};
+    \item Three types of literal: registers, labels, and integers;
+    \item Simple programs with a single operation per instruction; and
+    \item Distinction between three types of memory: registers, main
+      memory, and the comparison register.
+    \end{itemize}
+
+    There is also limited support for multi-operation instructions,
+    which may be used to emulate \gls{dataflowanalysis} on basic
+    blocks. This functionality remains untested as priority was
+    assigned to simulation on nodes as single instructions.
+
+    \glsreset{ast}
+
+    In order to understand ILOC programs, they must be to converted
+    from text into a \gls{cfg}. To do this the simulator uses the
+    PEG.js\cite{pegjs} library which, given an input grammar,
+    generates a parser written in JavaScript. This parser produces an
+    \gls{ast}, which is then transformed into a \gls{cfg} representing
+    the program. The following sections describe this process in more
+    detail.
+
+        \subsection{Parsing Expression Grammar}\label{sec:peg}
+
+        A \gls{peg} is very similar to a \gls{contextfreegrammar} in
+        that it describes a formal language using a set of rules for
+        recognising strings in that language. The description of
+        \gls{iloc} in {\em Engineering a Compiler} describes a simple
+        \gls{peg} for the language, which has been adapted for use in
+        this system.
         
-        The reason for these changes is that ILOC allows the user to
-        write to three types of storage: registers, main memory and
-        comparison flags. Changing the grammar allows disambiguation
-        between operations which write to or read from different types
-        of storage in the abstract syntax tree. This is an important
+        The rules of the grammar have been extended as shown in
+        fig. \ref{fig:grammar_extensions}. The reason for these
+        changes is that \gls{iloc} allows the user to write to three
+        types of storage: registers, main memory and comparison
+        flags. Changing the grammar allows disambiguation in the
+        abstract syntax tree between operations which write to or read
+        from different types of storage. This is an important
         distinction to make because the built-in data-flows only
         consider register accesses when calculating value sets at each
         point (see \S\ref{sec:builtin_dataflows} for an explanation).
 
-        The full extended ILOC grammar is listed in appendix
+        The full extended \gls{iloc} grammar is listed in appendix
         \ref{appx:iloc_grammar}.
+
+        \begin{figure}[!ht]
+          \centering
+          \scalebox{0.9}{
+          \begin{tabular}{M{r} M{c} M{l} M{l} M{l} M{l}}
+            Operation         & \rightarrow & NormalOp          &             &             &             \\
+                              & |           & ControlFlowOp     &             &             &             \\
+                              & |           & MemoryLoadOp      &             &             &             \\
+                              & |           & MemoryStoreOp     &             &             &             \\
+                              &             &                   &             &             &             \\
+            MemoryLoadOp      & \rightarrow & LoadOpcode        & OperandList & \Rightarrow & OperandList \\
+            MemoryStoreOp     & \rightarrow & StoreOpcode       & OperandList & \Rightarrow & OperandList \\
+            NormalOp          & \rightarrow & NormalOpcode      & OperandList & \Rightarrow & OperandList \\
+            ControlFlowOp     & \rightarrow & ControlFlowOpcode & OperandList & \Rightarrow & OperandList \\
+                              &             &                   &             &             &             \\
+            LoadOpcode        & \rightarrow & \texttt{loadI}    &             &             &             \\
+                              & |           & \texttt{loadAO}   &             &             &             \\
+                              & |           & ...               &             &             &             \\
+                              &             &                   &             &             &             \\
+            StoreOpcode       & \rightarrow & \texttt{storeI}   &             &             &             \\
+                              & |           & \texttt{storeAO}  &             &             &             \\
+                              & |           & ...               &             &             &             \\
+                              &             &                   &             &             &             \\
+            NormalOpcode      & \rightarrow & \texttt{addI}     &             &             &             \\
+                              & |           & \texttt{rshift}   &             &             &             \\
+                              & |           & ...               &             &             &             \\
+                              &             &                   &             &             &             \\
+            ControlFlowOpcode & \rightarrow & \texttt{jumpI}    &             &             &             \\
+                              & |           & \texttt{cbr\_GE}  &             &             &             \\
+                              & |           & ...               &             &             &             \\
+                              &             &                   &             &             &             \\
+            Operand           & \rightarrow & register          &             &             &             \\
+                              & |           & num               &             &             &             \\
+                              & |           & label             &             &             &             \\
+                              & |           & cc                &             &             &             \\
+                              &             &                   &             &             &             \\
+            cc                & \rightarrow & \texttt{cc}       &             &             &             \\
+          \end{tabular}
+        }
+          \caption{Extensions to \gls{iloc} Parsing Expression Grammar}\label{fig:grammar_extensions}
+        \end{figure}
 
         \subsection{Abstract Syntax Tree}
 
-        The parse tree obtained from the \gls{peg}
-    
-        \subsection{Control-Flow Graphs}
-        Blah Blah
+        A parse tree represents the exact structure of parsed data. In
+        contrast, an \gls{ast} represents the structure of data
+        independent of its original representation; this may involve
+        adding or removing nodes or re-structuring the tree entirely.
 
+        To construct an \gls{ast} one would usually obtain a parse
+        tree and then transform it into the desired structure. Parsers
+        generated by the PEG.js library are capable of constructing
+        the \gls{ast} as they parse the input program. The developer
+        may supply JavaScript code to be executed when a rule matches
+        and this code is used to create an abstract representation of
+        the data matched by that rule. This feature can also be used
+        to annotate the tree as it is built.
+
+        \begin{figure}[!ht]
+          \begin{lstlisting}[language=JavaScript, caption=Example of PEG.js Grammar Rules, escapeinside={||}, label=lst:peg_grammar]
+Operand
+    = _ r:register _ { return r; }|\label{ln:returnval}|
+    / _ n:num _ { return n; }      
+    / _ c:cc _ { return c; }       
+    / _ l:label _ { return l; }    
+                                   
+
+register
+    = _ "r" n:([0-9a-z_]i)+ _ {|\label{ln:identifier}|
+        return new ILOC.Operand({
+            type: ILOC.OPERAND_TYPES.register,
+            name: n.join("")|\label{ln:nameassignment}|
+        });
+    }
+          \end{lstlisting}
+        \end{figure}
+
+        Listing \ref{lst:peg_grammar} shows a snippet of the PEG.js
+        grammar for \gls{iloc}. Groups of symbols may be assigned an
+        identifier and referred to in the JavaScript code; on line
+        \ref{ln:identifier} the identifier {\tt n} is given to the
+        register name so it can be set as the name of the returned
+        {\tt Operand}. The return value of the JavaScript code is
+        passed to the above context; the identifier {\tt r} on line
+        \ref{ln:returnval} refers to the {\tt Operand} returned by the
+        {\tt register} rule. More complex code may collect information
+        and use it to annotate the AST; for example, the grammar used
+        in this project annotates assignments to a given register with
+        a unique identifier for use in \gls{dataflow}s such as
+        \gls{reachingdefinition}s.
+
+        Fig. \ref{fig:iloc_ast} shows an example \gls{ast} for the
+        simple \gls{iloc} program in listing \ref{lst:iloc_ast_code}.
+
+        \begin{figure}[!ht]
+        \begin{lstlisting}[language=ILOC, caption=Simple \gls{iloc} Program, label=lst:iloc_ast_code]
+Start: addI    ra, 1  => rb
+       comp    ra, rb => cc
+       cbr_LE  cc     -> Start, Store
+Store: storeAO ra     => rx, 32
+        \end{lstlisting}
+        \end{figure}
+
+        \begin{figure}[p]
+          \centering
+          \begin{tikzpicture}[x=1mm, y=-1mm]
+            
+            \node[tree] (ilocprogram) at (0,0) {IlocProgram};
+
+
+              \node[tree, below right=4mm and 20mm of ilocprogram.south west] (i1) {Instruction};
+
+                \node[atom, right=16mm of i1.east] (i1label) {Start};
+
+                \node[tree, below right=6mm and 20mm of i1.south west] (i1op1) {NormalOperation};
+
+                  \node[atom, right=16mm of i1op1.east] (i1op1oc) {addI};
+
+                  \node[tree, below right=12mm and 0mm of i1op1.south west] (i1op1s1) {Operand};
+                    \node[atom, below left=8mm and -4mm of i1op1s1.south] (i1op1s1type) {register};
+                    \node[atom, below right=8mm and 8mm of i1op1s1.south] (i1op1s1name) {a};
+
+                  \node[tree, right=12mm of i1op1s1] (i1op1s2) {Operand};
+                    \node[atom, below left=8mm and 1mm of i1op1s2.south] (i1op1s2type) {num};
+                    \node[atom, below right=8mm and 3mm of i1op1s2.south] (i1op1s2name) {1};
+
+                  \node[tree, right=17mm of i1op1s2] (i1op1t1) {Operand};
+                    \node[atom, below left=8mm and 2mm of i1op1t1.south] (i1op1t1type)  {register};
+                    \node[atom, below right=8mm and 2mm of i1op1t1.south] (i1op1t1name)  {a};
+                    \node[atom, below right=8mm and 12mm of i1op1t1.south] (i1op1t1index) {1};
+
+
+              \node[tree, below right=62mm and 20mm of ilocprogram.south west] (i2) {Instruction};
+
+                \node[tree, below right=6mm and 20mm of i2.south west] (i2op1) {NormalOperation};
+
+                  \node[atom, right=16mm of i2op1.east] (i2op1oc) {comp};
+
+                  \node[tree, below right=12mm and 0mm of i2op1.south west] (i2op1s1) {Operand};
+                    \node[atom, below left=8mm and -4mm of i2op1s1.south] (i2op1s1type) {register};
+                    \node[atom, below right=8mm and 8mm of i2op1s1.south] (i2op1s1name) {a};
+
+                  \node[tree, right=17mm of i2op1s1] (i2op1s2) {Operand};
+                    \node[atom, below left=8mm and 1mm of i2op1s2.south] (i2op1s2type) {num};
+                    \node[atom, below right=8mm and 3mm of i2op1s2.south] (i2op1s2name) {b};
+
+                  \node[tree, right=12mm of i2op1s2] (i2op1t1) {Operand};
+                    \node[atom, below= 8mm of i2op1t1.south] (i2op1t1type)  {cc};
+
+                \node[tree, below right=52mm and 20mm of i2.south west] (i2op2) {ControlFlowOperation};
+
+                  \node[atom, right=16mm of i2op2.east] (i2op2oc) {cbr\textunderscore{}LE};
+
+                  \node[tree, below right=12mm and 0mm of i2op2.south west] (i2op2s1) {Operand};
+                    \node[atom, below=8mm of i2op2s1.south] (i2op2s1type) {cc};
+
+                  \node[tree, right=12mm of i2op2s1] (i2op2t1) {Operand};
+                    \node[atom, below left=8mm and 2mm of i2op2t1.south] (i2op2t1type) {label};
+                    \node[atom, below right=8mm and 2mm of i2op2t1.south] (i2op2t1name) {Start};
+
+                  \node[tree, right=17mm of i2op2t1] (i2op2t2) {Operand};
+                    \node[atom, below left=8mm and 2mm of i2op2t2.south] (i2op2t2type) {label};
+                    \node[atom, below right=8mm and 2mm of i2op2t2.south] (i2op2t2name) {Store};
+
+
+              \node[tree, below right=166mm and 20mm of ilocprogram.south west] (i3) {Instruction};
+
+                \node[atom, right=16mm of i3.east] (i3label) {Store};
+
+                \node[tree, below right=8mm and 20mm of i3.south west] (i3op1) {MemoryStoreOperation};
+
+                  \node[atom, right=16mm of i3op1.east] (i3op1oc) {storeAO};
+
+                  \node[tree, below right=12mm and 0mm of i3op1.south west] (i3op1s1) {Operand};
+                    \node[atom, below left=8mm and -4mm of i3op1s1.south] (i3op1s1type) {register};
+                    \node[atom, below right=8mm and 8mm of i3op1s1.south] (i3op1s1name) {a};
+
+                  \node[tree, right=17mm of i3op1s1] (i3op1t1) {Operand};
+                    \node[atom, below left=8mm and -4mm of i3op1t1.south] (i3op1t1type) {register};
+                    \node[atom, below right=8mm and 8mm of i3op1t1.south] (i3op1t1name) {x};
+
+                  \node[tree, right=12mm of i3op1t1] (i3op1t2) {Operand};
+                    \node[atom, below left=8mm and 1mm of i3op1t2.south] (i3op1t2type) {num};
+                    \node[atom, below right=8mm and 3mm of i3op1t2.south] (i3op1t2name) {32};
+
+          %% Edges
+          \draw[-{>[scale=1.5]}] ($(ilocprogram.south) + (-8, 0)$) |- (i1.west);
+
+            \draw[-{>[scale=1.5]}] (i1.east) -- (i1label.west) node [midway, above, text centered] {\footnotesize\it label};
+
+            \draw[-{>[scale=1.5]}] ($(i1.south) + (-4, 0)$) |- (i1op1.west) node [near start, left, text centered] {\footnotesize\it operations};
+              \draw[-{>[scale=1.5]}] (i1op1.east) -- (i1op1oc.west) node [midway, above, text centered] {\footnotesize\it opcode};
+
+              \draw[-{>[scale=1.5]}] ($(i1op1.south) + (-8, 0)$) -- ++(0,8) -| (i1op1s1.north);
+                \draw[-{>[scale=1.5]}] ($(i1op1s1.south) + (+8, 0)$) -- (i1op1s1name.north) node [midway, left, text centered] {\footnotesize\it name};
+                \draw[-{>[scale=1.5]}] ($(i1op1s1.south) + (-4, 0)$) -- (i1op1s1type.north) node [midway, left, text centered] {\footnotesize\it type};
+              \draw[-{>[scale=1.5]}] ($(i1op1.south) + (-8, +8)$) -| (i1op1s2.north) node [near start, above, text centered] {\footnotesize\it sources};
+                \draw[-{>[scale=1.5]}] ($(i1op1s2.south) + (+4, 0)$) -- (i1op1s2name.north) node [midway, right, text centered] {\footnotesize\it name};
+                \draw[-{>[scale=1.5]}] ($(i1op1s2.south) + (-4, 0)$) -- (i1op1s2type.north) node [midway, left, text centered] {\footnotesize\it type};
+              \draw[-{>[scale=1.5]}] ($(i1op1.south) + (+8, 0)$) -- ++(0,3) -| (i1op1t1.north) node [midway, below left, text centered] {\footnotesize\it targets};
+                \draw[-{>[scale=1.5]}] ($(i1op1t1.south) + (-8, 0)$) -- (i1op1t1type.north) node [midway, left, text centered] {\footnotesize\it type};
+                \draw[-{>[scale=1.5]}] ($(i1op1t1.south) + (2, 0)$) -- (i1op1t1name.north) node [midway, left, text centered] {\footnotesize\it name};
+                \draw[-{>[scale=1.5]}] ($(i1op1t1.south) + (+8, 0)$) -- (i1op1t1index.north) node [midway, right, text centered] {\footnotesize\it index};
+
+
+          \draw[-{>[scale=1.5]}] ($(ilocprogram.south) + (-8, 7)$) |- (i2.west) node [near start, right, text centered] {\footnotesize\it instructions};
+
+            \draw[-{>[scale=1.5]}] ($(i2.south) + (-4, 0)$) |- (i2op1.west);
+              \draw[-{>[scale=1.5]}] (i2op1.east) -- (i2op1oc.west) node [midway, above, text centered] {\footnotesize\it opcode};
+              \draw[-{>[scale=1.5]}] ($(i2op1.south) + (-8, 0)$) -- ++(0,8) -| (i2op1s1.north);
+                \draw[-{>[scale=1.5]}] ($(i2op1s1.south) + (+8, 0)$) -- (i2op1s1name.north) node [midway, right, text centered] {\footnotesize\it name};
+                \draw[-{>[scale=1.5]}] ($(i2op1s1.south) + (-4, 0)$) -- (i2op1s1type.north) node [midway, left, text centered] {\footnotesize\it type};
+              \draw[-{>[scale=1.5]}] ($(i2op1.south) + (-8, +8)$) -| (i2op1s2.north) node [near start, above, text centered] {\footnotesize\it sources};
+                \draw[-{>[scale=1.5]}] ($(i2op1s2.south) + (+4, 0)$) -- (i2op1s2name.north) node [midway, right, text centered] {\footnotesize\it name};
+                \draw[-{>[scale=1.5]}] ($(i2op1s2.south) + (-4, 0)$) -- (i2op1s2type.north) node [midway, left, text centered] {\footnotesize\it type};
+              \draw[-{>[scale=1.5]}] ($(i2op1.south) + (+8, 0)$) -- ++(0,3) -| (i2op1t1.north) node [midway, below left, text centered] {\footnotesize\it targets};
+                \draw[-{>[scale=1.5]}] ($(i2op1t1.south) + (0, 0)$) -- (i2op1t1type.north) node [midway, left, text centered] {\footnotesize\it type};
+
+            \draw[-{>[scale=1.5]}] ($(i2.south) + (-4, 9)$) |- (i2op2.west) node [near start, left, text centered] {\footnotesize\it operations};
+              \draw[-{>[scale=1.5]}] (i2op2.east) -- (i2op2oc.west) node [midway, above, text centered] {\footnotesize\it opcode};
+              \draw[-{>[scale=1.5]}] ($(i2op2.south) + (-12.5, 0)$) -- (i2op2s1.north) node [midway, left, text centered] {\footnotesize\it sources};
+                \draw[-{>[scale=1.5]}] ($(i2op2s1.south) + (0, 0)$) -- (i2op2s1type.north) node [midway, left, text centered] {\footnotesize\it type};
+              \draw[-{>[scale=1.5]}] ($(i2op2.south) + (+18.15, 0)$) -- (i2op2t1.north);
+                \draw[-{>[scale=1.5]}] ($(i2op2t1.south) + (+4, 0)$) -- (i2op2t1name.north) node [midway, right, text centered] {\footnotesize\it name};
+                \draw[-{>[scale=1.5]}] ($(i2op2t1.south) + (-6, 0)$) -- (i2op2t1type.north) node [midway, left, text centered] {\footnotesize\it type};
+              \draw[-{>[scale=1.5]}] ($(i2op2.south) + (+18.15, +4)$) -| (i2op2t2.north) node [midway, below left, text centered] {\footnotesize\it targets};
+                \draw[-{>[scale=1.5]}] ($(i2op2t2.south) + (+4, 0)$) -- (i2op2t2name.north) node [midway, right, text centered] {\footnotesize\it name};
+                \draw[-{>[scale=1.5]}] ($(i2op2t2.south) + (-6, 0)$) -- (i2op2t2type.north) node [midway, left, text centered] {\footnotesize\it type};
+
+
+          \draw[-{>[scale=1.5]}] ($(ilocprogram.south) + (-8, 65)$) |- (i3.west);
+
+            \draw[-{>[scale=1.5]}] (i3.east) -- (i3label.west) node [midway, above, text centered] {\footnotesize\it label};
+            \draw[-{>[scale=1.5]}] ($(i3.south) + (-4, 0)$) |- (i3op1.west) node [near start, left, text centered] {\footnotesize\it operations};
+              \draw[-{>[scale=1.5]}] (i3op1.east) -- (i3op1oc.west) node [midway, above, text centered] {\footnotesize\it opcode};
+              \draw[-{>[scale=1.5]}] ($(i3op1.south) + (-13.4, 0)$) -- (i3op1s1.north) node [midway, left, text centered] {\footnotesize\it sources};
+                \draw[-{>[scale=1.5]}] ($(i3op1s1.south) + (+8, 0)$) -- (i3op1s1name.north) node [midway, left, text centered] {\footnotesize\it name};
+                \draw[-{>[scale=1.5]}] ($(i3op1s1.south) + (-4, 0)$) -- (i3op1s1type.north) node [midway, left, text centered] {\footnotesize\it type};
+              \draw[-{>[scale=1.5]}] ($(i3op1.south) + (+20, 0)$) -- ($(i3op1t1.north) + (-2.2, 0) $);
+                \draw[-{>[scale=1.5]}] ($(i3op1t1.south) + (+4, 0)$) -- (i3op1t1name.north) node [midway, right, text centered] {\footnotesize\it name};
+                \draw[-{>[scale=1.5]}] ($(i3op1t1.south) + (-4, 0)$) -- (i3op1t1type.north) node [midway, left, text centered] {\footnotesize\it type};
+              \draw[-{>[scale=1.5]}] ($(i3op1.south) + (+20, +4)$) -| (i3op1t2.north) node [midway, below left, text centered] {\footnotesize\it targets};
+                \draw[-{>[scale=1.5]}] ($(i3op1t2.south) + (+4, 0)$) -- (i3op1t2name.north) node [midway, right, text centered] {\footnotesize\it name};
+                \draw[-{>[scale=1.5]}] ($(i3op1t2.south) + (-4, 0)$) -- (i3op1t2type.north) node [midway, left, text centered] {\footnotesize\it type};
+
+            
+          \end{tikzpicture}
+          \captionsetup{justification=centering}
+          \caption{The \gls{ast} for the \gls{iloc} program in fig. \ref{lst:iloc_ast_code}.}\label{fig:iloc_ast}
+        \end{figure}
+
+    
+        \subsection{Control-Flow Graph}
+        The simulation constructs a \gls{cfg} from the
+        \gls{ast}. Internally, the edges of the \gls{cfg} are
+        represented using an adjacency matrix. As the input is
+        expected to be small the choice of internal representation has
+        minimal effect on the efficiency of the simulation. If larger
+        input was expected then a strong case could be made for
+        switching to a different structure such as an adjacency list
+        in order to reduce memory requirements; however, the \gls{cfg}
+        shares much of its underlying code with the Hasse diagrams
+        (see \S\ref{sec:impl_lattice}) for which an adjacency matrix
+        is better suited.
+
+        Algorithm \ref{algo:cfg_construction} describes how the
+        \gls{cfg} is constructed from the \gls{ast}. The algorithm
+        first adds all of the instructions to the graph, identifying
+        which labels refer to which instructions and storing this
+        information in a map. Next, the algorithm populates the
+        adjacency matrix. If the node is a ControlFlowOperation an
+        edge to the target instructions (looked up using the label
+        map), otherwise we add an edge to the next instruction in the
+        sequence.
+
+        \begin{algorithm}[caption={Constructing a \gls{cfg} from an \gls{ast} for an \gls{iloc} program.}, label={algo:cfg_construction},mathescape=true]
+$labels$ = Map (Label $\rightarrow$ Instruction)
+
+for each ($instruction$ in the AST)
+    add $instruction$ to the CFG as a node
+    if ($instruction$ has $label$)
+       add ($label \rightarrow instruction$) to $labels$
+
+for each ($node$ in the CFG)
+    if ($node$ is a ControlFlowOperation)
+       for each ($target$ in $node$)
+           add an edge from $node$ to $labels[target]$
+    else
+       add an edge from $node$ to next node
+        \end{algorithm}
+
+        \subsection{Lattices}\label{sec:impl_lattice}
+        The simulation uses the \gls{cfg} to construct the
+        \gls{meetsemilattice} for a given \gls{dataflow}
+        framework. The lattices in this simulation only provide
+        support for \gls{bitvector}s since these are the only type
+        included with the system (see \S\ref{sec:included_dataflows}).
+
+        Due to this constraint, the process of generating the lattice
+        is quite simple. The set of all combinations of values is a
+        powerset, and our lattice must include each one. This is easy
+        to see when we consider the meaning of the term bit-vector:
+        the number of possible sets represented by $n$ bits is $2^n$.
+
+        First, the domain of values is identified. Then all possible
+        sets of values must be generated, the code for which was taken
+        from a snippet online % TODO: remove this?
+        \cite{snippet:combinations}. Each value set becomes a node in
+        the lattice. Next, the algorithm finds the meet of every pair
+        of sets; an edge is added between those sets and the result of
+        the meet operation. Finally, a transitive reduction is
+        performed on the graph: if an edge exists from
+        $x \rightarrow y$ and from $y \rightarrow z$, any edge from
+        $x \rightarrow z$ may be removed as it is represented by the
+        path $x \rightarrow y \rightarrow z$. This constructs a
+        \gls{hassediagram} representing the \gls{meetsemilattice}, as
+        described in algorithm \ref{algo:lattice_construction}.
+
+        \begin{algorithm}[caption={Constructing a \gls{hassediagram} for the \gls{meetsemilattice} of a \gls{cfg}.}, label={algo:lattice_construction},mathescape=true]
+$values$ = collect all values from the CFG
+$sets$ = generate all possible subsets of $values$
+
+$graph$ = Graph
+
+for each ($set$ in $sets$):
+    add $set$ to $graph$ as a node
+
+// Find all the edges between the nodes
+for $i$ from 0 to length($sets$) - 1
+    for $j$ from $i$ + 1 to length($sets$)
+        temp = meet($sets[i]$, $sets[j]$)
+        add edge to $graph$ from $sets[i]$ to $temp$
+        add edge to $graph$ from $sets[j]$ to $temp$
+
+// Perform a transitive reduction of the graph
+for $i$ from 0 to length($sets$)
+    for $j$ from 0 to length($sets$)
+        if (there exists an edge $i \rightarrow j$)
+            for $k$ from 0 to length($sets$)
+                if (there exists an edge $j \rightarrow k$)
+                    remove the edge $i \rightarrow k$
+        \end{algorithm}
+
+        The simulator only generates a lattice for programs with a
+        small set of values due to the exponential growth of the size
+        of the lattice. The graph is backed by an adjacency matrix
+        since this structure has constant-time operations for adding
+        and removing edges, resulting in a huge performance increase
+        over other structures such as an adjacency list.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Data-Flow Analysis Visualisation}\label{chap:impl-visualisation}

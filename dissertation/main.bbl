@@ -11,7 +11,7 @@
   \defaultdefine{real}{{\Bbb R}} \def\restriction{{|}} \def\club{CLUB}
   \def\w{\omega} \def\exist{\exists} \def\se{{\germ se}} \def\bb{{\bf b}}
   \def\equivalence{\equiv} \let\lt< \let\gt>
-\begin{thebibliography}{13}
+\begin{thebibliography}{15}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -91,12 +91,22 @@ M.~D. Merrill.
   Precedence?}
 \newblock \emph{Trends and Issues in Instructional Technology}, 2000.
 
-\bibitem[{Ecma International}(2015)]{es6-maps}
-{Ecma International}.
-\newblock Ecmascript® 2015 language specification.
-\newblock
-  \url{http://www.ecma-international.org/ecma-262/6.0/index.html#sec-map-objects},
-  2015.
-\newblock Accessed: 2016-03-23.
+\bibitem[{David Majda}(2016)]{pegjs}
+{David Majda}.
+\newblock Peg.js -- parser generator for javascript.
+\newblock \url{http://pegjs.org/}, 2016.
+\newblock Accessed: 2016-03-25.
+
+\bibitem[{Troels Knak-Nielsen}(2016)]{snippet:combinations}
+{Troels Knak-Nielsen}.
+\newblock Calculate all combinations (permutations).
+\newblock \url{https://dzone.com/articles/calculate-all-combinations}, 2016.
+\newblock Accessed: 2016-03-25.
+
+\bibitem[{Wikipedia}(2016)]{wikipedia:contextfreegrammar}
+{Wikipedia}.
+\newblock Context-free grammar.
+\newblock \url{https://en.wikipedia.org/wiki/Context-free_grammar}, 2016.
+\newblock Accessed: 2016-03-25.
 
 \end{thebibliography}
