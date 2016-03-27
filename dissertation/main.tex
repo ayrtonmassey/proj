@@ -209,6 +209,8 @@ responses to Likert items}
 
 %% Acronyms
 \newacronym{cfg}{CFG}{control-flow graph}
+\newacronym{dry}{DRY}{Don't Repeat Yourself}
+\newacronym{cdn}{CDN}{content delivery network}
 \newacronym{peg}{PEG}{Parsing Expression Grammar}
 \newacronym{iloc}{ILOC}{Intermediate Language for Optimising Compilers}
 \glsunset{iloc}
@@ -231,9 +233,11 @@ responses to Likert items}
 %% Figures
 \usepackage[section]{placeins}
 \usepackage{tabularx}
+%TC:ignore
 \newcolumntype{C}{>{\centering\arraybackslash}X} % center column
 \newcolumntype{T}[1]{>{\arraybackslash$\tt}{#1}<{$}} % math column
 \newcolumntype{M}[1]{>{\arraybackslash$}{#1}<{$}} % math column
+%TC:endignore
 \usepackage{caption}
 \captionsetup{%
   figurename=Fig.,
@@ -2388,10 +2392,10 @@ interactive teaching components.
         
 
     \section{Interactive Components}
-    This section describes the implementation of the interactive
-    components which allow the user to interact with the system,
-    including the choice of any libraries and frameworks and the
-    changes that were made from the original design.
+    This section describes the implementation of the components which
+    enable the user to interact with the system, including the choice
+    of any libraries and frameworks and the changes that were made
+    from the original design.
     
         \subsection{Simulator Controls}
 
@@ -2469,6 +2473,42 @@ interactive teaching components.
     describes any changes made from the proposed design. These changes
     and the use of any libraries and frameworks are justified.
     
+        \subsection{Overview}
+    
+        The user interface, much like the visual components, is
+        implemented using the {\tt View} model. The modular nature of
+        the {\tt View} system means that it is easy to add or remove
+        components or sections of the UI. In the same way that the
+        simulator and its visual components may be extracted from the
+        rest of the system, the interactive learning components are
+        independent of the \gls{dataflowanalysis} content. This would
+        allow others to implement a similar system for other topics
+        with only a small amount of work.
+
+        A combination of the Bootstrap design framework, jQuery,
+        Handlebars and MathJax libraries were used to produce the
+        overall look and feel of the UI. The latest development
+        version of Bootstrap (v4-alpha-2) was used due to the addition
+        of CSS {\tt flexbox} support -- whereas the current version
+        (3.5.6) uses {\tt float}ing elements, {\tt flexbox} allows
+        more control over the layout including more precise vertical
+        alignment and scaling elements to fill their
+        containers. Whilst similar layouts are possible in 3.5.6, they
+        are often difficult or painful to achieve consistent behaviour
+        across different web browsers.
+
+        However, this increase in flexibility comes with some
+        drawbacks. Load times of the application are reduced; though
+        most of the JavaScript and CSS libraries are hosted using a
+        \gls{cdn}, less common libraries such as this project's build
+        of the Bootstrap alpha must be downloaded from the
+        application's server. A \gls{cdn} would provide faster
+        download speeds and enable the use of cached files if the user
+        has visited other sites using the same libraries, whereas
+        hosting them on the application server requires those
+        libraries to be downloaded regardless of whether the user has
+        already received them from another source.
+    
         \subsection{Menu}
 
         \begin{figure}[!ht]
@@ -2500,6 +2540,13 @@ interactive teaching components.
         break the monotony of the current design.
 
         \subsection{Simulation Interface}
+
+        % \begin{figure}[!ht]
+        %   \centering
+        %   \includegraphics[width=\textwidth]{img/simulator2.png}
+        %   \captionsetup{width=\textwidth, justification=centering}
+        %   \caption{The simulator interface.}\label{fig:simulator}
+        % \end{figure}
 
         The final simulation interface, shown in
         fig. \ref{fig:simulator}, is very similar to the original
@@ -2543,41 +2590,110 @@ interactive teaching components.
         information is conveyed without being too confusing or
         intimidating. The time which would have been spent developing
         the window system would likely not have been worth the effort,
-        even with the availability of external libraries.
-
+        even with the availability of external libraries, given the
+        strength of the implemented design.
 
         \begin{figure}[p]
           \centering
-          \includegraphics[width=\textheight, angle=90]{img/simulator.png}
+          \includegraphics[width=\textheight, angle=-90]{img/simulator.png}
           \captionsetup{width=\textwidth, justification=centering}
           \caption{The simulator interface.}\label{fig:simulator}
         \end{figure}
 
         \subsection{Tutorial Interface}
         
-        \lipsum[3-4]
+        The tutorial interface is also very similar to the original
+        design. The user follows a series of steps which present them
+        with text descriptions and sometimes visual components. These
+        steps are written in JavaScript and so are able to hook into
+        the component or simulator \gls{api}s in order to manipulate
+        them; for example, in fig. \ref{fig:tutorial} when the user
+        selects the correct answer they are shown visual confirmation
+        in the \gls{cfg} and table of results.
+
+        The steps-as-functions system gives a lot of power to the
+        developer at the cost of added complexity. Whilst this is
+        great for complicated steps involving questions which trigger
+        simulator events or manipulate visual components, many of the
+        steps are simply a passage of text with some formulae. If the
+        project were to be developed further or extended to other
+        topics it would be useful to implement some kind of high-level
+        description language for tutorials. Simple operations such as
+        displaying text or a {\tt QuestionView} or advancing the
+        simulation, could be written quite simply in this format. This
+        follows the tried-and-true software enginering principle
+        \gls{dry}.
+
+        The current step implementation also has an unfortuate
+        side-effect -- each step is dependent on the ones before it,
+        so to navigate to a previous step the system must execute each
+        of the preceding step functions (for example, to go from step
+        38 to step 37 the system will reset and then execute steps
+        1...37). When navigating forward through a tutorial, some
+        steps taking slightly longer to load is barely
+        noticeable. However, when navigating backward it becomes
+        glaringly obvious, due to the cumulative effect of executing
+        every step at once.
+
+        The high-level description language mentioned above would
+        enable some kind of state history system. Changes could be
+        popped on and off a stack in order to navigate forward or
+        backward, increasing the efficiency of navigation. This
+        functionality would be abstracted away from the developer by
+        the description language, removing any complexity faced when
+        implementing this in the current system.
+
+        \begin{figure}[!b]
+          \centering
+          \includegraphics[width=\textwidth, trim=0 0 0 0]{img/test.png}
+          \captionsetup{width=\textwidth, justification=centering}
+          \caption{An interactive test.}\label{fig:testing}
+          \vspace{-5mm}
+        \end{figure}
 
         \begin{figure}[p]
           \centering
-          \includegraphics[width=\textheight, angle=90]{img/lesson.png}
+          \includegraphics[width=\textheight, angle=-90]{img/lesson.png}
           \captionsetup{width=\textwidth, justification=centering}
           \caption{An interactive tutorial.}\label{fig:tutorial}
         \end{figure}
 
         \subsection{Testing Interface}
 
-        \lipsum[1-2]
+        The testing interface is a new feature not present in the
+        original design. It was added for two reasons: first, to
+        provide useful data in order to evaluate the project; second,
+        to provide the user with a means of obtaining feedback about
+        their learning progress.
 
-        \begin{figure}[!ht]
-          \centering
-          \includegraphics[width=\textwidth, trim=0 0 0 0]{img/test.png}
-          \captionsetup{width=\textwidth, justification=centering}
-          \caption{An interactive test.}\label{fig:testing}
-        \end{figure}
+        The design and implementation is an extension of the
+        interactive tutorials. However, instead of suppling the code
+        for each step of the program, a developer may supply text
+        questions and answers with an optional function display any
+        other components (such as a \gls{cfg}, as shown in fig
+        \ref{fig:testing}). Unlike in the {\tt TutorialView}s,
+        navigating to the previous question does not require every
+        question to be re-initialized as each question is
+        self-contained.
+
+        Upon submission the user is shown some feedback and the
+        correct answers are revealed, with icons to indicate which
+        answers they picked to help them identify any mistakes they
+        made. The feedback given is a simple overall score -- perhaps
+        it would be more useful to provide a score breakdown by topic,
+        to indicate which areas they need to improve upon. Some simple
+        usability tweaks such as a progress indicator or a dialog to
+        confirm whether the user would like to submit the test would
+        not go amiss.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Evaluation}
-Blah Blah
+This section describes the evaluation methodology for the project,
+followed by a critical analysis of the design and implementation of
+the system and suggestions for future development. The report concludes
+with an assessment of the success or failure of the project as a
+whole.
 
 % use the following and \cite{} as above if you use BibTeX
 % otherwise generate bibtem entries

@@ -54,10 +54,11 @@
 \contentsline {subsection}{\numberline {6.4.1}Simulator Controls}{39}
 \contentsline {subsection}{\numberline {6.4.2}Questions}{40}
 \contentsline {section}{\numberline {6.5}User Interface}{41}
-\contentsline {subsection}{\numberline {6.5.1}Menu}{41}
-\contentsline {subsection}{\numberline {6.5.2}Simulation Interface}{42}
-\contentsline {subsection}{\numberline {6.5.3}Tutorial Interface}{42}
-\contentsline {subsection}{\numberline {6.5.4}Testing Interface}{44}
+\contentsline {subsection}{\numberline {6.5.1}Overview}{41}
+\contentsline {subsection}{\numberline {6.5.2}Menu}{41}
+\contentsline {subsection}{\numberline {6.5.3}Simulation Interface}{42}
+\contentsline {subsection}{\numberline {6.5.4}Tutorial Interface}{43}
+\contentsline {subsection}{\numberline {6.5.5}Testing Interface}{45}
 \contentsline {chapter}{\numberline {7}Evaluation}{47}
 \contentsline {chapter}{Bibliography}{49}
 \contentsline {chapter}{Appendices}{51}
