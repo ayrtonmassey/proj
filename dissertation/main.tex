@@ -209,6 +209,11 @@ responses to Likert items}
 
 %% Acronyms
 \newacronym{cfg}{CFG}{control-flow graph}
+\newacronym{ui}{UI}{user interface}
+\newacronym{ux}{UX}{user experience}
+\newacronym{json}{JSON}{JavaScript Object Notation}
+\glsunset{json}
+\newacronym{drf}{DRF}{Django REST Framework}
 \newacronym{dry}{DRY}{Don't Repeat Yourself}
 \newacronym{cdn}{CDN}{content delivery network}
 \newacronym{peg}{PEG}{Parsing Expression Grammar}
@@ -1127,7 +1132,7 @@ identify aspects of said work which may be applied to this project.
       \end{minipage}
     \end{figure}
 
-    \section{Simulators as a Teaching Aid}
+    \section{Simulators as a Teaching Aid}\label{sec:mustafa-simulator}
 
     In his article {\em Evaluating A System Simulator For Computer
       Architecture Teaching And Learning Support}\cite{mustafa2010},
@@ -1523,63 +1528,6 @@ conceptual problems.
 
     \section{User Interface Design}\label{sec:design-interface}
 
-    
-
-    \section{Data Collection}
-
-    To evaluate the system anonymous usage data will be collected. A
-    variety of web platforms exist for this purpose including Google
-    Analytics and Piwik. However, these platforms are intended for
-    large-scale data collection and as such are not suited for the
-    fine-grained analysis necessary in the evaluation of this
-    project. As an example, it is not possible to link tracked events
-    to specific users or view a complete list of triggered events
-    using Google Analytics. Furthermore, extended use of these
-    platforms often comes at significant financial cost. It is also
-    important to consider the ethical issues that may arise from
-    sharing usage data with companies like Google; using such a
-    platform would require a much deeper discussion around user
-    privacy and use of the data for financial gain.
-
-    Developing a custom event-tracking \gls{api} would allow full
-    control of the data collected both in terms of accessing the raw
-    data and maintaining user privacy.
-
-    The data model must be able to store the following on a per-user
-    basis:
-
-    \begin{itemize}
-    \item Page views;
-    \item Button clicks and interactions with components;
-    \item Page load times; and
-    \item Question attempts and overall scores.
-    \end{itemize}
-
-    All of these can be modeled using an API with a single
-point\footnote{An endpoint is a URL at which a particular API
-      service may be accessed, e.g. \url{api.com/users/} may provide
-      access to user data} based on the Google Analytics event
-    model. Each {\tt event} record has the following fields:
-
-    \begin{itemize}
-    \item A {\tt tracking token} used to group events by user;
-    \item A {\tt type} such as page view or button click;
-    \item The {\tt datetime} at which the event occurred; and
-    \item Four levels of categorization: {\tt category}, {\tt action},
-      {\tt label}, and {\tt value}. Each field can be used to group
-      similar events and store values such as question scores or which
-      element was clicked. The actual content of these fields does not
-      matter as long as the grouping is consistent.
-    \end{itemize}
-
-    The tracking token will be generated when the user first visits
-    the page and persist across visits to the site. Storing this token
-    will enable analysis of how a user's actions affect their
-    achievement of learning outcomes, such as whether completing a
-    given tutorial or using a simulator component increases question
-    scores in the related topic. It will be possible to determine
-    which elements of the software users find difficult to understand
-    based on their interactions with each component.
     
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2478,7 +2426,7 @@ interactive teaching components.
         The user interface, much like the visual components, is
         implemented using the {\tt View} model. The modular nature of
         the {\tt View} system means that it is easy to add or remove
-        components or sections of the UI. In the same way that the
+        components or sections of the \gls{ui}. In the same way that the
         simulator and its visual components may be extracted from the
         rest of the system, the interactive learning components are
         independent of the \gls{dataflowanalysis} content. This would
@@ -2487,7 +2435,7 @@ interactive teaching components.
 
         A combination of the Bootstrap design framework, jQuery,
         Handlebars and MathJax libraries were used to produce the
-        overall look and feel of the UI. The latest development
+        overall look and feel of the \gls{ui}. The latest development
         version of Bootstrap (v4-alpha-2) was used due to the addition
         of CSS {\tt flexbox} support -- whereas the current version
         (3.5.6) uses {\tt float}ing elements, {\tt flexbox} allows
@@ -2689,11 +2637,262 @@ interactive teaching components.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Evaluation}
-This section describes the evaluation methodology for the project,
+This chapter describes the evaluation methodology for the project,
 followed by a critical analysis of the design and implementation of
-the system and suggestions for future development. The report concludes
-with an assessment of the success or failure of the project as a
-whole.
+the system and suggestions for future development. The chapter
+concludes with an assessment of the success or failure of the project
+as a whole.
+
+    \section{Introduction}
+
+    The goal of this project was to create an interactive system to
+    teach students the basic principles of \gls{dataflowanalysis} in
+    compilers. The final system took the form the form of an online
+    learning platform, containing a \gls{dataflowanalysis} simulator
+    and a series of interactive tutorials.
+
+    To determine whether the final product meets the original aim of
+    the project, there are three main points against which it should
+    be evaluated:
+
+    \begin{itemize}
+    \item Achievement of learning outcomes by the participants, in
+      order to assess its validity as a learning platform;
+    \item Interactions with the system, to analyse the platform's
+      usability; and
+    \item Feedback from the participants, to determine whether it is a
+      useful tool for the intended audience.
+    \end{itemize}
+
+    The following sections present a thorough evaluation of the
+    system against these three objectives.
+
+    \section{Method}
+
+    The intended audience of the project is primarily students of the
+    \gls{copt} course. However, the number of students available is
+    limited; the course has around 30 registered students and
+    anecdotal evidence shows that around 10 of those regularly attend
+    class. In order to collect a suitable amount of data to perform an
+    evaluation the net must be widened to include participants from
+    outside the course, perhaps including those with prior experience
+    in STEM subjects or students in general. The aim was to obtain
+    around 30 responses, as this is generally seen as a reasonable
+    sample size in statistical analysis.
+
+    Evaluating the system requires the collection of data and
+    supporting evidence from which conclusions may be drawn. There are
+    a number of ways in which this data could be collected; for
+    example, in-person evaluations may be performed and the sessions
+    recorded. These recordings would then be analysed to obtain
+    feedback. However, this method presents some issues: firstly, the
+    participant may feel pressured to give a positive response in
+    order to please the person conducting the evaluation. Second,
+    whilst observing the participant would provide valuable insight
+    into how participants use the application, it is very time
+    consuming and difficult to find willing participants given the
+    required time investment. To obtain the desired 30 responses, a
+    more efficient method of data collection was required.
+
+    Two possible methods which would enable remote participation
+    involve collecting usage information or distributing an online
+    survey to gather feedback. These methods are useful but can be
+    unreliable; when collecting usage information if the user has
+    JavaScript disabled or their internet connection drops then loss
+    of data could occur. It is also difficult to determine whether
+    respondents to an online survey have actually used the software
+    without witnessing them do so.
+
+    The most effective solution would therefore involve a mixture of
+    all three methods: performing a few evaluation sessions in person
+    would ensure that the methodology was sound and that the automated
+    data collection functioned as intended, whilst enabling
+    participants to complete the evaluation in their own time and
+    removing the need for an assessor to be present. This also
+    alleviates any pressure the participant may feel to provide a
+    positive response.
+
+    This was the method chosen to evaluate the project: participants
+    were given a link to the application and usage information was
+    collected with their consent. Upon accessing the application for
+    the first time, users were asked two questions in order to
+    categorize them (see \S\ref{sec:demographics}). A link in the
+    application gave users the option to participate in a feedback
+    survey. Three in-person evaluation sessions were held: two
+    one-to-one sessions in order to validate the evaluation method
+    itself, and one in-class session with the \gls{copt}
+    students. 
+
+    These sessions went well and thus an invitation was extended to
+    the following sources:
+
+    \begin{itemize}
+    \item The remaining \gls{copt} students who did not attend the
+      in-class session;
+    \item Friends and family through my personal Facebook feed;
+    \item Members of the ``Informatics -- Class of 2016 --
+      University of Edinburgh'' and ``Informatics -- University of
+      Edinburgh'' Facebook pages;
+    \item Students of the Compilers courses at the Universities of
+      Bristol, Birmingham, Durham, Oxford, Manchester, Warwick,
+      Imperial College London and UCL, whose organisers' e-mail
+      addresses were publicly available; and
+    \item Members of the /r/compilers, /r/computerscience and
+      /r/webdev communities on Reddit\cite{reddit}.
+    \end{itemize}
+
+    This should encourage participants from a wide range of
+    backgrounds, including those with prior experience with or an
+    interest in studying \gls{dataflowanalysis}, those with knowledge
+    of similar material such as Computer Science and STEM students,
+    developers of web applications who should be familiar with
+    \gls{ux} and \gls{ui} design, and those completely unrelated to
+    any technical fields.
+
+    All participants were presented with the same version of the
+    software and were encouraged to be truthful and honest with their
+    feedback.
+
+        \subsection{Usage Data}
+        To collect usage information, the use of some tracking system
+        was required. A variety of web platforms exist for this
+        purpose including Google Analytics and Piwik. However, these
+        platforms are intended for large-scale data collection and as
+        such are not suited for the fine-grained analysis necessary in
+        the evaluation of this project. For example, it is not
+        possible to link tracked events to specific users or view a
+        complete list of triggered events using Google
+        Analytics. Furthermore, extended use of these platforms often
+        comes at significant financial cost. It is also important to
+        consider the ethical issues that may arise from sharing usage
+        data with companies like Google; using such a platform would
+        require a much deeper discussion around user privacy and use
+        of the data for financial gain.
+
+        Developing a custom event-tracking \gls{api} would allow full
+        control of the data collected both in terms of accessing the
+        raw data and maintaining user privacy. The data model used in
+        this \gls{api} must be able to store the following on a
+        per-user basis:
+
+        \begin{itemize}
+        \item Page views;
+        \item Button clicks and interactions with components;
+        \item Page load times; and
+        \item Question attempts and overall scores.
+        \end{itemize}
+
+        This data can be collected using an API with a single
+        endpoint\footnote{An endpoint is a URL at which a particular
+          API service may be accessed, e.g. \url{api.com/users/} may
+          provide access to user data}, based on the Google Analytics
+        event model. Each {\tt event} record has the following fields:
+
+        \begin{itemize}
+        \item A {\tt tracking token} used to group events by user;
+        \item A {\tt type} such as page view or button click;
+        \item The {\tt datetime} at which the event occurred; and
+        \item Four levels of categorization: {\tt category}, {\tt
+            action}, {\tt label}, and {\tt value}. Each field can be
+          used to group similar events and store values such as
+          question scores or which element was clicked. The actual
+          content of these fields does not matter as long as the
+          grouping is consistent.
+        \end{itemize}
+
+        The tracking token is generated when the user first visits the
+        page and persists across visits to the site. Storing this
+        token enables analysis of how a user's actions affect their
+        achievement of learning outcomes, such as whether completing a
+        given tutorial or using a simulator component increases
+        question scores in the related topic. It would be possible to
+        determine which elements of the software users find difficult
+        to understand based on their interactions with each component.
+
+        This design was implemented in Python using
+        \gls{drf}\cite{drf}, due to the ease with which one may
+        develop a simple web \gls{api}. This application was hosted on
+        an Apache server using the {\tt mod\textunderscore{}wsgi}
+        module. The \gls{api} receives events as \gls{json} data and
+        stores them in a PostgreSQL database hosted on the same
+        server. A small JavaScript library was written to generate
+        identification tokens and send user events to the \gls{api}.
+
+        All of the data sent to the API is completely anonymous; the
+        tracking token is randomly generated and exists only to tie
+        records to a given session. In addition to the events outlined
+        above, the application sends the user's categorization answers
+        to the \gls{api} to provide context to the data collected.
+
+        \subsection{Feedback Survey}
+        After using the software, participants had the option to fill
+        out a short evaluation survey. This survey was produced using
+        Google Forms\cite{googleforms} because of its flexibility and
+        low risk regarding loss of data.
+
+        The first page of the form, which requests the same
+        categorization information as the application, is
+        automatically filled if the user follows the link to the
+        survey from the application's main menu. This reduces the
+        amount of time users must spend filling out the survey and
+        increases consistency between the data collected via the
+        \gls{api} and the survey.
+
+        Following the example set by Mustafa\cite{mustafa2010} (see
+        \S\ref{sec:mustafa-simulator}), the survey consists of a
+        number of \gls{likertscale} questions ranging from ``Strongly
+        Agree'' to ``Strongly Disagree''. Partipants were required to
+        select a response to each Likert item, but were given a ``No
+        Response'' option instead of the usual ``Neutral'' response
+        which allowed them to explicitly indicate that they did not
+        wish to respond or that they had no strong feelings one way or
+        another. This provided context as to why participants did not
+        respond to a particular item, ensuring that they did not
+        accidentally miss a question.
+
+        More information about the content of the survey can be found
+        throughout the remainder of this chapter.
+
+    \section{Demographics}
+    
+    During the two-week evaluation period X unique users visited the
+    application, Y of whom used the software for more than Z
+    minutes. A total of 28 participants responded to the feedback
+    survey, all of whom spent more than Z minutes participating in the
+    evaluation.
+
+    The data used throughout the rest of this chapter has been culled
+    to those users who spent more than Z minutes with the software.
+
+    Upon accessing the application for the first time, users were
+    asked two questions in order to categorize them during data
+    analysis:
+
+    \begin{itemize}
+    \item How would you rate your knowledge of
+      \gls{dataflowanalysis}?
+      \begin{itemize}
+      \item None at all
+      \item Basic
+      \item Advanced
+      \end{itemize}
+    \item Which of the following statements apply to you?
+      \begin{itemize}
+      \item I am a student of the COPT course (UoE Informatics
+        only)
+      \item I am a student.
+      \item I have studied Computer Science at degree level.
+      \item I have studied a STEM subject at degree level.
+      \end{itemize}
+    \end{itemize}
+
+    The responses to the above questions are displayed in figures
+    \ref{fig:demo-q1} \& \ref{fig:demo-q2} and may be summarised as
+    follows.
+    
+    
+
+    
 
 % use the following and \cite{} as above if you use BibTeX
 % otherwise generate bibtem entries
