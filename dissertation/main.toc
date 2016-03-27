@@ -48,20 +48,20 @@
 \contentsline {section}{\numberline {6.3}Visual Components}{36}
 \contentsline {subsection}{\numberline {6.3.1}Control-Flow Graphs}{36}
 \contentsline {subsection}{\numberline {6.3.2}Hasse Diagrams}{37}
-\contentsline {subsection}{\numberline {6.3.3}Table of Results}{38}
+\contentsline {subsection}{\numberline {6.3.3}Table of Results}{37}
 \contentsline {subsection}{\numberline {6.3.4}Code Display}{38}
 \contentsline {section}{\numberline {6.4}Interactive Components}{39}
 \contentsline {subsection}{\numberline {6.4.1}Simulator Controls}{39}
 \contentsline {subsection}{\numberline {6.4.2}Questions}{40}
 \contentsline {section}{\numberline {6.5}User Interface}{41}
-\contentsline {subsection}{\numberline {6.5.1}Menus}{41}
-\contentsline {subsection}{\numberline {6.5.2}Simulation Interface}{41}
-\contentsline {subsection}{\numberline {6.5.3}Tutorial Interface}{41}
-\contentsline {subsection}{\numberline {6.5.4}Testing Interface}{41}
-\contentsline {chapter}{\numberline {7}Evaluation}{43}
-\contentsline {chapter}{Bibliography}{45}
-\contentsline {chapter}{Appendices}{47}
-\contentsline {chapter}{\numberline {A}Terminology}{47}
-\contentsline {section}{\numberline {A.1}Glossary}{47}
-\contentsline {section}{\numberline {A.2}Acronyms}{49}
-\contentsline {chapter}{\numberline {B}Types of Data-Flow Analysis}{51}
+\contentsline {subsection}{\numberline {6.5.1}Menu}{41}
+\contentsline {subsection}{\numberline {6.5.2}Simulation Interface}{42}
+\contentsline {subsection}{\numberline {6.5.3}Tutorial Interface}{42}
+\contentsline {subsection}{\numberline {6.5.4}Testing Interface}{44}
+\contentsline {chapter}{\numberline {7}Evaluation}{47}
+\contentsline {chapter}{Bibliography}{49}
+\contentsline {chapter}{Appendices}{51}
+\contentsline {chapter}{\numberline {A}Terminology}{51}
+\contentsline {section}{\numberline {A.1}Glossary}{51}
+\contentsline {section}{\numberline {A.2}Acronyms}{53}
+\contentsline {chapter}{\numberline {B}Types of Data-Flow Analysis}{55}

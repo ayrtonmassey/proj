@@ -219,6 +219,7 @@ responses to Likert items}
 \newacronym{copt}{COPT}{Compiler Optimisations}
 
 %% Text
+\usepackage{lipsum}
 \usepackage{color}
 \usepackage[dvipsnames]{xcolor}
 \usepackage[hyphens]{url}
@@ -2246,20 +2247,21 @@ interactive teaching components.
         component. However, dagre-d3 is more than adequate for a proof
         of concept.
 
-        \begin{figure}[!h]
-          \begin{minipage}{.58\textwidth}
-            \centering
-            \includegraphics[width=\textwidth]{img/cfg-vis.png}
-            \captionof{figure}{Control-Flow Graph Visualisation}\label{fig:cfg-vis}
-          \end{minipage}
-          \quad
-          \begin{minipage}{.38\textwidth}
-            \centering
-            \includegraphics[width=\textwidth, trim=0 0 0 60]{img/lattice.png}
-            \captionsetup{width=6cm, justification=centering}
-            \captionof{figure}{Hasse Diagram Visualisation}\label{fig:lattice}
-          \end{minipage}
-        \end{figure}
+        % \begin{figure}[!h]
+        %   \begin{minipage}{.58\textwidth}
+        %     \centering
+        %     \includegraphics[width=\textwidth]{img/cfg-vis.png}
+        %     \captionof{figure}{Control-Flow Graph Visualisation}\label{fig:cfg-vis}
+        %   \end{minipage}
+        %   \quad
+        %   \begin{minipage}{.38\textwidth}
+        %     \centering
+        %     \includegraphics[width=\textwidth, trim=0 0 0 60]{img/lattice.png}
+        %     \captionsetup{width=6cm, justification=centering}
+        %     \captionof{figure}{Hasse Diagram Visualisation}\label{fig:lattice}
+        %   \end{minipage}
+        % \end{figure}
+
 
         To reduce clutter in the graph, the user has three options for
         displaying nodes: {\em current}, in which only the points
@@ -2268,13 +2270,18 @@ interactive teaching components.
         nodes of the \gls{cfg} are shown. Fig. \ref{fig:cfg-vis} shows
         the \gls{cfg} in the {\em current} setting.
 
+        \begin{wrapfigure}[22]{r}{8cm}
+            \includegraphics[width=9cm]{img/cfg-vis.png}
+            \captionof{figure}{Control-Flow Graph Visualisation}\label{fig:cfg-vis}
+        \end{wrapfigure}
+
         A system was devised to allow dynamic insertion and removal of
         points from the \gls{cfg}. In addition to automatically
         displaying nodes based on the settings described above, the
         component's \gls{api} can be used to add or remove specific
         points. This allows the tutorial examples to display the exact
         information required rather than relying on the simulation to
-        provide the correct results.
+        process the desired nodes.
 
         As the user steps through a simulation, nodes and points in
         the \gls{cfg} are highlighted to visually relate them to
@@ -2284,6 +2291,13 @@ interactive teaching components.
         Out($n_7$), shown in dark blue.
 
         \subsection{Hasse Diagrams}
+
+        \begin{wrapfigure}[12]{r}{6cm}
+          \centering
+          \includegraphics[width=7cm, trim=0 0 0 60]{img/lattice.png}
+          \captionsetup{width=6cm, justification=centering}
+          \captionof{figure}{Hasse Diagram Visualisation}\label{fig:lattice}
+        \end{wrapfigure}
 
         The \gls{hassediagram} component is implemented using much the
         same system as the \gls{controlflowgraph}s. An SVG component
@@ -2308,6 +2322,11 @@ interactive teaching components.
           \caption{Current Table Layout}\label{fig:tableofresults}
         \end{figure}
 
+        Cells in the table are highlighted to link them to other
+        visual components. Any sets are read or modified, including
+        local information, are higlighted in the table in each step of
+        the simulation.
+
         This design could be improved by changing the layout of the
         table when viewed on small screen sizes. In the current layout
         the entire table becomes scrollable if it is too large for its
@@ -2324,7 +2343,7 @@ interactive teaching components.
           \caption{Alternate Table Layout with Scrollable Rounds}\label{fig:tablescroll}
         \end{figure}
 
-        \subsection{Code Display}
+        \subsection{Code Display}\label{sec:code-display}
         The code display handles displaying ILOC programs, with visual
         links to other components sharing the simulation. This is
         handled by a simple HTML table, as each ILOC instruction has a
@@ -2337,13 +2356,13 @@ interactive teaching components.
 
         \begin{figure}[!ht]
           \hspace{2mm}
-          \begin{minipage}{.48\textwidth}
+          \begin{minipage}{.43\textwidth}
             \includegraphics[width=\textwidth, trim=-15 -35 -15 0]{img/codedisplay.png}
             \captionsetup{width=\textwidth, justification=centering}
             \captionof{figure}{Default Code Display}\label{fig:code-display}
           \end{minipage}%
           \quad
-          \begin{minipage}{.48\textwidth}
+          \begin{minipage}{.43\textwidth}
             \includegraphics[width=\textwidth]{img/codeedit.png}
             \captionsetup{width=\textwidth, justification=centering}
             \captionof{figure}{Editing Code in the Simulator}\label{fig:code-edit}
@@ -2373,15 +2392,15 @@ interactive teaching components.
     components which allow the user to interact with the system,
     including the choice of any libraries and frameworks and the
     changes that were made from the original design.
-
+    
         \subsection{Simulator Controls}
 
-        \begin{figure}[!ht]
+        \begin{wrapfigure}[5]{r}{4cm}
           \centering
-          \includegraphics[width=4cm, trim=0 0 0 0]{img/simcontrols.png}
+          \includegraphics[width=4cm, trim=0 0 0 30]{img/simcontrols.png}
           \captionsetup{width=4cm, justification=centering}
           \caption{Simulator Controls}\label{fig:simcontrols}
-        \end{figure}
+        \end{wrapfigure}
 
         The simulator controls simply activate the playback functions
         in the simulator through its \gls{api}. The controls can be
@@ -2415,6 +2434,7 @@ interactive teaching components.
         \ref{fig:answered-q}
 
         \begin{figure}[!ht]
+          \vspace{4mm}
           \hspace{2mm}
           \begin{minipage}{.43\textwidth}
             \includegraphics[width=\textwidth]{img/multiple-choice-q.png}
@@ -2442,18 +2462,118 @@ interactive teaching components.
         user to proceed by enabling navigation buttons, or altering
         neighbouring components to provide visual feedback.
             
+    \pagebreak
+
     \section{User Interface}
     This section discusses the implemented user interface and
     describes any changes made from the proposed design. These changes
     and the use of any libraries and frameworks are justified.
     
-        \subsection{Menus}
+        \subsection{Menu}
+
+        \begin{figure}[!ht]
+          \centering
+          \includegraphics[width=\textwidth, trim=0 0 0 0]{img/menu.png}
+          \captionsetup{width=\textwidth, justification=centering}
+          \caption{The main menu of the application.}\label{fig:menus}
+        \end{figure}
+
+        The main menu is the first screen the user sees upon loading
+        the app. The final design consists of a list of buttons which
+        take the user to the corresponding view. This is similar to
+        the original design but for a few key features: first, the
+        description panel is missing -- this was a planned feature,
+        but other parts of the software took priority and thus this
+        was not implemented. Some of the content which would have
+        appeared there, namely the test scores and the indicator that
+        a lesson has been completed, have been moved inside the menu
+        items themselves. The menu also lacks any icons to visually
+        identify groups of items.
+
+        One obvious improvement would be to include the planned
+        description panel. It would also make sense to re-order the
+        menu items such that the introductory lessons are at the top
+        of the list; this would draw the users to those items and
+        hopefully provide some guidance upon first use of the
+        application. Finally, adding some visual cues such as images
+        or icons would help the user quickly navigate the menu and
+        break the monotony of the current design.
 
         \subsection{Simulation Interface}
 
+        The final simulation interface, shown in
+        fig. \ref{fig:simulator}, is very similar to the original
+        design. However, some changes had to be made to accommodate
+        different screen sizes:
+        
+        \begin{itemize}
+        \item The \gls{cfg} and table of results have been moved into
+          separate tabs, as there was not enough room to display both
+          simultaneously on small displays. This saves screen
+          real-estate where it is needed, but wastes it where it is
+          not -- the change could be improved by changing the layout
+          to a side-by-side view on larger displays using JavaScript.
+        \item The Hasse diagram component is collapsible, which
+          increases the area available to the code display when
+          simulating programs with many instructions. In cases where
+          it is too large to be displayed it is replaced by a warning
+          message.
+        \item The simulation settings have been moved to a separate
+          window. When the user clicks the ``Settings'' button is
+          clicked a modal dialog appears, prompting them to change the
+          configuration of the simulation. These settings were
+          previously beside the \gls{dataflow} framework properties.
+        \end{itemize}
+
+        These are positive changes which increase the usability of the
+        design for users of laptops or similarly sized devices. Other
+        changes include the addition of the ``Share'' button (detailed
+        in \S\ref{sec:code-display}) to allow students to share their
+        programs and simulations with classmates or their professor,
+        and the framework details now show the list of nodes in
+        addition to the ordering in use. The use of colour and
+        familiar icons draw the user to important features and clearly
+        indicate the function of buttons and menus.
+
+        An alternate design discussed in \S\ref{sec:design-simulator}
+        proposed the use of a window system, which would allow the
+        components to be dynamically rearranged or resized. However,
+        the simulation interface lays out all of the available visual
+        components in such a way that the maximum amount of
+        information is conveyed without being too confusing or
+        intimidating. The time which would have been spent developing
+        the window system would likely not have been worth the effort,
+        even with the availability of external libraries.
+
+
+        \begin{figure}[p]
+          \centering
+          \includegraphics[width=\textheight, angle=90]{img/simulator.png}
+          \captionsetup{width=\textwidth, justification=centering}
+          \caption{The simulator interface.}\label{fig:simulator}
+        \end{figure}
+
         \subsection{Tutorial Interface}
+        
+        \lipsum[3-4]
+
+        \begin{figure}[p]
+          \centering
+          \includegraphics[width=\textheight, angle=90]{img/lesson.png}
+          \captionsetup{width=\textwidth, justification=centering}
+          \caption{An interactive tutorial.}\label{fig:tutorial}
+        \end{figure}
 
         \subsection{Testing Interface}
+
+        \lipsum[1-2]
+
+        \begin{figure}[!ht]
+          \centering
+          \includegraphics[width=\textwidth, trim=0 0 0 0]{img/test.png}
+          \captionsetup{width=\textwidth, justification=centering}
+          \caption{An interactive test.}\label{fig:testing}
+        \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Evaluation}
