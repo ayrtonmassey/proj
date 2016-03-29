@@ -64,16 +64,18 @@
 \contentsline {subsection}{\numberline {7.2.1}Usage Data}{47}
 \contentsline {subsection}{\numberline {7.2.2}Feedback Survey}{48}
 \contentsline {section}{\numberline {7.3}Demographics}{49}
-\contentsline {section}{\numberline {7.4}Analysis of Interactions}{50}
+\contentsline {section}{\numberline {7.4}Critical Analysis}{50}
 \contentsline {subsection}{\numberline {7.4.1}Time Spent}{50}
 \contentsline {subsection}{\numberline {7.4.2}Lessons Completed}{52}
-\contentsline {section}{\numberline {7.5}Survey Results}{53}
-\contentsline {subsection}{\numberline {7.5.1}Simulator}{53}
-\contentsline {subsection}{\numberline {7.5.2}Interactive Lessons}{53}
-\contentsline {section}{\numberline {7.6}Future Developments}{55}
-\contentsline {chapter}{Bibliography}{57}
-\contentsline {chapter}{Appendices}{59}
-\contentsline {chapter}{\numberline {A}Terminology}{59}
-\contentsline {section}{\numberline {A.1}Glossary}{59}
-\contentsline {section}{\numberline {A.2}Acronyms}{61}
-\contentsline {chapter}{\numberline {B}Types of Data-Flow Analysis}{63}
+\contentsline {subsection}{\numberline {7.4.3}Achievement of Learning Outcomes}{53}
+\contentsline {subsection}{\numberline {7.4.4}User Opinion}{55}
+\contentsline {subsection}{\numberline {7.4.5}Written Feedback}{57}
+\contentsline {subsection}{\numberline {7.4.6}Summary}{58}
+\contentsline {section}{\numberline {7.5}Future Developments}{58}
+\contentsline {section}{\numberline {7.6}Conclusion}{59}
+\contentsline {chapter}{Bibliography}{61}
+\contentsline {chapter}{Appendices}{63}
+\contentsline {chapter}{\numberline {A}Terminology}{63}
+\contentsline {section}{\numberline {A.1}Glossary}{63}
+\contentsline {section}{\numberline {A.2}Acronyms}{65}
+\contentsline {chapter}{\numberline {B}Types of Data-Flow Analysis}{67}
