@@ -5,7 +5,6 @@
 
 \usepackage[super]{natbib}
 \setcitestyle{square}
-
 \usepackage[toc]{appendix}
 
 \usepackage[acronym,section,numberedsection=autolabel]{glossaries}
@@ -2656,10 +2655,10 @@ as a whole.
     be evaluated:
 
     \begin{itemize}
+    \item Interactions with the system, to analyse the users'
+      engagement with the platform;
     \item Achievement of learning outcomes by the participants, in
-      order to assess its validity as a learning platform;
-    \item Interactions with the system, to analyse the platform's
-      usability; and
+      order to assess its validity as a learning platform; and
     \item Feedback from the participants, to determine whether it is a
       useful tool for the intended audience.
     \end{itemize}
@@ -2926,8 +2925,7 @@ as a whole.
     retention rate seems quite reasonable and does not indicate any
     particular flaws with the system.
 
-    \section{Analysis of Interactions}
-
+    \section{Critical Analysis}
     In this section I will attempt to draw conclusions about the
     system by analysing usage data collected over the evaluation
     period.
@@ -2991,58 +2989,316 @@ as a whole.
 
     \subsection{Lessons Completed}
 
-    Figure \ref{fig:lessons-complete} shows the number of lessons
-    attempted versus the number of lessons completed. 
-
-    \begin{wrapfigure}[24]{r}{6cm}
+    \begin{wrapfigure}[21]{r}{6cm}
       \centering
-      \vspace{-6mm}
-      \includegraphics[width=5cm, trim=15 35 35 45]{img/lessons.pdf}
+      \vspace{-18mm}
+      \includegraphics[width=5cm, trim=15 35 35 45, clip]{img/lessons.pdf}
       \captionsetup{width=5cm, justification=centering}
-      \caption{Distribution of Returning Users}\label{fig:days-spent}
+      \caption{Lessons Completed by Participants}\label{fig:lessons-complete}
     \end{wrapfigure}
 
-    \lipsum[1-4]
+    Fig. \ref{fig:lessons-complete} shows the number of lessons
+    attempted versus the number of lessons completed. The pale bars
+    represent the percentage of people who attempted each lesson,
+    whilst the darker bars represent the percentage of people who
+    completed them. The numbers in each bar represent the proportion
+    of those who started the lesson and subsequently completed it.
 
+    The results show that most users attempted the introductory
+    lesson, with participation decreasing moderately for subsequent
+    lessons. This is as expected; during the in-person evaluations
+    participants were recommended to at least complete the
+    introductory lesson. However, the participation rate for
+    subsequent lessons is excellent -- above 50\% of the participants
+    voluntarily attempted the second lesson, and 45\% attempted the
+    third.
 
+    The completion rate is fairly consistent, at around 70\%. Each
+    lesson requires some form of active participation in order to
+    continue, indicating that the lessons kept users engaged
+    throughout.
 
-    % \& \ref{fig:demo-q2} and may be summarised as follows. Figure
-    % \ref{fig:time-hist} shows a histogram of the time spent using the
-    % system by each of the 37 participants.
+    In the feedback survey, 22 of 28 users said that they had used the
+    tutorial system. These users were asked to provide reasons why
+    they did or did not complete a lesson after starting it. The
+    feedback from these questions is shown in figures
+    \ref{fig:lesson-stay} \& \ref{fig:lesson-leave}.
 
-    % \begin{itemize}
-    % \item Which of the following statements apply to you?
-    %   \begin{itemize}
-    %   \item I am a student of the COPT course (UoE Informatics
-    %     only)
-    %   \item I am a student.
-    %   \item I have studied Computer Science at degree level.
-    %   \item I have studied a STEM subject at degree level.
-    %   \end{itemize}
-    % \end{itemize}
+    \begin{figure}[!htb]
+      \centering
+      \captionsetup{width=\textwidth, justification=centering}
+      \caption{Reasons Provided for Completing Lessons (N=28)}\label{fig:lesson-stay}
+      \includegraphics[width=\textwidth, trim=0 10 0 45, clip]{img/lesson_staying.pdf}
+    \end{figure}
 
-    \section{Survey Results}
+    The majority of users credited the interactive and visual elements
+    as reasons for completing lessons. Half of the responses to the
+    survey said that the lessons explained the content well, but only
+    14\% said that it was relevant to their studies. This may be due
+    to the low participation by \gls{copt} students, but in any case
+    implies that perhaps more care should be taken when considering
+    what material to cover.
 
-    A total of 28 participants responded to the feedback survey, 23 of
-    whom spent more than 5 minutes participating in the evaluation
+    Of the three ``Other'' responses, two were joke comments, but the
+    third was particularly revealing: a user responded that being able
+    to select from existing answers, rather than having to type in
+    formulae, was ``a win''. Online assessment platforms often require
+    users to type in a textual representation of some formulae, but
+    marking of these answers via a computer is difficult and is prone
+    to false negatives. I had considered including some text-answer
+    questions, but decided against it for this reason.
 
-    \subsection{Simulator}
+    \begin{figure}[!htb]
+      \centering
+      \vspace{-2mm}
+      \includegraphics[width=\textwidth, trim=0 20 0 75, clip]{img/lesson_leaving.pdf}
+      \captionsetup{width=\textwidth, justification=centering}
+      \caption{Reasons Provided for Abandoning Lessons}\label{fig:lesson-stay}
+    \end{figure}
+
+    Of those who abandoned a lesson, the majority opinion was that
+    there were too many mathematical formulae involved. This is true
+    of the last lesson in the series, but unfortunately this is
+    unavoidable as a large portion of the material is based in
+    mathematical proof. However, this is certainly a point to consider
+    when designing the content for learning platforms in the future,
+    and efforts could be made to simplify the information presented by
+    this system.
+
+    \subsection{Achievement of Learning Outcomes}
+    Participants were given the option to take a short content review
+    test (consisting of 10 questions) during their use of the app. Of
+    the 37 participants, 16 of them made a total of 20 attempts. I
+    have analysed the scores achieved in each attempt in order to
+    assess the participants' achievement of learning outcomes; this
+    graph is shown in fig. \ref{fig:question-answers}.
+
+    \begin{figure}[!tb]
+      \centering
+      \vspace{-2mm}
+      \includegraphics[width=\textwidth, trim=0 20 0 45, clip]{img/question_scores.pdf}
+      \captionsetup{width=\textwidth, justification=centering}
+      \caption{Distribution of Time Spent Using the Application per User}\label{fig:question-answers}
+    \end{figure}
+
+    The pale bars represent the number of participants who attempted
+    each question, whilst the darker bars represent the average score
+    achieved by all participants. The numbers in each bar represent
+    the score achieved by those who attempted that question. Questions
+    are color-coded by the lesson they are meant to assess.
+
+    Most questions presented the user with 4 possible answers and
+    allowed them to select only one. Questions 6 \& 7 allow multiple
+    choices, but users are penalised for incorrect answers. The
+    expected score obtained by random guessing is therefore
+    approximately 25\%, or 1-in-4.
+
+    During the in-person evaluations, some participants noted that
+    they were confused by the submission button - they had expected it
+    to submit only one question, when in fact it submitted the whole
+    test. This could explain why all questions have an attempt rate
+    below 80\%, the missing 20\% attributed to those who accidentally
+    submitted the whole test.
+
+    In addition, participants noted that questions 3 and 5 were
+    misleading: the answer to question 3 appeared to be displayed in
+    the accompanying diagram, so many participants did not realise
+    they were required to perform a calculation and thus answered
+    incorrectly. In addition, many participants felt that question 5
+    was not covered by the lesson's content.
+
+    Disregarding those two factors, the results are very
+    positive. More than 85\% of participants understood the basic
+    content, with only a slight drop in score as the complexity of the
+    content increases. This implies that the application does, in
+    fact, effectively teach the course content.
+
+    Of course, these results are only an indication. It is highly
+    possible that only academically-gifted participants took the
+    test or that the questions covered content with which they were
+    already familiar. However, the results are well above the expected
+    average and optimistically show that the system achieved its goal.
+
+    \subsection{User Opinion}
+
+    In the feedback survey users were asked a number of
+    \gls{likertscale} questions, rating their opinion on a scale from
+    ``Strongly Agree'' to ``Strongly Disagree''. A response was
+    mandatory for those who used each aspect of the system; the number
+    of respondents can be found in the figure captions.
+
+    Figures \ref{fig:opinion-simulator} \& \ref{fig:opinion-lessons}
+    show the response to each item. The size of the ``Strongly Agree''
+    and ``Strongly Disagree'' bars are doubled to visualise the
+    weighted response to each item; the scores on the right-hand side
+    show the actual average (5 being the most positive, 0 being the
+    least).
 
     \begin{figure}[!hb]
       \centering
       \captionsetup{width=\textwidth, justification=centering}
-      \caption{Opinion of Round-Robin Simulator}\label{fig:demo-q2}
-      \includegraphics[width=\textwidth, trim=0 0 0 0]{img/simulator_opinion.pdf}
+      \caption{Opinion of the Round-Robin Simulator, N=22}\label{fig:opinion-simulator}
+      \includegraphics[width=\textwidth, trim=0 40 0 40, clip]{img/simulator_opinion.pdf}
     \end{figure}
 
-    \subsection{Interactive Lessons}
+    Reactions to the simulator were quite positive, with participants
+    praising the way it displayed components of the analysis. Most
+    users found the simulation easy to use, but there was some concern
+    over the complexity of the interface and the content involved.
 
-    \begin{figure}[!hb]
+    One interesting point to note is that many users were unable to
+    simulate an analysis on their own programs, or declined to respond
+    to that item (perhaps for the same reason). Initially, the
+    platform did not have any instruction as to how to write ILOC
+    programs, so users were forced to rely on the examples in lessons
+    and their own intuition for guidance. This oversight was corrected
+    shortly after the evaluation period began by adding a help screen,
+    which seems to have improved the response somewhat.
+
+    \begin{figure}[!htb]
       \centering
       \captionsetup{width=\textwidth, justification=centering}
-      \caption{Opinion of Interactive Lessons}\label{fig:demo-q2}
-      \includegraphics[width=\textwidth, trim=0 0 0 0]{img/lesson_opinion.pdf}
+      \caption{Opinion of the Interactive Lessons, N=25}\label{fig:opinion-lessons}
+      \includegraphics[width=\textwidth, trim=0 50 0 50, clip]{img/lesson_opinion.pdf}
     \end{figure}
+
+    Opinion of the interactive tutorials was more positive -- most
+    users agreed that the interface was easy to use and that the
+    information was conveyed well. Users generally understood the
+    content and all agreed that the interactive components helped
+    increased their learning.
+
+    Whilst the organisation of the content could use some improvement,
+    it appears that overall opinion is that the system works
+    well. Users were asked to select the methods of study they used
+    most often, and how they would use the learning platform alongside
+    those methods of study. The response to these questions is shown
+    in figures \ref{fig:study-methods} \& \ref{fig:overall-opinion}.
+
+    \begin{figure}[!b]
+      \centering
+      \begin{minipage}{.48\textwidth}
+        \captionsetup{width=\textwidth, justification=centering}
+        \caption{Overall User Opinion, N=27}\label{fig:opinion-overall}
+        \includegraphics[width=\textwidth, trim=90 0 38 0, clip]{img/alternate_use_pie.pdf}
+      \end{minipage}
+      \quad
+      \begin{minipage}{.33\textwidth}
+        \captionsetup{width=\textwidth, justification=centering}
+        \caption{Opinion on Future Use, N=27}\label{fig:future-use}
+        \includegraphics[width=\textwidth, trim=30 0 38 15, clip]{img/continued_use_pie.pdf}
+      \end{minipage}
+      \vspace{-1cm}
+    \end{figure}
+
+    The response to the first question was extremely positive -- only
+    one person said that they would not use the platform to study over
+    the other methods they chose. When asked if they planned to
+    continue using the software after the evaluation period was over,
+    exactly 50\% said that they would do so.
+    
+    Given the information about which methods participants use to
+    study, this is hardly surprising -- the interactive tutorials are
+    very similar to the most popular option (``Reading lecture slides
+    / notes'') only with more active participation involved.
+
+    \begin{figure}[!htb]
+      \centering
+      \includegraphics[width=\textwidth, trim=0 0 0 32, clip]{img/learning_methods.pdf}
+      \captionsetup{width=\textwidth, justification=centering}
+      \caption{Methods of Study, N=27}\label{fig:study-methods}
+    \end{figure}
+
+    \subsection{Written Feedback}
+    
+    Users were asked to provide written feedback both in the online
+    invitations and throughout the survey, in order to gather insight
+    into user opinion and potential improvements which could be
+    made. A fair amount of the written feedback was incredibly
+    positive; what follows is a selection of those comments:
+
+    \begin{quote}
+      \vspace{1mm}
+      ``The lessons were quite interesting. I liked the concise and
+      short amounts of information in each step - never felt
+      overwhelmed.''
+      \vspace{1mm}
+    \end{quote}
+
+    \begin{quote}
+      \vspace{1mm}
+      ``I wish the uni would use things like this for teaching - it's
+      far easier to understand than parsing through lecture notes.''
+      \vspace{1mm}
+    \end{quote}
+
+    \begin{quote}
+      \vspace{1mm}
+      ``This is superb! Thank you for this. I am just learning about
+      dataflow analysis in my compilers course.''
+      \vspace{1mm}
+    \end{quote}
+
+    \begin{quote}
+      \vspace{1mm}
+      ``... great job! I'm in my third year of PhD in compiler
+      optimizations and found your tool really nice and illustratory
+      ({\em thumbs-up emoji}).''
+      \vspace{1mm}
+    \end{quote}
+    
+    \begin{quote}
+      \vspace{1mm}
+      ``I like how upon giving a correct answer, it is still explained!
+      When giving answers in first lesson, I was still not 100\% sure
+      about them, so having them explained even when I was correct was
+      nice.''
+      \vspace{1mm}
+    \end{quote}
+
+    Of the negative feedback, most was constructive criticism. Users
+    suggested a range of improvements to the site, primarily relating
+    to the lessons and how they could be used to improve understanding
+    of the simulation. Many users complained about the organisation of
+    the main menu (\S\ref{sec:impl-menu}), due to the confusing order
+    in which the menu items were laid out. Users also desired a
+    summary of each lesson and the system as a whole; the menu does
+    not really explain the purpose of the software, which put some
+    users off exploring it further.
+
+    Regarding the simulation, users were confused by the colour
+    co-ordination and felt that it could have been improved upon. In
+    addition, there was some concern about the lack of guidance. I had
+    assumed that most people would complete the introductory lesson
+    before playing with the simulator, but it appears that this was
+    not the case -- or that perhaps it was difficult to relate the
+    lesson content to simulator's components. One user in particular
+    left the following comment:
+
+    \begin{quote}
+      ``Few bugs here and there but simulation is engaging... more could
+      be done to link between decription and simulation.''
+    \end{quote}
+
+    The lessons also received some minor criticism. The most common
+    opinion was that the interface lacked some basic features, such as
+    an indicator of progress or the ability to navigate directly to
+    each section of the lesson. The segmentation of content was met
+    with a mixed response; some users complained that they had to
+    click the ``Next'' button too many times whilst others appreciated
+    that the information was split into bite-sized chunks.
+
+    A small number of bugs were brought to my attention. Firstly, in
+    Firefox browsers the navigation buttons do not always function as
+    expected. Unfortunately this is due to an issue with the dagre-d3
+    library, but it could be possible to patch it with further
+    testing. Users also reported that the back button in their browser
+    did not work. This was an oversight relating to the implementation
+    of the {\tt View} system and could be fixed with some minor tweaks
+    to the way pages are loaded.
+
+    \subsection{Summary}
+    
 
     \section{Future Developments}
 
@@ -3052,6 +3308,13 @@ as a whole.
       \caption{Opinion on Future Simulator Improvements}\label{fig:demo-q2}
       \includegraphics[width=\textwidth, trim=0 0 0 0]{img/simulator_improvements.pdf}
     \end{figure}
+
+    \section{Conclusion}
+    Overall participation was high, and users responded positively to
+    the unique\footnote{as opposed to other teaching formats such as
+      textbooks, lectures etc.} features of the learning
+    platform. Users were engaged by the tutorials and were mostly able
+    to understand the material, although the some be
 
     
     % \begin{figure}[b]
