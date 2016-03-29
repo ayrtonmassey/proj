@@ -64,9 +64,16 @@
 \contentsline {subsection}{\numberline {7.2.1}Usage Data}{47}
 \contentsline {subsection}{\numberline {7.2.2}Feedback Survey}{48}
 \contentsline {section}{\numberline {7.3}Demographics}{49}
-\contentsline {chapter}{Bibliography}{51}
-\contentsline {chapter}{Appendices}{53}
-\contentsline {chapter}{\numberline {A}Terminology}{53}
-\contentsline {section}{\numberline {A.1}Glossary}{53}
-\contentsline {section}{\numberline {A.2}Acronyms}{55}
-\contentsline {chapter}{\numberline {B}Types of Data-Flow Analysis}{57}
+\contentsline {section}{\numberline {7.4}Analysis of Interactions}{50}
+\contentsline {subsection}{\numberline {7.4.1}Time Spent}{50}
+\contentsline {subsection}{\numberline {7.4.2}Lessons Completed}{52}
+\contentsline {section}{\numberline {7.5}Survey Results}{53}
+\contentsline {subsection}{\numberline {7.5.1}Simulator}{53}
+\contentsline {subsection}{\numberline {7.5.2}Interactive Lessons}{53}
+\contentsline {section}{\numberline {7.6}Future Developments}{55}
+\contentsline {chapter}{Bibliography}{57}
+\contentsline {chapter}{Appendices}{59}
+\contentsline {chapter}{\numberline {A}Terminology}{59}
+\contentsline {section}{\numberline {A.1}Glossary}{59}
+\contentsline {section}{\numberline {A.2}Acronyms}{61}
+\contentsline {chapter}{\numberline {B}Types of Data-Flow Analysis}{63}

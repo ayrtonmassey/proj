@@ -2853,43 +2853,221 @@ as a whole.
         More information about the content of the survey can be found
         throughout the remainder of this chapter.
 
-    \section{Demographics}
+    \section{Demographics}\label{sec:demographics}
     
-    During the two-week evaluation period X unique users visited the
-    application, Y of whom used the software for more than Z
-    minutes. A total of 28 participants responded to the feedback
-    survey, all of whom spent more than Z minutes participating in the
-    evaluation.
+    During the two-week evaluation period 184 unique users visited the
+    application, 37 of whom used the software for more than 5
+    minutes. The data used throughout the rest of this chapter has
+    been culled to those 37 users who spent more than 5 minutes with
+    the software.
 
-    The data used throughout the rest of this chapter has been culled
-    to those users who spent more than Z minutes with the software.
+    \begin{wrapfigure}[11]{r}{.38\textwidth}
+      \vspace{-12mm}
+        \includegraphics[width=.40\textwidth, trim=150 0 100 0]{img/experience_pie.pdf}
+        \captionsetup{width=.38\textwidth, justification=centering}
+        \caption{Distribution of User Subject Experience}\label{fig:demo-q1}
+    \end{wrapfigure}
 
     Upon accessing the application for the first time, users were
-    asked two questions in order to categorize them during data
-    analysis:
+    presented with two questions in order to categorize them based on
+    their interest and experience in \gls{dataflowanalysis}. The first
+    question asked them to rate their level of experience given the
+    following options:
 
     \begin{itemize}
-    \item How would you rate your knowledge of
-      \gls{dataflowanalysis}?
-      \begin{itemize}
-      \item None at all
-      \item Basic
-      \item Advanced
-      \end{itemize}
-    \item Which of the following statements apply to you?
-      \begin{itemize}
-      \item I am a student of the COPT course (UoE Informatics
-        only)
-      \item I am a student.
-      \item I have studied Computer Science at degree level.
-      \item I have studied a STEM subject at degree level.
-      \end{itemize}
+    \item None at all
+    \item Basic
+    \item Advanced
     \end{itemize}
 
-    The responses to the above questions are displayed in figures
-    \ref{fig:demo-q1} \& \ref{fig:demo-q2} and may be summarised as
-    follows.
+    A summary of the response to the this question is shown in
+    fig. \ref{fig:demo-q1}.
+
+    The second question asked them to describe their academic
+    background by selecting from a number of choices. These options
+    were then ranked in the following order, by their relation to
+    \gls{dataflowanalysis}:
     
+    \begin{enumerate}
+      \item I am a member of the COPT course (UoE only)
+      \item I have studied Computer Science at degree level.
+      \item I have studied a STEM subject at degree level.
+      \item I am a student.
+      \item (None of the above)
+    \end{enumerate}
+
+    Each user has been grouped by the highest-ranked option they
+    selected; the distribution of these groups is shown in
+    fig. \ref{fig:demo-q2}.
+
+    \begin{figure}[!hb]
+      \centering
+      \captionsetup{width=\textwidth, justification=centering}
+      \caption{Distribution of User Academic Experience}\label{fig:demo-q2}
+      \includegraphics[width=0.9\textwidth, trim=40 200 0 0]{img/background_pie.pdf}
+    \end{figure}
+
+    These figures are quite positive. The participants come from a
+    wide range of academic backgrounds and have a good mixture of
+    prior experience with the topic. Although the number of
+    participants is only 20\% of the total number of unique visitors,
+    the low retention rate may be attributed to a number of factors:
+
+    \begin{itemize}
+    \item Users who visited the application but did not have time to
+      invest in evaluating it;
+    \item Users who visited the site but did not want to participate
+      in the evaluation;
+    \item Users who were not interested in the content; and
+    \item Web crawlers visiting the page.
+    \end{itemize}
+
+    For an application targeting a relatively niche subject, a 20\%
+    retention rate seems quite reasonable and does not indicate any
+    particular flaws with the system.
+
+    \section{Analysis of Interactions}
+
+    In this section I will attempt to draw conclusions about the
+    system by analysing usage data collected over the evaluation
+    period.
+
+    \subsection{Time Spent}
+
+    As mentioned in \S\ref{sec:demographics}, a total of 37
+    participants used the application for more than 5 minutes. This
+    information was calculated by examining blocks of events triggered
+    by each user. A {\em block} is defined as a sequence of events in
+    which there is less than a 10-minute gap between consecutive
+    records; the duration of these blocks is summed to produce an
+    estimate of time spent during the two-week evaluation
+    period. Fig. \ref{fig:time-hist} shows the distribution of time
+    spent by those 37 participants, categorized by their experience
+    with the subject.
+
+    From this data, we can draw a number of conclusions: first, that a
+    significant amount of users found the software engaging or at
+    least of some use -- more than half of the participants used the
+    software for more than 15 minutes, with at least one individual
+    using it for over two hours. Of the users who stayed for more than
+    15 minutes, most tended to invest a significant amount of time
+    into using the application. This is promising -- anecdotally, I
+    have noticed that project evaluation participants tend to quickly
+    scan through the available features and then fill in the survey
+    without spending enough time to thoroughly evaluate the
+    application; however, the majority of users in this evaluation
+    seem to have shown genuine interest in the system and its content.
+
+    Second, it appears that the more experience a user has, the less
+    time they are likely to spend using the application. Users who
+    considered themselved ``Advanced'' in the topic spent the least
+    time with the software, whilst those with no experience spent the
+    most. This could indicate that the content presented by the system
+    is too simple or that it re-treads too much ground covered by
+    other sources such as lectures or textbooks.
+
+    \begin{figure}[!hb]
+      \centering
+      \vspace{-2mm}
+      \includegraphics[width=.87\textwidth, trim=0 20 0 45, clip]{img/time_distribution.pdf}
+      \captionsetup{width=\textwidth, justification=centering}
+      \caption{Distribution of Time Spent Using the Application per User}\label{fig:time-hist}
+    \end{figure}
+
+    Users were encouraged to continue using the software after they
+    had participated in the evaluation and completed the feedback
+    survey. Fig \ref{fig:days-spent} shows how often users returned to
+    the site. Although the majority of users only visited on the day
+    they evaluated the application, 24\% returned to the application
+    more than once, and one user in particular visited on 9 separate
+    days.
+
+    \begin{figure}[!b]
+      \centering
+      \includegraphics[width=.87\textwidth, trim=0 20 0 45]{img/unique_days.pdf}
+      \captionsetup{width=\textwidth, justification=centering}
+      \caption{Distribution of Returning Users}\label{fig:days-spent}
+    \end{figure}
+
+    \subsection{Lessons Completed}
+
+    Figure \ref{fig:lessons-complete} shows the number of lessons
+    attempted versus the number of lessons completed. 
+
+    \begin{wrapfigure}[24]{r}{6cm}
+      \centering
+      \vspace{-6mm}
+      \includegraphics[width=5cm, trim=15 35 35 45]{img/lessons.pdf}
+      \captionsetup{width=5cm, justification=centering}
+      \caption{Distribution of Returning Users}\label{fig:days-spent}
+    \end{wrapfigure}
+
+    \lipsum[1-4]
+
+
+
+    % \& \ref{fig:demo-q2} and may be summarised as follows. Figure
+    % \ref{fig:time-hist} shows a histogram of the time spent using the
+    % system by each of the 37 participants.
+
+    % \begin{itemize}
+    % \item Which of the following statements apply to you?
+    %   \begin{itemize}
+    %   \item I am a student of the COPT course (UoE Informatics
+    %     only)
+    %   \item I am a student.
+    %   \item I have studied Computer Science at degree level.
+    %   \item I have studied a STEM subject at degree level.
+    %   \end{itemize}
+    % \end{itemize}
+
+    \section{Survey Results}
+
+    A total of 28 participants responded to the feedback survey, 23 of
+    whom spent more than 5 minutes participating in the evaluation
+
+    \subsection{Simulator}
+
+    \begin{figure}[!hb]
+      \centering
+      \captionsetup{width=\textwidth, justification=centering}
+      \caption{Opinion of Round-Robin Simulator}\label{fig:demo-q2}
+      \includegraphics[width=\textwidth, trim=0 0 0 0]{img/simulator_opinion.pdf}
+    \end{figure}
+
+    \subsection{Interactive Lessons}
+
+    \begin{figure}[!hb]
+      \centering
+      \captionsetup{width=\textwidth, justification=centering}
+      \caption{Opinion of Interactive Lessons}\label{fig:demo-q2}
+      \includegraphics[width=\textwidth, trim=0 0 0 0]{img/lesson_opinion.pdf}
+    \end{figure}
+
+    \section{Future Developments}
+
+    \begin{figure}[!hb]
+      \centering
+      \captionsetup{width=\textwidth, justification=centering}
+      \caption{Opinion on Future Simulator Improvements}\label{fig:demo-q2}
+      \includegraphics[width=\textwidth, trim=0 0 0 0]{img/simulator_improvements.pdf}
+    \end{figure}
+
+    
+    % \begin{figure}[b]
+    %   \hspace{2mm}
+    %   \begin{minipage}{.48\textwidth}
+    %     \includegraphics[width=\textwidth, trim=0 0 0 0]{img/time_distribution.pdf}
+    %     \captionsetup{width=\textwidth, justification=centering}
+    %     \captionof{figure}{Time spent using the application}\label{fig:time-hist}
+    %   \end{minipage}
+    %   \quad
+    %   \begin{minipage}{.48\textwidth}
+    %     \includegraphics[width=\textwidth, trim=0 0 0 0]{img/experience_pie.pdf}
+    %     \captionsetup{width=\textwidth, justification=centering}
+    %     \captionof{figure}{Demographics by self-assessment of experience}\label{fig:demo-q1}
+    %   \end{minipage}%
+    % \end{figure}
     
 
     
