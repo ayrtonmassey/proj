@@ -1580,8 +1580,8 @@ conceptual problems.
     will be written as re-usable modules which can be combined in
     different ways, for example to present the user with a series of
     lectures or an interactive simulation. See
-    \S\ref{sec:design-interface} for more details on the user
-    interface.
+    \S\ref{sec:impl-interface} for more details on the user
+    interface implementation.
 
     Each component needs to be be self contained; it should be
     possible to instantiate more than one of each type of component at
@@ -2662,7 +2662,7 @@ interactive teaching components.
             
     \pagebreak
 
-    \section{User Interface}
+    \section{User Interface}\label{sec:impl-interface}
     This section describes the implementation of the user interface,
     including the choice of any libraries and frameworks and the
     justification of design decisions.
@@ -2703,7 +2703,7 @@ interactive teaching components.
         libraries to be downloaded regardless of whether the user has
         already received them from another source.
     
-        \subsection{Menu}
+        \subsection{Menu}\label{sec:impl-menu}
 
         \begin{figure}[!ht]
           \centering
@@ -3443,7 +3443,7 @@ as a whole.
     well. Users were asked to select the methods of study they used
     most often, and how they would use the learning platform alongside
     those methods of study. The response to these questions is shown
-    in figures \ref{fig:study-methods} \& \ref{fig:overall-opinion}.
+    in figures \ref{fig:study-methods} \& \ref{fig:opinion-overall}.
 
     \begin{figure}[!b]
       \centering
