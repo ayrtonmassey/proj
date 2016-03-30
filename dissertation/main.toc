@@ -32,54 +32,53 @@
 \contentsline {subsection}{\numberline {4.2.1}Technical Constraints}{20}
 \contentsline {subsection}{\numberline {4.2.2}Content Constraints}{20}
 \contentsline {section}{\numberline {4.3}System Architecture}{21}
-\contentsline {section}{\numberline {4.4}User Interface Design}{23}
-\contentsline {chapter}{\numberline {5}Back-End Implementation}{25}
-\contentsline {section}{\numberline {5.1}Overview}{25}
-\contentsline {section}{\numberline {5.2}Value Sets}{25}
-\contentsline {section}{\numberline {5.3}Data-Flow Frameworks}{26}
-\contentsline {subsection}{\numberline {5.3.1}Included Data-Flows}{27}
-\contentsline {section}{\numberline {5.4}Simulation Algorithm}{28}
-\contentsline {section}{\numberline {5.5}Understanding Programs}{29}
-\contentsline {subsection}{\numberline {5.5.1}Parsing Expression Grammar}{29}
-\contentsline {subsection}{\numberline {5.5.2}Abstract Syntax Tree}{30}
-\contentsline {subsection}{\numberline {5.5.3}Control-Flow Graph}{31}
-\contentsline {subsection}{\numberline {5.5.4}Lattices}{33}
-\contentsline {section}{\numberline {5.6}Summary}{34}
-\contentsline {chapter}{\numberline {6}Front-End Implementation}{35}
-\contentsline {section}{\numberline {6.1}Overview}{35}
-\contentsline {section}{\numberline {6.2}View Model}{35}
-\contentsline {section}{\numberline {6.3}Visual Components}{36}
-\contentsline {subsection}{\numberline {6.3.1}Control-Flow Graphs}{36}
-\contentsline {subsection}{\numberline {6.3.2}Hasse Diagrams}{37}
-\contentsline {subsection}{\numberline {6.3.3}Table of Results}{37}
-\contentsline {subsection}{\numberline {6.3.4}Code Display}{38}
-\contentsline {section}{\numberline {6.4}Interactive Components}{39}
-\contentsline {subsection}{\numberline {6.4.1}Simulator Controls}{39}
-\contentsline {subsection}{\numberline {6.4.2}Questions}{40}
-\contentsline {section}{\numberline {6.5}User Interface}{41}
-\contentsline {subsection}{\numberline {6.5.1}Overview}{41}
-\contentsline {subsection}{\numberline {6.5.2}Menu}{41}
-\contentsline {subsection}{\numberline {6.5.3}Simulation Interface}{42}
-\contentsline {subsection}{\numberline {6.5.4}Tutorial Interface}{43}
-\contentsline {subsection}{\numberline {6.5.5}Testing Interface}{45}
-\contentsline {section}{\numberline {6.6}Summary}{47}
-\contentsline {chapter}{\numberline {7}Evaluation}{49}
-\contentsline {section}{\numberline {7.1}Introduction}{49}
-\contentsline {section}{\numberline {7.2}Method}{49}
-\contentsline {subsection}{\numberline {7.2.1}Usage Data}{51}
-\contentsline {subsection}{\numberline {7.2.2}Feedback Survey}{52}
-\contentsline {section}{\numberline {7.3}Demographics}{53}
-\contentsline {section}{\numberline {7.4}Critical Analysis}{54}
-\contentsline {subsection}{\numberline {7.4.1}Time Spent}{54}
-\contentsline {subsection}{\numberline {7.4.2}Lessons Completed}{56}
-\contentsline {subsection}{\numberline {7.4.3}Achievement of Learning Outcomes}{57}
-\contentsline {subsection}{\numberline {7.4.4}User Opinion}{59}
-\contentsline {subsection}{\numberline {7.4.5}Written Feedback}{61}
-\contentsline {section}{\numberline {7.5}Future Developments}{62}
-\contentsline {section}{\numberline {7.6}Conclusion}{64}
-\contentsline {chapter}{Bibliography}{65}
-\contentsline {chapter}{Appendices}{67}
-\contentsline {chapter}{\numberline {A}Terminology}{67}
-\contentsline {section}{\numberline {A.1}Glossary}{67}
-\contentsline {section}{\numberline {A.2}Acronyms}{69}
-\contentsline {chapter}{\numberline {B}Types of Data-Flow Analysis}{71}
+\contentsline {chapter}{\numberline {5}Back-End Implementation}{23}
+\contentsline {section}{\numberline {5.1}Overview}{23}
+\contentsline {section}{\numberline {5.2}Value Sets}{23}
+\contentsline {section}{\numberline {5.3}Data-Flow Frameworks}{24}
+\contentsline {subsection}{\numberline {5.3.1}Included Data-Flows}{25}
+\contentsline {section}{\numberline {5.4}Simulation Algorithm}{26}
+\contentsline {section}{\numberline {5.5}Understanding Programs}{27}
+\contentsline {subsection}{\numberline {5.5.1}Parsing Expression Grammar}{27}
+\contentsline {subsection}{\numberline {5.5.2}Abstract Syntax Tree}{28}
+\contentsline {subsection}{\numberline {5.5.3}Control-Flow Graph}{29}
+\contentsline {subsection}{\numberline {5.5.4}Lattices}{31}
+\contentsline {section}{\numberline {5.6}Summary}{32}
+\contentsline {chapter}{\numberline {6}Front-End Implementation}{33}
+\contentsline {section}{\numberline {6.1}Overview}{33}
+\contentsline {section}{\numberline {6.2}View Model}{33}
+\contentsline {section}{\numberline {6.3}Visual Components}{34}
+\contentsline {subsection}{\numberline {6.3.1}Control-Flow Graphs}{34}
+\contentsline {subsection}{\numberline {6.3.2}Hasse Diagrams}{35}
+\contentsline {subsection}{\numberline {6.3.3}Table of Results}{35}
+\contentsline {subsection}{\numberline {6.3.4}Code Display}{36}
+\contentsline {section}{\numberline {6.4}Interactive Components}{37}
+\contentsline {subsection}{\numberline {6.4.1}Simulator Controls}{37}
+\contentsline {subsection}{\numberline {6.4.2}Questions}{38}
+\contentsline {section}{\numberline {6.5}User Interface}{39}
+\contentsline {subsection}{\numberline {6.5.1}Overview}{39}
+\contentsline {subsection}{\numberline {6.5.2}Menu}{39}
+\contentsline {subsection}{\numberline {6.5.3}Simulation Interface}{40}
+\contentsline {subsection}{\numberline {6.5.4}Tutorial Interface}{41}
+\contentsline {subsection}{\numberline {6.5.5}Testing Interface}{43}
+\contentsline {section}{\numberline {6.6}Summary}{45}
+\contentsline {chapter}{\numberline {7}Evaluation}{47}
+\contentsline {section}{\numberline {7.1}Introduction}{47}
+\contentsline {section}{\numberline {7.2}Method}{47}
+\contentsline {subsection}{\numberline {7.2.1}Usage Data}{49}
+\contentsline {subsection}{\numberline {7.2.2}Feedback Survey}{50}
+\contentsline {section}{\numberline {7.3}Demographics}{51}
+\contentsline {section}{\numberline {7.4}Critical Analysis}{52}
+\contentsline {subsection}{\numberline {7.4.1}Time Spent}{52}
+\contentsline {subsection}{\numberline {7.4.2}Lessons Completed}{54}
+\contentsline {subsection}{\numberline {7.4.3}Achievement of Learning Outcomes}{55}
+\contentsline {subsection}{\numberline {7.4.4}User Opinion}{57}
+\contentsline {subsection}{\numberline {7.4.5}Written Feedback}{59}
+\contentsline {section}{\numberline {7.5}Future Developments}{60}
+\contentsline {section}{\numberline {7.6}Conclusion}{62}
+\contentsline {chapter}{Bibliography}{63}
+\contentsline {chapter}{Appendices}{65}
+\contentsline {chapter}{\numberline {A}Terminology}{65}
+\contentsline {section}{\numberline {A.1}Glossary}{65}
+\contentsline {section}{\numberline {A.2}Acronyms}{67}
+\contentsline {chapter}{\numberline {B}Types of Data-Flow Analysis}{69}

@@ -419,7 +419,7 @@ responses to Likert items}
   The software was wildly successful in increasing the learning
   capacity of the evaluation subjects. The results collected present
   strong evidence of the need for more interactive learning tools,
-  particularly in engineering subjects. Reponses to the feedback
+  particularly in engineering subjects. Responses to the feedback
   survey were overwhelmingly positive, achievement of learning
   outcomes was well above average, users were kept engaged by the
   platform, and all but one participant stated that they would use the
@@ -436,7 +436,7 @@ circumstances.
 
 I am extremely grateful for the assistance provided by Drs. Alan
 Smaill and Iain Murray, and the UG4 project co-ordinator Prof. Don
-Sanella.
+Sannella.
 
 My sincere gratitude goes to Dr. Steve Gregory of the University of
 Bristol for distributing the application to his students, and to the
@@ -585,7 +585,7 @@ and provides a brief summary of contributions.
       elements (p. \pageref{sec:impl-tutorials})
     \item Interactive test to assess achievement of learning outcomes
       (p. \pageref{sec:impl-testing})
-    \item An \gls{api} to record user interaction events modeled on
+    \item An \gls{api} to record user interaction events modelled on
       the Google Analytics event tracking system
       (p. \pageref{sec:impl-tracking-api}).
     \end{itemize}
@@ -1282,7 +1282,7 @@ identify aspects of said work which may be applied to this project.
     for this project: 72.4\% of respondents disagreed with the above
     statements and 79.3\% believed that the system improved their
     understanding of the topics covered in lectures. Over 95\% of
-    responents agreed that the simulator was more useful than reading
+    respondents agreed that the simulator was more useful than reading
     textbooks or searching the internet in helping them understand the
     material.
 
@@ -1290,7 +1290,7 @@ identify aspects of said work which may be applied to this project.
 
     A 1988 report by Richard M. Felder and Linda K. Silverman,
     entitled {\em Learning and Teaching Styles in Engineering
-      Education}\cite{felder1988}, categorizes students' learning
+      Education}\cite{felder1988}, categorises students' learning
     methods and describes ways in which professors may target specific
     categories in their teaching strategy.
 
@@ -1501,7 +1501,7 @@ conceptual problems.
         It is also necessary to ensure that the system is secure to
         avoid damaging University or student property. Provided that
         user input is sanitized and scripts are only included from
-        trusted sources, the sanboxed environment inherent to modern
+        trusted sources, the sandboxed environment inherent to modern
         web browsers should meet the remaining security requirements.
 
         Use of popular libraries and frameworks such as jQuery and
@@ -1646,9 +1646,6 @@ conceptual problems.
       \captionsetup{justification=centering}
       \caption{An overview of the proposed system architecture.}\label{fig:sysarch}
     \end{figure}
-
-
-    \section{User Interface Design}\label{sec:design-interface}
 
     
 
@@ -2369,7 +2366,7 @@ for $i$ from 0 to length($sets$)
         to worked problems.
 
         Reliance on techniques described in the {\em Dragon
-          Book}\cite{dragonbook} has deepend my understanding of the
+          Book}\cite{dragonbook} has deepened my understanding of the
         material, as the book proved invaluable for guidance
         throughout the implementation of the back-end. In future, I
         would be interested to see extensions to the simulation to
@@ -2444,8 +2441,7 @@ interactive teaching components.
     \section{Visual Components}
     This section describes the implementation of the components which
     visualise the simulation, including the choice of any libraries
-    and frameworks and the changes that were made from the original
-    design.
+    and frameworks and the justification of design decisions.
 
         \subsection{Control-Flow Graphs}\label{sec:impl-visual-cfg}
         \Gls{controlflowgraph}s are rendered using the dagre-d3
@@ -2526,7 +2522,7 @@ interactive teaching components.
 
         Cells in the table are highlighted to link them to other
         visual components. Any sets are read or modified, including
-        local information, are higlighted in the table in each step of
+        local information, are highlighted in the table in each step of
         the simulation.
 
         This design could be improved by changing the layout of the
@@ -2581,7 +2577,7 @@ interactive teaching components.
         sharing code with others. Figures \ref{fig:code-edit} \&
         \ref{fig:code-share} show this in action. If the user enters
         invalid code an error message is displayed using line and
-        column information obtained from PEGjs. Line numbers are
+        column information obtained from PEG.js. Line numbers are
         displayed in the text area to help the user identify the
         source of the error; this functionality is provided by the
         jQuery Lined TextArea\cite{jquerylinedtextarea} plugin. The
@@ -2592,8 +2588,8 @@ interactive teaching components.
     \section{Interactive Components}
     This section describes the implementation of the components which
     enable the user to interact with the system, including the choice
-    of any libraries and frameworks and the changes that were made
-    from the original design.
+    of any libraries and frameworks and the justification of design
+    decisions.
     
         \subsection{Simulator Controls}
 
@@ -2613,7 +2609,7 @@ interactive teaching components.
         \subsection{Questions}
         The {\tt QuestionView} class was designed to be adapted to as
         many situations as possible. Each question displays a number
-        of possible answer, and has a variety of configuration
+        of possible answers, and has a variety of configuration
         options:
 
         \begin{itemize}
@@ -2667,9 +2663,9 @@ interactive teaching components.
     \pagebreak
 
     \section{User Interface}
-    This section discusses the implemented user interface and
-    describes any changes made from the proposed design. These changes
-    and the use of any libraries and frameworks are justified.
+    This section describes the implementation of the user interface,
+    including the choice of any libraries and frameworks and the
+    justification of design decisions.
     
         \subsection{Overview}
     
@@ -2718,24 +2714,19 @@ interactive teaching components.
 
         The main menu is the first screen the user sees upon loading
         the app. The final design consists of a list of buttons which
-        take the user to the corresponding view. This is similar to
-        the original design but for a few key features: first, the
-        description panel is missing -- this was a planned feature,
-        but other parts of the software took priority and thus this
-        was not implemented. Some of the content which would have
-        appeared there, namely the test scores and the indicator that
-        a lesson has been completed, have been moved inside the menu
-        items themselves. The menu also lacks any icons to visually
-        identify groups of items.
+        take the user to the corresponding view. The buttons contain
+        small icons to indicate whether a user has completed a lesson
+        or test.
 
-        One obvious improvement would be to include the planned
-        description panel. It would also make sense to re-order the
-        menu items such that the introductory lessons are at the top
-        of the list; this would draw the users to those items and
-        hopefully provide some guidance upon first use of the
-        application. Finally, adding some visual cues such as images
-        or icons would help the user quickly navigate the menu and
-        break the monotony of the current design.
+        One improvement would be to include a description panel in
+        order to summarise the content of the lessons or
+        simulation. Re-ordering the menu items such that the
+        introductory lessons are at the top of the list would draw
+        more attention to them and hopefully provide some guidance
+        upon opening the application for the first time. Finally,
+        adding some visual cues such as images or icons relating to
+        the content of each item would help the user quickly navigate
+        the menu and break the monotony of the current design.
 
         \subsection{Simulation Interface}
 
@@ -2746,10 +2737,10 @@ interactive teaching components.
         %   \caption{The simulator interface.}\label{fig:simulator}
         % \end{figure}
 
-        The final simulation interface, shown in
-        fig. \ref{fig:simulator}, is very similar to the original
-        design. However, some changes had to be made to accommodate
-        different screen sizes:
+        The final simulation interface is shown in
+        fig. \ref{fig:simulator}. The design is very similar to early
+        concepts, but changes had to be made to accommodate different
+        screen sizes:
         
         \begin{itemize}
         \item The \gls{cfg} and table of results have been moved into
@@ -2770,25 +2761,25 @@ interactive teaching components.
           previously beside the \gls{dataflow} framework properties.
         \end{itemize}
 
-        These are positive changes which increase the usability of the
-        design for users of laptops or similarly sized devices. Other
-        changes include the addition of the ``Share'' button (detailed
-        in \S\ref{sec:code-display}) to allow students to share their
+        These features increase the usability of the design for users
+        of laptops or similarly sized devices. Other features of the
+        interface include the ``Share'' button (detailed in
+        \S\ref{sec:code-display}) to allow students to share their
         programs and simulations with classmates or their professor,
-        and the framework details now show the list of nodes in
+        and the framework details which show the list of nodes in
         addition to the ordering in use. The use of colour and
         familiar icons draw the user to important features and clearly
         indicate the function of buttons and menus.
 
-        An alternate design discussed in \S\ref{sec:design-simulator}
+        An alternate design considered during early development
         proposed the use of a window system, which would allow the
         components to be dynamically rearranged or resized. However,
         the simulation interface lays out all of the available visual
         components in such a way that the maximum amount of
         information is conveyed without being too confusing or
         intimidating. The time which would have been spent developing
-        the window system would likely not have been worth the effort,
-        even with the availability of external libraries, given the
+        the window system would likely not have been worth the effort
+        (even with the availability of external libraries) given the
         strength of the implemented design.
 
         \begin{figure}[p]
@@ -2798,16 +2789,17 @@ interactive teaching components.
           \caption{The simulator interface.}\label{fig:simulator}
         \end{figure}
 
+        \vspace{-4mm}
         \subsection{Tutorial Interface}\label{sec:impl-tutorials}
-        
-        The tutorial interface is also very similar to the original
-        design. The user follows a series of steps which present them
-        with text descriptions and sometimes visual components. These
-        steps are written in JavaScript and so are able to hook into
-        the component or simulator \gls{api}s in order to manipulate
-        them; for example, in fig. \ref{fig:tutorial} when the user
-        selects the correct answer they are shown visual confirmation
-        in the \gls{cfg} and table of results.
+        \vspace{-3mm}        
+        In the tutorial interface, the user follows a series of steps
+        which present them with text descriptions and sometimes visual
+        components. These steps are written in JavaScript and so are
+        able to hook into the component or simulator \gls{api}s in
+        order to manipulate them; for example, in
+        fig. \ref{fig:tutorial} when the user selects the correct
+        answer they are shown visual confirmation in the \gls{cfg} and
+        table of results.
 
         The steps-as-functions system gives a lot of power to the
         developer at the cost of added complexity. Whilst this is
@@ -2819,15 +2811,15 @@ interactive teaching components.
         description language for tutorials. Simple operations such as
         displaying text or a {\tt QuestionView} or advancing the
         simulation, could be written quite simply in this format. This
-        follows the tried-and-true software enginering principle
+        follows the tried-and-true software engineering principle
         \gls{dry}.
 
-        The current step implementation also has an unfortuate
+        The current step implementation also has an unfortunate
         side-effect -- each step is dependent on the ones before it,
         so to navigate to a previous step the system must execute each
         of the preceding step functions (for example, to go from step
         38 to step 37 the system will reset and then execute steps
-        1...37). When navigating forward through a tutorial, some
+        1 to 37). When navigating forward through a tutorial, some
         steps taking slightly longer to load is barely
         noticeable. However, when navigating backward it becomes
         glaringly obvious, due to the cumulative effect of executing
@@ -2858,14 +2850,13 @@ interactive teaching components.
 
         \subsection{Testing Interface}\label{sec:impl-testing}
 
-        The testing interface is a new feature not present in the
-        original design. It was added for two reasons: first, to
+        The testing interface was created for two reasons: first, to
         provide useful data in order to evaluate the project; second,
         to provide the user with a means of obtaining feedback about
         their learning progress.
 
         The design and implementation is an extension of the
-        interactive tutorials. However, instead of suppling the code
+        interactive tutorials. However, instead of supplying the code
         for each step of the program, a developer may supply text
         questions and answers with an optional function display any
         other components (such as a \gls{cfg}, as shown in fig
@@ -2886,17 +2877,16 @@ interactive teaching components.
 
         \section{Summary}
         In summary, the user interface is fairly well-designed but
-        lacks polish. Some elements of the original design were left
-        out in order to focus on more important features, but the loss
-        of these elements slightly reduces the usability of the
-        interface.
+        lacks polish. Some small features such as progress indicators
+        were overlooked during development; the loss of these elements
+        slightly reduces the usability of the interface.
 
-        However, many positive changes were made to the original
-        design. The interface was optimised for display on smaller
-        screens to make the application accessible to all students,
-        and the added code sharing functionality should help students
-        share examples with their classmates or professors in order to
-        develop their learning through discussion.
+        However, the design has many positive aspects. The interface
+        was optimised for display on smaller screens to make the
+        application accessible to all students, and the added code
+        sharing functionality should help students share examples with
+        their classmates or professors in order to develop their
+        learning through discussion.
 
         The simulation interface visualises the content clearly and is
         certainly the highlight of the application's front-end. The
@@ -3120,7 +3110,7 @@ as a whole.
         Following the example set by Mustafa\cite{mustafa2010} (see
         \S\ref{sec:mustafa-simulator}), the survey consists of a
         number of \gls{likertscale} questions ranging from ``Strongly
-        Agree'' to ``Strongly Disagree''. Partipants were required to
+        Agree'' to ``Strongly Disagree''. Participants were required to
         select a response to each Likert item, but were given a ``No
         Response'' option instead of the usual ``Neutral'' response
         which allowed them to explicitly indicate that they did not
@@ -3220,7 +3210,7 @@ as a whole.
     records; the duration of these blocks is summed to produce an
     estimate of time spent during the two-week evaluation
     period. Fig. \ref{fig:time-hist} shows the distribution of time
-    spent by those 37 participants, categorized by their experience
+    spent by those 37 participants, categorised by their experience
     with the subject.
 
     From this data, we can draw a number of conclusions: first, that a
@@ -3238,7 +3228,7 @@ as a whole.
 
     Second, it appears that the more experience a user has, the less
     time they are likely to spend using the application. Users who
-    considered themselved ``Advanced'' in the topic spent the least
+    considered themselves ``Advanced'' in the topic spent the least
     time with the software, whilst those with no experience spent the
     most. This could indicate that the content presented by the system
     is too simple or that it re-treads too much ground covered by
@@ -3557,7 +3547,7 @@ as a whole.
 
     \begin{quote}
       ``Few bugs here and there but simulation is engaging... more could
-      be done to link between decription and simulation.''
+      be done to link between description and simulation.''
     \end{quote}
 
     The lessons also received some minor criticism. The most common
@@ -3662,7 +3652,7 @@ as a whole.
     learning.
 
     The results collected throughout this evaluation are strong
-    evidence that the project has achieved this goal. Reponse to the
+    evidence that the project has achieved this goal. Response to the
     feedback survey was overwhelmingly positive; the visual and
     interactive elements received particularly high praise, as did the
     presentation of the material. Achievement of learning outcomes was
@@ -3676,7 +3666,7 @@ as a whole.
     would not have gone amiss. Perhaps a different development process
     would have revealed these issues before they became significant
     problems, or more time should have been spent researching
-    technlogies before diving into the implementation.
+    technologies before diving into the implementation.
 
     In the near future, I hope to see others extend the system I have
     developed or apply the techniques I have used to enhance teaching
