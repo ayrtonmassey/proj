@@ -11,7 +11,7 @@
   \defaultdefine{real}{{\Bbb R}} \def\restriction{{|}} \def\club{CLUB}
   \def\w{\omega} \def\exist{\exists} \def\se{{\germ se}} \def\bb{{\bf b}}
   \def\equivalence{\equiv} \let\lt< \let\gt>
-\begin{thebibliography}{20}
+\begin{thebibliography}{23}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -132,6 +132,24 @@ M.~D. Merrill.
 \newblock {jQuery Lined TextArea}.
 \newblock \url{http://alan.blog-city.com/jquerylinedtextarea.htm}, 2016.
 \newblock Accessed: 2016-03-26.
+
+\bibitem[{Reddit, Inc.}(2016)]{reddit}
+{Reddit, Inc.}
+\newblock {reddit: the front page of the internet}.
+\newblock \url{https://www.reddit.com/}, 2016.
+\newblock Accessed: 2016-03-30.
+
+\bibitem[{Christie, T.}(2016)]{drf}
+{Christie, T.}
+\newblock {Django REST Framework}.
+\newblock \url{http://www.django-rest-framework.org/}, 2016.
+\newblock Accessed: 2016-03-30.
+
+\bibitem[{Google, Inc.}(2016)]{googleforms}
+{Google, Inc.}
+\newblock {Google Forms}.
+\newblock \url{https://forms.google.com/}, 2016.
+\newblock Accessed: 2016-03-30.
 
 \bibitem[{Wikipedia}(2016)]{wikipedia:contextfreegrammar}
 {Wikipedia}.

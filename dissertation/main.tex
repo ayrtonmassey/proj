@@ -208,6 +208,7 @@ responses to Likert items}
 
 %% Acronyms
 \newacronym{cfg}{CFG}{control-flow graph}
+\newacronym{ir}{IR}{intermediate representation}
 \newacronym{ui}{UI}{user interface}
 \newacronym{ux}{UX}{user experience}
 \newacronym{json}{JSON}{JavaScript Object Notation}
@@ -229,6 +230,7 @@ responses to Likert items}
 \usepackage{color}
 \usepackage[dvipsnames]{xcolor}
 \usepackage[hyphens]{url}
+\usepackage{enumitem}
 \renewcommand{\labelitemii}{$\circ$}
 
 %% Math
@@ -344,6 +346,10 @@ responses to Likert items}
 \tikzstyle{atom} = [rectangle, draw, text centered, minimum width=6mm, minimum height=6mm, font=\tt\small]
 \tikzstyle{block} = [rectangle, draw, text width=6em, text centered, rounded corners, minimum height=1em]
 \tikzstyle{set} = [rectangle, text width=6em, text centered, rounded corners, minimum height=1em]
+\tikzstyle{group} = [rectangle, draw, text centered, rounded corners, dash pattern=on 2pt off 3pt, below right]
+\tikzstyle{cluster} = [rectangle, draw, text width=60mm, text centered, rounded corners, densely dotted, below right]
+\tikzstyle{clusterlabel} = [text width=60mm, minimum height=10mm, text centered, below]
+\tikzstyle{component} = [rectangle, draw, text width=50mm, text centered, rounded corners, minimum height=7mm, below right]
 \tikzset{vertex/.style = {shape=circle,draw,minimum size=1.5em}}
 \tikzset{edge/.style = {
     >=Stealth,
@@ -410,16 +416,35 @@ responses to Likert items}
   outcomes, through self-assessment and by examining usage data
   collected during the evaluation period.
 
-  %TODO: Outcome
-  The software proved (successful/unsuccessful) in providing a tool
-  for increasing the learning capacity of the subjects.
-}
+  The software was wildly successful in increasing the learning
+  capacity of the evaluation subjects. The results collected present
+  strong evidence of the need for more interactive learning tools,
+  particularly in engineering subjects. Reponses to the feedback
+  survey were overwhelmingly positive, achievement of learning
+  outcomes was well above average, users were kept engaged by the
+  platform, and all but one participant stated that they would use the
+  system alongside other methods of study.}
+
 
 \maketitle
 
 \section*{Acknowledgements}
-%TODO: Acknowledgements
-Acknowledgements go here.
+First and foremost I would like to thank the project's supervisor,
+Hugh Leather, for his continued support throughout the project and for
+volunteering his time and effort during particularly unfortunate
+circumstances.
+
+I am extremely grateful for the assistance provided by Drs. Alan
+Smaill and Iain Murray, and the UG4 project co-ordinator Prof. Don
+Sanella.
+
+My sincere gratitude goes to Dr. Steve Gregory of the University of
+Bristol for distributing the application to his students, and to the
+participants of the evaluation without whom this project would not
+have been possible.
+
+Finally, I would like to thank my family and friends for their support
+and \break encouragement throughout my academic career.
 
 \tableofcontents
 
@@ -474,12 +499,11 @@ and provides a brief summary of contributions.
     as the \gls{dataflow} in question or the order in which nodes are
     evaluated, and examine the resulting solution.
     
-    As lecturer of the \gls{copt} course at the University
-    of Edinburgh, Dr. Leather desired a system which could teach
-    students the foundations of the course in a more interactive
-    format than standard lectures. The system should be suitable for
-    hosting on the course web page to make it accessible to all
-    students.
+    As lecturer of the \gls{copt} course at the University of
+    Edinburgh, Dr. Leather desired a system which could teach students
+    the foundations of the course in a more interactive format than
+    standard lectures. The system should be suitable for hosting on
+    the course web page in order to provide access to all students.
     
     My personal interest in this project stemmed from a desire to use
     my practical skills to increase my capacity for understanding
@@ -487,7 +511,7 @@ and provides a brief summary of contributions.
     students find it difficult and time consuming to read and
     understand material from the course textbook. Presenting this
     information in such a way that it could be easily digested by even
-    a novice to Computer Science provided an exciting challenge.
+    a novice to Computer Science proved an exciting challenge.
     
     
     \section{Objectives}
@@ -510,7 +534,7 @@ and provides a brief summary of contributions.
     extended to cover the topic in more depth using content from {\em
       Compilers: Principles, Techniques and Tools, 1st
       ed.}\cite{dragonbook} by Alfred V. Aho, Ravi Sethi and Jeffery
-    D. Ullman.
+    D. Ullman (commonly referred to as the {\em Dragon Book}).
     
     Users would be able to interact with the system by providing
     simple assembly-like programs, altering parameters of the analysis
@@ -523,41 +547,48 @@ and provides a brief summary of contributions.
     The application would be tested on real users. It would be
     evaluated in terms of user experience by analysing interactions
     with the system and conducting a user experience
-    survey. Achievement of learning outcomes would be assessed by
+    survey; achievement of learning outcomes would be assessed by
     examining responses to questions built into the software and
     self-assessment by the user.
     
     \section{Summary of Contributions}
-    The final version of the software is capable of the following:
+    The final version of the software is an online learning platform
+    featuring a sandbox simulation for \gls{dataflowanalysis} and a
+    series of interactive tutorials which provide the background
+    knowledge required in order to use it.
+
+    A summary of contributions is as follows:
     
-    \begin{itemize}
+    \begin{itemize}[leftmargin=7mm]
     \item Simulation of pre-defined \gls{dataflow}s using generic
-      framework models. (p. )%TODO: Which page?
-    \item Simulation of user-defined programs using the
-      \gls{iloc}\cite[appx.~A]{eac} language from {\em Engineering a
-        Compiler}. (p. )%TODO: Which page?
-    \item Simulation using the round-robin iterative algorithm (p.
-      ) %TODO: Which page?
-    \item User-controlled simulation allowing step-by-step, instant or
-      automated playback.
+      framework models. (p. \pageref{sec:impl-dataflows})
+    \item Simulation of analysis on user-defined programs using the
+      \gls{iloc}\cite[appx.~A]{eac} \break language from {\em Engineering a
+        Compiler}. (p. \pageref{sec:impl-iloc})
+    \item A parser for the ILOC language, with extended grammar
+      rules. (p. \pageref{sec:peg})
+    \item A built in code editor with the ability to share programs (p. \pageref{sec:code-display})
+    \item Simulation using the round-robin iterative algorithm
+      allowing step-by-step, instant or automated
+      playback. (p. \pageref{sec:impl-simulation})
     \item Visualisation of the following simulation elements:
       \begin{itemize}
-      \item \Gls{controlflowgraph} (p. )%TODO: Which page?
+      \item \Gls{controlflowgraph} (p. \pageref{sec:impl-visual-cfg})
       \item Simulator state incl. currently evaluated node,
-        framework etc. (p. )%TODO: Which page?
+        framework etc.
       \item Table of results displaying data flowing in / out of each
-        node.
-      \item \Gls{hassediagram} of \gls{meetsemilattice} (p.
-        ) %TODO: Which page?
+        node. (p. \pageref{sec:impl-visual-results})
+      \item \Gls{hassediagram} of \gls{meetsemilattice}
+        (p. \pageref{sec:impl-visual-hasse})
       \end{itemize}
     \item Tutorials covering basics of the topic with interactive
-      elements (p. )%TODO: Which page?
+      elements (p. \pageref{sec:impl-tutorials})
     \item Interactive test to assess achievement of learning outcomes
+      (p. \pageref{sec:impl-testing})
+    \item An \gls{api} to record user interaction events modeled on
+      the Google Analytics event tracking system
+      (p. \pageref{sec:impl-tracking-api}).
     \end{itemize}
-
-    In addition, I have produced an API to record user interaction
-    events modeled on the Google Analytics event tracking system
-    (p. ). %TODO: Which page?
 
     Detailed explanations of the terminology mentioned above can be
     found in chapter \ref{chap:background}. A quick summary of terms
@@ -566,102 +597,168 @@ and provides a brief summary of contributions.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Background}\label{chap:background}
+\vspace{-8mm}
 This chapter briefly covers the necessary background information
-required to understand this project, both to inform the reader and to
+required to understand the project, both to inform the reader and to
 demonstrate understanding of the topic.
+\vspace{-2mm}
+    \section{Modern Compiler Design}
+    In Computer Science, a compiler is a tool for translating source
+    code written in one language into another target language. In
+    general, modern compilers are divided into 5 distinct
+    stages\footnote{ This is an over-simplification, but one which is
+      suitable for purpose of this report.}:
 
-    \section{Introduction to Data-Flow Analysis}
-    Data-flow analysis computes information about data flowing {\em
-      in} and {\em out} of each node in a program's
-    \gls{controlflowgraph}. Many types of analysis can be performed
-    and the information gathered can be used to inform the decisions
-    of optimising compilers. A brief list of analyses and their
-    purposes can be found in appendix \ref{appx:analysistypes}.
-    
-        \subsection{Control-flow Graph}
+    \begin{itemize}
+    \item {\em Lexing}, which converts input into a stream of tokens.
+    \item {\em Syntactic analysis}, which parses these tokens into
+      a symbolic representation known as a parse tree.
+    \item {\em Semantic analysis}, which transforms the parse tree
+      into an \gls{ir}, often in the form of an \gls{ast}.
+    \item {\em Optimisation}, which applies transformations to the
+      \gls{ir} in order to increase the program's size or run-time
+      performance.
+    \item {\em Code generation}, which translates the \gls{ir} into
+      the target language.
+    \end{itemize}
 
-        \begin{textblock}{80}(20,176)
-            \begin{tikzpicture}[y=-1cm, remember picture]
-              % vertices
-              \node[block] (n1) at (2 , 0) {\tt a = X[i]};
-              \node[block] (n2) at (2 , 1) {\tt b = Y[i]};
-              \node[block] (n3) at (2 , 2) {\tt if a > b};
-              \node[block] (n4) at (0 , 3) {\tt Z[i] = a};
-              \node[block] (n5) at (4 , 3) {\tt Z[i] = b};
-              \node[block] (n6) at (2 , 4) {\tt i++};
-              \node[block] (n7) at (2 , 5.3) {\tt if i < Z.length};
-              \node (n8) at (2 , 6.6) {$\cdots$};
-              
-              % edges
-              \draw[edge] (n1)       to (n2);
-              \draw[edge] (n2)       to (n3);
-              \draw[edge] (n3.south) to (n4);
-              \draw[edge] (n3.south) to (n5);
-              \draw[edge] (n4) to (n6.north);
-              \draw[edge] (n5) to (n6.north);
-              \draw[edge] (n6) to (n7);
-              \draw[edge] (n7) to (n8);
-              \draw[edge] (n7.east) -| ++(2.5, 0) |- (2.5, -0.8) -| (n1.north);
+    Whilst the parse tree generated by syntactic analysis represents
+    the exact structure of the input, semantic analysis strips this
+    down into the \gls{ir} which contains only the information
+    required to understand the program's meaning.
 
-              \cfgpoint[n3.south];
-              \cfgpoint[n6.north];
-              
-            \end{tikzpicture}
-            \captionsetup{width=8cm,justification=justified}
-            \captionof{figure}{A control-flow graph.}
-            \label{fig:cfgexample}
-        \end{textblock}
+    \begin{textblock}{50}(40,214)
+      \centering
+      \begin{tikzpicture}[y=-1cm, remember picture]
+        % vertices
+        \node[block, below right, minimum height=1.25cm, text width=2.25cm] (n0) at (0 , 0) {Input (Source)};
+        \node[block, below right, minimum height=1.25cm, text width=2.25cm] (n1) at (4 , 0) {Lexing};
+        \node[block, below right, minimum height=1.25cm, text width=2.25cm] (n2) at (8 , 0) {Syntactic Analysis};
+        \node[block, below right, minimum height=1.25cm, text width=2.25cm] (n3) at (12 , 0) {Semantic Analysis};
+        \node[block, below right, minimum height=1.25cm, text width=2.25cm] (n4) at (12 , 2) {Optimisation};
+        \node[block, below right, minimum height=1.25cm, text width=2.25cm] (n5) at (8 , 2) {Code Generation};
+        \node[block, below right, minimum height=1.25cm, text width=2.25cm] (n6) at (0 , 2) {Output (Target)};
 
-        \hfill\begin{minipage}{\dimexpr\textwidth-6cm}
+        \draw[-{>[scale=1.5]}] (n0) -- (n1);
+        \draw[-{>[scale=1.5]}] (n1) -- (n2);
+        \draw[-{>[scale=1.5]}] (n2) -- (n3);
+        \draw[-{>[scale=1.5]}] (n3) -- (n4);
+        \draw[-{>[scale=1.5]}] (n4) -- (n5);
+        \draw[-{>[scale=1.5]}] (n5) -- (n6);
+      \end{tikzpicture}
+    \end{textblock}
 
-          A \gls{controlflowgraph} displays the possible execution
-          paths for a given program. Each node in the graph represents
-          an instruction or basic block, each edge represents an
-          execution path leading from that instruction. A node can
-          have multiple outward edges if it is a branching
-          instruction. Branches may point backward in the
-          control-flow. An example of a simple \gls{controlflowgraph}
-          can be seen in fig. \ref{fig:cfgexample}.
-          
-          \vspace{0.26cm}
+    \pagebreak
+    \subsection{Control-flow Graph}
 
-          A {\em point} in the \gls{controlflowgraph} refers to some
-          point along the edges of the graph. In
-          \gls{dataflowanalysis} we usually deal with sets of values
-          at the {\em in} and {\em out} points of each node, i.e. the
-          point where the {\em in-edges} meet and the {\em out-edges}
-          originate, respectively (shown in
-          \textcolor{magenta}{magenta} on the left).
+    \begin{minipage}{\dimexpr\textwidth-6cm}
 
-        \end{minipage}
+      The \gls{ir} may be used to form other representations; for
+      example a \gls{cfg} models the possible execution paths for a
+      given program. Each node in the graph represents an instruction
+      or block of instructions, each edge represents an execution path
+      leading from one instruction to another. A node can have
+      multiple outward edges if it is a branching
+      instruction, and branches may point backward in the control-flow. An
+      example of a simple \gls{controlflowgraph} can be seen in
+      fig. \ref{fig:cfgexample}.
+      
+      \vspace{0.26cm}
+
+      A {\em point} in the \gls{controlflowgraph} refers to some
+      point along the edges of the graph. In
+      \gls{dataflowanalysis} we usually deal with sets of values
+      at the {\em in} and {\em out} points of each node, i.e. the
+      point where the {\em in-edges} meet and the {\em out-edges}
+      originate, respectively (shown in
+      \textcolor{magenta}{magenta} on the right).
+
+    \end{minipage}
+
+    \begin{textblock}{50}(115,33)
+      \centering
+      \begin{tikzpicture}[y=-1cm, remember picture]
+        % vertices
+        \node[block, text width=2cm] (n1) at (2 , 0) {\tt a = X[i]};
+        \node[block, text width=2cm] (n2) at (2 , 1) {\tt b = Y[i]};
+        \node[block, text width=2cm] (n3) at (2 , 2) {\tt if a > b};
+        \node[block, text width=2cm] (n4) at (0.75 , 3) {\tt Z[i] = a};
+        \node[block, text width=2cm] (n5) at (3.25 , 3) {\tt Z[i] = b};
+        \node[block, text width=2cm] (n6) at (2 , 4) {\tt i++};
+        \node[block] (n7) at (2 , 5.3) {\tt if i < Z.length};
+        \node (n8) at (2 , 6.6) {$\cdots$};
+
+        \cfgpoint[n1.north];
+        \cfgpoint[n1.south];
+
+        \cfgpoint[n2.north];
+        \cfgpoint[n2.south];
+
+        \cfgpoint[n3.north];
+        \cfgpoint[n3.south];
+
+        \cfgpoint[n4.north];
+        \cfgpoint[n4.south];
+
+        \cfgpoint[n4.north];
+        \cfgpoint[n4.south];
+
+        \cfgpoint[n5.north];
+        \cfgpoint[n5.south];
+
+        \cfgpoint[n6.north];
+        \cfgpoint[n6.south];
+        
+        % edges
+        \draw[edge] ($ (n1.north) + (0,-0.7) $) to (n1.north);
+        \draw[edge] (n1.south) to (n2.north);
+        \draw[edge] (n2.south) to (n3.north);
+        \draw[edge] (n3.south) to (n4.north);
+        \draw[edge] (n3.south) to (n5.north);
+        \draw[edge] (n4.south) to (n6.north);
+        \draw[edge] (n5.south) to (n6.north);
+        \draw[edge] (n6.south) to (n7.north);
+        \draw[edge] (n7.south) to (n8.north);
+        \draw[edge] (n7.south) to [out=-30, in=270] (4.8, 5) -- (4.8, 0.4) to [out=90, in=30] (n1.north);
+        
+      \end{tikzpicture}
+      \captionsetup{width=6cm,justification=centering}
+      \captionof{figure}{A control-flow graph.}
+      \label{fig:cfgexample}
+    \end{textblock}
+
+    \section{Data-Flow Analysis}        
+    During construction, the \gls{ir} is often annotated to assist in
+    optimisation and code generation. Data-flow analysis is one of the
+    techniques used to perform this annotation. In general, it is
+    performed in the semantic analysis or optimisation stage and is
+    used to compute information about data flowing {\em in} and {\em
+      out} of each node in the program's \gls{cfg}. Many types of
+    analysis can be performed and the information gathered is used to
+    inform the decisions of optimising compilers. A brief list of
+    analyses and their purposes can be found in appendix
+    \ref{appx:analysistypes}.
 
 	\subsection{A Simple Example}\label{sec:simpleexample}
 	An oft-used example of \gls{dataflowanalysis} is that of {\em
           \gls{reachingdefinition}s}, which we will demonstrate here
         due to its simplicity. \Gls{reachingdefinition}s computes the
-        set of variable definitions which are are available at a given
-        point. A definition is said to {\em reach} a point $p$ if
-        there is no intermediate assignment to the same variable along
-        the path from the definition of the variable to the point $p$.
-        
-        Let us take the example in fig. \ref{fig:cfgexample}. The first
-        node defines the variable {\tt a}. We shall refer to this
-        definition of {\tt a} as {\tt a\textsubscript{1}}. The
-        definition of {\tt a} reaches each point in the
-        \gls{controlflowgraph} as it is never re-defined. The
-        definition {\tt c\textsubscript{1}}, however, does not reach
-        the exit node as {\tt c} is re-defined by {\tt
-          c\textsubscript{2}}. The graph in fig. \ref{fig:rdcfg} shows the
-        set of reaching definitions at each point in the program. We
-        have combined the {\em in} and {\em out} points to save space.
-                
-        Data-flows have {\em direction}. Reaching definitions is a
-        {\em forward flow problem}; values flow from the entry node of
-        the \gls{cfg} to the exit node.
+        set of assigned values, or definitions, which are available
+        for use at a given point in the \gls{cfg}. For example, the
+        statement {\tt a = b + c} defines a value of {\tt a}. A
+        variable may have multiple definitions, each referring to a
+        value assigned to that variable, so we label each definition
+        with an index to distinguish it from other definitions of the
+        same variable.
 
-        \begin{wrapfigure}[21]{i}{6.5cm}
-          \centering
-          \vspace{-5mm}
+        In \gls{reachingdefinition}s, a definition $d$ is said to {\em
+          reach} a point $p$ if the variable holding $d$ is not
+        reassigned along at least one path from the $d$ to $p$.
+
+        \begin{wrapfigure}[19]{r}{5.5cm}
+          \vspace{2mm}
+          \captionsetup{justification=raggedright}
+          \caption{A \gls{controlflowgraph}.}
           \begin{tikzpicture}[y=-1cm]
             % vertices
        	    \node[set] (s0) at (3 , -1) {\tt \{\}};
@@ -712,19 +809,35 @@ demonstrate understanding of the topic.
 	    \draw[edge, dotted] (s4.west) to [bend right] (n5.north);
             
           \end{tikzpicture}
-          \captionsetup{justification=centering}
-          \caption{A \gls{controlflowgraph}.}
           \label{fig:rdcfg}
         \end{wrapfigure}
 
-        The values at each point are determined using {\em data-flow
-          equations}. For example, the equations for reaching
-        definitions (defined in terms of {\em in} and {\em out}) at a
-        given node $n$ are:
+        Let us take the example in fig. \ref{fig:rdcfg}. The first
+        node defines the variable {\tt a}, generating the definition
+        {\tt a\textsubscript{1}}. This definition reaches every \break
+        subsequent point in the \gls{controlflowgraph} since {\tt a}
+        is not reassigned. The definition {\tt c\textsubscript{1}},
+        however, does not reach very far at all -- {\tt c} is
+        reassigned in $n_4$, replacing {\tt c\textsubscript{1}} with
+        {\tt c\textsubscript{2}}. Fig. \ref{fig:rdcfg} has been
+        annotated with the set of reaching definitions at each point
+        in the program. We have combined the {\em in} and {\em out}
+        points to save space.
+                
+        \subsection{Properties of Data-Flows}
+
+        \Gls{dataflow}s have \gls{direction}. Reaching definitions is
+        a {\em forward flow problem}; values flow from the entry node
+        of the \gls{cfg} to the exit node.
+
+        Values at each point are determined using
+        \gls{dataflowequations}. For example, the equations for
+        \gls{reachingdefinition}s (defined in terms of {\em in} and
+        {\em out}) at a given node $n$ are:
         
         \vspace{-7mm}
         \begin{align*}
-          \textnormal{In}(n)  & = \bigcup_{p \in preds} \textnormal{Out}(n) \\
+          \textnormal{In}(n)  & = \bigcup_{p \in preds} \textnormal{Out}(n) \\[1em]
           \textnormal{Out}(n) & = \textnormal{DefGen}(n) \cup (\textnormal{In}(n) \setminus \textnormal{DefKill}(n))
         \end{align*}
         
@@ -734,43 +847,36 @@ demonstrate understanding of the topic.
         $\text{DefKill}(n)$ are referred to as \gls{localinformation},
         as they are constant values containing information about the
         current node. In a forward flow problem the meet function
-        combines the {\em out} sets of a node's predecessors to form
-        its {\em in} set. The \gls{transfer} function computes a
-        node's {\em out} set from its {\em in} set and information
-        obtained from the node itself, thereby {\em transferring}
-        values through a node.
+        calculates the In set from the Out sets of the node's
+        predecessors; the \gls{transfer} function computes a node's
+        Out set from its In set and local information, thereby {\em
+          transferring} values through a node. In {\em backward}
+        \gls{dataflow} problems, this is the opposite -- entry instead
+        of exit, In instead of Out, successors in place of
+        predecessors.
 
 	\subsection{Lattices}\label{sec:background_lattices}
-	Sets in a \gls{dataflow} problem have a partial order. This
-        can be expressed using a structure known as a {\em
-          \gls{meetsemilattice}}. A \gls{meetsemilattice} consists of
-        a set of possible values $L$, the meet operator $\land$, and a
-        {\em bottom element} $\bot$. The semi-lattice imposes an order
-        on values in $L$ such that:
+	Sets of values in a \gls{dataflow} problem have a partial
+        order; this is necessary for the data-flow to terminate (see
+        \S\ref{sec:background-termination}). The \gls{meet} function
+        imposes this partial order, which may be be expressed using a
+        structure known as a {\em \gls{meetsemilattice}}. A
+        \gls{meetsemilattice} consists of a set of possible values
+        $L$, the meet operator $\land$, and a {\em bottom element}
+        $\bot$. The semi-lattice imposes an order on values in $L$
+        such that:
         
         \vspace{-1cm}
         %TODO: REFERENCE
         \begin{align*}
-          a \geq b \;\text{if and only if}\; & a \land b = b \\
-          a \ge  b \;\text{if and only if}\; & a \land b = b \;\text{and}\; a \neq b
+          a \ge \,\, b    & \quad\quad \text{if and only if}\; a \land b = b                         \\
+          a >   \,\, b    & \quad\quad \text{if and only if}\; a \land b = b \;\text{and}\; a \neq b \\
+          a \ge \bot & \quad\quad \forall a \in L\;                                             \\
         \end{align*}
         \vspace{-1cm}
-        
-        For the bottom element $\bot$, we have the following:
-        
-        \vspace{-1cm}
-        %TODO: REFERENCE
-        \begin{align*}
-          \forall a \in L,\; & a \geq \bot \\
-          \forall a \in L,\; & a \land \bot = \bot
-        \end{align*}
-        \vspace{-1cm}
-        
-        %TODO: REFERENCE
-        The semi-lattice can be expressed using a {\em \gls{hassediagram}}, shown in fig. \ref{fig:meethasse}.
 
-        \begin{figure}[h]
-          \centering
+        \begin{wrapfigure}{r}{6cm}
+          \hspace{-5mm}
           \begin{tikzpicture}[y=-1cm]            
             % vertices
        	    \node[set, label={[distance=1cm]0:$(\top)$}] (s1) at (2 , 0.0) {$\emptyset$};
@@ -802,16 +908,32 @@ demonstrate understanding of the topic.
           \captionsetup{justification=centering}
           \caption{A \gls{hassediagram} for the meet function $a \land b = a \cup b$.}
           \label{fig:meethasse}
-        \end{figure}
+        \end{wrapfigure}
         
+        Partial orders can be visualised using a
+        \gls{hassediagram}. Each node represents a value in $L$,
+        whilst each edge represents an order between nodes: an edge
+        from $a$ to $b$ indicates that $a \ge b $. To calculate the
+        meet of two sets $a$ and $b$, we simply find the greatest
+        (with respect to the order) common descendent of $a$ and $b$
+        in the diagram. 
+
+        The \gls{meetsemilattice} for a \gls{dataflow} can be
+        expressed using a {\em \gls{hassediagram}}, shown in
+        fig. \ref{fig:meethasse}.  In order to reduce clutter, a
+        transitive reduction has been performed on the graph; for
+        instance, the edge between {\tt \{a\}} and {\tt \{a,b,c\}} is
+        represented by the path
+        ${\tt \{a\}} \rightarrow {\tt\{a,b\}} \rightarrow {\tt
+          \{a,b,c\}}$.        
+
         \subsection{Bit-Vector Data-Flows}
         
-        The \gls{dataflow}s present in the system described in this
-        project are commonly known as \gls{bitvector}s. In these
-        problems values are single items, such as a variable or
-        definition. A set of values can be represented as a vector of
-        bits, each bit representing a particular value and a 0 or 1
-        indicating the presence or absence of that value. The
+        The \gls{dataflow}s present in this project are commonly known
+        as \gls{bitvector}s. In these problems values are single
+        items, such as a variable or definition. A set of values can
+        be represented as a vector of bits, each bit representing the
+        presence or absence of a particular value. The
         \gls{reachingdefinition}s example from the previous section is
         a \gls{bitvector} problem. Fig. \ref{fig:bitvector} shows how
         this can be applied to the example in
@@ -1008,7 +1130,7 @@ while (changes to any Transfer occur)
         of the \gls{dataflow} problems in appendix
         \ref{appx:analysistypes} may be solved using this process.
 
-        \subsection{Conditions for Termination}
+        \subsection{Conditions for Termination}\label{sec:background-termination}
           
         We must be careful when constructing our general
         frameworks. If our value sets continuously change we may never
@@ -1322,12 +1444,12 @@ conceptual problems.
     \section{Introduction}
     The original goal of this project was to produce an online
     simulation of \gls{dataflowanalysis} to show students how
-    data-flow works. As discovered in the related reading, however, a
-    large portion of users of a similar system found it to be too
-    complex and claimed to have spent more time studying the software
-    itself than the topic at hand. The literature also raised another
-    key point; a wide variety of learning techniques are necessary to
-    gain a true understanding of a topic.
+    \gls{dataflow} works. As discovered in the related reading,
+    however, a large portion of users of a similar system found it to
+    be too complex and claimed to have spent more time studying the
+    software itself than gaining useful knowledge. The literature also
+    raised another key point; a wide variety of learning techniques
+    are necessary to gain a true understanding of a topic.
 
     For these reasons the proposal has been extended to create a
     comprehensive learning platform. In addition to the simulator the
@@ -1343,12 +1465,13 @@ conceptual problems.
     solutions are suggested.
 
         \subsection{Technical Constraints}
-        As the intention isto make such a system available to
+        As the intention is to make such a system available to
         \gls{copt} students via the University, the following
         technical considerations must be made:
 
         \begin{itemize}
-        \item The system must be distributed to all students in some format;
+        \item The system must be distributed to all students in some
+          format;
         \item This format must be functional on and compatible with a
           wide range of devices owned by said students;
         \item The system must be secure and require little
@@ -1363,18 +1486,23 @@ conceptual problems.
         available to students -- a system which uses new technology
         and requires its own dedicated hosting would be more difficult
         to set up and maintain than one which can be deployed to
-        existing hardware. It is necessary to ensure that the system
-        is secure to avoid damaging University or student property.
+        existing hardware. The application could be developed using
+        purely client-side technologies such as JavaScript, HTML and
+        CSS. These static files may be distributed over HTTP using any
+        standard web server such as the one already used to host the
+        course webpage.
 
-        The application could be developed using purely client-side
-        technologies such as JavaScript, HTML and CSS. These static
-        files may be distributed over HTTP using any standard web
-        server such as the one already used to host the course
-        webpage. Efforts must be made to keep the performance of the
-        system consistent across a range of web browsers and devices;
+        Efforts must be made to keep the performance of the system
+        consistent across a range of web browsers and devices;
         although all modern web browsers are capable of interpreting
         these types of content there are subtle differences which may
         break functionality on one platform but not others.
+
+        It is also necessary to ensure that the system is secure to
+        avoid damaging University or student property. Provided that
+        user input is sanitized and scripts are only included from
+        trusted sources, the sanboxed environment inherent to modern
+        web browsers should meet the remaining security requirements.
 
         Use of popular libraries and frameworks such as jQuery and
         Bootstrap will be encouraged as this provides a number of
@@ -1389,8 +1517,8 @@ conceptual problems.
         implementation (chapters \ref{chap:impl-backend} \&
         \ref{chap:impl-frontend}).
 
-          
-        \subsection{Content Constraints}
+        
+        \subsection{Content Constraints}\label{sec:design-content}
         To be viable as a learning platform, the system must:
         
         \begin{itemize}
@@ -1438,7 +1566,7 @@ conceptual problems.
 
 
     \section{System Architecture}
-    This system is divided into two main areas of development.  The
+    The system will be divided into two main areas of development. The
     back-end of the system controls the logic and state of a data-flow
     analysis simulation. The front-end components will hook into and
     expose elements of the back-end, visualising the state of the
@@ -1464,7 +1592,7 @@ conceptual problems.
    
     \begin{figure}[!ht]
       \centering
-      \scalebox{0.8}{
+      \scalebox{1}{
         \begin{tikzpicture}[x=1mm, y=-1mm,
           person/.pic={%
             \node (-head) [circle, minimum size=4*\pgfkeysvalueof{/cfr/soul base dimension}] {};
@@ -1477,11 +1605,6 @@ conceptual problems.
           }
           ]
           % vertices
-          \tikzstyle{group} = [rectangle, draw, text centered, rounded corners, dash pattern=on 2pt off 3pt, below right]
-          \tikzstyle{cluster} = [rectangle, draw, text width=60mm, text centered, rounded corners, densely dotted, below right]
-          \tikzstyle{clusterlabel} = [text width=60mm, minimum height=10mm, text centered, below]
-          \tikzstyle{component} = [rectangle, draw, text width=50mm, text centered, rounded corners, minimum height=7mm, below right]
-
           \node[group, text width=135mm, minimum height=56mm] (backend) at (0,0) {};
           \node[clusterlabel, text width=100mm] at (backend.north) {Back-end Components};
 
@@ -1521,7 +1644,7 @@ conceptual problems.
         \end{tikzpicture}
       }
       \captionsetup{justification=centering}
-      \caption{An overview of the planned system architecture.}\label{fig:sysarch}
+      \caption{An overview of the proposed system architecture.}\label{fig:sysarch}
     \end{figure}
 
 
@@ -1533,7 +1656,7 @@ conceptual problems.
 \chapter{Back-End Implementation}\label{chap:impl-backend}
 This chapter discusses the implementation of the
 \gls{dataflowanalysis} simulation -- the back-end elements which
-control the logic and state of the analysis, which is then presented
+control the logic and state of the analysis, which is then visualised
 by the user interface components described in chapter
 \ref{chap:impl-frontend}.
 
@@ -1542,11 +1665,12 @@ by the user interface components described in chapter
     general framework as described in
     \S\ref{sec:background-frameworks} of this report and \S10.11 of
     the {\em Dragon Book}\cite{dragonbook}. The simulator takes as
-    input a program written in the \gls{iloc} language, a
-    \gls{dataflow} framework and an order in which to evaluate
-    nodes. It parses the program into an \gls{ast} and uses this to
-    build a \gls{cfg}, then performs an analysis on said graph using
-    the round-robin \gls{fixedpoint} algorithm for general frameworks
+    input a program written in the \gls{iloc} (see
+    \S\ref{sec:impl-iloc}) language, a \gls{dataflow} framework and an
+    order in which to evaluate nodes. It parses the program and
+    produces an \gls{ast}, then uses this to build a \gls{cfg}. The
+    \gls{dataflow} may then be simulated on said graph using the
+    round-robin \gls{fixedpoint} algorithm for general frameworks
     (algorithm \ref{algo:general}).
 
     Playback of the simulation can be controlled through the
@@ -1613,7 +1737,7 @@ by the user interface components described in chapter
     but a potential improvement that should be noted for future
     development.
     
-    \section{Data-Flow Frameworks}
+    \section{Data-Flow Frameworks}\label{sec:impl-dataflows}
     
     Each data-flow framework defines the elements outlined in
     \S\ref{sec:background-frameworks}, namely:
@@ -1643,12 +1767,117 @@ by the user interface components described in chapter
     This allows properties of the framework to be displayed by the
     visual components in addition to the values calculated at each
     point.
+
+    \subsection{Included Data-Flows}\label{sec:impl-included-dataflows}
+    As stated in section \ref{sec:design-content}, the system includes
+    three pre-defined \gls{dataflow}s: \gls{reachingdefinition}s,
+    \gls{livenessanalysis} and \gls{availableexpression}s. These
+    \gls{dataflow}s may be swapped in and out at any time, as the
+    simulation has been developed independent of any framework. The
+    system is capable of supporting \gls{bitvector}s and could easily
+    be extended to support \gls{tuplevalued}s, but none are available
+    at present.
+
+    \begin{wrapfigure}[15]{r}{6cm}
+      \vspace{-5mm}
+      \centering
+      \begin{tikzpicture}[y=-1cm, remember picture]
+        % vertices
+        \node[block, text width=2cm] (n1) at (2 , 0) {\tt a = X[i]};
+        \node[block, text width=2cm] (n2) at (2 , 1) {\tt b = Y[i]};
+        \node[block, text width=2cm] (n3) at (2 , 2) {\tt if a > b};
+        \node[block, text width=2cm] (n4) at (0.75 , 3) {\tt Z[i] = a};
+        \node[block, text width=2cm] (n5) at (3.25 , 3) {\tt Z[i] = b};
+        \node[block, text width=2cm] (n6) at (2 , 4) {\tt i++};
+        \node[block] (n7) at (2 , 5.3) {\tt if i < Z.length};
+        \node (n8) at (2 , 6.6) {$\cdots$};
+
+        \cfgpoint[n1.north];
+        \cfgpoint[n1.south];
+
+        \cfgpoint[n2.north];
+        \cfgpoint[n2.south];
+
+        \cfgpoint[n3.north];
+        \cfgpoint[n3.south];
+
+        \cfgpoint[n4.north];
+        \cfgpoint[n4.south];
+
+        \cfgpoint[n4.north];
+        \cfgpoint[n4.south];
+
+        \cfgpoint[n5.north];
+        \cfgpoint[n5.south];
+
+        \cfgpoint[n6.north];
+        \cfgpoint[n6.south];
+        
+        % edges
+        \draw[edge] ($ (n1.north) + (0,-0.7) $) to (n1.north);
+        \draw[edge] (n1.south) to (n2.north);
+        \draw[edge] (n2.south) to (n3.north);
+        \draw[edge] (n3.south) to (n4.north);
+        \draw[edge] (n3.south) to (n5.north);
+        \draw[edge] (n4.south) to (n6.north);
+        \draw[edge] (n5.south) to (n6.north);
+        \draw[edge] (n6.south) to (n7.north);
+        \draw[edge] (n7.south) to (n8.north);
+        \draw[edge] (n7.south) to [out=-30, in=270] (4.8, 5) -- (4.8, 0.4) to [out=90, in=30] (n1.north);
+        
+      \end{tikzpicture}
+      \captionsetup{width=6cm,justification=centering}
+      \captionof{figure}{A control-flow graph.}
+      \label{fig:impl-included-cfg}
+    \end{wrapfigure}
+
+    The three \gls{dataflow} frameworks operate on programs written in
+    \gls{iloc} (see \S\ref{sec:impl-iloc}). ILOC programs are able to
+    write to three types of storage: registers, main memory and the
+    comparison register. To allow users to translate examples in other
+    languages or pseudocode into ILOC and obtain the same solution,
+    these \gls{dataflow}s have been defined to operate solely on
+    registers.
+
+    For example, consider the \gls{cfg} in
+    fig. \ref{fig:impl-included-cfg}. The branching statement, {\tt if
+      a > b}, only uses variables -- there are no assignments
+    involved. However, if we were to represent this in \gls{iloc}:
+
+    \begin{figure*}[!h]
+\begin{verbatim}
+cmp_GT ra, rb => rc
+cbr    rc     -> LEFT, RIGHT
+\end{verbatim}
+    \end{figure*}
+
+    The comparison and branch must be written as two separate
+    statements. In the ILOC program above, the comparison is an
+    assignment to {\tt rc} -- but, taking the example of reaching
+    definitions, we would obtain a different solution than expected in
+    fig. \ref{fig:impl-included-cfg} because that program does not
+    assign the result of the comparison. However, in the following
+    program:
+
+    \begin{figure*}[!h]
+\begin{verbatim}
+comp   ra, rb => cc
+cbr_GT cc     -> LEFT, RIGHT
+\end{verbatim}
+    \end{figure*}
     
-    \section{Simulation Algorithm}
+    The comparison assigns a value to {\tt cc}, the comparison
+    register. By ignoring this memory type in our data-flows, we have
+    solved the problem and made our simulation much more flexible.
+
+
+    \section{Simulation Algorithm}\label{sec:impl-simulation}
     Algorithm \ref{algo:general_impl} shows a disassembled version of
     algorithm \ref{algo:general}. The functions can be combined to
     enable a step-by-step evaluation or automatic playback.
 
+    \begin{figure*}[!ht]
+      \vspace{-5mm}
     \begin{algorithm}[caption={Implementation of General Framework Algorithm}, label={algo:general_impl},escapeinside={||},mathescape=true]
 function reset()
     B = entry node of CFG
@@ -1667,6 +1896,8 @@ function iterate()
         step = |{\tt MEET}|
         B    = next node
     \end{algorithm}
+      \vspace{-5mm}
+    \end{figure*}
 
     To demonstrate, listings and \ref{lst:fast_forward} and
     \ref{lst:autoplay} show the implementation of some of the playback
@@ -1679,7 +1910,8 @@ function iterate()
     events helps prevent slowdown from unnecessary re-rendering of
     components.
 
-    \begin{figure}[!ht]
+    \begin{figure*}[!ht]
+      \vspace{-5mm}
       \begin{lstlisting}[language=JavaScript, caption={JavaScript Implementation of Fast Forward}, label={lst:fast_forward}]
 this.fast_forward = function() {
   while(!this.state.finished) {
@@ -1687,10 +1919,12 @@ this.fast_forward = function() {
   }
   this.events.trigger('update');
 }
+      \vspace{-5mm}
       \end{lstlisting}
-    \end{figure}
+    \end{figure*}
 
-    \begin{figure}
+    \begin{figure*}[!ht]
+      \vspace{-10mm}
       \begin{lstlisting}[language=JavaScript, caption={JavaScript Implementation of Automatic Playback}, label={lst:autoplay}]
 this.play = function() {
   this.state.paused = false;
@@ -1705,13 +1939,14 @@ this.play = function() {
   })();
 }
       \end{lstlisting}
-    \end{figure}
+\vspace{-25mm}
+    \end{figure*}
     
-    \section{Understanding Programs}
+    \section{Understanding Programs}\label{sec:impl-iloc}
     The simulation operates on programs written in \gls{iloc}, as
     described in {\em Engineering a Compiler}
     \cite[appx.~A]{eac}. \gls{iloc} is an assembly-like language
-    designed for toy compilers as it is both simple to parse and
+    designed for toy compilers, in that it is both simple to parse and
     human-readable. This makes it the perfect input language for the
     learning platform, with the added benefit that students will be
     able to step through examples from the textbook using the
@@ -1736,14 +1971,14 @@ this.play = function() {
     \glsreset{ast}
 
     In order to understand ILOC programs, they must be to converted
-    from text into a \gls{cfg}. To do this the simulator uses the
-    PEG.js\cite{pegjs} library which, given an input grammar,
-    generates a parser written in JavaScript. This parser produces an
-    \gls{ast}, which is then transformed into a \gls{cfg} representing
-    the program. The following sections describe this process in more
-    detail.
+    from text into a \gls{cfg}. The first stage in this process is
+    parsing the text. The PEG.js\cite{pegjs} was used to generate a
+    parser (written in JavaScript) from an input grammar. This parser
+    produces an \gls{ast}, which is then transformed into a \gls{cfg}
+    representing the program. The following sections describe this
+    process in more detail.
 
-        \subsubsection{Parsing Expression Grammar}\label{sec:peg}
+        \subsection{Parsing Expression Grammar}\label{sec:peg}
 
         A \gls{peg} is very similar to a \gls{contextfreegrammar} in
         that it describes a formal language using a set of rules for
@@ -1752,7 +1987,7 @@ this.play = function() {
         \gls{peg} for the language, which has been adapted for use in
         this system.
         
-        The rules of the grammar have been extended as shown in
+        Some rules in the grammar have been extended as shown in
         fig. \ref{fig:grammar_extensions}. The reason for these
         changes is that \gls{iloc} allows the user to write to three
         types of storage: registers, main memory and comparison
@@ -1761,10 +1996,8 @@ this.play = function() {
         from different types of storage. This is an important
         distinction to make because the built-in data-flows only
         consider register accesses when calculating value sets at each
-        point (see \S\ref{sec:builtin_dataflows} for an explanation).
-
-        The full extended \gls{iloc} grammar is listed in appendix
-        \ref{appx:iloc_grammar}.
+        point (see \S\ref{sec:impl-included-dataflows} for an
+        explanation).
 
         \begin{figure}[!ht]
           \centering
@@ -1814,14 +2047,15 @@ this.play = function() {
         independent of its original representation; this may involve
         adding or removing nodes or re-structuring the tree entirely.
 
-        To construct an \gls{ast} one would usually obtain a parse
-        tree and then transform it into the desired structure. Parsers
-        generated by the PEG.js library are capable of constructing
-        the \gls{ast} as they parse the input program. The developer
-        may supply JavaScript code to be executed when a rule matches
-        and this code is used to create an abstract representation of
-        the data matched by that rule. This feature can also be used
-        to annotate the tree as it is built.
+        To construct an \gls{ast} one would traditionally obtain a
+        parse tree and then transform it into the desired
+        structure. In contrast, parsers generated by the PEG.js
+        library are capable of constructing the \gls{ast} as they
+        parse the input program. The developer may supply JavaScript
+        code to be executed when a rule matches and this code is used
+        to create an abstract representation of the data matched by
+        that rule. This feature can also be used to annotate the tree
+        as it is built.
 
         \begin{figure}[!ht]
           \begin{lstlisting}[language=JavaScript, caption=Example of PEG.js Grammar Rules, escapeinside={||}, label=lst:peg_grammar]
@@ -2061,28 +2295,32 @@ for each ($node$ in the CFG)
         \gls{meetsemilattice} for a given \gls{dataflow}
         framework. The lattices in this simulation only provide
         support for \gls{bitvector}s since these are the only type
-        included with the system (see \S\ref{sec:included_dataflows}).
+        included with the system (see
+        \S\ref{sec:impl-included-dataflows}).
 
         Due to this constraint, the process of generating the lattice
         is quite simple. The set of all combinations of values is a
-        powerset, and our lattice must include each one. This is easy
-        to see when we consider the meaning of the term bit-vector:
-        the number of possible sets represented by $n$ bits is $2^n$.
+        powerset, and our lattice must include each element of this
+        set. This is easy to see when we consider the meaning of the
+        term bit-vector: the number of possible sets represented by
+        $n$ bits is $2^n$, and each possible set is present in the
+        lattice.
 
-        First, the domain of values is identified. Then all possible
-        sets of values must be generated, the code for which was taken
-        from a snippet online % TODO: remove this?
-        \cite{snippet:combinations}. Each value set becomes a node in
+        To generate the lattice for a simulation, the domain of values
+        is first identified. Then, all possible sets of values must be
+        generated (the code for which was taken from a snippet online
+        \cite{snippet:combinations}). Each value set becomes a node in
         the lattice. Next, the algorithm finds the meet of every pair
-        of sets; an edge is added between those sets and the result of
-        the meet operation. Finally, a transitive reduction is
-        performed on the graph: if an edge exists from
-        $x \rightarrow y$ and from $y \rightarrow z$, any edge from
-        $x \rightarrow z$ may be removed as it is represented by the
-        path $x \rightarrow y \rightarrow z$. This constructs a
+        of sets; an edge is added from the sets to the result of the
+        meet operation. Finally, a transitive reduction is performed
+        on the graph: if an edge exists from $x \rightarrow y$ and
+        from $y \rightarrow z$, any edge from $x \rightarrow z$ may be
+        removed as it is represented by the path
+        $x \rightarrow y \rightarrow z$. This constructs a
         \gls{hassediagram} representing the \gls{meetsemilattice}, as
         described in algorithm \ref{algo:lattice_construction}.
 
+        \begin{figure*}[!ht]
         \begin{algorithm}[caption={Constructing a \gls{hassediagram} for the \gls{meetsemilattice} of a \gls{cfg}.}, label={algo:lattice_construction},mathescape=true]
 $values$ = collect all values from the CFG
 $sets$ = generate all possible subsets of $values$
@@ -2107,6 +2345,7 @@ for $i$ from 0 to length($sets$)
                 if (there exists an edge $j \rightarrow k$)
                     remove the edge $i \rightarrow k$
         \end{algorithm}
+        \end{figure*}
 
         The simulator only generates a lattice for programs with a
         small set of values due to the exponential growth of the size
@@ -2114,6 +2353,34 @@ for $i$ from 0 to length($sets$)
         since this structure has constant-time operations for adding
         and removing edges, resulting in a huge performance increase
         over other structures such as an adjacency list.
+
+        \section{Summary}
+        In summary, the implementation of the simulation is
+        sound. Whilst better choices could have been made regarding
+        the data structures used, the modular system simplifies the
+        addition of \gls{dataflow}s and enables the back-end to be
+        extracted for use in other projects. The simulation makes
+        relatively little use of external libraries\footnote{Beside
+          PEG.js, necessary for the parser.} making it fairly
+        lightweight and simple to understand. In addition, the
+        extensions to the ILOC grammar make the language flexible
+        enough to model programs from other languages; students will
+        hopefully be able to use this feature to check their solutions
+        to worked problems.
+
+        Reliance on techniques described in the {\em Dragon
+          Book}\cite{dragonbook} has deepend my understanding of the
+        material, as the book proved invaluable for guidance
+        throughout the implementation of the back-end. In future, I
+        would be interested to see extensions to the simulation to
+        support different methods for solving \gls{dataflow} problems
+        described by the book such as the structural or worklist
+        algorithms, and perhaps adapt and improve my implementation
+        for use in similar projects.
+
+        
+
+        
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Front-End Implementation}\label{chap:impl-frontend}
@@ -2180,7 +2447,7 @@ interactive teaching components.
     and frameworks and the changes that were made from the original
     design.
 
-        \subsection{Control-Flow Graphs}  
+        \subsection{Control-Flow Graphs}\label{sec:impl-visual-cfg}
         \Gls{controlflowgraph}s are rendered using the dagre-d3
         extension for the graph visualisation library d3.js. An SVG
         component is created and the nodes and edges added to the
@@ -2197,22 +2464,6 @@ interactive teaching components.
         improve the aesthetics and performance of the
         component. However, dagre-d3 is more than adequate for a proof
         of concept.
-
-        % \begin{figure}[!h]
-        %   \begin{minipage}{.58\textwidth}
-        %     \centering
-        %     \includegraphics[width=\textwidth]{img/cfg-vis.png}
-        %     \captionof{figure}{Control-Flow Graph Visualisation}\label{fig:cfg-vis}
-        %   \end{minipage}
-        %   \quad
-        %   \begin{minipage}{.38\textwidth}
-        %     \centering
-        %     \includegraphics[width=\textwidth, trim=0 0 0 60]{img/lattice.png}
-        %     \captionsetup{width=6cm, justification=centering}
-        %     \captionof{figure}{Hasse Diagram Visualisation}\label{fig:lattice}
-        %   \end{minipage}
-        % \end{figure}
-
 
         To reduce clutter in the graph, the user has three options for
         displaying nodes: {\em current}, in which only the points
@@ -2241,7 +2492,7 @@ interactive teaching components.
         information, shown in light blue, from In$(n_7)$ and modifying
         Out($n_7$), shown in dark blue.
 
-        \subsection{Hasse Diagrams}
+        \subsection{Hasse Diagrams}\label{sec:impl-visual-hasse}
 
         \begin{wrapfigure}[12]{r}{6cm}
           \centering
@@ -2261,7 +2512,7 @@ interactive teaching components.
         considered are highlighted in light green and the resulting
         set in dark green.
 
-        \subsection{Table of Results}
+        \subsection{Table of Results}\label{sec:impl-visual-results}
         The table of results, which displays the set of values at each
         point, is simply a HTML table containing the required
         information. Various layouts were considered for this table,
@@ -2547,7 +2798,7 @@ interactive teaching components.
           \caption{The simulator interface.}\label{fig:simulator}
         \end{figure}
 
-        \subsection{Tutorial Interface}
+        \subsection{Tutorial Interface}\label{sec:impl-tutorials}
         
         The tutorial interface is also very similar to the original
         design. The user follows a series of steps which present them
@@ -2605,7 +2856,7 @@ interactive teaching components.
           \caption{An interactive tutorial.}\label{fig:tutorial}
         \end{figure}
 
-        \subsection{Testing Interface}
+        \subsection{Testing Interface}\label{sec:impl-testing}
 
         The testing interface is a new feature not present in the
         original design. It was added for two reasons: first, to
@@ -2633,6 +2884,36 @@ interactive teaching components.
         confirm whether the user would like to submit the test would
         not go amiss.
 
+        \section{Summary}
+        In summary, the user interface is fairly well-designed but
+        lacks polish. Some elements of the original design were left
+        out in order to focus on more important features, but the loss
+        of these elements slightly reduces the usability of the
+        interface.
+
+        However, many positive changes were made to the original
+        design. The interface was optimised for display on smaller
+        screens to make the application accessible to all students,
+        and the added code sharing functionality should help students
+        share examples with their classmates or professors in order to
+        develop their learning through discussion.
+
+        The simulation interface visualises the content clearly and is
+        certainly the highlight of the application's front-end. The
+        choice of popular external libraries allows the system to be
+        easily modified and extended by most JavaScript or web
+        developers, in addition to increasing performance and security
+        as stated in \ref{sec:design-content}. The system's modular
+        design allows its components to be re-used across the
+        application, reducing the need to duplicate code and providing
+        consistency throughout.
+
+        Even without the improvements mentioned throughout this
+        chapter, the platform is fully-functional and should prove
+        itself a valuable tool for learning. I hope that the
+        techniques I have employed in developing a truly interactive
+        and visual learning experience have set a good example for
+        similar projects in future.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Evaluation}
@@ -2751,7 +3032,7 @@ as a whole.
     software and were encouraged to be truthful and honest with their
     feedback.
 
-        \subsection{Usage Data}
+        \subsection{Usage Data}\label{sec:impl-tracking-api}
         To collect usage information, the use of some tracking system
         was required. A variety of web platforms exist for this
         purpose including Google Analytics and Piwik. However, these
@@ -2976,8 +3257,7 @@ as a whole.
     survey. Fig \ref{fig:days-spent} shows how often users returned to
     the site. Although the majority of users only visited on the day
     they evaluated the application, 24\% returned to the application
-    more than once, and one user in particular visited on 9 separate
-    days.
+    days later, one user in particular visiting on 9 separate days.
 
     \begin{figure}[!htb]
       \centering
@@ -3018,16 +3298,16 @@ as a whole.
     continue, indicating that the lessons kept users engaged
     throughout.
 
-    In the feedback survey, 22 of 28 users said that they had used the
-    tutorial system. These users were asked to provide reasons why
-    they did or did not complete a lesson after starting it. The
-    feedback from these questions is shown in figures
-    \ref{fig:lesson-stay} \& \ref{fig:lesson-leave}.
+    In total, 28 users responded to the feedback survey, 25 of whom
+    said that they had used the tutorial system. These users were
+    asked to provide reasons why they did or did not complete a lesson
+    after starting it. The feedback from these questions is shown in
+    figures \ref{fig:lesson-stay} \& \ref{fig:lesson-leave}.
 
     \begin{figure}[!htb]
       \centering
       \captionsetup{width=\textwidth, justification=centering}
-      \caption{Reasons Provided for Completing Lessons (N=28)}\label{fig:lesson-stay}
+      \caption{Reasons Provided for Completing Lessons (N=25)}\label{fig:lesson-stay}
       \includegraphics[width=\textwidth, trim=0 10 0 45, clip]{img/lesson_staying.pdf}
     \end{figure}
 
@@ -3053,7 +3333,7 @@ as a whole.
       \vspace{-2mm}
       \includegraphics[width=\textwidth, trim=0 20 0 75, clip]{img/lesson_leaving.pdf}
       \captionsetup{width=\textwidth, justification=centering}
-      \caption{Reasons Provided for Abandoning Lessons}\label{fig:lesson-stay}
+      \caption{Reasons Provided for Abandoning Lessons (N=25)}\label{fig:lesson-leave}
     \end{figure}
 
     Of those who abandoned a lesson, the majority opinion was that
