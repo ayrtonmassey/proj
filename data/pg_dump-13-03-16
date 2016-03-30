@@ -1,0 +1,1995 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: app_event; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE app_event (
+    id integer NOT NULL,
+    user_id character varying(254) NOT NULL,
+    event_type character varying(254) NOT NULL,
+    category character varying(254) NOT NULL,
+    action character varying(254) NOT NULL,
+    label character varying(254) NOT NULL,
+    value character varying(254) NOT NULL,
+    datetime timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.app_event OWNER TO postgres;
+
+--
+-- Name: app_event_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE app_event_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.app_event_id_seq OWNER TO postgres;
+
+--
+-- Name: app_event_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE app_event_id_seq OWNED BY app_event.id;
+
+
+--
+-- Name: auth_group; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE auth_group (
+    id integer NOT NULL,
+    name character varying(80) NOT NULL
+);
+
+
+ALTER TABLE public.auth_group OWNER TO postgres;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE auth_group_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_id_seq OWNER TO postgres;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE auth_group_id_seq OWNED BY auth_group.id;
+
+
+--
+-- Name: auth_group_permissions; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE auth_group_permissions (
+    id integer NOT NULL,
+    group_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_group_permissions OWNER TO postgres;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE auth_group_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_permissions_id_seq OWNER TO postgres;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE auth_group_permissions_id_seq OWNED BY auth_group_permissions.id;
+
+
+--
+-- Name: auth_permission; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE auth_permission (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    content_type_id integer NOT NULL,
+    codename character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.auth_permission OWNER TO postgres;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE auth_permission_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_permission_id_seq OWNER TO postgres;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE auth_permission_id_seq OWNED BY auth_permission.id;
+
+
+--
+-- Name: auth_user; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE auth_user (
+    id integer NOT NULL,
+    password character varying(128) NOT NULL,
+    last_login timestamp with time zone,
+    is_superuser boolean NOT NULL,
+    username character varying(30) NOT NULL,
+    first_name character varying(30) NOT NULL,
+    last_name character varying(30) NOT NULL,
+    email character varying(254) NOT NULL,
+    is_staff boolean NOT NULL,
+    is_active boolean NOT NULL,
+    date_joined timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.auth_user OWNER TO postgres;
+
+--
+-- Name: auth_user_groups; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE auth_user_groups (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    group_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_user_groups OWNER TO postgres;
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE auth_user_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_groups_id_seq OWNER TO postgres;
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE auth_user_groups_id_seq OWNED BY auth_user_groups.id;
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE auth_user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_id_seq OWNER TO postgres;
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE auth_user_id_seq OWNED BY auth_user.id;
+
+
+--
+-- Name: auth_user_user_permissions; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE auth_user_user_permissions (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_user_user_permissions OWNER TO postgres;
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE auth_user_user_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_user_permissions_id_seq OWNER TO postgres;
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE auth_user_user_permissions_id_seq OWNED BY auth_user_user_permissions.id;
+
+
+--
+-- Name: django_admin_log; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE django_admin_log (
+    id integer NOT NULL,
+    action_time timestamp with time zone NOT NULL,
+    object_id text,
+    object_repr character varying(200) NOT NULL,
+    action_flag smallint NOT NULL,
+    change_message text NOT NULL,
+    content_type_id integer,
+    user_id integer NOT NULL,
+    CONSTRAINT django_admin_log_action_flag_check CHECK ((action_flag >= 0))
+);
+
+
+ALTER TABLE public.django_admin_log OWNER TO postgres;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE django_admin_log_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_admin_log_id_seq OWNER TO postgres;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE django_admin_log_id_seq OWNED BY django_admin_log.id;
+
+
+--
+-- Name: django_content_type; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE django_content_type (
+    id integer NOT NULL,
+    app_label character varying(100) NOT NULL,
+    model character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.django_content_type OWNER TO postgres;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE django_content_type_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_content_type_id_seq OWNER TO postgres;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE django_content_type_id_seq OWNED BY django_content_type.id;
+
+
+--
+-- Name: django_migrations; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE django_migrations (
+    id integer NOT NULL,
+    app character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    applied timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.django_migrations OWNER TO postgres;
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE django_migrations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_migrations_id_seq OWNER TO postgres;
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE django_migrations_id_seq OWNED BY django_migrations.id;
+
+
+--
+-- Name: django_session; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE django_session (
+    session_key character varying(40) NOT NULL,
+    session_data text NOT NULL,
+    expire_date timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.django_session OWNER TO postgres;
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY app_event ALTER COLUMN id SET DEFAULT nextval('app_event_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_group ALTER COLUMN id SET DEFAULT nextval('auth_group_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_group_permissions ALTER COLUMN id SET DEFAULT nextval('auth_group_permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_permission ALTER COLUMN id SET DEFAULT nextval('auth_permission_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user ALTER COLUMN id SET DEFAULT nextval('auth_user_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_groups ALTER COLUMN id SET DEFAULT nextval('auth_user_groups_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_user_permissions ALTER COLUMN id SET DEFAULT nextval('auth_user_user_permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_admin_log ALTER COLUMN id SET DEFAULT nextval('django_admin_log_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_content_type ALTER COLUMN id SET DEFAULT nextval('django_content_type_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_migrations ALTER COLUMN id SET DEFAULT nextval('django_migrations_id_seq'::regclass);
+
+
+--
+-- Data for Name: app_event; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY app_event (id, user_id, event_type, category, action, label, value, datetime) FROM stdin;
+365	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	data-collection	0		2016-03-13 16:50:24.650772-04
+367	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	user-stats	data-collection-notice	accepted-terms			2016-03-13 16:50:24.644562-04
+369	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	test-data-collection-q-0	1		2016-03-13 16:50:37.967728-04
+371	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	data-collection	1		2016-03-13 16:50:38.000434-04
+373	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	test-data-collection-q-1	1	true	2016-03-13 16:50:47.211242-04
+375	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	user-stats	background	usr-stem-degree			2016-03-13 16:50:49.859505-04
+377	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	user-stats	background	usr-uni-student			2016-03-13 16:50:49.881601-04
+379	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	0		2016-03-13 16:53:23.50301-04
+383	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	load	external-js	ms	2082		2016-03-13 16:53:25.48951-04
+385	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	load	external-js	ms	247		2016-03-13 16:54:49.419331-04
+387	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-start	intro			2016-03-13 16:55:46.017669-04
+389	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 16:55:49.900734-04
+391	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	2		2016-03-13 16:55:51.220479-04
+393	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	3		2016-03-13 16:55:54.290567-04
+395	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	4		2016-03-13 16:56:05.094307-04
+397	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	5		2016-03-13 16:56:05.951627-04
+399	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	6		2016-03-13 16:56:06.673792-04
+401	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	7		2016-03-13 16:56:07.7525-04
+403	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	8		2016-03-13 16:56:08.694244-04
+405	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	9		2016-03-13 16:56:09.424232-04
+407	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	10		2016-03-13 16:56:10.431698-04
+409	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	11		2016-03-13 16:56:11.438689-04
+411	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	lesson-intro-step-11	0	false	2016-03-13 16:56:17.247278-04
+413	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	lesson-intro-step-11	0		2016-03-13 16:56:25.221607-04
+415	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	12		2016-03-13 16:56:46.31993-04
+417	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	lesson-intro-step-12	1		2016-03-13 16:56:50.943429-04
+419	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	13		2016-03-13 16:56:54.070635-04
+421	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 16:56:56.184844-04
+423	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 16:57:17.117232-04
+425	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	16		2016-03-13 16:57:20.852427-04
+427	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	lesson-intro-step-16	1		2016-03-13 16:57:38.180151-04
+429	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 16:57:58.741109-04
+431	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	lesson-intro-step-17	1		2016-03-13 16:58:28.710831-04
+433	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 16:58:33.609111-04
+435	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 16:58:38.127436-04
+437	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 16:58:41.352361-04
+439	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	lesson-intro-step-20	1		2016-03-13 16:58:50.328442-04
+441	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 16:58:53.139-04
+443	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	fast_backward			2016-03-13 16:59:06.335925-04
+445	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 16:59:08.809612-04
+447	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 16:59:10.713579-04
+449	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	fast_backward			2016-03-13 16:59:16.607343-04
+451	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-complete	intro			2016-03-13 16:59:57.819427-04
+453	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	22		2016-03-13 16:59:57.815691-04
+455	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-goto-menu	btn-goto-menu			2016-03-13 17:00:18.165952-04
+457	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	0		2016-03-13 17:00:19.748072-04
+459	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:00:21.492617-04
+461	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:00:27.497207-04
+463	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	3		2016-03-13 17:00:46.775493-04
+465	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-start	roundrobin			2016-03-13 17:01:18.604106-04
+467	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:03:56.920222-04
+469	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:04:00.111895-04
+471	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:04:57.292479-04
+473	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	4		2016-03-13 17:05:07.050876-04
+475	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	5		2016-03-13 17:05:36.475404-04
+477	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:07:10.855711-04
+479	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:07:20.537548-04
+481	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	8		2016-03-13 17:07:24.818517-04
+483	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	9		2016-03-13 17:07:37.628943-04
+485	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	10		2016-03-13 17:08:10.634416-04
+487	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:08:22.742797-04
+489	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	12		2016-03-13 17:08:31.870305-04
+364	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	load	external-js	ms	188		2016-03-13 16:43:13.335422-04
+366	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-start	data-collection			2016-03-13 16:50:24.647545-04
+368	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	test-data-collection-q-0	0	true	2016-03-13 16:50:35.596627-04
+370	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	user-stats	experience	exp-none			2016-03-13 16:50:37.995841-04
+372	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	test-data-collection-q-1	3	true	2016-03-13 16:50:44.556433-04
+374	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	test-data-collection-q-1	2		2016-03-13 16:50:49.801038-04
+376	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	menu	open			2016-03-13 16:50:49.863927-04
+378	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	simulator	open			2016-03-13 16:51:51.9741-04
+380	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-start	roundrobin			2016-03-13 16:53:23.505753-04
+384	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	menu	open			2016-03-13 16:53:28.384591-04
+386	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	menu	open			2016-03-13 16:54:49.416679-04
+388	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	0		2016-03-13 16:55:46.062079-04
+390	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	1		2016-03-13 16:55:49.897491-04
+392	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 16:55:51.234132-04
+394	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 16:55:54.299223-04
+396	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 16:56:05.105818-04
+398	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 16:56:05.961043-04
+400	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 16:56:06.672746-04
+402	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 16:56:07.757068-04
+404	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 16:56:08.719376-04
+406	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 16:56:09.433014-04
+408	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 16:56:10.444023-04
+410	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 16:56:11.443023-04
+412	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	lesson-intro-step-11	2	true	2016-03-13 16:56:25.208433-04
+414	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 16:56:46.321536-04
+416	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	lesson-intro-step-12	0	true	2016-03-13 16:56:50.925667-04
+418	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 16:56:54.07367-04
+420	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	14		2016-03-13 16:56:56.180529-04
+422	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	15		2016-03-13 16:57:17.106228-04
+424	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 16:57:20.855118-04
+426	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	lesson-intro-step-16	3	true	2016-03-13 16:57:38.137858-04
+428	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	17		2016-03-13 16:57:58.731722-04
+430	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	lesson-intro-step-17	0	true	2016-03-13 16:58:28.660234-04
+432	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	18		2016-03-13 16:58:33.60531-04
+434	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	19		2016-03-13 16:58:38.111669-04
+436	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	20		2016-03-13 16:58:41.347935-04
+438	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	lesson-intro-step-20	3	true	2016-03-13 16:58:50.274516-04
+440	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	21		2016-03-13 16:58:53.133989-04
+442	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	play			2016-03-13 16:58:55.472465-04
+444	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 16:59:08.064879-04
+446	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 16:59:09.639045-04
+448	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	fast_forward			2016-03-13 16:59:12.890194-04
+450	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	play			2016-03-13 16:59:22.994699-04
+452	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 16:59:57.823428-04
+454	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	menu	open			2016-03-13 17:00:18.16285-04
+456	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-start	intro			2016-03-13 17:00:19.732454-04
+458	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	1		2016-03-13 17:00:21.493407-04
+460	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	intro	2		2016-03-13 17:00:27.493999-04
+462	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:00:46.779664-04
+464	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	menu	open			2016-03-13 17:01:06.669681-04
+466	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	0		2016-03-13 17:01:18.618967-04
+468	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	1		2016-03-13 17:03:56.923464-04
+470	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	2		2016-03-13 17:04:00.122542-04
+472	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	3		2016-03-13 17:04:57.293073-04
+474	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:05:07.060809-04
+476	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:05:36.472348-04
+478	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	6		2016-03-13 17:07:10.851771-04
+480	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	7		2016-03-13 17:07:20.526859-04
+482	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:07:24.831775-04
+484	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:07:37.634393-04
+486	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:08:10.644361-04
+488	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	11		2016-03-13 17:08:22.73947-04
+490	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:08:31.869816-04
+491	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	13		2016-03-13 17:08:40.602705-04
+492	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:08:40.612579-04
+493	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:09:01.573179-04
+494	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	14		2016-03-13 17:09:01.571703-04
+495	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:09:07.944211-04
+496	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	15		2016-03-13 17:09:07.949071-04
+497	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:09:10.349637-04
+498	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	16		2016-03-13 17:09:10.351197-04
+499	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	17		2016-03-13 17:09:14.092218-04
+500	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:09:14.1038-04
+501	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	18		2016-03-13 17:09:24.280004-04
+502	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:09:24.290806-04
+503	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-prev	btn-prev			2016-03-13 17:10:22.83833-04
+504	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	17		2016-03-13 17:10:22.841312-04
+505	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	16		2016-03-13 17:10:23.627639-04
+506	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-prev	btn-prev			2016-03-13 17:10:23.632209-04
+507	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	15		2016-03-13 17:10:23.956153-04
+508	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-prev	btn-prev			2016-03-13 17:10:23.960455-04
+509	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-prev	btn-prev			2016-03-13 17:10:24.267582-04
+510	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	14		2016-03-13 17:10:24.272658-04
+511	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-prev	btn-prev			2016-03-13 17:10:24.537597-04
+512	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	13		2016-03-13 17:10:24.537062-04
+513	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-prev	btn-prev			2016-03-13 17:10:24.757168-04
+514	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	12		2016-03-13 17:10:24.756573-04
+515	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	11		2016-03-13 17:10:24.937274-04
+516	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-prev	btn-prev			2016-03-13 17:10:24.937774-04
+517	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	10		2016-03-13 17:10:25.106288-04
+518	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-prev	btn-prev			2016-03-13 17:10:25.105571-04
+519	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	9		2016-03-13 17:10:25.241109-04
+520	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-prev	btn-prev			2016-03-13 17:10:25.250283-04
+521	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-prev	btn-prev			2016-03-13 17:10:26.14948-04
+522	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	8		2016-03-13 17:10:26.148786-04
+523	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:10:40.3802-04
+524	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	9		2016-03-13 17:10:40.378861-04
+525	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:10:48.501018-04
+526	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	10		2016-03-13 17:10:48.505262-04
+527	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:10:57.503759-04
+528	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	11		2016-03-13 17:10:57.499761-04
+529	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	12		2016-03-13 17:10:58.227359-04
+530	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:10:58.232041-04
+531	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	13		2016-03-13 17:10:58.720617-04
+532	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:10:58.728839-04
+533	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	14		2016-03-13 17:11:01.461264-04
+534	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:11:01.470694-04
+535	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	15		2016-03-13 17:11:02.070233-04
+536	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:11:02.07598-04
+537	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	16		2016-03-13 17:11:03.927521-04
+538	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:11:03.933599-04
+539	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	17		2016-03-13 17:11:05.447327-04
+540	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:11:05.456609-04
+541	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	18		2016-03-13 17:11:07.468999-04
+542	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:11:07.476034-04
+543	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	17		2016-03-13 17:11:14.098504-04
+544	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-prev	btn-prev			2016-03-13 17:11:14.111097-04
+545	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	16		2016-03-13 17:11:14.471047-04
+546	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-prev	btn-prev			2016-03-13 17:11:14.475463-04
+547	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	15		2016-03-13 17:11:15.117376-04
+548	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-prev	btn-prev			2016-03-13 17:11:15.116579-04
+549	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-prev	btn-prev			2016-03-13 17:11:15.687586-04
+550	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	14		2016-03-13 17:11:15.697469-04
+551	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-prev	btn-prev			2016-03-13 17:11:15.988183-04
+552	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	13		2016-03-13 17:11:15.993123-04
+553	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-prev	btn-prev			2016-03-13 17:11:16.228393-04
+554	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	12		2016-03-13 17:11:16.237414-04
+555	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	13		2016-03-13 17:11:20.079263-04
+556	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:11:20.082594-04
+557	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	14		2016-03-13 17:11:20.507057-04
+558	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:11:20.506529-04
+559	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	15		2016-03-13 17:11:20.975463-04
+560	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:11:20.98652-04
+561	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:11:21.478409-04
+562	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	16		2016-03-13 17:11:21.477037-04
+563	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	17		2016-03-13 17:11:21.983766-04
+564	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:11:21.98274-04
+565	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	18		2016-03-13 17:11:26.740571-04
+566	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:11:26.744472-04
+567	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	19		2016-03-13 17:11:47.258842-04
+568	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:11:47.258211-04
+569	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	lesson-roundrobin-step-19	2	true	2016-03-13 17:12:05.244857-04
+570	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	lesson-roundrobin-step-19	1		2016-03-13 17:12:05.278739-04
+571	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	20		2016-03-13 17:12:14.17322-04
+572	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:12:14.178028-04
+573	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	lesson-roundrobin-step-20	0	true	2016-03-13 17:12:21.534585-04
+574	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	lesson-roundrobin-step-20	1		2016-03-13 17:12:21.555731-04
+575	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	21		2016-03-13 17:12:27.491995-04
+576	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:12:27.496392-04
+577	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	lesson-roundrobin-step-21	0	false	2016-03-13 17:12:44.262449-04
+578	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	load	external-js	ms	165		2016-03-13 17:14:21.281393-04
+579	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	menu	open			2016-03-13 17:14:21.28455-04
+580	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-start	roundrobin			2016-03-13 17:14:22.351363-04
+581	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	0		2016-03-13 17:14:22.382804-04
+582	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	1		2016-03-13 17:14:23.252943-04
+583	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:14:23.256685-04
+584	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:14:23.389005-04
+585	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	2		2016-03-13 17:14:23.391188-04
+586	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:14:23.578159-04
+587	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	3		2016-03-13 17:14:23.590045-04
+588	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	4		2016-03-13 17:14:23.682043-04
+589	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:14:23.695155-04
+590	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	5		2016-03-13 17:14:23.875569-04
+591	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:14:23.88049-04
+592	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	6		2016-03-13 17:14:23.969447-04
+593	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:14:23.966901-04
+594	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	7		2016-03-13 17:14:24.160932-04
+595	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:14:24.160479-04
+596	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:14:24.28781-04
+597	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	8		2016-03-13 17:14:24.291791-04
+598	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:14:24.452058-04
+599	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	9		2016-03-13 17:14:24.456928-04
+600	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	10		2016-03-13 17:14:24.582925-04
+601	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:14:24.587777-04
+602	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:14:24.719468-04
+603	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	11		2016-03-13 17:14:24.718584-04
+604	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:14:24.871141-04
+605	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	12		2016-03-13 17:14:24.876977-04
+606	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:14:25.010861-04
+607	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	13		2016-03-13 17:14:25.015253-04
+608	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:14:25.144129-04
+609	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	14		2016-03-13 17:14:25.14849-04
+610	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:14:25.300846-04
+611	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	15		2016-03-13 17:14:25.309655-04
+612	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:14:25.451924-04
+613	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	16		2016-03-13 17:14:25.461109-04
+614	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:14:25.578591-04
+615	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	17		2016-03-13 17:14:25.589064-04
+616	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	18		2016-03-13 17:14:25.712492-04
+617	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:14:25.721416-04
+618	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	19		2016-03-13 17:14:26.057577-04
+619	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:14:26.056767-04
+620	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	lesson-roundrobin-step-19	2	true	2016-03-13 17:14:27.049114-04
+621	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	lesson-roundrobin-step-19	1		2016-03-13 17:14:27.101113-04
+622	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	20		2016-03-13 17:14:27.824249-04
+623	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:14:27.836889-04
+624	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	lesson-roundrobin-step-20	0	true	2016-03-13 17:14:29.223471-04
+625	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	lesson-roundrobin-step-20	1		2016-03-13 17:14:29.258949-04
+626	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	21		2016-03-13 17:14:30.050572-04
+627	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:14:30.049066-04
+628	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	lesson-roundrobin-step-21	1	true	2016-03-13 17:14:38.846131-04
+629	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	lesson-roundrobin-step-21	1		2016-03-13 17:14:38.886398-04
+630	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	22		2016-03-13 17:15:16.100827-04
+631	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:15:16.110431-04
+632	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	lesson-roundrobin-step-22	1	false	2016-03-13 17:17:36.111172-04
+633	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	lesson-roundrobin-step-22	3	true	2016-03-13 17:18:38.078449-04
+853	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-next	btn-next			2016-03-13 17:47:25.623881-04
+634	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	lesson-roundrobin-step-22	0		2016-03-13 17:18:38.107121-04
+635	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:19:35.504901-04
+636	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	23		2016-03-13 17:19:35.50899-04
+637	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	lesson-roundrobin-step-23	0	false	2016-03-13 17:20:11.392312-04
+638	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	lesson-roundrobin-step-23	3	true	2016-03-13 17:20:36.094517-04
+639	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	lesson-roundrobin-step-23	0		2016-03-13 17:20:36.136443-04
+640	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:20:46.262224-04
+641	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	24		2016-03-13 17:20:46.265314-04
+642	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	lesson-roundrobin-step-24	3	true	2016-03-13 17:21:13.79993-04
+643	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	lesson-roundrobin-step-24	1		2016-03-13 17:21:13.842205-04
+644	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:21:20.829369-04
+645	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	25		2016-03-13 17:21:20.832403-04
+646	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	lesson-roundrobin-step-25	3	true	2016-03-13 17:21:30.602362-04
+647	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	lesson-roundrobin-step-25	1		2016-03-13 17:21:30.627451-04
+648	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	26		2016-03-13 17:21:33.760602-04
+649	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:21:33.769988-04
+650	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	lesson-roundrobin-step-26	3	true	2016-03-13 17:21:54.940801-04
+651	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	lesson-roundrobin-step-26	1		2016-03-13 17:21:54.979837-04
+652	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:21:58.865222-04
+653	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	27		2016-03-13 17:21:58.861116-04
+654	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	lesson-roundrobin-step-27	3	true	2016-03-13 17:22:13.153068-04
+655	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	lesson-roundrobin-step-27	1		2016-03-13 17:22:13.187587-04
+656	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	28		2016-03-13 17:22:19.030301-04
+657	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:22:19.043331-04
+658	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	lesson-roundrobin-step-28	3	true	2016-03-13 17:22:42.458175-04
+659	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	lesson-roundrobin-step-28	1		2016-03-13 17:22:42.492974-04
+660	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	29		2016-03-13 17:22:47.223283-04
+661	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:22:47.228053-04
+662	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	lesson-roundrobin-step-29	3	true	2016-03-13 17:22:55.287954-04
+663	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	lesson-roundrobin-step-29	1		2016-03-13 17:22:55.319911-04
+664	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	30		2016-03-13 17:22:57.189106-04
+665	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:22:57.192934-04
+666	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	lesson-roundrobin-step-30	2	false	2016-03-13 17:23:42.650181-04
+667	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	lesson-roundrobin-step-30	1	true	2016-03-13 17:25:39.086189-04
+668	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	lesson-roundrobin-step-30	0		2016-03-13 17:25:39.121734-04
+669	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:25:40.752214-04
+670	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	31		2016-03-13 17:25:40.757219-04
+671	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	lesson-roundrobin-step-31	0	true	2016-03-13 17:26:09.073219-04
+672	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	lesson-roundrobin-step-31	1		2016-03-13 17:26:09.120467-04
+673	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:26:17.244935-04
+674	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	32		2016-03-13 17:26:17.24419-04
+675	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	33		2016-03-13 17:27:00.036236-04
+676	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:27:00.035578-04
+677	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	34		2016-03-13 17:30:18.122484-04
+678	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:30:18.134259-04
+679	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	35		2016-03-13 17:30:46.903779-04
+680	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:30:46.901138-04
+681	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	36		2016-03-13 17:31:15.020586-04
+682	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:31:15.026354-04
+683	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:31:21.589014-04
+684	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:31:26.517972-04
+685	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:31:37.170584-04
+686	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:07.989421-04
+687	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:08.360576-04
+688	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:08.537705-04
+689	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:08.735811-04
+690	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:08.941677-04
+691	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:09.123242-04
+692	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:09.306554-04
+693	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:09.550099-04
+694	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:09.739855-04
+695	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:10.047126-04
+696	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:14.036081-04
+697	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:14.199405-04
+698	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:14.363232-04
+699	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:14.519546-04
+700	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:14.675003-04
+701	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:14.803155-04
+702	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:14.979439-04
+703	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:15.130388-04
+704	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:15.446816-04
+705	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:15.578669-04
+706	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:15.747251-04
+707	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:15.93534-04
+708	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:16.111871-04
+709	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:16.280523-04
+710	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:16.464285-04
+711	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:16.619349-04
+712	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:16.788769-04
+713	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:16.952126-04
+714	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:17.129494-04
+715	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:17.2937-04
+716	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:17.553363-04
+717	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:18.040849-04
+718	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:18.446974-04
+719	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:18.811693-04
+720	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:19.127399-04
+721	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:19.332989-04
+722	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:19.497606-04
+723	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:19.668544-04
+724	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:19.815072-04
+725	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:19.980648-04
+726	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:20.17927-04
+727	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:20.287442-04
+728	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:20.436492-04
+729	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:32.942921-04
+730	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:33.082854-04
+731	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:33.508049-04
+732	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:33.881118-04
+733	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:34.30194-04
+734	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:34.589441-04
+735	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:34.78985-04
+736	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:34.966207-04
+737	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:35.121563-04
+738	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:35.269102-04
+739	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:35.414697-04
+740	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:35.560955-04
+741	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:35.712516-04
+742	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:35.899138-04
+743	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:36.059009-04
+744	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:36.235956-04
+745	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:36.345083-04
+746	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:36.488861-04
+747	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:36.656686-04
+748	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:36.797546-04
+749	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:36.960482-04
+750	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:37.123104-04
+751	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:37.314433-04
+752	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:37.498057-04
+753	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:37.66182-04
+754	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:37.926239-04
+755	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:32:38.253492-04
+756	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	37		2016-03-13 17:32:51.953829-04
+757	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:32:51.963101-04
+758	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:33:04.092321-04
+759	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	38		2016-03-13 17:33:04.094675-04
+760	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-next	btn-next			2016-03-13 17:33:09.696367-04
+761	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-complete	roundrobin			2016-03-13 17:33:09.698885-04
+762	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	lesson-step	roundrobin	39		2016-03-13 17:33:09.692026-04
+763	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	menu	open			2016-03-13 17:33:38.991169-04
+764	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lesson-goto-menu	btn-goto-menu			2016-03-13 17:33:38.989-04
+765	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	0		2016-03-13 17:35:14.515316-04
+766	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-start	complete			2016-03-13 17:35:14.516059-04
+767	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-next	btn-next			2016-03-13 17:35:24.557158-04
+768	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	1		2016-03-13 17:35:24.558807-04
+769	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	2		2016-03-13 17:35:24.605999-04
+770	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-next	btn-next			2016-03-13 17:35:24.618865-04
+771	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	3		2016-03-13 17:35:24.628418-04
+772	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-next	btn-next			2016-03-13 17:35:24.627339-04
+773	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	4		2016-03-13 17:35:25.719164-04
+774	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-next	btn-next			2016-03-13 17:35:25.716553-04
+775	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-next	btn-next			2016-03-13 17:35:26.546269-04
+776	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	5		2016-03-13 17:35:26.558905-04
+777	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	test-complete-q-5	5	false	2016-03-13 17:35:35.565254-04
+778	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	test-complete-q-5	7	false	2016-03-13 17:35:35.950135-04
+779	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	test-complete-q-5	3	true	2016-03-13 17:35:36.342088-04
+780	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	test-complete-q-5	0	true	2016-03-13 17:35:36.649925-04
+781	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	test-complete-q-5	6	false	2016-03-13 17:35:36.971523-04
+782	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	test-complete-q-5	2	true	2016-03-13 17:35:37.214164-04
+783	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	test-complete-q-5	1	true	2016-03-13 17:35:37.536805-04
+784	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	test-complete-q-5	4	false	2016-03-13 17:35:37.813432-04
+785	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-prev	btn-prev			2016-03-13 17:35:53.493413-04
+786	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	4		2016-03-13 17:35:53.492555-04
+787	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	3		2016-03-13 17:35:55.377252-04
+788	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-prev	btn-prev			2016-03-13 17:35:55.380269-04
+789	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	2		2016-03-13 17:35:56.330757-04
+790	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-prev	btn-prev			2016-03-13 17:35:56.333617-04
+791	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	1		2016-03-13 17:35:58.014358-04
+792	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-prev	btn-prev			2016-03-13 17:35:58.026428-04
+793	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	0		2016-03-13 17:36:00.145006-04
+794	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-prev	btn-prev			2016-03-13 17:36:00.149373-04
+795	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	test-complete-q-0	0	true	2016-03-13 17:36:44.410021-04
+796	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	test-complete-q-0	1		2016-03-13 17:36:46.06096-04
+797	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	test-complete-q-3	0		2016-03-13 17:36:46.107841-04
+798	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	test-complete-q-4	0		2016-03-13 17:36:46.113233-04
+799	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	test-complete-q-5	0		2016-03-13 17:36:46.111623-04
+800	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	test-complete-q-1	0		2016-03-13 17:36:46.101175-04
+801	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	test-complete-q-2	0		2016-03-13 17:36:46.116788-04
+802	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	test-complete-q-9	0		2016-03-13 17:36:46.223058-04
+803	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	test-complete-q-6	0		2016-03-13 17:36:46.212323-04
+804	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	test	complete	1	6	2016-03-13 17:36:46.226459-04
+805	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	test-complete-q-8	0		2016-03-13 17:36:46.251637-04
+806	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	test-complete-q-7	0		2016-03-13 17:36:46.260737-04
+807	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	0		2016-03-13 17:36:46.695195-04
+808	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	menu	open			2016-03-13 17:36:54.527367-04
+809	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	menu	open			2016-03-13 17:36:59.45867-04
+810	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	0		2016-03-13 17:38:35.737477-04
+811	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-start	complete			2016-03-13 17:38:35.736976-04
+812	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	test-complete-q-0	0	true	2016-03-13 17:38:56.457981-04
+813	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	1		2016-03-13 17:38:58.757211-04
+814	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-next	btn-next			2016-03-13 17:38:58.781527-04
+815	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	test-complete-q-1	3	true	2016-03-13 17:39:04.399999-04
+816	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	2		2016-03-13 17:39:05.33209-04
+817	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-next	btn-next			2016-03-13 17:39:05.352802-04
+818	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	menu	open			2016-03-13 17:44:29.056261-04
+819	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	load	external-js	ms	179		2016-03-13 17:44:29.052102-04
+820	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	0		2016-03-13 17:44:33.280254-04
+821	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-start	complete			2016-03-13 17:44:33.279713-04
+822	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	menu	open			2016-03-13 17:44:38.369302-04
+823	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	load	external-js	ms	188		2016-03-13 17:44:38.37002-04
+824	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	0		2016-03-13 17:44:44.351022-04
+825	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-start	complete			2016-03-13 17:44:44.354832-04
+826	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	menu	open			2016-03-13 17:45:09.123632-04
+827	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	load	external-js	ms	234		2016-03-13 17:45:09.120259-04
+828	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	0		2016-03-13 17:45:14.843144-04
+829	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-start	complete			2016-03-13 17:45:14.854552-04
+830	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	test-complete-q-0	0	true	2016-03-13 17:45:30.598119-04
+831	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	1		2016-03-13 17:45:31.793145-04
+832	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-next	btn-next			2016-03-13 17:45:31.825681-04
+833	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	test-complete-q-1	3	true	2016-03-13 17:45:35.528318-04
+834	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	2		2016-03-13 17:45:36.40467-04
+835	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-next	btn-next			2016-03-13 17:45:36.413935-04
+836	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	test-complete-q-2	2	true	2016-03-13 17:45:45.894557-04
+837	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-next	btn-next			2016-03-13 17:45:56.942634-04
+838	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	3		2016-03-13 17:45:56.938267-04
+839	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-next	btn-next			2016-03-13 17:46:09.474637-04
+840	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	4		2016-03-13 17:46:09.470128-04
+841	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	test-complete-q-4	3	true	2016-03-13 17:47:00.372596-04
+842	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	5		2016-03-13 17:47:01.434617-04
+843	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-next	btn-next			2016-03-13 17:47:01.478456-04
+844	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-next	btn-next			2016-03-13 17:47:08.002985-04
+845	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	6		2016-03-13 17:47:08.015458-04
+846	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	7		2016-03-13 17:47:09.48311-04
+847	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-next	btn-next			2016-03-13 17:47:09.487418-04
+848	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	6		2016-03-13 17:47:10.857079-04
+849	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-prev	btn-prev			2016-03-13 17:47:10.86964-04
+850	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	7		2016-03-13 17:47:16.998343-04
+851	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-next	btn-next			2016-03-13 17:47:16.99762-04
+852	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	8		2016-03-13 17:47:25.618447-04
+854	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	question-select	test-complete-q-8	0	true	2016-03-13 17:49:11.872437-04
+855	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	9		2016-03-13 17:49:15.010395-04
+856	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-next	btn-next			2016-03-13 17:49:15.042539-04
+857	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	test-complete-q-0	1		2016-03-13 17:49:24.447023-04
+858	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	test-complete-q-2	1		2016-03-13 17:49:24.439955-04
+859	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	test-complete-q-4	1		2016-03-13 17:49:24.442587-04
+860	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	test-complete-q-3	0		2016-03-13 17:49:24.446208-04
+861	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	test-complete-q-5	0		2016-03-13 17:49:24.447482-04
+862	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	test-complete-q-1	1		2016-03-13 17:49:24.420101-04
+863	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	test-complete-q-7	0		2016-03-13 17:49:24.59588-04
+864	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	9		2016-03-13 17:49:24.588333-04
+865	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	test-complete-q-9	0		2016-03-13 17:49:24.59901-04
+866	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	test	complete	5	33	2016-03-13 17:49:24.60963-04
+867	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	test-complete-q-6	0		2016-03-13 17:49:24.601827-04
+868	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	submit	question	test-complete-q-8	1		2016-03-13 17:49:24.604572-04
+869	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-prev	btn-prev			2016-03-13 17:49:30.427614-04
+870	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	8		2016-03-13 17:49:30.431377-04
+871	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	7		2016-03-13 17:49:33.973368-04
+872	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-prev	btn-prev			2016-03-13 17:49:33.972663-04
+873	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	6		2016-03-13 17:49:35.421298-04
+874	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-prev	btn-prev			2016-03-13 17:49:35.420932-04
+875	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	5		2016-03-13 17:49:36.605664-04
+876	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-prev	btn-prev			2016-03-13 17:49:36.600842-04
+877	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	4		2016-03-13 17:49:40.008407-04
+878	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-prev	btn-prev			2016-03-13 17:49:40.012603-04
+879	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-prev	btn-prev			2016-03-13 17:49:42.695908-04
+880	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	3		2016-03-13 17:49:42.695507-04
+881	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	2		2016-03-13 17:49:47.407288-04
+882	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-prev	btn-prev			2016-03-13 17:49:47.411824-04
+883	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	1		2016-03-13 17:50:03.90548-04
+884	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-prev	btn-prev			2016-03-13 17:50:03.904072-04
+885	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	test-q	complete	0		2016-03-13 17:50:05.883554-04
+886	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	test-prev	btn-prev			2016-03-13 17:50:05.888812-04
+887	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	menu	open			2016-03-13 17:51:17.2227-04
+888	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	simulator	open			2016-03-13 17:51:22.051741-04
+889	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	simulator	tab-change	tab-results		2016-03-13 17:51:30.993731-04
+890	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	simulator	tab-change	tab-cfg		2016-03-13 17:51:33.845584-04
+891	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	cfg	points-change	all		2016-03-13 17:51:38.774816-04
+892	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	cfg	points-change	current		2016-03-13 17:51:43.025592-04
+893	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:51:45.554862-04
+894	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:51:49.239045-04
+895	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:51:49.676568-04
+896	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:51:49.980862-04
+897	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:51:50.297863-04
+898	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	cfg	points-change	none		2016-03-13 17:51:51.281637-04
+899	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	cfg	points-change	all		2016-03-13 17:51:53.168976-04
+900	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	cfg	points-change	current		2016-03-13 17:51:55.145442-04
+901	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	simulator	tab-change	tab-results		2016-03-13 17:52:05.934003-04
+902	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	framework	change-settings	LIVENESS_ANALYSIS	POSTORDER	2016-03-13 17:52:34.303004-04
+903	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	simulator	tab-change	tab-cfg		2016-03-13 17:52:43.245133-04
+904	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:52:44.282648-04
+905	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:52:44.454158-04
+906	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:52:44.656445-04
+907	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:52:44.821378-04
+908	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:52:44.986835-04
+909	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:52:45.16419-04
+910	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:52:45.34447-04
+911	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:52:45.508291-04
+912	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:52:45.648015-04
+913	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:52:45.781292-04
+914	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:52:45.96509-04
+915	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:52:46.106349-04
+916	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:52:46.261761-04
+917	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:52:46.422642-04
+918	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:52:46.567865-04
+919	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:52:46.733422-04
+920	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:52:46.888378-04
+921	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:52:47.04989-04
+922	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:52:47.18488-04
+923	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	fast_forward			2016-03-13 17:52:48.466396-04
+924	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	simulator	tab-change	tab-results		2016-03-13 17:52:49.592029-04
+925	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	simulator	tab-change	tab-cfg		2016-03-13 17:52:52.972098-04
+926	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	code	edit			2016-03-13 17:53:27.088866-04
+927	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	code	sim			2016-03-13 17:54:49.808466-04
+928	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	code	sim			2016-03-13 17:54:55.192577-04
+929	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	code	edit			2016-03-13 17:55:04.7925-04
+930	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	code	cancel-edit			2016-03-13 17:55:12.406864-04
+931	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:56:11.222491-04
+932	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:56:11.345848-04
+933	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:56:11.677779-04
+934	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:56:12.158427-04
+935	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:56:12.51819-04
+936	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:56:12.832403-04
+937	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:56:13.007851-04
+938	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:56:13.194709-04
+939	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:56:13.508855-04
+940	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:56:13.942495-04
+941	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:56:14.136849-04
+942	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:56:14.294665-04
+943	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:56:14.484399-04
+944	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:56:14.6368-04
+945	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:56:14.78961-04
+946	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:56:14.94341-04
+947	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:56:15.096561-04
+948	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	step_forward			2016-03-13 17:56:15.230479-04
+949	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	simulator	tab-change	tab-results		2016-03-13 17:56:16.598586-04
+950	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	fast_forward			2016-03-13 17:56:18.058083-04
+951	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	simulator	tab-change	tab-cfg		2016-03-13 17:56:42.74756-04
+952	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	controls	fast_backward			2016-03-13 17:56:45.154664-04
+953	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	code	share-open-dialog			2016-03-13 17:56:47.193169-04
+954	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	code	share-copy-link			2016-03-13 17:56:48.918854-04
+955	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	simulator	open			2016-03-13 17:56:51.888018-04
+956	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	load	external-js	ms	379		2016-03-13 17:56:51.924991-04
+957	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lattice	show			2016-03-13 17:57:03.083253-04
+958	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lattice	hide			2016-03-13 17:57:04.236029-04
+959	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lattice	show			2016-03-13 17:57:05.5523-04
+960	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	lattice	hide			2016-03-13 17:57:06.633816-04
+961	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	click	simulator	tab-change	tab-results		2016-03-13 17:57:09.650917-04
+962	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	menu	open			2016-03-13 17:57:11.67-04
+963	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	load	external-js	ms	225		2016-03-13 18:02:07.869268-04
+964	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	menu	open			2016-03-13 18:02:07.868368-04
+965	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	pageview	menu	open			2016-03-13 18:03:12.823229-04
+966	JkrhW729sgIekZ4D0yn58xeNsoRdrdNw	load	external-js	ms	215		2016-03-13 18:03:12.822321-04
+967	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	load	external-js	ms	175		2016-03-13 18:09:05.004693-04
+968	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-start	data-collection			2016-03-13 18:09:22.659208-04
+969	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	data-collection	0		2016-03-13 18:09:22.65083-04
+970	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	user-stats	data-collection-notice	accepted-terms			2016-03-13 18:09:22.661528-04
+971	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	question-select	test-data-collection-q-0	0	true	2016-03-13 18:09:46.210216-04
+972	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	submit	question	test-data-collection-q-0	1		2016-03-13 18:09:47.280147-04
+973	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	user-stats	experience	exp-none			2016-03-13 18:09:47.310169-04
+974	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	data-collection	1		2016-03-13 18:09:47.309258-04
+975	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	question-select	test-data-collection-q-1	1	true	2016-03-13 18:09:51.843904-04
+976	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	submit	question	test-data-collection-q-1	1		2016-03-13 18:09:52.61158-04
+977	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	user-stats	background	usr-uni-student			2016-03-13 18:09:52.642149-04
+978	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	menu	open			2016-03-13 18:09:52.647695-04
+979	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	simulator	open			2016-03-13 18:10:03.552186-04
+980	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	play			2016-03-13 18:10:20.650792-04
+981	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	pause			2016-03-13 18:10:28.851146-04
+982	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	code	edit			2016-03-13 18:10:39.062186-04
+983	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	simulator	tab-change	tab-results		2016-03-13 18:10:51.468557-04
+984	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	fast_forward			2016-03-13 18:10:54.994625-04
+985	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	framework	change-settings	REACHING_DEFINITIONS	REVERSE_POSTORDER	2016-03-13 18:11:00.364607-04
+986	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	fast_forward			2016-03-13 18:11:02.051444-04
+987	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	simulator	tab-change	tab-cfg		2016-03-13 18:11:05.542063-04
+988	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	cfg	points-change	all		2016-03-13 18:11:07.016802-04
+989	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	cfg	points-change	current		2016-03-13 18:11:07.77018-04
+990	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	cfg	points-change	none		2016-03-13 18:11:08.242366-04
+991	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	cfg	points-change	all		2016-03-13 18:11:08.712909-04
+992	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	code	edit			2016-03-13 18:11:31.991835-04
+993	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	code	sim			2016-03-13 18:11:51.055859-04
+994	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	cfg	points-change	current		2016-03-13 18:11:53.017765-04
+995	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:11:56.349497-04
+996	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:11:57.012341-04
+997	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:12:06.395876-04
+998	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:12:12.757703-04
+999	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:12:24.022642-04
+1000	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:12:24.650352-04
+1001	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:12:25.199102-04
+1002	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:12:25.675847-04
+1003	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:12:26.291313-04
+1004	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	fast_backward			2016-03-13 18:12:30.877587-04
+1005	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:12:32.368308-04
+1006	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:12:32.862836-04
+1007	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:12:35.233419-04
+1008	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	simulator	tab-change	tab-results		2016-03-13 18:12:38.347452-04
+1009	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	fast_forward			2016-03-13 18:12:42.443328-04
+1010	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	simulator	tab-change	tab-cfg		2016-03-13 18:12:54.229192-04
+1011	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	cfg	points-change	none		2016-03-13 18:13:05.209277-04
+1012	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	cfg	points-change	all		2016-03-13 18:13:06.0699-04
+1013	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	code	edit			2016-03-13 18:13:35.025768-04
+1014	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	code	sim			2016-03-13 18:13:42.509852-04
+1015	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	fast_forward			2016-03-13 18:13:45.292423-04
+1016	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	code	edit			2016-03-13 18:13:55.832928-04
+1017	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	code	sim			2016-03-13 18:14:22.140849-04
+1018	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	fast_forward			2016-03-13 18:14:26.115218-04
+1019	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	cfg	points-change	current		2016-03-13 18:14:31.920309-04
+1020	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	cfg	points-change	none		2016-03-13 18:14:33.012002-04
+1021	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	cfg	points-change	all		2016-03-13 18:14:33.549169-04
+1022	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	code	edit			2016-03-13 18:15:09.76961-04
+1023	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	code	sim			2016-03-13 18:16:11.582134-04
+1024	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	fast_forward			2016-03-13 18:16:18.216924-04
+1025	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	code	edit			2016-03-13 18:16:28.865518-04
+1026	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	code	sim			2016-03-13 18:16:39.135529-04
+1027	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	fast_forward			2016-03-13 18:16:43.013637-04
+1028	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	code	edit			2016-03-13 18:17:50.850904-04
+1029	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	code	sim			2016-03-13 18:19:31.832264-04
+1030	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	code	sim			2016-03-13 18:19:37.762534-04
+1031	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	code	edit			2016-03-13 18:19:50.037892-04
+1032	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	code	sim			2016-03-13 18:20:14.867761-04
+1033	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	simulator	tab-change	tab-results		2016-03-13 18:23:30.965239-04
+1034	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	fast_forward			2016-03-13 18:23:45.860734-04
+1035	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	simulator	tab-change	tab-cfg		2016-03-13 18:23:49.611419-04
+1036	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	simulator	tab-change	tab-results		2016-03-13 18:25:28.5966-04
+1037	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	fast_backward			2016-03-13 18:25:29.836128-04
+1038	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:30.500541-04
+1039	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:30.698854-04
+1040	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:30.948431-04
+1041	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:31.143405-04
+1042	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	simulator	tab-change	tab-cfg		2016-03-13 18:25:32.032166-04
+1043	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:32.726483-04
+1044	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:32.949478-04
+1045	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:33.153241-04
+1046	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	cfg	points-change	current		2016-03-13 18:25:34.197729-04
+1047	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:36.194265-04
+1048	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:36.366123-04
+1049	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:36.568483-04
+1050	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:36.726919-04
+1051	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:36.907918-04
+1052	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:37.087208-04
+1053	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:37.235066-04
+1054	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:37.400097-04
+1055	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:37.550675-04
+1056	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:37.715888-04
+1057	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:37.894226-04
+1058	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:38.05875-04
+1059	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:41.039828-04
+1060	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:42.339622-04
+1061	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:42.996413-04
+1062	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:43.28449-04
+1063	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:43.43737-04
+1064	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:43.58131-04
+1065	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:43.785078-04
+1066	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:43.916515-04
+1067	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:44.086267-04
+1068	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:44.275499-04
+1069	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:44.415511-04
+1070	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:44.560181-04
+1071	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:44.695275-04
+1072	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:44.873877-04
+1073	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:45.035552-04
+1074	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:45.191632-04
+1075	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:45.375733-04
+1076	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:45.547804-04
+1077	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:45.69972-04
+1078	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:45.8843-04
+1079	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:46.069599-04
+1080	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:46.258424-04
+1081	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:46.400976-04
+1082	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:46.58076-04
+1083	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:46.715591-04
+1084	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:46.868944-04
+1085	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:47.036264-04
+1086	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:47.206383-04
+1087	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:47.365246-04
+1088	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:47.522495-04
+1089	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:47.697456-04
+1090	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:47.856521-04
+1091	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:48.027155-04
+1092	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:48.199828-04
+1093	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:48.351443-04
+1094	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:48.507328-04
+1095	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	simulator	tab-change	tab-results		2016-03-13 18:25:49.737765-04
+1096	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	fast_backward			2016-03-13 18:25:50.450534-04
+1097	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:51.344416-04
+1098	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:51.492534-04
+1099	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:51.635287-04
+1100	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:51.783408-04
+1101	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:51.946756-04
+1102	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:52.145938-04
+1103	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:52.36188-04
+1104	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:52.510793-04
+1105	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:52.68064-04
+1106	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:52.856296-04
+1107	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:53.014864-04
+1108	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:53.159577-04
+1109	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:53.343741-04
+1110	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:53.5411-04
+1111	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:53.681411-04
+1112	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:53.84318-04
+1113	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:53.990666-04
+1114	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:54.134841-04
+1115	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:54.286548-04
+1116	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:54.444386-04
+1117	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:55.239297-04
+1118	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:55.42365-04
+1119	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:55.847566-04
+1120	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:56.000096-04
+1121	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:56.155054-04
+1122	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:56.322716-04
+1123	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:56.503945-04
+1124	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:56.671139-04
+1125	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:56.867131-04
+1126	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:25:57.04791-04
+1127	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	fast_forward			2016-03-13 18:25:57.680479-04
+1128	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	simulator	tab-change	tab-cfg		2016-03-13 18:26:15.729659-04
+1129	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	simulator	tab-change	tab-results		2016-03-13 18:26:17.090194-04
+1130	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	simulator	tab-change	tab-cfg		2016-03-13 18:26:27.03575-04
+1131	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	cfg	points-change	none		2016-03-13 18:26:29.120209-04
+1132	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	cfg	points-change	all		2016-03-13 18:26:29.788098-04
+1133	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	cfg	points-change	current		2016-03-13 18:26:41.571218-04
+1134	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	cfg	points-change	none		2016-03-13 18:26:42.048169-04
+1135	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	cfg	points-change	all		2016-03-13 18:26:42.531549-04
+1136	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	fast_backward			2016-03-13 18:26:44.419189-04
+1137	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:01.512458-04
+1138	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	fast_forward			2016-03-13 18:27:08.35961-04
+1139	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	fast_backward			2016-03-13 18:27:12.284017-04
+1140	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:13.066701-04
+1141	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:16.633107-04
+1142	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:17.588026-04
+1143	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:17.848449-04
+1144	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:18.071009-04
+1145	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:18.307386-04
+1146	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:18.545326-04
+1147	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:18.775862-04
+1148	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:18.971814-04
+1149	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:19.174812-04
+1150	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:19.375365-04
+1151	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:19.629475-04
+1152	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:19.853752-04
+1153	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:20.055233-04
+1154	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:20.249546-04
+1155	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:20.443685-04
+1156	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:20.671077-04
+1157	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:20.859899-04
+1158	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:21.063374-04
+1159	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	fast_backward			2016-03-13 18:27:23.23793-04
+1160	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:23.809444-04
+1161	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:24.015693-04
+1162	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:24.224316-04
+1163	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:24.431262-04
+1164	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:24.628633-04
+1165	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:24.84112-04
+1166	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:25.040027-04
+1167	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:25.279249-04
+1168	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:27.522833-04
+1169	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:28.019917-04
+1170	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:28.537721-04
+1171	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:28.907366-04
+1172	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:29.267514-04
+1173	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:29.706546-04
+1174	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:30.273465-04
+1175	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:31.297308-04
+1176	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:35.755947-04
+1177	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:36.414793-04
+1178	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	fast_backward			2016-03-13 18:27:46.36246-04
+1179	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:47.022729-04
+1180	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:47.237979-04
+1181	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:47.458339-04
+1182	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:47.711457-04
+1183	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:47.987044-04
+1184	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:48.207066-04
+1185	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:48.415105-04
+1186	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:48.635028-04
+1187	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:48.867884-04
+1188	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:49.070641-04
+1189	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:49.287045-04
+1190	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:49.485106-04
+1191	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:49.695386-04
+1192	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:53.340242-04
+1193	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:54.350037-04
+1194	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:27:57.253897-04
+1195	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:28:00.106791-04
+1196	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:28:02.110288-04
+1197	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:28:10.643382-04
+1198	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:28:16.779878-04
+1199	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:28:19.267857-04
+1200	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:28:19.853099-04
+1201	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:28:20.454928-04
+1202	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:28:20.950947-04
+1203	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:28:21.235059-04
+1204	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:28:21.554414-04
+1205	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:28:21.79382-04
+1206	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:28:22.066185-04
+1207	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:28:22.439667-04
+1208	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:28:26.291209-04
+1209	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:28:27.260154-04
+1210	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:28:32.34602-04
+1211	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:28:32.871141-04
+1212	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:28:33.430294-04
+1213	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:28:34.05461-04
+1214	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	step_forward			2016-03-13 18:28:34.444395-04
+1215	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	fast_forward			2016-03-13 18:28:35.343249-04
+1216	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	simulator	tab-change	tab-results		2016-03-13 18:28:38.12902-04
+1217	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	lattice	show			2016-03-13 18:28:51.231681-04
+1218	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	simulator	tab-change	tab-cfg		2016-03-13 18:28:53.091893-04
+1219	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	menu	open			2016-03-13 18:28:57.811154-04
+1220	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	lesson-start	intro			2016-03-13 18:29:02.876742-04
+1221	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	lesson-step	intro	0		2016-03-13 18:29:02.891454-04
+1222	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	lesson-step	intro	1		2016-03-13 18:29:05.527669-04
+1223	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	lesson-next	btn-next			2016-03-13 18:29:05.532806-04
+1224	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	lesson-next	btn-next			2016-03-13 18:29:30.777686-04
+1225	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	lesson-step	intro	2		2016-03-13 18:29:30.779532-04
+1226	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	lesson-step	intro	3		2016-03-13 18:29:45.169136-04
+1227	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	lesson-next	btn-next			2016-03-13 18:29:45.176781-04
+1228	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	lesson-step	intro	4		2016-03-13 18:29:52.171334-04
+1229	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	lesson-next	btn-next			2016-03-13 18:29:52.180693-04
+1230	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	lesson-step	intro	5		2016-03-13 18:29:56.150503-04
+1231	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	lesson-next	btn-next			2016-03-13 18:29:56.149497-04
+1232	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	lesson-next	btn-next			2016-03-13 18:30:04.696134-04
+1233	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	lesson-step	intro	6		2016-03-13 18:30:04.701213-04
+1234	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	lesson-next	btn-next			2016-03-13 18:30:58.968503-04
+1235	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	lesson-step	intro	7		2016-03-13 18:30:58.971317-04
+1236	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	lesson-step	intro	8		2016-03-13 18:31:32.920275-04
+1237	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	lesson-next	btn-next			2016-03-13 18:31:32.934845-04
+1238	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	lesson-step	intro	9		2016-03-13 18:31:42.902119-04
+1239	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	lesson-next	btn-next			2016-03-13 18:31:42.901193-04
+1240	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	lesson-next	btn-next			2016-03-13 18:31:54.938421-04
+1241	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	lesson-step	intro	10		2016-03-13 18:31:54.940024-04
+1242	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	lesson-step	intro	11		2016-03-13 18:32:01.565371-04
+1243	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	lesson-next	btn-next			2016-03-13 18:32:01.564915-04
+1244	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	question-select	lesson-intro-step-11	2	true	2016-03-13 18:32:10.941855-04
+1245	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	submit	question	lesson-intro-step-11	1		2016-03-13 18:32:10.954605-04
+1246	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	lesson-step	intro	12		2016-03-13 18:32:13.652695-04
+1247	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	lesson-next	btn-next			2016-03-13 18:32:13.661549-04
+1248	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	question-select	lesson-intro-step-12	0	true	2016-03-13 18:32:19.542344-04
+1249	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	submit	question	lesson-intro-step-12	1		2016-03-13 18:32:19.551751-04
+1250	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	lesson-step	intro	13		2016-03-13 18:32:22.482056-04
+1251	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	lesson-next	btn-next			2016-03-13 18:32:22.493903-04
+1252	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	lesson-step	intro	14		2016-03-13 18:32:27.769227-04
+1253	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	lesson-next	btn-next			2016-03-13 18:32:27.767957-04
+1254	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	lesson-next	btn-next			2016-03-13 18:32:33.147788-04
+1255	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	lesson-step	intro	15		2016-03-13 18:32:33.165319-04
+1256	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	lesson-next	btn-next			2016-03-13 18:32:34.822101-04
+1257	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	lesson-step	intro	16		2016-03-13 18:32:34.834127-04
+1258	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	question-select	lesson-intro-step-16	3	true	2016-03-13 18:32:49.927161-04
+1259	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	submit	question	lesson-intro-step-16	1		2016-03-13 18:32:49.972114-04
+1260	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	lesson-step	intro	17		2016-03-13 18:32:52.503018-04
+1261	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	lesson-next	btn-next			2016-03-13 18:32:52.506373-04
+1262	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	question-select	lesson-intro-step-17	0	true	2016-03-13 18:33:15.640464-04
+1263	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	submit	question	lesson-intro-step-17	1		2016-03-13 18:33:15.657236-04
+1264	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	lesson-next	btn-next			2016-03-13 18:33:22.947534-04
+1265	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	lesson-step	intro	18		2016-03-13 18:33:22.944732-04
+1266	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	lesson-step	intro	19		2016-03-13 18:33:30.60083-04
+1267	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	lesson-next	btn-next			2016-03-13 18:33:30.605239-04
+1268	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	lesson-next	btn-next			2016-03-13 18:33:36.494943-04
+1269	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	lesson-step	intro	20		2016-03-13 18:33:36.493615-04
+1270	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	question-select	lesson-intro-step-20	3	true	2016-03-13 18:34:02.423639-04
+1271	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	submit	question	lesson-intro-step-20	1		2016-03-13 18:34:02.464208-04
+1272	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	lesson-step	intro	21		2016-03-13 18:34:21.5253-04
+1273	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	lesson-next	btn-next			2016-03-13 18:34:21.531688-04
+1274	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	play			2016-03-13 18:34:26.41692-04
+1275	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	pause			2016-03-13 18:34:27.105093-04
+1276	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	play			2016-03-13 18:34:27.845359-04
+1277	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	pause			2016-03-13 18:34:28.622182-04
+1278	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	play			2016-03-13 18:34:29.318217-04
+1279	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	controls	fast_forward			2016-03-13 18:34:29.971657-04
+1280	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	lesson-step	intro	22		2016-03-13 18:34:34.29655-04
+1281	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	lesson-complete	intro			2016-03-13 18:34:34.332649-04
+1282	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	lesson-next	btn-next			2016-03-13 18:34:34.336022-04
+1283	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	menu	open			2016-03-13 18:34:36.370895-04
+1284	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	lesson-goto-menu	btn-goto-menu			2016-03-13 18:34:36.375809-04
+1285	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	complete	0		2016-03-13 18:34:44.149687-04
+1286	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-start	complete			2016-03-13 18:34:44.148388-04
+1287	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	question-select	test-complete-q-0	0	true	2016-03-13 18:35:10.801529-04
+1288	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	complete	1		2016-03-13 18:35:34.994888-04
+1289	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	test-next	btn-next			2016-03-13 18:35:35.001694-04
+1290	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	question-select	test-complete-q-1	3	true	2016-03-13 18:37:41.414979-04
+1291	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	complete	2		2016-03-13 18:37:42.603807-04
+1292	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	test-next	btn-next			2016-03-13 18:37:42.60685-04
+1293	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	question-select	test-complete-q-2	3	false	2016-03-13 18:38:25.397752-04
+1294	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	complete	3		2016-03-13 18:38:26.059935-04
+1295	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	test-next	btn-next			2016-03-13 18:38:26.087752-04
+1296	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	question-select	test-complete-q-3	1	true	2016-03-13 18:38:40.826583-04
+1297	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	complete	4		2016-03-13 18:38:41.57657-04
+1298	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	test-next	btn-next			2016-03-13 18:38:41.579219-04
+1299	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	question-select	test-complete-q-4	2	false	2016-03-13 18:40:04.449444-04
+1300	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	complete	5		2016-03-13 18:40:04.910124-04
+1301	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	test-next	btn-next			2016-03-13 18:40:04.934352-04
+1302	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	question-select	test-complete-q-5	2	true	2016-03-13 18:44:15.407596-04
+1303	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	question-select	test-complete-q-5	1	true	2016-03-13 18:45:05.95388-04
+1304	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	question-select	test-complete-q-5	7	false	2016-03-13 18:45:26.80149-04
+1305	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	question-select	test-complete-q-5	5	false	2016-03-13 18:46:07.608341-04
+1306	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	complete	6		2016-03-13 18:46:08.471123-04
+1307	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	test-next	btn-next			2016-03-13 18:46:08.493925-04
+1308	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	question-select	test-complete-q-6	2	true	2016-03-13 18:46:12.348027-04
+1309	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	question-select	test-complete-q-6	5	true	2016-03-13 18:46:16.018637-04
+1310	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	question-select	test-complete-q-6	3	false	2016-03-13 18:46:37.044713-04
+1311	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	test-next	btn-next			2016-03-13 18:47:17.04721-04
+1312	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	complete	7		2016-03-13 18:47:17.042647-04
+1313	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	question-select	test-complete-q-7	0	true	2016-03-13 18:47:58.027794-04
+1314	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	complete	8		2016-03-13 18:47:58.672888-04
+1315	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	test-next	btn-next			2016-03-13 18:47:58.700968-04
+1316	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	question-select	test-complete-q-8	0	true	2016-03-13 18:48:22.498751-04
+1317	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	complete	9		2016-03-13 18:48:23.404161-04
+1318	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	test-next	btn-next			2016-03-13 18:48:23.430412-04
+1319	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	question-select	test-complete-q-9	0	true	2016-03-13 18:48:35.232615-04
+1320	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	submit	question	test-complete-q-0	1		2016-03-13 18:48:37.448641-04
+1321	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	submit	question	test-complete-q-1	1		2016-03-13 18:48:37.473806-04
+1322	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	submit	question	test-complete-q-3	1		2016-03-13 18:48:37.486287-04
+1323	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	submit	question	test-complete-q-4	0		2016-03-13 18:48:37.504198-04
+1324	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	submit	question	test-complete-q-5	0		2016-03-13 18:48:37.484206-04
+1325	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	submit	question	test-complete-q-6	1		2016-03-13 18:48:37.504675-04
+1326	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	submit	question	test-complete-q-2	0		2016-03-13 18:48:37.50352-04
+1327	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	submit	question	test-complete-q-8	1		2016-03-13 18:48:37.612172-04
+1328	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	submit	question	test-complete-q-7	1		2016-03-13 18:48:37.615368-04
+1329	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	submit	question	test-complete-q-9	1		2016-03-13 18:48:37.624361-04
+1330	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	submit	test	complete	7	46	2016-03-13 18:48:37.629255-04
+1331	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	complete	9		2016-03-13 18:48:37.651897-04
+1332	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	complete	8		2016-03-13 18:48:41.967569-04
+1333	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	test-prev	btn-prev			2016-03-13 18:48:41.972426-04
+1334	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	test-prev	btn-prev			2016-03-13 18:48:44.684577-04
+1335	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	complete	7		2016-03-13 18:48:44.690292-04
+1336	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	complete	6		2016-03-13 18:48:46.013666-04
+1337	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	test-prev	btn-prev			2016-03-13 18:48:46.013014-04
+1338	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	complete	5		2016-03-13 18:49:35.743887-04
+1339	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	test-prev	btn-prev			2016-03-13 18:49:35.73964-04
+1340	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	complete	4		2016-03-13 18:50:56.446628-04
+1341	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	test-prev	btn-prev			2016-03-13 18:50:56.446131-04
+1342	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	complete	3		2016-03-13 18:51:54.804955-04
+1343	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	test-prev	btn-prev			2016-03-13 18:51:54.808689-04
+1344	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	test-prev	btn-prev			2016-03-13 18:51:56.397591-04
+1345	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	complete	2		2016-03-13 18:51:56.396984-04
+1346	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	complete	1		2016-03-13 18:53:04.641776-04
+1347	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	test-prev	btn-prev			2016-03-13 18:53:04.640324-04
+1348	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	complete	0		2016-03-13 18:53:06.73187-04
+1349	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	test-prev	btn-prev			2016-03-13 18:53:06.73127-04
+1350	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	complete	1		2016-03-13 18:53:10.831541-04
+1351	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	test-next	btn-next			2016-03-13 18:53:10.888508-04
+1352	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	complete	2		2016-03-13 18:53:10.962108-04
+1353	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	test-next	btn-next			2016-03-13 18:53:10.971878-04
+1354	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	complete	3		2016-03-13 18:53:13.705636-04
+1355	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	test-next	btn-next			2016-03-13 18:53:13.70906-04
+1356	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	complete	4		2016-03-13 18:53:14.914886-04
+1357	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	test-next	btn-next			2016-03-13 18:53:14.919857-04
+1358	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	complete	5		2016-03-13 18:53:16.211658-04
+1359	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	test-next	btn-next			2016-03-13 18:53:16.21609-04
+1360	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	test-q	complete	6		2016-03-13 18:53:17.564368-04
+1361	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	click	test-next	btn-next			2016-03-13 18:53:17.57343-04
+1362	yLnl6N41bYwG0BnVCXfk4YGplRghUB5W	pageview	menu	open			2016-03-13 18:53:19.510655-04
+\.
+
+
+--
+-- Name: app_event_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('app_event_id_seq', 1362, true);
+
+
+--
+-- Data for Name: auth_group; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY auth_group (id, name) FROM stdin;
+\.
+
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('auth_group_id_seq', 1, false);
+
+
+--
+-- Data for Name: auth_group_permissions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY auth_group_permissions (id, group_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('auth_group_permissions_id_seq', 1, false);
+
+
+--
+-- Data for Name: auth_permission; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
+1	Can add log entry	1	add_logentry
+2	Can change log entry	1	change_logentry
+3	Can delete log entry	1	delete_logentry
+4	Can add permission	2	add_permission
+5	Can change permission	2	change_permission
+6	Can delete permission	2	delete_permission
+7	Can add group	3	add_group
+8	Can change group	3	change_group
+9	Can delete group	3	delete_group
+10	Can add user	4	add_user
+11	Can change user	4	change_user
+12	Can delete user	4	delete_user
+13	Can add content type	5	add_contenttype
+14	Can change content type	5	change_contenttype
+15	Can delete content type	5	delete_contenttype
+16	Can add session	6	add_session
+17	Can change session	6	change_session
+18	Can delete session	6	delete_session
+19	Can add cors model	7	add_corsmodel
+20	Can change cors model	7	change_corsmodel
+21	Can delete cors model	7	delete_corsmodel
+22	Can add event	8	add_event
+23	Can change event	8	change_event
+24	Can delete event	8	delete_event
+\.
+
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('auth_permission_id_seq', 24, true);
+
+
+--
+-- Data for Name: auth_user; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
+\.
+
+
+--
+-- Data for Name: auth_user_groups; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY auth_user_groups (id, user_id, group_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('auth_user_groups_id_seq', 1, false);
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('auth_user_id_seq', 1, false);
+
+
+--
+-- Data for Name: auth_user_user_permissions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY auth_user_user_permissions (id, user_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('auth_user_user_permissions_id_seq', 1, false);
+
+
+--
+-- Data for Name: django_admin_log; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY django_admin_log (id, action_time, object_id, object_repr, action_flag, change_message, content_type_id, user_id) FROM stdin;
+\.
+
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('django_admin_log_id_seq', 1, false);
+
+
+--
+-- Data for Name: django_content_type; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY django_content_type (id, app_label, model) FROM stdin;
+1	admin	logentry
+2	auth	permission
+3	auth	group
+4	auth	user
+5	contenttypes	contenttype
+6	sessions	session
+7	corsheaders	corsmodel
+8	app	event
+\.
+
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('django_content_type_id_seq', 8, true);
+
+
+--
+-- Data for Name: django_migrations; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY django_migrations (id, app, name, applied) FROM stdin;
+1	contenttypes	0001_initial	2016-03-13 16:17:52.035132-04
+2	auth	0001_initial	2016-03-13 16:17:52.140951-04
+3	admin	0001_initial	2016-03-13 16:17:52.175074-04
+4	admin	0002_logentry_remove_auto_add	2016-03-13 16:17:52.198762-04
+5	app	0001_initial	2016-03-13 16:17:52.216413-04
+6	contenttypes	0002_remove_content_type_name	2016-03-13 16:17:52.272942-04
+7	auth	0002_alter_permission_name_max_length	2016-03-13 16:17:52.292187-04
+8	auth	0003_alter_user_email_max_length	2016-03-13 16:17:52.314521-04
+9	auth	0004_alter_user_username_opts	2016-03-13 16:17:52.331149-04
+10	auth	0005_alter_user_last_login_null	2016-03-13 16:17:52.348577-04
+11	auth	0006_require_contenttypes_0002	2016-03-13 16:17:52.350903-04
+12	auth	0007_alter_validators_add_error_messages	2016-03-13 16:17:52.368136-04
+13	sessions	0001_initial	2016-03-13 16:17:52.384028-04
+\.
+
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('django_migrations_id_seq', 13, true);
+
+
+--
+-- Data for Name: django_session; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY django_session (session_key, session_data, expire_date) FROM stdin;
+\.
+
+
+--
+-- Name: app_event_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY app_event
+    ADD CONSTRAINT app_event_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group
+    ADD CONSTRAINT auth_group_name_key UNIQUE (name);
+
+
+--
+-- Name: auth_group_permissions_group_id_0cd325b0_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_0cd325b0_uniq UNIQUE (group_id, permission_id);
+
+
+--
+-- Name: auth_group_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group
+    ADD CONSTRAINT auth_group_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_permission_content_type_id_01ab375a_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_01ab375a_uniq UNIQUE (content_type_id, codename);
+
+
+--
+-- Name: auth_permission_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permission_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups_user_id_94350c0c_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_94350c0c_uniq UNIQUE (user_id, group_id);
+
+
+--
+-- Name: auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user
+    ADD CONSTRAINT auth_user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions_user_id_14a6b632_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_14a6b632_uniq UNIQUE (user_id, permission_id);
+
+
+--
+-- Name: auth_user_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user
+    ADD CONSTRAINT auth_user_username_key UNIQUE (username);
+
+
+--
+-- Name: django_admin_log_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_content_type_app_label_76bd3d3b_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY django_content_type
+    ADD CONSTRAINT django_content_type_app_label_76bd3d3b_uniq UNIQUE (app_label, model);
+
+
+--
+-- Name: django_content_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY django_content_type
+    ADD CONSTRAINT django_content_type_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY django_migrations
+    ADD CONSTRAINT django_migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_session_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY django_session
+    ADD CONSTRAINT django_session_pkey PRIMARY KEY (session_key);
+
+
+--
+-- Name: auth_group_name_a6ea08ec_like; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_group_name_a6ea08ec_like ON auth_group USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: auth_group_permissions_0e939a4f; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_group_permissions_0e939a4f ON auth_group_permissions USING btree (group_id);
+
+
+--
+-- Name: auth_group_permissions_8373b171; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_group_permissions_8373b171 ON auth_group_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_permission_417f1b1c; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_permission_417f1b1c ON auth_permission USING btree (content_type_id);
+
+
+--
+-- Name: auth_user_groups_0e939a4f; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_user_groups_0e939a4f ON auth_user_groups USING btree (group_id);
+
+
+--
+-- Name: auth_user_groups_e8701ad4; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_user_groups_e8701ad4 ON auth_user_groups USING btree (user_id);
+
+
+--
+-- Name: auth_user_user_permissions_8373b171; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_user_user_permissions_8373b171 ON auth_user_user_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_user_user_permissions_e8701ad4; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_user_user_permissions_e8701ad4 ON auth_user_user_permissions USING btree (user_id);
+
+
+--
+-- Name: auth_user_username_6821ab7c_like; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_user_username_6821ab7c_like ON auth_user USING btree (username varchar_pattern_ops);
+
+
+--
+-- Name: django_admin_log_417f1b1c; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX django_admin_log_417f1b1c ON django_admin_log USING btree (content_type_id);
+
+
+--
+-- Name: django_admin_log_e8701ad4; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX django_admin_log_e8701ad4 ON django_admin_log USING btree (user_id);
+
+
+--
+-- Name: django_session_de54fa62; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX django_session_de54fa62 ON django_session USING btree (expire_date);
+
+
+--
+-- Name: django_session_session_key_c0390e0f_like; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX django_session_session_key_c0390e0f_like ON django_session USING btree (session_key varchar_pattern_ops);
+
+
+--
+-- Name: auth_group_permiss_permission_id_84c5c92e_fk_auth_permission_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permiss_permission_id_84c5c92e_fk_auth_permission_id FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_group_permissions_group_id_b120cbf9_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_b120cbf9_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_permiss_content_type_id_2f476e4b_fk_django_content_type_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permiss_content_type_id_2f476e4b_fk_django_content_type_id FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups_group_id_97559544_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_group_id_97559544_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups_user_id_6a12ed8b_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_6a12ed8b_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_per_permission_id_1fbb5f2c_fk_auth_permission_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_per_permission_id_1fbb5f2c_fk_auth_permission_id FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_content_type_id_c4bce8eb_fk_django_content_type_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_content_type_id_c4bce8eb_fk_django_content_type_id FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log_user_id_c564eba6_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_user_id_c564eba6_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
