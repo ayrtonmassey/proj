@@ -2643,7 +2643,6 @@ concludes with an assessment of the success or failure of the project
 as a whole.
 
     \section{Introduction}
-
     The goal of this project was to create an interactive system to
     teach students the basic principles of \gls{dataflowanalysis} in
     compilers. The final system took the form the form of an online
@@ -2967,7 +2966,7 @@ as a whole.
     \begin{figure}[!hb]
       \centering
       \vspace{-2mm}
-      \includegraphics[width=.87\textwidth, trim=0 20 0 45, clip]{img/time_distribution.pdf}
+      \includegraphics[width=.80\textwidth, trim=0 20 0 45, clip]{img/time_distribution.pdf}
       \captionsetup{width=\textwidth, justification=centering}
       \caption{Distribution of Time Spent Using the Application per User}\label{fig:time-hist}
     \end{figure}
@@ -2980,11 +2979,12 @@ as a whole.
     more than once, and one user in particular visited on 9 separate
     days.
 
-    \begin{figure}[!b]
+    \begin{figure}[!htb]
       \centering
-      \includegraphics[width=.87\textwidth, trim=0 20 0 45]{img/unique_days.pdf}
+      % \vspace{-5mm}
       \captionsetup{width=\textwidth, justification=centering}
       \caption{Distribution of Returning Users}\label{fig:days-spent}
+      \includegraphics[width=.80\textwidth, trim=0 120 0 25]{img/unique_days.pdf}
     \end{figure}
 
     \subsection{Lessons Completed}
@@ -3075,10 +3075,10 @@ as a whole.
 
     \begin{figure}[!tb]
       \centering
-      \vspace{-2mm}
-      \includegraphics[width=\textwidth, trim=0 20 0 45, clip]{img/question_scores.pdf}
+      \vspace{-6mm}
+      \includegraphics[width=\textwidth, trim=0 0 30 20, clip]{img/question_scores.pdf}
       \captionsetup{width=\textwidth, justification=centering}
-      \caption{Distribution of Time Spent Using the Application per User}\label{fig:question-answers}
+      \caption{Attempts \& Answers to Test Questions}\label{fig:question-answers}
     \end{figure}
 
     The pale bars represent the number of participants who attempted
@@ -3297,42 +3297,125 @@ as a whole.
     of the {\tt View} system and could be fixed with some minor tweaks
     to the way pages are loaded.
 
-    \subsection{Summary}
-    
-
     \section{Future Developments}
+    
+    Throughout this report suggestions have been made for potential
+    improvements to the system, ranging from small usability changes
+    such as adding progress indicators and navigation elements to
+    overhauling the content in order to strengthen the link between
+    the tutorials and the simulation. However, there has not yet been
+    any discussion around long-term future developments or content to
+    be covered.
 
-    \begin{figure}[!hb]
+    Participants in the survey who stated that they had used the
+    simulator were asked to rank a list of potential future features
+    in order from most to least important. The response to this
+    question is shown in fig. \ref{fig:future-features}.
+
+    \begin{figure}[!htb]
       \centering
       \captionsetup{width=\textwidth, justification=centering}
-      \caption{Opinion on Future Simulator Improvements}\label{fig:demo-q2}
-      \includegraphics[width=\textwidth, trim=0 0 0 0]{img/simulator_improvements.pdf}
+      \caption{Opinion on Future Simulator Improvements, N=22}\label{fig:future-features}
+      \includegraphics[width=\textwidth, trim=0 20 0 20, clip]{img/simulator_improvements.pdf}
     \end{figure}
 
+    The choices listed were based on early discussions between myself
+    and the project's supervisor, Hugh Leather. His original proposal
+    for the project suggested a possible extension which would allow
+    users to define their own data-flow frameworks and simulate an
+    analysis using them. Although I chose to focus on other aspects of
+    the system, this idea was one that I was keen to see realised if
+    time permitted. Examining the responses it seems that focusing
+    elsewhere was the right choice after all; users largely preferred
+    that data-flows be written for them rather than by them, perhaps
+    because they were not aware of how or why they would use this
+    feature. Some of the written responses to the survey would agree
+    -- participants wrote that although they had learned how to
+    perform data-flow analysis, they did not know what they would use
+    it for. To rectify this the content could be expanded to
+    demonstrate the applications of the topic both in compilers and in
+    other areas such as web security\cite{TaintedFlow}; maybe then
+    users would find value in being able to write their own
+    data-flows.
+
+    The \gls{dataflow} framework system would need to be improved in
+    order to add interesting new data-flows. Whilst it is certainly
+    possible to add more \gls{bitvector}s, \gls{tuplevalued}s would
+    need to be implemented to support \gls{dataflow}s such as constant
+    propagation. This, in turn, would require an overhaul of the Hasse
+    diagram visualisation to make it capable of displaying lattices
+    for more complex \gls{dataflow}s.
+
+    The second most popular improvement was conversion to and from
+    SSA-form\footnote{Single Static Assignment (SSA) form is a
+      transformation applied to control-flow graphs in which variables
+      are copied and renamed so that every variable is defined only
+      once.}. The lecture slides cover this topic quite heavily, but I
+    decided against including it because its applications lie closer
+    to performing compiler optimisations than to data-flow analysis
+    itself. If the content were to be expanded, SSA-form would be one
+    of the more simple features to include and would open the door to
+    visualising optimising transformations such as code motion.
+
+    Further down the line, the \gls{controlflowgraph} visualisation
+    could be adapted to allow users to edit it directly. This improved
+    visualisation would allow users to add, delete or edit nodes,
+    making connections or removing them in order to explore how
+    changing the \gls{cfg}'s structure or local information changes
+    the problem's solution.
+
+    Finally, the interactive tutorials have huge potential for
+    enhancement. Currently, the main form of interaction is through
+    multiple-choice questions. A more advanced system could allow
+    users to write ILOC programs to solve problems, or if the custom
+    \gls{dataflow} framework system were implemented users could be
+    asked to write frameworks to solve a given \gls{dataflow}
+    problem. The presentation of the content could be diversified
+    using audio or video formats or automated demonstrations which
+    control the user's mouse and keyboard.
+
     \section{Conclusion}
-    Overall participation was high, and users responded positively to
-    the unique\footnote{as opposed to other teaching formats such as
-      textbooks, lectures etc.} features of the learning
-    platform. Users were engaged by the tutorials and were mostly able
-    to understand the material, although the some be
+    The main objective of this project was to develop a learning
+    platform for compiler data-flow analysis which provided a more
+    interactive alternative to traditional teaching formats, and to
+    demonstrate that such a system would be an effective tool for
+    learning.
 
-    
-    % \begin{figure}[b]
-    %   \hspace{2mm}
-    %   \begin{minipage}{.48\textwidth}
-    %     \includegraphics[width=\textwidth, trim=0 0 0 0]{img/time_distribution.pdf}
-    %     \captionsetup{width=\textwidth, justification=centering}
-    %     \captionof{figure}{Time spent using the application}\label{fig:time-hist}
-    %   \end{minipage}
-    %   \quad
-    %   \begin{minipage}{.48\textwidth}
-    %     \includegraphics[width=\textwidth, trim=0 0 0 0]{img/experience_pie.pdf}
-    %     \captionsetup{width=\textwidth, justification=centering}
-    %     \captionof{figure}{Demographics by self-assessment of experience}\label{fig:demo-q1}
-    %   \end{minipage}%
-    % \end{figure}
-    
+    The results collected throughout this evaluation are strong
+    evidence that the project has achieved this goal. Reponse to the
+    feedback survey was overwhelmingly positive; the visual and
+    interactive elements received particularly high praise, as did the
+    presentation of the material. Achievement of learning outcomes was
+    well above average, users were kept engaged by the platform, and
+    all but one participant stated that they would use the system
+    alongside other methods of study.
 
+    However, the end of a project is not only a time for praise. One
+    must take the opportunity to reflect upon and learn from their
+    performance. Much time was spent rectifying mistakes made early in
+    development; whether caused by lack of experience or rushed
+    decision-making, some forethought would not have gone
+    amiss. Perhaps a different development process would have revealed
+    these issues before they became significant problems, or more time
+    should have been spent researching technlogies before diving into
+    the implementation.    
+
+    I hope to see others follow this project's example and extend the
+    system I have developed or apply the concept to other topics. The
+    system has proven that online platforms are a valuable and
+    effective tool for learning, one which must be explored further in
+    order to truly realise their potential.
+
+    In closing, I would say this: applications like the one developed
+    in this project are only the beginning. As more and more
+    industries move online, it is only natural that teaching move with
+    them. It is time for higher education institutions to diversify
+    the ways in which they teach their students and make efforts to
+    appeal to a range of learning styles. By developing their own
+    tools such as this one or pooling their resources with an entity
+    like Coursera, Universities can truly bring teaching into the
+    digital age.
+    
     
 
 % use the following and \cite{} as above if you use BibTeX
