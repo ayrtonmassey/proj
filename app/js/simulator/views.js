@@ -1,10 +1,10 @@
 function SimulatorView(kwargs) {
     View.call(this, kwargs);
-    
+
     this.simulator = kwargs.simulator;
 
     this.parent = kwargs.parent;
-    
+
     var _this = this;
     this.simulator.on('reset', function() {
         _this.reset();
@@ -26,7 +26,7 @@ function RoundRobinSimulatorView(kwargs) {
 
     this.template_root = 'simulator/';
     this.template = this.get_template('roundrobin');
-    
+
     // this.update = function() {
 
     // }
@@ -37,11 +37,11 @@ function RoundRobinSimulatorView(kwargs) {
 
     this.init = function() {
         $('#page-title').html("Simulator");
-        
+
         this.simulator.init();
-        
+
         this.canvas.html(this.template());
-        
+
         this.results_view = new RoundRobinResultsView({
             canvas: '#results-canvas',
             simulator: this.simulator,
@@ -58,13 +58,13 @@ function RoundRobinSimulatorView(kwargs) {
             'REVERSE_POSTORDER': 'Reverse Post-order',
             'POSTORDER'        : 'Post-order',
         }
-        
+
         var dataflows = {
             'LIVENESS_ANALYSIS'    : 'Liveness Analysis',
             'REACHING_DEFINITIONS' : 'Reaching Definitions',
             'AVAILABLE_EXPRESSIONS': 'Available Expressions',
         }
-        
+
         this.framework_view = new FrameworkView({
             canvas: '#framework-canvas',
             simulator: this.simulator,
@@ -72,19 +72,19 @@ function RoundRobinSimulatorView(kwargs) {
             orderings: orderings,
             parent: this,
         });
-        
+
         this.sim_controls_view = new SimControlsView({
             canvas: '#sim-controls-canvas',
             simulator: this.simulator,
             parent: this,
         });
-        
+
         this.lattice_view = new LatticeView({
             canvas: '#lattice-canvas',
             simulator: this.simulator,
             parent: this,
         });
-        
+
         this.cfg_view = new CFGView({
             canvas: '#cfg-canvas',
             simulator: this.simulator,
@@ -102,21 +102,9 @@ function RoundRobinSimulatorView(kwargs) {
 
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             _this.cfg_view.update();
-            tracking.send(
-                'click',
-                'simulator',
-                'tab-change',
-                $(this).attr('id')
-            );
         });
-        
-        this.simulator.reset();
 
-        tracking.send(
-            'pageview',
-            'simulator',
-            'open'
-        );
+        this.simulator.reset();
     }
 }
 
@@ -132,7 +120,7 @@ function CodeView(kwargs) {
     this.code_display_template  = this.get_template('display');
     this.code_editor_template   = this.get_template('editor');
     this.code_controls_template = this.get_template('controls');
-    
+
     this.update = function () {
         this.reset_highlight();
 
@@ -144,7 +132,7 @@ function CodeView(kwargs) {
                 .addClass("read")
                 .addClass("highlight");
         }
-        
+
         for(modified of this.simulator.state.modified_nodes) {
             $("#instruction-{0}".format(
                 modified.node.index
@@ -152,7 +140,7 @@ function CodeView(kwargs) {
                 .addClass(this.simulator.state.func)
                 .addClass("modified")
                 .addClass("highlight");
-        }        
+        }
     }
 
     this.reset_highlight = function () {
@@ -166,11 +154,11 @@ function CodeView(kwargs) {
                 .removeClass("modified")
                 .removeClass("highlight");
         });
-    }    
-    
+    }
+
     this.reset = function() {
         this.code_text = this.simulator.cfg.to_code();
-        
+
         this.code_display.html(this.code_display_template({
             nodes: this.simulator.cfg.nodes
         }));
@@ -178,21 +166,21 @@ function CodeView(kwargs) {
         this.code_editor_textarea.val(this.code_text);
 
         this.display_code();
-        
+
         this.reset_highlight();
     }
 
     this.display_code = function() {
         this.code_display.show();
         this.code_sim_controls.show();
-        
+
         this.code_editor.hide();
         this.code_edit_controls.hide();
     }
 
     this.edit_code = function() {
         this.code_editor.show();
-        
+
         this.code_edit_controls.show();
 
         this.code_display.hide();
@@ -229,57 +217,42 @@ function CodeView(kwargs) {
                 .removeClass('alert-success');
         }
     }
-    
+
     this.init = function() {
         this.canvas.html(this.template());
-        
+
         this.code_display = $('#code-display');
-        
+
         this.code_editor = $('#code-editor');
         this.code_editor.html(this.code_editor_template({code: this.code_text}));
         this.code_editor_textarea = $('#code-editor > textarea');
         this.code_editor_textarea.linedtextarea();
         this.code_editor.hide();
-        
+
         this.code_controls = $('#code-controls');
         this.code_controls.html(this.code_controls_template());
-        
+
         this.code_edit_controls = $('#code-controls-edit');
         this.code_edit_controls.hide();
         this.code_sim_controls  = $('#code-controls-sim');
-        
+
         var _this = this;
-        
+
         this.code_edit_controls.find('#btn-cancel-edit').on('click', function() {
             _this.reset();
             _this.display_code();
-            tracking.send(
-                'click',
-                'code',
-                'cancel-edit'
-            );
         });
-        
+
         this.code_edit_controls.find('#btn-sim').on('click', function() {
             _this.sim_code(_this.code_editor_textarea.val());
-            tracking.send(
-                'click',
-                'code',
-                'sim'
-            );
         });
-        
+
         this.code_sim_controls.find('#btn-edit').on('click', function() {
             _this.edit_code();
-            tracking.send(
-                'click',
-                'code',
-                'edit'
-            );
         });
 
         this.link_input = $('#input-share-link');
-        
+
         this.code_sim_controls.find('#btn-share').on('click', function() {
             _this.link_input.val("{0}?simulator{1}".format(
                 window.location.href.split('?')[0],
@@ -289,36 +262,26 @@ function CodeView(kwargs) {
                     encodeURIComponent(_this.simulator.code)
                 )
             ));
-            tracking.send(
-                'click',
-                'code',
-                'share-open-dialog'
-            );
         });
 
         $('#btn-share-copy-link').on('click', function() {
             _this.link_input.select();
             var successful = document.execCommand('copy');
-            tracking.send(
-                'click',
-                'code',
-                'share-copy-link'
-            );
         });
 
         this.code_alert = $('#code-alert');
         this.code_alert_content = $('#code-alert-content');
-        
+
         this.code_alert.find('#btn-hide-alert').on('click', function() {
             _this.code_alert.hide();
         });
-        
+
         this.code_alert.hide();
 
         this.simulator.on('update', function() {
             _this.update();
         });
-        
+
         this.reset();
     }
 }
@@ -335,7 +298,7 @@ function FrameworkView(kwargs) {
 
     this.template_root = 'simulator/framework/';
     this.template = this.get_template('main');
-    
+
     this.update = function() {
         // Highlight Meet
         $('#framework-order').children().each(function() {
@@ -357,7 +320,7 @@ function FrameworkView(kwargs) {
         } else if (this.simulator.state.transfer) {
             this.transfer_function.addClass("highlight");
             this.meet_function.removeClass("highlight");
-            
+
             for(modified of this.simulator.state.modified_nodes) {
                 $('#framework-order>.order-index.node-{0}'.format(modified.node.index))
                     .addClass("transfer")
@@ -368,11 +331,11 @@ function FrameworkView(kwargs) {
 
     this.reset = function() {
         this.title.html(this.simulator.framework.name);
-        
+
         this.meet_function.removeClass("highlight");
         this.meet_function.html(this.simulator.framework.meet_latex);
         MathJax.Hub.Queue(["Typeset",MathJax.Hub,this.meet_function.id]);
-        
+
         this.transfer_function.removeClass("highlight");
         this.transfer_function.html(this.simulator.framework.transfer_latex);
         MathJax.Hub.Queue(["Typeset",MathJax.Hub,this.transfer_function.id]);
@@ -382,7 +345,7 @@ function FrameworkView(kwargs) {
         }).join('<div class="flex text-center">→</div>'));
 
         this.order.html(order_html);
-        
+
         this.order.children().each(function() {
             $(this).removeClass("highlight")
                 .removeClass("meet")
@@ -392,11 +355,11 @@ function FrameworkView(kwargs) {
         this.input_framework_dfa.find("option[value='{0}']".format(this.simulator.framework.id)).prop('selected',true);
         this.input_framework_order.find("option[value='{0}']".format(this.simulator.ordering)).prop('selected',true);
     }
-    
-    
+
+
     this.init = function() {
         this.canvas.html(this.template({ dataflows: this.dataflows, orderings: this.orderings }));
-        
+
         this.title             = this.canvas.find('#framework-title');
         this.meet_function     = this.canvas.find('#framework-meet');
         this.transfer_function = this.canvas.find('#framework-transfer');
@@ -405,13 +368,13 @@ function FrameworkView(kwargs) {
         this.framework_modal        = $('#framework-settings-modal');
         this.input_framework_dfa    = $('#input-framework-dfa');
         this.input_framework_order  = $('#input-framework-order');
-        
+
         this.framework_change_alert = $('#alert-framework-change').hide();
-            
+
         this.change_btn = $('#btn-framework-change').on('click', function() {
             var framework_id = _this.input_framework_dfa.val();
             var order_id     = _this.input_framework_order.val();
-            
+
             if (framework_id != undefined && order_id != undefined) {
                 var framework = DFA[framework_id];
                 var order     = DFA[order_id];
@@ -419,13 +382,6 @@ function FrameworkView(kwargs) {
                     _this.simulator.change_framework(framework, order);
                     _this.framework_change_alert.text("").hide();
                     _this.framework_modal.modal('hide');
-                    tracking.send(
-                        'click',
-                        'framework',
-                        'change-settings',
-                        framework_id,
-                        order_id
-                    );
                 } else {
                     _this.framework_change_alert.text("DFA or ordering not recognised!").show();
                 }
@@ -438,7 +394,7 @@ function FrameworkView(kwargs) {
         this.simulator.on('update', function() {
             _this.update();
         });
-        
+
         this.reset();
     }
 }
@@ -456,7 +412,7 @@ function RoundRobinResultsView(kwargs) {
     this.new_round = function(round) {
         $("#round-row").append("<td colspan=\"2\" class=\"text-center\">{0}</td>".format(this.simulator.state.round));
         $("#set-row").append("<td class=\"text-center\">In</td><td class=\"text-center\">Out</td>");
-        
+
         for (node of this.simulator.cfg.nodes) {
             $('.result-row.node-{0}'.format(node.index))
                 .append(
@@ -478,7 +434,7 @@ function RoundRobinResultsView(kwargs) {
                 );
         }
     }
-    
+
     this.iterate = function() {
               // Round behind
         while(this.last_update.round < this.simulator.state.round ||
@@ -502,9 +458,9 @@ function RoundRobinResultsView(kwargs) {
                     this.last_update.order_index = 0;
                 }
             }
-            
+
             node = this.simulator.cfg.nodes[this.simulator.order[this.last_update.order_index]];
-                
+
             $(".round-{0}.set-{1}.node-{2}.result".format(this.last_update.round, this.last_update.func, node.index))
                 .html(node.sets[this.last_update.func].toHTML())
                 .addClass("visited")
@@ -534,7 +490,7 @@ function RoundRobinResultsView(kwargs) {
                     .addClass("highlight");
             }
         }
-        
+
         for(modified of this.simulator.state.modified_nodes) {
             for (set of modified.sets) {
                 var elem;
@@ -557,7 +513,7 @@ function RoundRobinResultsView(kwargs) {
             }
         }
     }
-    
+
     this.reset_highlight = function() {
         $(".result").each(function() {
             $(this)
@@ -592,13 +548,13 @@ function RoundRobinResultsView(kwargs) {
         this.canvas.html(this.template({
             nodes: this.simulator.cfg.nodes
         }));
-        
+
         this.results_table = $('#results-table');
-        
+
         for (set in this.simulator.framework.local_sets) {
             $("#round-header").before('<td rowspan="2">{0}</td>'.format(set));
         }
-        
+
         this.reset_results();
         this.reset_highlight();
 
@@ -608,7 +564,7 @@ function RoundRobinResultsView(kwargs) {
             func: this.simulator.func,
         }
     }
-    
+
     this.init = function() {
         this.reset();
 
@@ -634,7 +590,7 @@ function SimControlsView(kwargs) {
     this.template = this.get_template('main');
 
     var _this = this;
-    
+
     this.finished = function() {
         _this.play_button.prop('disabled', true).show();
         _this.pause_button.prop('disabled', true).hide();
@@ -653,18 +609,18 @@ function SimControlsView(kwargs) {
         this.pause_button.prop('disabled', true).hide();
         this.simulator.pause();
     }
-    
-    this.reset = function() {        
+
+    this.reset = function() {
         this.play_button.prop('disabled', false);
         this.play_button.prop('disabled', false).show();
         this.pause_button.prop('disabled', true).hide();
         this.fast_forward_button.prop('disabled', false);
         this.step_forward_button.prop('disabled', false);
     }
-    
+
     this.init = function() {
         this.canvas.html(this.template());
-        
+
         this.pause_button         = $("#sim-controls>#pause");
         this.play_button          = $("#sim-controls>#play");
         this.step_forward_button  = $("#sim-controls>#step-forward");
@@ -675,49 +631,24 @@ function SimControlsView(kwargs) {
 
         this.fast_backward_button.off("click").click({view:this}, function(event) {
             event.data.view.simulator.fast_backward();
-            tracking.send(
-                'click',
-                'controls',
-                'fast_backward'
-            );
         });
-        
+
         this.step_forward_button.off("click").click({view:this}, function(event) {
             event.data.view.simulator.step_forward();
-            tracking.send(
-                'click',
-                'controls',
-                'step_forward'
-            );
         });
-        
+
         this.play_button.off("click").click({view:this}, function(event) {
             event.data.view.play();
-            tracking.send(
-                'click',
-                'controls',
-                'play'
-            );
         });
 
         this.pause_button.off("click").click({view:this}, function(event) {
             event.data.view.pause();
-            tracking.send(
-                'click',
-                'controls',
-                'pause'
-            );
         });
-        
+
         this.fast_forward_button.off("click").click({view:this}, function(event) {
             event.data.view.simulator.fast_forward();
-            tracking.send(
-                'click',
-                'controls',
-                'fast_forward'
-            );
         });
-        
+
         this.reset();
 
         this.simulator.on('finished', function() {
@@ -735,11 +666,11 @@ var CFG_FLAGS = {
     SHOW_ALL_POINTS    : 2,
 }
 
-function CFGView(kwargs) {    
+function CFGView(kwargs) {
     SimulatorView.call(this, kwargs);
-    
+
     var _this = this
-    
+
     this.template_root = 'simulator/cfg/';
     this.template = this.get_template('main');
     this.node_template = this.get_template('node');
@@ -754,7 +685,7 @@ function CFGView(kwargs) {
         // this.g.graph().transition = function(selection) {
         //     return selection.transition().duration(500);
         // };
-        
+
         // Render the graph into svg g
         this.render(this.svgGroup, this.g);
     }
@@ -786,16 +717,16 @@ function CFGView(kwargs) {
             }
         }
     }
-    
+
     this.add_point = function(node, set) {
         // Check set is valid
         if (set != DFA.IN && set != DFA.OUT) {
             throw new ReferenceError('Expected DFA.IN or DFA.OUT, got "{0}"'.format(set));
         }
-        
+
         var point_id = '{0}-{1}'.format(node.index, set);
         var node_id = '{0}'.format(node.index)
-        
+
         // Add point
         var point = _this.g.setNode(
             point_id,
@@ -836,14 +767,14 @@ function CFGView(kwargs) {
                     } else {
                         prev_node_id = '{0}'.format(i);
                     }
-                    
+
                     // Remove edge from prev to node
                     this.g.removeEdge(prev_node_id, node_id);
-                    
+
                     // Add edge from prev to point
                     this.g.setEdge(prev_node_id, point_id);
                 }
-            }            
+            }
         } else if (set == DFA.OUT) {
             this.g.setEdge(node_id, point_id);
 
@@ -857,10 +788,10 @@ function CFGView(kwargs) {
                     } else {
                         next_node_id = '{0}'.format(i);
                     }
-                    
+
                     // Remove edge from node to next
                     this.g.removeEdge(node_id, next_node_id);
-                    
+
                     // Add edge from point to next
                     this.g.setEdge(point_id, next_node_id);
                 }
@@ -873,7 +804,7 @@ function CFGView(kwargs) {
         if (set != DFA.IN && set != DFA.OUT) {
             throw new ReferenceError('Expected DFA.IN or DFA.OUT, got "{0}"'.format(set));
         }
-        
+
         var point_id = '{0}-{1}'.format(node.index, set);
         var node_id = '{0}'.format(node.index)
 
@@ -899,17 +830,17 @@ function CFGView(kwargs) {
                     } else {
                         prev_node_id = '{0}'.format(i);
                     }
-                    
+
                     // Remove edge from prev to point
                     this.g.removeEdge(prev_node_id, point_id);
-                    
+
                     // Add edge from prev to node
                     this.g.setEdge(prev_node_id, node_id);
                 }
-            } 
+            }
         } else if (set == DFA.OUT) {
             this.g.removeEdge(node_id, point_id);
-            
+
             // Update edges leaving node
             for(i = 0; i < this.simulator.cfg.nodes.length; i++) {
                 if(this.simulator.cfg.adjacency[node.index][i] == 1) {
@@ -920,10 +851,10 @@ function CFGView(kwargs) {
                     } else {
                         next_node_id = '{0}'.format(i);
                     }
-                    
+
                     // Remove edge from point to next
                     this.g.removeEdge(point_id, next_node_id);
-                    
+
                     // Add edge from node to next
                     this.g.setEdge(node_id, next_node_id);
                 }
@@ -946,13 +877,13 @@ function CFGView(kwargs) {
             this.remove_point(node, DFA.OUT);
         }
     }
-    
+
     this.show_all_points = function() {
         this.draw_points = CFG_FLAGS.SHOW_ALL_POINTS;
 
         this.add_all_points();
     }
-    
+
     this.show_no_points = function() {
         this.draw_points = CFG_FLAGS.SHOW_NO_POINTS;
 
@@ -983,7 +914,7 @@ function CFGView(kwargs) {
             );
         }
     }
-    
+
     this.reset_node_highlights = function () {
         $('.node').each(function() {
             $(this)[0].classList.remove(DFA.READ);
@@ -993,7 +924,7 @@ function CFGView(kwargs) {
             $(this)[0].classList.remove(DFA.HIGHLIGHT);
         });
     }
-    
+
     this.reset_highlight = function() {
         this.reset_edge_highlights();
         this.reset_node_highlights();
@@ -1004,7 +935,7 @@ function CFGView(kwargs) {
             var point = this.g.node(point_id);
             var set   = point.set;
             var node  = this.simulator.cfg.nodes[point.node_index];
-            
+
             point.label = this.point_template({
                     content: new Handlebars.SafeString(
                         node.sets[this.simulator.io_to_mt(set)].toHTML()
@@ -1033,7 +964,7 @@ function CFGView(kwargs) {
             throw new ReferenceError('Expected DFA.READ or DFA.MODIFIED, got "{0}"'.format(state))
         }
     }
-    
+
     this.update_highlight = function() {
         // Add highlighting
         for(read of this.simulator.state.read_nodes) {
@@ -1055,7 +986,7 @@ function CFGView(kwargs) {
                 }
             }
         }
-        
+
         for(modified of this.simulator.state.modified_nodes) {
             for (set of modified.sets) {
                 if (set == DFA.MEET || set == DFA.TRANSFER) {
@@ -1063,7 +994,7 @@ function CFGView(kwargs) {
                         modified.node.index,
                         this.simulator.mt_to_io(set)
                     ));
-                    
+
                     if (point_elem.length > 0) {
                         this.highlight_node(point_elem, DFA.MODIFIED, this.simulator.state.func);
                     } else {
@@ -1077,10 +1008,10 @@ function CFGView(kwargs) {
             }
         }
     }
-    
+
     this.update = function() {
         this.reset_highlight();
-        
+
         // Add points, if we're showing them
         if (this.draw_points & CFG_FLAGS.SHOW_TOUCHED_POINTS) {
             this.remove_all_points();
@@ -1093,7 +1024,7 @@ function CFGView(kwargs) {
                     }
                 }
             }
-            
+
             for(modified of this.simulator.state.modified_nodes) {
                 for (set of modified.sets) {
                     if (set == DFA.MEET || set == DFA.TRANSFER) {
@@ -1102,7 +1033,7 @@ function CFGView(kwargs) {
                     }
                 }
             }
-        }            
+        }
 
         // Add set value tooltips
         for(node of this.simulator.cfg.nodes) {
@@ -1120,14 +1051,14 @@ function CFGView(kwargs) {
         }
 
         this.update_points();
-        
+
         this.draw();
 
         this.update_highlight();
 
         this.graph_properties.height = this.g.graph().height;
         this.graph_properties.width  = this.g.graph().width;
-        
+
         this.translate_graph();
     }
 
@@ -1141,7 +1072,7 @@ function CFGView(kwargs) {
                             (yCenterOffset + _this.graph_properties.offset_y) + ")" +
                             "scale(" + _this.graph_properties.scale + ")");
     }
-    
+
     this.reset = function() {
         this.g = new dagreD3.graphlib.Graph({compound:true})
             .setGraph({})
@@ -1150,8 +1081,8 @@ function CFGView(kwargs) {
         this.svg.html("");
         // Add the graph element to the SVG
         this.svgGroup = this.svg.append("g");
-        
-        var zoom = d3.behavior.zoom().on("zoom", function() {        
+
+        var zoom = d3.behavior.zoom().on("zoom", function() {
             _this.graph_properties = {
                 scale: d3.event.scale,
                 offset_x: d3.event.translate[0],
@@ -1182,9 +1113,9 @@ function CFGView(kwargs) {
             height: 0.0,
             width: 0.0,
         }
-                
+
         this.update();
-                
+
         this.translate_graph();
     }
 
@@ -1207,7 +1138,7 @@ function CFGView(kwargs) {
                 .removeClass("btn-info")
                 .addClass("btn-danger");
         }
-        
+
         $('#btn-show-points').on('click', function() {
             if (_this.draw_points & CFG_FLAGS.SHOW_ALL_POINTS) {
                 _this.show_touched_points();
@@ -1215,51 +1146,33 @@ function CFGView(kwargs) {
                     .removeClass("btn-success")
                     .addClass("btn-info")
                     .removeClass("btn-danger");
-                tracking.send(
-                    'click',
-                    'cfg',
-                    'points-change',
-                    'current'
-                );
             } else if (_this.draw_points & CFG_FLAGS.SHOW_TOUCHED_POINTS) {
                 _this.show_no_points();
                 $(this).html("None")
                     .removeClass("btn-success")
                     .removeClass("btn-info")
                     .addClass("btn-danger");
-                tracking.send(
-                    'click',
-                    'cfg',
-                    'points-change',
-                    'none'
-                );
             } else {
                 _this.show_all_points();
                 $(this).html("All")
                     .addClass("btn-success")
                     .removeClass("btn-info")
                     .removeClass("btn-danger");
-                tracking.send(
-                    'click',
-                    'cfg',
-                    'points-change',
-                    'all'
-                );
             }
-            
+
             _this.update();
         });
     }
-    
+
     this.init = function() {
         this.canvas.html(this.template());
-        
+
         // Create the renderer
         this.render = new dagreD3.render();
-        
+
         // Set up an SVG group so that we can translate the final graph.
         this.svg = d3.select("#cfg-svg");
-        
+
         this.simulator.on('update', function() {
             _this.update();
         });
@@ -1275,23 +1188,23 @@ CFGView.prototype = Object.create(SimulatorView.prototype);
 CFGView.prototype.constructor = CFGView;
 
 
-function LatticeView(kwargs) {    
+function LatticeView(kwargs) {
     SimulatorView.call(this, kwargs);
-    
+
     var _this = this
-    
+
     this.template_root = 'simulator/lattice/';
     this.template = this.get_template('main');
     this.node_template = this.get_template('node');
 
     this.display_toggle = true;
     this.show_toggle = kwargs.show_toggle || true;
-    
+
     this.draw = function() {
         this.g.graph().transition = function(selection) {
             return selection.transition().duration(500);
         };
-        
+
         // Render the graph into svg g
         this.render(this.svgGroup, this.g);
     }
@@ -1312,12 +1225,12 @@ function LatticeView(kwargs) {
                 }
             );
         }
-        
+
         $('#lattice-svg g.node').each(function() {
             $(this).attr("class","node");
         });
     }
-    
+
     this.update = function() {
         this.reset_highlight();
 
@@ -1344,12 +1257,12 @@ function LatticeView(kwargs) {
                 }
             }
         }
-        
+
         this.draw();
 
         this.graph_properties.height = this.g.graph().height;
         this.graph_properties.width  = this.g.graph().width;
-        
+
         this.translate_graph();
     }
 
@@ -1381,7 +1294,7 @@ function LatticeView(kwargs) {
                             });
             _this.g.node('{0}'.format(node.index)).id = 'lattice-node-{0}'.format(node.index);
         }
-        
+
         // Update edges.
         for(i = 0; i < this.simulator.lattice.nodes.length; i++) {
             for(j = 0; j < this.simulator.lattice.nodes.length; j++) {
@@ -1395,22 +1308,22 @@ function LatticeView(kwargs) {
             }
         }
     }
-    
+
     this.reset = function() {
         this.init();
-        
+
         if (this.simulator.lattice != null) {
             this.g = new dagreD3.graphlib.Graph({compound:true})
                 .setGraph({})
                 .setDefaultEdgeLabel(function() { return {}; });
 
             this.construct_graph();
-            
+
             this.svg.html("");
             // Add the graph element to the SVG
             this.svgGroup = this.svg.append("g");
-            
-            var zoom = d3.behavior.zoom().on("zoom", function() {        
+
+            var zoom = d3.behavior.zoom().on("zoom", function() {
                 _this.graph_properties = {
                     scale: d3.event.scale,
                     offset_x: d3.event.translate[0],
@@ -1430,33 +1343,33 @@ function LatticeView(kwargs) {
                 height: 0.0,
                 width: 0.0,
             }
-            
+
             this.update();
-            
+
             this.translate_graph();
-        }     
+        }
     }
 
     this.init = function() {
         // If the lattice is null, then we won't show it
         if (this.simulator.lattice != null) {
             this.displaying = true;
-            
+
             this.canvas.html(this.template());
-            
+
             // Create the renderer
             this.render = new dagreD3.render();
-            
+
             // Set up an SVG group so that we can translate the final graph.
             this.svg = d3.select("#lattice-svg");
-            
+
             this.simulator.on('update', function() {
                 _this.update();
             });
 
             if (this.show_toggle) {
                 this.canvas.append(this.get_template('btn-lattice-collapse')());
-                
+
                 if (_this.display_toggle) {
                     _this.canvas.parent().addClass('flex-max').attr('style', '');
                     $('#btn-lattice-collapse').html('<i class="fa fa-minus"></i>')
@@ -1468,7 +1381,7 @@ function LatticeView(kwargs) {
                         .removeClass("btn-danger")
                         .addClass("btn-success");
                 }
-                
+
                 $('#btn-lattice-collapse').on('click', function() {
                     if (_this.display_toggle) {
                         _this.display_toggle = false;
@@ -1477,11 +1390,6 @@ function LatticeView(kwargs) {
                         $('#btn-lattice-collapse').html('<i class="fa fa-plus"></i>')
                             .removeClass("btn-danger")
                             .addClass("btn-success");
-                        tracking.send(
-                            'click',
-                            'lattice',
-                            'show'
-                        );
                     } else {
                         _this.display_toggle = true;
                         _this.svg.attr('style','');
@@ -1489,11 +1397,6 @@ function LatticeView(kwargs) {
                         $('#btn-lattice-collapse').html('<i class="fa fa-minus"></i>')
                             .addClass("btn-danger")
                             .removeClass("btn-success");
-                        tracking.send(
-                            'click',
-                            'lattice',
-                            'hide'
-                        );
                     }
                 });
             }
@@ -1514,7 +1417,7 @@ function LatticeTestbedView(kwargs) {
     SimulatorView.call(this, kwargs);
 
     this.template = Handlebars.templates['test/lattice.hbs'];
-    
+
     // this.update = function() {
 
     // }
@@ -1525,9 +1428,9 @@ function LatticeTestbedView(kwargs) {
 
     this.init = function() {
         this.simulator.init();
-        
+
         this.canvas.html(this.template());
-        
+
         this.sim_controls_view = new SimControlsView({
             canvas: '#sim-controls-canvas',
             simulator: this.simulator,
@@ -1551,7 +1454,7 @@ function CFGTestbedView(kwargs) {
     SimulatorView.call(this, kwargs);
 
     this.template = Handlebars.templates['test/cfg.hbs'];
-    
+
     // this.update = function() {
 
     // }
@@ -1562,14 +1465,14 @@ function CFGTestbedView(kwargs) {
 
     this.init = function() {
         this.simulator.init();
-        
+
         this.canvas.html(this.template());
-        
+
         this.sim_controls_view = new SimControlsView({
             canvas: '#sim-controls-canvas',
             simulator: this.simulator,
         });
-        
+
         this.cfg_view = new CFGView({
             canvas: '#cfg-canvas',
             simulator: this.simulator,

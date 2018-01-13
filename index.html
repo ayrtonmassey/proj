@@ -3,21 +3,19 @@
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF8">
         <title>Honours Project: s1208057</title>
-        <link rel="stylesheet" href="lib/bootstrap-4.0.0-alpha.2/dist/css/bootstrap.css" />
+        <!-- <link rel="stylesheet" href="app/lib/bootstrap-4.0.0-alpha.2/dist/css/bootstrap.css" /> -->
         <!-- <link rel="stylesheet" href="lib/font-awesome-4.5.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="lib/tether-1.1.1/dist/css/tether.min.css"> -->
-        <link rel="stylesheet" href="lib/jquery-linedtextarea.css" />
+        <link rel="stylesheet" href="app/lib/jquery-linedtextarea/jquery-linedtextarea.css" />
         <!-- <link rel="stylesheet" href="lib/tipsy.css" /> -->
-        
-        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" /> -->
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tether/1.1.1/css/tether.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tipsy/1.0.2/jquery.tipsy.css">
 
-        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="app/css/style.css" />
 
-        <!-- Ayrton Analytics -->
-        <script src="js/tracking.js" type="text/javascript"></script>
         <script>
          start_load = new Date();
         </script>
@@ -34,25 +32,25 @@
             </ul>
         </nav>
         <div class="navbar-spacer"></div>
-        
+
         <div class="container-fluid canvas" id="view-canvas" style="width: 100%;"></div>
-        
+
         <!-- jQuery -->
         <!-- <script src="lib/jquery-2.1.4.js"></script> -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-        
+
         <!-- Bootstrap -->
         <!-- <script src="lib/tether-1.1.1/dist/js/tether.min.js" type="text/javascript"></script> -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.1.1/js/tether.min.js" type="text/javascript"></script>
-        
-        <script src="lib/bootstrap-4.0.0-alpha.2/dist/js/bootstrap.js" type="text/javascript"></script>
-        <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" type="text/javascript"></script> -->
 
-        
+        <!-- <script src="lib/bootstrap-4.0.0-alpha.2/dist/js/bootstrap.js" type="text/javascript"></script> -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" type="text/javascript"></script>
+
+
         <!-- MathJax -->
         <!-- <script type="text/javascript" src="lib/MathJax-2.6-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
         <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
-        
+
         <!-- PEGjs -->
         <!-- <script src="lib/peg-0.9.0.js" type="text/javascript"></script> -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pegjs/0.9.0/peg.min.js" type="text/javascript"></script>
@@ -60,7 +58,7 @@
         <!-- d3.js -->
         <!-- <script src="lib/d3/d3.js" type="text/javascript"></script> -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js" type="text/javascript"></script>
-        
+
         <!-- dagre / dagre-d3 -->
         <!-- <script src="lib/dagre-d3-14-02.js" type="text/javascript"></script> -->
         <script src="http://cpettitt.github.io/project/dagre-d3/latest/dagre-d3.min.js" type="text/javascript"></script>
@@ -70,46 +68,34 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tipsy/1.0.2/jquery.tipsy.min.js" type="text/javascript"></script>
 
         <!-- Lined Text Area -->
-        <script src="lib/jquery-linedtextarea.js" type="text/javascript"></script>
+        <script src="app/lib/jquery-linedtextarea/jquery-linedtextarea.js" type="text/javascript"></script>
 
         <!-- Handlebars -->
         <!-- <script src="lib/handlebars.runtime-v4.0.5.js"></script> -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.runtime.min.js" type="text/javascript"></script>
 
         <!-- UG4 Proj JS -->
-        <script src="js/kludge.js" type="text/javascript"></script>
-        <script src="js/teaching/dictionary.js" type="text/javascript"></script>
-        <script src="js/helpers.js" type="text/javascript"></script>
-        <script src="js/templates.js" type="text/javascript"></script>
-        <script src="js/values.js" type="text/javascript"></script>
-        <script src="js/graph.js" type="text/javascript"></script>
-        <script src="js/simulator/iloc/iloc_parser.js" type="text/javascript"></script>
-        <script src="js/simulator/iloc/iloc.js" type="text/javascript"></script>
-        <script src="js/simulator/dfa.js" type="text/javascript"></script>
-        <script src="js/simulator/dataflows/iloc_reaching_definitions.js" type="text/javascript"></script>
-        <script src="js/simulator/dataflows/iloc_avail_expressions.js" type="text/javascript"></script>
-        <script src="js/simulator/dataflows/iloc_liveness.js" type="text/javascript"></script>
-        <script src="js/simulator/roundrobin.js" type="text/javascript"></script>
-        <script src="js/view.js" type="text/javascript"></script>
-        <script src="js/simulator/views.js" type="text/javascript"></script>
-        <script src="js/teaching/views.js" type="text/javascript"></script>
-        <script src="js/teaching/lessons/intro-interactive.js" type="text/javascript"></script>
-        <script src="js/teaching/lessons/roundrobin.js" type="text/javascript"></script>
-        <script src="js/teaching/lessons/generic.js" type="text/javascript"></script>
-        <script src="js/teaching/tests/complete.js" type="text/javascript"></script>
-        <script src="js/views.js" type="text/javascript"></script>
-        <script src="js/main.js" type="text/javascript"></script>
-        <script>
-         $(document).ready(function() {
-             end_load = new Date();
-             var load_ms = (end_load-start_load);
-             tracking.send(
-                 'load',
-                 'external-js',
-                 'ms',
-                 load_ms
-             );
-         });
-        </script>
+        <script src="app/js/kludge.js" type="text/javascript"></script>
+        <script src="app/js/teaching/dictionary.js" type="text/javascript"></script>
+        <script src="app/js/helpers.js" type="text/javascript"></script>
+        <script src="app/js/templates.js" type="text/javascript"></script>
+        <script src="app/js/values.js" type="text/javascript"></script>
+        <script src="app/js/graph.js" type="text/javascript"></script>
+        <script src="app/js/simulator/iloc/iloc_parser.js" type="text/javascript"></script>
+        <script src="app/js/simulator/iloc/iloc.js" type="text/javascript"></script>
+        <script src="app/js/simulator/dfa.js" type="text/javascript"></script>
+        <script src="app/js/simulator/dataflows/iloc_reaching_definitions.js" type="text/javascript"></script>
+        <script src="app/js/simulator/dataflows/iloc_avail_expressions.js" type="text/javascript"></script>
+        <script src="app/js/simulator/dataflows/iloc_liveness.js" type="text/javascript"></script>
+        <script src="app/js/simulator/roundrobin.js" type="text/javascript"></script>
+        <script src="app/js/view.js" type="text/javascript"></script>
+        <script src="app/js/simulator/views.js" type="text/javascript"></script>
+        <script src="app/js/teaching/views.js" type="text/javascript"></script>
+        <script src="app/js/teaching/lessons/intro-interactive.js" type="text/javascript"></script>
+        <script src="app/js/teaching/lessons/roundrobin.js" type="text/javascript"></script>
+        <script src="app/js/teaching/lessons/generic.js" type="text/javascript"></script>
+        <script src="app/js/teaching/tests/complete.js" type="text/javascript"></script>
+        <script src="app/js/views.js" type="text/javascript"></script>
+        <script src="app/js/main.js" type="text/javascript"></script>
     </body>
 </html>

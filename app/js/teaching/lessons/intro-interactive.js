@@ -8,7 +8,7 @@ function LessonIntroView(kwargs) {
 
     this.template_root = 'teaching/lesson/intro/';
     this.template = this.get_template('main');
-        
+
     this.clear = function() {
         _this.text.html("");
     }
@@ -22,7 +22,7 @@ function LessonIntroView(kwargs) {
             _this.step_title.html("Introduction");
             // Update the text
             _this.text.html(_this.get_template('step_00')());
-            
+
             // Hide the CFG
             _this.cfg_canvas.hide();
         },
@@ -30,24 +30,24 @@ function LessonIntroView(kwargs) {
             _this.step_title.html("What is Data-Flow Analysis?");
             _this.clear();
             _this.text.html(_this.get_template('step_01')());
-            
+
         },
         function step_02() {
             _this.step_title.html("Control-Flow Graphs");
             _this.clear();
             _this.text.html(_this.get_template('step_02')());
-            
+
         },
         function step_03() {
             _this.text.append(_this.get_template('step_03')());
 
             // Show the CFG
             _this.cfg_canvas.show();
-            
+
             // Reset the CFG code
             var iloc_code = _this.get_template('example', 'iloc')();
             _this.simulator.sim_code(iloc_code);
-            
+
             _this.cfg_view.g = new dagreD3.graphlib.Graph({compound:true})
                 .setGraph({})
                 .setDefaultEdgeLabel(function() { return {}; });
@@ -62,7 +62,7 @@ function LessonIntroView(kwargs) {
                                          rx: 15,
                                          ry: 15,
                                          style: 'stroke: rgba(0,0,0,0);'
-                                     });            
+                                     });
 
             _this.cfg_view.g.setNode('1',
                                      {
@@ -71,7 +71,7 @@ function LessonIntroView(kwargs) {
                                          rx: 15,
                                          ry: 15,
                                      });
-            
+
             _this.cfg_view.g.setNode('2',
                             {
                                 labelType: 'html',
@@ -96,7 +96,7 @@ function LessonIntroView(kwargs) {
 
             _this.cfg_view.graph_properties.height = _this.cfg_view.g.graph().height;
             _this.cfg_view.graph_properties.width  = _this.cfg_view.g.graph().width;
-            
+
             var xCenterOffset = (_this.cfg_view.canvas.width() - _this.cfg_view.graph_properties.width)
                 / 2 * _this.cfg_view.graph_properties.scale;
             var yCenterOffset = (_this.cfg_view.canvas.height() - _this.cfg_view.graph_properties.height)
@@ -123,7 +123,7 @@ function LessonIntroView(kwargs) {
                                          rx: 15,
                                          ry: 15,
                                          style: 'stroke: rgba(0,0,0,0);'
-                                     });            
+                                     });
 
             _this.cfg_view.g.setNode('1',
                                      {
@@ -140,8 +140,8 @@ function LessonIntroView(kwargs) {
                                 rx: 15,
                                 ry: 15,
                             });
-            
-            
+
+
             _this.cfg_view.g.setNode('3',
                             {
                                 labelType: 'html',
@@ -176,7 +176,7 @@ function LessonIntroView(kwargs) {
 
             _this.cfg_view.graph_properties.height = _this.cfg_view.g.graph().height;
             _this.cfg_view.graph_properties.width  = _this.cfg_view.g.graph().width;
-            
+
             var xCenterOffset = (_this.cfg_view.canvas.width() - _this.cfg_view.graph_properties.width)
                 / 2 * _this.cfg_view.graph_properties.scale;
             var yCenterOffset = (_this.cfg_view.canvas.height() - _this.cfg_view.graph_properties.height)
@@ -195,9 +195,9 @@ function LessonIntroView(kwargs) {
         },
         function step_06() {
             _this.step_title.html("Reaching Definitions");
-            
+
             _this.clear();
-            
+
             _this.text.append(_this.get_template('step_06')());
 
             // Hide the CFG view.
@@ -207,10 +207,10 @@ function LessonIntroView(kwargs) {
             _this.text.append(_this.get_template('step_07')());
 
             _this.cfg_canvas.show();
-            
+
             var iloc_code = _this.get_template('step_07', 'iloc')();
             _this.simulator.sim_code(iloc_code);
-            
+
             _this.cfg_view.show_all_points();
             _this.cfg_view.update();
         },
@@ -233,7 +233,7 @@ function LessonIntroView(kwargs) {
             _this.text.append(_this.get_template('step_11')());
 
             _this.next_button.prop('disabled', true);
-            
+
             var iloc_code = _this.get_template('step_11', 'iloc')();
             _this.simulator.sim_code(iloc_code);
 
@@ -261,7 +261,7 @@ function LessonIntroView(kwargs) {
                     this.submit();
                 }
             });
-            
+
             question_view.init();
         },
         function step_12() {
@@ -294,7 +294,7 @@ function LessonIntroView(kwargs) {
                     this.submit();
                 }
             });
-            
+
             question_view.init();
         },
         function step_13() {
@@ -305,35 +305,35 @@ function LessonIntroView(kwargs) {
             _this.simulator.sim_code(iloc_code);
 
             _this.simulator.advance(2);
-            
+
             _this.text.append(_this.get_template('step_13')());
         },
         function step_14() {
             _this.simulator.step_forward();
-            
+
             _this.text.append(_this.get_template('step_14')());
         },
         function step_15() {
             _this.simulator.step_forward();
-            
+
             _this.text.append(_this.get_template('step_15')());
         },
         function step_16() {
             _this.clear()
             // Reset the CFG code
             var iloc_code = _this.get_template('step_16', 'iloc')();
-            _this.simulator.sim_code(iloc_code);            
+            _this.simulator.sim_code(iloc_code);
 
             _this.cfg_view.show_no_points();
             _this.simulator.advance(12);
             _this.cfg_view.reset_highlight();
-            
+
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[3], DFA.OUT);
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[5], DFA.OUT);
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[6], DFA.IN);
             _this.cfg_view.remove_point(_this.simulator.cfg.nodes[3], DFA.IN);
             _this.cfg_view.draw();
-                        
+
             _this.text.append(_this.get_template('step_16')());
 
             _this.next_button.prop('disabled', true);
@@ -362,14 +362,14 @@ function LessonIntroView(kwargs) {
                     this.submit();
                 }
             });
-            
+
             question_view.init();
         },
         function step_17(){
             _this.clear()
-            
+
             _this.text.append(_this.get_template('step_17')());
-            
+
             // Reset the CFG code
             var iloc_code = _this.get_template('step_17', 'iloc')();
             _this.simulator.sim_code(iloc_code);
@@ -377,7 +377,7 @@ function LessonIntroView(kwargs) {
             _this.cfg_view.show_no_points();
             _this.simulator.advance(2);
             _this.cfg_view.reset_highlight();
-            
+
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[0], DFA.OUT);
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[4], DFA.OUT);
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[1], DFA.IN);
@@ -410,7 +410,7 @@ function LessonIntroView(kwargs) {
                     this.submit();
                 }
             });
-            
+
             question_view.init();
         },
         function step_18() {
@@ -420,11 +420,11 @@ function LessonIntroView(kwargs) {
 
             _this.simulator.reset();
             _this.simulator.advance(9);
-            
+
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[4], DFA.IN);
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[4], DFA.OUT);
             _this.cfg_view.reset_highlight();
-            
+
             _this.cfg_view.draw();
         },
         function step_19() {
@@ -437,7 +437,7 @@ function LessonIntroView(kwargs) {
             _this.text.append(_this.get_template('step_20')());
 
             _this.simulator.advance(4);
-            
+
             _this.cfg_view.remove_point(_this.simulator.cfg.nodes[4], DFA.IN);
             _this.cfg_view.remove_point(_this.simulator.cfg.nodes[0], DFA.IN);
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[0], DFA.OUT);
@@ -472,7 +472,7 @@ function LessonIntroView(kwargs) {
                     this.submit();
                 }
             });
-            
+
             question_view.init();
         },
         function step_21() {
@@ -481,21 +481,21 @@ function LessonIntroView(kwargs) {
             _this.text.append(_this.get_template('step_21')());
 
             _this.cfg_view.show_touched_points();
-            
+
             _this.simulator.reset();
             _this.simulator.advance(13);
-            
+
             _this.text.append(Handlebars.templates['simulator/sim_controls/canvas.hbs']());
             var controls_view = new SimControlsView({
                 canvas: '#sim-controls-canvas',
                 simulator: _this.simulator,
             });
-            
+
             controls_view.init();
         },
         function step_22() {
             _this.step_title.html("Summary");
-            
+
             _this.clear();
 
             _this.text.append(_this.get_template('step_22')());
@@ -504,34 +504,24 @@ function LessonIntroView(kwargs) {
                 _this.main_view.show_lesson(
                     _this.next_lesson
                 );
-                tracking.send(
-                    'click',
-                    'lesson-goto-next',
-                    this.id
-                );
             });
-            
+
             $('#btn-goto-menu').on('click', function() {
                 _this.main_view.show_menu();
-                tracking.send(
-                    'click',
-                    'lesson-goto-menu',
-                    this.id
-                );
             });
         }
     ];
 
     this.init_children = function() {
         $('#page-title').html(this.title);
-        
+
         this.cfg_canvas = $('#cfg-canvas');
-        
+
         this.cfg_view = new CFGView({
             canvas: '#cfg-canvas',
             simulator: this.simulator
         });
-        
+
         this.cfg_view.init();
     }
 }

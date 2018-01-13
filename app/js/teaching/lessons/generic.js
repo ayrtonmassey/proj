@@ -8,7 +8,7 @@ function LessonGenericFrameworkView(kwargs) {
 
     this.template_root = 'teaching/lesson/generic/';
     this.template = this.get_template('main');
-        
+
     this.clear = function() {
         _this.text.html("");
     }
@@ -27,7 +27,7 @@ function LessonGenericFrameworkView(kwargs) {
         function step_01() {
             _this.step_title.html("Generic Frameworks for Data-Flow Analysis");
             _this.clear();
-            _this.text.append(_this.get_template('step_01')());            
+            _this.text.append(_this.get_template('step_01')());
         },
         function step_02() {
             _this.text.append(_this.get_template('step_02')());
@@ -195,7 +195,7 @@ function LessonGenericFrameworkView(kwargs) {
             _this.clear();
 
             _this.step_title.html("Set Closure");
-            
+
             $('#left-column')
                 .addClass('col-xs-offset-2');
 
@@ -221,7 +221,7 @@ function LessonGenericFrameworkView(kwargs) {
             _this.clear();
 
             _this.step_title.html("Monotonic Functions");
-            
+
             _this.text.append(_this.get_template('step_31')());
         },
         function step_32() {
@@ -259,7 +259,7 @@ function LessonGenericFrameworkView(kwargs) {
                 show_on_click: QFLAGS.SHOW_CORRECT_ONE | QFLAGS.SHOW_INCORRECT_ONE,
                 disable_on_click: QFLAGS.DISABLE_CORRECT_ONE | QFLAGS.DISABLE_INCORRECT_ONE,
             });
-            
+
             question_view.init();
         },
         function step_33() {
@@ -280,7 +280,7 @@ function LessonGenericFrameworkView(kwargs) {
 
             _this.lattice_view.init();
             _this.lattice_view.reset();
-            
+
             _this.text.append(_this.get_template('step_34')());
         },
         function step_35() {
@@ -294,10 +294,10 @@ function LessonGenericFrameworkView(kwargs) {
         function step_37() {
             var nclass = $('#lattice-node-1').attr('class');
             $('#lattice-node-1').attr('class', '{0} {1} {2} {3}'.format(nclass, 'meet', 'highlight', 'read'));
-            
+
             var nclass = $('#lattice-node-3').attr('class');
             $('#lattice-node-3').attr('class', '{0} {1} {2} {3}'.format(nclass, 'meet', 'highlight', 'read'));
-            
+
             var nclass = $('#lattice-node-5').attr('class');
             $('#lattice-node-5').attr('class', '{0} {1} {2} {3}'.format(nclass, 'meet', 'highlight', 'modified'));
 
@@ -314,14 +314,14 @@ function LessonGenericFrameworkView(kwargs) {
             _this.clear();
 
             _this.step_title.html("Monotonic Functions");
-            
+
             $('#left-column')
                 .addClass('col-xs-offset-2');
 
             $('#lattice-canvas').remove();
 
             _this.lattice_view = undefined;
-            
+
             _this.text.append(_this.get_template('step_40')());
         },
         function step_41() {
@@ -334,25 +334,15 @@ function LessonGenericFrameworkView(kwargs) {
             _this.clear();
             _this.step_title.html("Summary");
             _this.text.append(_this.get_template('step_43')());
-            
+
             $('#btn-goto-simulator').on('click', function() {
                 _this.main_view.show_round_robin_simulator(
                     _this.get_template('step_25', 'iloc')()
                 );
-                tracking.send(
-                    'click',
-                    'lesson-goto-simulator',
-                    this.id
-                );
             });
-            
+
             $('#btn-goto-menu').on('click', function() {
                 _this.main_view.show_menu();
-                tracking.send(
-                    'click',
-                    'lesson-goto-menu',
-                    this.id
-                );
             });
         }
     ];

@@ -3,7 +3,7 @@ function DataCollectionView(kwargs) {
     var _this = this;
 
     this.main_view = kwargs.main_view;
-        
+
     this.clear = function() {
         for (var question_view of this.question_views) {
             question_view.canvas.hide();
@@ -12,7 +12,7 @@ function DataCollectionView(kwargs) {
 
     this.update_math = function() {
     }
-    
+
     this.template_root = 'data_collection/';
     this.template = this.get_template('main');
 
@@ -34,11 +34,6 @@ function DataCollectionView(kwargs) {
             track_callback: function() {
                 for (var answer of this.answers) {
                     if (answer.selected) {
-                        tracking.send(
-                            'user-stats',
-                            'experience',
-                            answer.ans_ident
-                        );
                         setCookie(answer.ans_ident, true);
                     }
                 }
@@ -61,11 +56,6 @@ function DataCollectionView(kwargs) {
             track_callback: function() {
                 for (var answer of this.answers) {
                     if(answer.selected) {
-                        tracking.send(
-                            'user-stats',
-                            'background',
-                            answer.ans_ident
-                        );
                         setCookie(answer.ans_ident, true);
                     }
                 }
@@ -80,7 +70,7 @@ function DataCollectionView(kwargs) {
             this.next_button.prop('disabled',true);
         }
     }
-    
+
     this.test_view_next = this.next;
     this.next = function() {
         this.test_view_next();
@@ -99,11 +89,6 @@ function DataCollectionView(kwargs) {
     this.test_view_start_test = this.start_test;
     this.start_test = function() {
         this.test_view_start_test();
-        tracking.send(
-            'user-stats',
-            'data-collection-notice',
-            'accepted-terms'
-        );
     }
 
     this.init_children = function() {
@@ -143,34 +128,28 @@ function SinglePageView(kwargs) {
     var _this = this;
 
     this.id = kwargs.id;
-    
+
     this.template_root = 'staticpage/';
     this.template = this.get_template('canvas');
-    
+
     this.canvas = $(kwargs.canvas);
     this.title = kwargs.title;
     this.content_template = kwargs.content;
-    
+
     this.init = function() {
         $('#page-title').html(this.title);
 
         this.canvas.html(this.template({content: this.content_template()}));
 
         MathJax.Hub.Queue(["Typeset",MathJax.Hub,this.canvas.id]);
-        
-        tracking.send(
-            'pageview',
-            this.id,
-            'open'
-        );
-    }    
+    }
 }
 
 function MainView(kwargs) {
     View.call(this, kwargs);
 
     var _this = this;
-    
+
     this.view_canvas = $(kwargs.view_canvas);
     this.view_canvas_selector = kwargs.view_canvas;
 
@@ -224,14 +203,14 @@ function MainView(kwargs) {
     this.show_iloc_help = function() {
         this.view_canvas.html("")
         this.view_canvas.show();
-        
+
         this.view = new SinglePageView({
             id: 'iloc-help',
             content: Handlebars.templates['iloc-help/main.hbs'],
             title: "Introduction to ILOC",
             canvas: this.view_canvas_selector,
         });
-        
+
         this.view.init();
     }
 
@@ -250,7 +229,7 @@ function MainView(kwargs) {
                          }
                         )
             );
-        
+
             this.view.init();
 
             if (step!=undefined) {
@@ -276,7 +255,7 @@ function MainView(kwargs) {
                          }
                         )
             );
-        
+
             this.view.init();
 
             if (q!=undefined) {
@@ -293,7 +272,7 @@ function MainView(kwargs) {
 
         // Get code
         var iloc_code = code || getParameterByName('code') || Handlebars.templates['simulator/init.iloc']();
-        
+
         try {
             ILOC.parser.parse(iloc_code);
         } catch(ex) {
@@ -305,20 +284,20 @@ function MainView(kwargs) {
 
         // Get ordering
         var ordering = ordering || ( getParameterByName('ordering') in DFA ? getParameterByName('ordering') : DFA.POSTORDER );
-        
+
         var simulator = new RoundRobinSimulator({
             framework:  framework,
             ordering:   ordering,
             code:       iloc_code,
             play_speed: 1000,
         });
-        
+
         this.view = new RoundRobinSimulatorView({
             main_view: this,
             canvas: this.view_canvas_selector,
             simulator: simulator,
         });
-        
+
         this.view.init();
     }
 
@@ -334,13 +313,13 @@ function MainView(kwargs) {
             throw ReferenceError("Unrecognised testbed {0}".format(testbed_name));
         }
     }
-    
+
     this.show_lattice_testbed = function() {
         this.view_canvas.html("");
         this.view_canvas.show();
-        
+
         var iloc_code = Handlebars.templates['test/lattice.iloc']();
-        
+
         var simulator = new RoundRobinSimulator({
             // framework: iloc_liveness,
             // ordering:  DFA.POSTORDER,
@@ -349,22 +328,22 @@ function MainView(kwargs) {
             code:       iloc_code,
             play_speed: 1000,
         });
-        
+
         this.view = new LatticeTestbedView({
             main_view: this,
             canvas: this.view_canvas_selector,
             simulator: simulator,
         });
-        
+
         this.view.init();
     }
 
     this.show_cfg_testbed = function() {
         this.view_canvas.html("");
         this.view_canvas.show();
-        
+
         var iloc_code = Handlebars.templates['test/cfg.iloc']();
-        
+
         var simulator = new RoundRobinSimulator({
             // framework: iloc_liveness,
             // ordering:  DFA.POSTORDER,
@@ -373,13 +352,13 @@ function MainView(kwargs) {
             code:       iloc_code,
             play_speed: 1000,
         });
-        
+
         this.view = new CFGTestbedView({
             main_view: this,
             canvas: this.view_canvas_selector,
             simulator: simulator,
         });
-        
+
         this.view.init();
     }
 
@@ -402,19 +381,19 @@ function MainView(kwargs) {
             canvas: this.view_canvas_selector,
         });
 
-        this.view.init();        
+        this.view.init();
     }
 
     this.init = function() {
         var show_lesson = getParameterByName('lesson');
         var show_lesson_step = getParameterByName('step');
-        
+
         var show_test = getParameterByName('test');
         var show_test_question = getParameterByName('q');
-        
+
         var show_simulator = getParameterByName('simulator');
         var show_testbed = getParameterByName('testbed');
-        
+
         if(!getCookie('data_collected')) {
             this.show_data_collection();
         } else if(show_simulator=='' || show_simulator==true) {
@@ -450,23 +429,23 @@ function MainView(kwargs) {
         $('#nav-goto-simulator').on('click', function() {
             _this.show_round_robin_simulator();
         });
-    }    
+    }
 }
 
 MainView.prototype = Object.create(View.prototype);
 MainView.prototype.constructor = MainView
 
 
-function MenuView(kwargs) {    
+function MenuView(kwargs) {
     View.call(this, kwargs);
 
     var _this = this;
 
     this.main_view = kwargs.main_view;
-    
-    this.template_root = 'menu/'    
+
+    this.template_root = 'menu/'
     this.template = this.get_template('main');
-    
+
     /* Lessons */
     this.lesson_menu_template   = this.get_template('lesson_menu');
     this.lesson_button_template = this.get_template('btn-lesson');
@@ -498,34 +477,34 @@ function MenuView(kwargs) {
     this.show_simulator_menu = function() {
 
         this.menu.append(this.get_template('simulator_menu')());
-    
+
         /* Simulation */
         $('#btn-round-robin-simulator').on('click', function() {
             _this.main_view.show_round_robin_simulator();
         });
 
     }
-    
+
     this.show_testbed_menu = function() {
 
         this.menu.append(this.get_template('testbed_menu')());
-        
+
         /* Testing */
         $('#btn-lattice-testbed').on('click', function() {
             _this.main_view.show_lattice_testbed();
         });
-        
+
         $('#btn-cfg-testbed').on('click', function() {
             _this.main_view.show_cfg_testbed();
         });
-        
+
     }
-    
+
     /* Tests */
     this.test_menu_template   = this.get_template('test_menu');
     this.test_button_template = this.get_template('btn-test');
     this.tests = kwargs.tests;
-    
+
     this.show_test_menu = function() {
         this.menu.append(this.test_menu_template());
         this.test_menu = $('#test-menu');
@@ -570,12 +549,12 @@ function MenuView(kwargs) {
             userid: getCookie("userid"),
         }));
         this.menu = $('#menu');
-        
+
         this.show_simulator_menu();
 
         // If lessons are available, create the menu
         if (this.lessons) { this.show_lesson_menu(); }
-        
+
         // If tests are available, create the menu
         if (this.tests) { this.show_test_menu(); }
 
@@ -584,12 +563,6 @@ function MenuView(kwargs) {
         $('#btn-iloc-help').on('click', function() {
                 _this.main_view.show_iloc_help();
         });
-        
-        tracking.send(
-            'pageview',
-            'menu',
-            'open'
-        );
     }
 }
 

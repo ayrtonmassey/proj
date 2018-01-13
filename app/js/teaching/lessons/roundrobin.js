@@ -8,7 +8,7 @@ function LessonRoundRobinView(kwargs) {
 
     this.template_root = 'teaching/lesson/roundrobin/';
     this.template = this.get_template('main');
-        
+
     this.clear = function() {
         _this.text.html("");
     }
@@ -22,7 +22,7 @@ function LessonRoundRobinView(kwargs) {
             _this.step_title.html("Introduction");
             // Update the text
             _this.text.html(_this.get_template('step_00')());
-            
+
             // Hide the CFG
             _this.results_canvas.hide();
             _this.cfg_canvas.hide();
@@ -30,7 +30,7 @@ function LessonRoundRobinView(kwargs) {
         function step_01() {
             _this.step_title.html("The Round Robin Algorithm");
             _this.clear();
-            _this.text.html(_this.get_template('step_01')());            
+            _this.text.html(_this.get_template('step_01')());
         },
         function step_02() {
             _this.clear();
@@ -49,7 +49,7 @@ function LessonRoundRobinView(kwargs) {
         },
         function step_04() {
             _this.clear();
-            
+
             _this.text.append(_this.get_template('step_04')());
 
             $('.set-defgen').each(function() {
@@ -61,14 +61,14 @@ function LessonRoundRobinView(kwargs) {
         },
         function step_05() {
             _this.cfg_view.show_touched_points();
-            
+
             _this.simulator.step_forward();
-            
+
             _this.text.append(_this.get_template('step_05')());
         },
         function step_06() {
             _this.clear();
-            
+
             _this.text.append(_this.get_template('step_06')());
         },
         function step_07() {
@@ -105,7 +105,7 @@ function LessonRoundRobinView(kwargs) {
             _this.simulator.step_forward();
         },
         function step_18() {
-            _this.text.append(_this.get_template('step_18')());            
+            _this.text.append(_this.get_template('step_18')());
         },
         function step_19() {
             _this.clear();
@@ -115,9 +115,9 @@ function LessonRoundRobinView(kwargs) {
             _this.simulator.reset();
             _this.simulator.advance(12);
             _this.cfg_view.reset_highlight();
-            
+
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[0], DFA.IN);
-            
+
             _this.cfg_view.draw();
 
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
@@ -135,7 +135,7 @@ function LessonRoundRobinView(kwargs) {
                     {text: '\\(\\{\\}\\)', correct: true},
                     {text: '\\(\\{\\texttt{0}\\}\\)', correct: false}
                 ],
-                shuffle_answers: true,                
+                shuffle_answers: true,
                 correct_callback: function() {
                     _this.simulator.step_forward();
                     _this.text.append(_this.get_template('step_19_ans')());
@@ -144,7 +144,7 @@ function LessonRoundRobinView(kwargs) {
                     this.submit();
                 }
             });
-            
+
             question_view.init();
         },
         function step_20() {
@@ -155,10 +155,10 @@ function LessonRoundRobinView(kwargs) {
             _this.simulator.reset();
             _this.simulator.advance(13);
             _this.cfg_view.reset_highlight();
-            
+
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[0], DFA.IN);
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[0], DFA.OUT);
-            
+
             _this.cfg_view.draw();
 
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
@@ -185,7 +185,7 @@ function LessonRoundRobinView(kwargs) {
                     this.submit();
                 }
             });
-            
+
             question_view.init();
         },
         function step_21() {
@@ -196,11 +196,11 @@ function LessonRoundRobinView(kwargs) {
             _this.simulator.reset();
             _this.simulator.advance(14);
             _this.cfg_view.reset_highlight();
-            
+
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[0], DFA.OUT);
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[4], DFA.OUT);
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[1], DFA.IN);
-            
+
             _this.cfg_view.draw();
 
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
@@ -227,7 +227,7 @@ function LessonRoundRobinView(kwargs) {
                     this.submit();
                 }
             });
-            
+
             question_view.init();
         },
         function step_22() {
@@ -238,10 +238,10 @@ function LessonRoundRobinView(kwargs) {
             _this.simulator.reset();
             _this.simulator.advance(15);
             _this.cfg_view.reset_highlight();
-            
+
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[1], DFA.IN);
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[1], DFA.OUT);
-            
+
             _this.cfg_view.draw();
 
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
@@ -268,7 +268,7 @@ function LessonRoundRobinView(kwargs) {
                     this.submit();
                 }
             });
-            
+
             question_view.init();
         },
         function step_23() {
@@ -282,7 +282,7 @@ function LessonRoundRobinView(kwargs) {
 
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[1], DFA.OUT);
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[2], DFA.IN);
-            
+
             _this.cfg_view.draw();
 
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
@@ -309,7 +309,7 @@ function LessonRoundRobinView(kwargs) {
                     this.submit();
                 }
             });
-            
+
             question_view.init();
         },
         function step_24() {
@@ -320,10 +320,10 @@ function LessonRoundRobinView(kwargs) {
             _this.simulator.reset();
             _this.simulator.advance(17);
             _this.cfg_view.reset_highlight();
-            
+
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[2], DFA.IN);
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[2], DFA.OUT);
-            
+
             _this.cfg_view.draw();
 
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
@@ -350,7 +350,7 @@ function LessonRoundRobinView(kwargs) {
                     this.submit();
                 }
             });
-            
+
             question_view.init();
         },
         function step_25() {
@@ -364,7 +364,7 @@ function LessonRoundRobinView(kwargs) {
 
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[2], DFA.OUT);
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[3], DFA.IN);
-            
+
             _this.cfg_view.draw();
 
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
@@ -391,7 +391,7 @@ function LessonRoundRobinView(kwargs) {
                     this.submit();
                 }
             });
-            
+
             question_view.init();
         },
         function step_26() {
@@ -402,10 +402,10 @@ function LessonRoundRobinView(kwargs) {
             _this.simulator.reset();
             _this.simulator.advance(19);
             _this.cfg_view.reset_highlight();
-            
+
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[3], DFA.IN);
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[3], DFA.OUT);
-            
+
             _this.cfg_view.draw();
 
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
@@ -432,7 +432,7 @@ function LessonRoundRobinView(kwargs) {
                     this.submit();
                 }
             });
-            
+
             question_view.init();
         },
         function step_27() {
@@ -446,7 +446,7 @@ function LessonRoundRobinView(kwargs) {
 
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[3], DFA.OUT);
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[4], DFA.IN);
-            
+
             _this.cfg_view.draw();
 
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
@@ -473,7 +473,7 @@ function LessonRoundRobinView(kwargs) {
                     this.submit();
                 }
             });
-            
+
             question_view.init();
         },
         function step_28() {
@@ -484,10 +484,10 @@ function LessonRoundRobinView(kwargs) {
             _this.simulator.reset();
             _this.simulator.advance(21);
             _this.cfg_view.reset_highlight();
-            
+
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[4], DFA.IN);
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[4], DFA.OUT);
-            
+
             _this.cfg_view.draw();
 
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
@@ -514,7 +514,7 @@ function LessonRoundRobinView(kwargs) {
                     this.submit();
                 }
             });
-            
+
             question_view.init();
         },
         function step_29() {
@@ -528,7 +528,7 @@ function LessonRoundRobinView(kwargs) {
 
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[4], DFA.OUT);
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[5], DFA.IN);
-            
+
             _this.cfg_view.draw();
 
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
@@ -555,7 +555,7 @@ function LessonRoundRobinView(kwargs) {
                     this.submit();
                 }
             });
-            
+
             question_view.init();
         },
         function step_30() {
@@ -566,10 +566,10 @@ function LessonRoundRobinView(kwargs) {
             _this.simulator.reset();
             _this.simulator.advance(23);
             _this.cfg_view.reset_highlight();
-            
+
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[5], DFA.IN);
             _this.cfg_view.add_point(_this.simulator.cfg.nodes[5], DFA.OUT);
-            
+
             _this.cfg_view.draw();
 
             _this.text.append(Handlebars.templates['teaching/question/canvas.hbs']());
@@ -596,7 +596,7 @@ function LessonRoundRobinView(kwargs) {
                     this.submit();
                 }
             });
-            
+
             question_view.init();
         },
         function step_31() {
@@ -629,7 +629,7 @@ function LessonRoundRobinView(kwargs) {
                     this.submit();
                 }
             });
-            
+
             question_view.init();
         },
         function step_32() {
@@ -639,7 +639,7 @@ function LessonRoundRobinView(kwargs) {
         },
         function step_33() {
             _this.results_canvas.hide();
-            
+
             _this.text.append(_this.get_template('step_33')());
         },
         function step_34() {
@@ -654,13 +654,13 @@ function LessonRoundRobinView(kwargs) {
             _this.results_canvas.show();
 
             _this.text.append(_this.get_template('step_36')());
-            
+
             _this.text.append(Handlebars.templates['simulator/sim_controls/canvas.hbs']());
             var controls_view = new SimControlsView({
                 canvas: '#sim-controls-canvas',
                 simulator: _this.simulator,
             });
-            
+
             controls_view.init();
 
             _this.simulator.ordering=DFA.POSTORDER;
@@ -669,57 +669,42 @@ function LessonRoundRobinView(kwargs) {
         },
         function step_37() {
             _this.clear();
-            
+
             _this.text.append(_this.get_template('step_37')());
 
             _this.results_canvas.hide();
         },
-        function step_38() {            
+        function step_38() {
             _this.text.append(_this.get_template('step_38')());
         },
         function step_39() {
             _this.step_title.html("Summary");
-            
+
             _this.clear();
-            
+
             _this.text.append(_this.get_template('step_39')());
 
             $('#btn-goto-next-lesson').on('click', function() {
                 _this.main_view.show_lesson(
                     _this.next_lesson
                 );
-                tracking.send(
-                    'click',
-                    'lesson-goto-next',
-                    this.id
-                );
             });
-            
+
             $('#btn-goto-simulator').on('click', function() {
                 _this.main_view.show_round_robin_simulator(
                     _this.get_template('step_03', 'iloc')()
                 );
-                tracking.send(
-                    'click',
-                    'lesson-goto-simulator',
-                    this.id
-                );
             });
-            
+
             $('#btn-goto-menu').on('click', function() {
                 _this.main_view.show_menu();
-                tracking.send(
-                    'click',
-                    'lesson-goto-menu',
-                    this.id
-                );
             });
         }
     ];
 
     this.init_children = function() {
         $('#page-title').html(this.title);
-        
+
         this.results_canvas = $('#results-canvas');
         this.cfg_canvas = $('#cfg-canvas');
 
@@ -727,7 +712,7 @@ function LessonRoundRobinView(kwargs) {
             canvas: '#results-canvas',
             simulator: this.simulator,
         });
-        
+
         this.cfg_view = new CFGView({
             canvas: '#cfg-canvas',
             simulator: this.simulator

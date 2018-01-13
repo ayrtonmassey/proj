@@ -1,10 +1,10 @@
 function TestView(kwargs) {
     View.call(this, kwargs);
-    
+
     var _this = this;
 
     this.id = kwargs.id;
-    
+
     this.title = kwargs.title;
 
     this.template_root = 'teaching/tests/';
@@ -24,7 +24,7 @@ function TestView(kwargs) {
         var scores = this.get_scores();
 
         var kwargs = $.extend({questions: this.questions}, scores);
-        
+
         if ($('#test-score').length <= 0) {
             this.prev_button.after(this.get_template('score')(kwargs));
         }
@@ -37,12 +37,12 @@ function TestView(kwargs) {
             score += question_view.score;
             max_score += question_view.max_score;
         }
-        
+
         var score_percentage=0;
         if (max_score != 0) {
             score_percentage = Math.floor((score / max_score) * 100);
         }
-        
+
         var grade;
         if (score_percentage >= 70) {
             grade = 'A';
@@ -63,7 +63,7 @@ function TestView(kwargs) {
             score_percentage: score_percentage,
         }
     }
-    
+
     this.show_question = function(question_id) {
         this.clear();
 
@@ -87,7 +87,7 @@ function TestView(kwargs) {
             } else {
                 this.next_button.prop('disabled', false);
             }
-            
+
             if (this.question_id > 0) {
                 this.prev_button.prop('disabled', false);
             } else {
@@ -95,16 +95,9 @@ function TestView(kwargs) {
             }
 
             this.update_math();
-
-            tracking.send(
-                'pageview',
-                'test-q',
-                this.id,
-                this.question_id
-            );
         }
     }
-    
+
     this.next = function() {
         this.goto_question(this.question_id + 1);
     }
@@ -112,7 +105,7 @@ function TestView(kwargs) {
     this.prev = function() {
         this.goto_question(this.question_id - 1);
     }
-    
+
     this.submit = function() {
         this.submitted = true;
         this.submit_button.hide();
@@ -130,25 +123,17 @@ function TestView(kwargs) {
             setCookie("test-{0}-max-score".format(this.id),  scores.max_score);
             setCookie("test-{0}-percentage".format(this.id), scores.score_percentage);
         }
-        
-        tracking.send(
-            'submit',
-            'test',
-            this.id,
-            scores.score,
-            scores.score_percentage
-        );
-        
+
         this.goto_question(this.question_id);
     }
 
-    this.reset = function() {        
+    this.reset = function() {
         this.prev_button.prop('disabled', true);
         this.question_views = [];
-        
+
         // Allow children to init contained components
         this.init_children();
-        
+
         for (var i=0; i < this.questions.length; i++) {
             var question_id = i;
             this.text.append(Handlebars.templates['teaching/question/canvas.hbs']({id: ''+question_id}));
@@ -163,7 +148,7 @@ function TestView(kwargs) {
                 correct_callback: question.correct_callback,
                 incorrect_callback: question.incorrect_callback,
             }));
-            
+
             this.question_views[i].init();
             this.question_views[i].canvas.hide();
         }
@@ -175,30 +160,18 @@ function TestView(kwargs) {
 
     this.start_test = function() {
         this.canvas.html(this.template({title: this.title}));
-        
+
         this.text = $('#text');
         $('#page-title').html(this.title);
-        
+
         this.next_button = $('#btn-next');
         this.next_button.on('click', function() {
             _this.next();
-            tracking.send(
-                'click',
-                'test-next',
-                this.id,
-                this.question_id
-            );
         });
 
         this.prev_button = $('#btn-prev');
         this.prev_button.on('click', function() {
             _this.prev();
-            tracking.send(
-                'click',
-                'test-prev',
-                this.id,
-                this.question_id
-            );
         });
 
         this.submit_button = $('#btn-submit');
@@ -207,14 +180,8 @@ function TestView(kwargs) {
         });
 
         this.reset();
-
-        tracking.send(
-            'pageview',
-            'test-start',
-            this.id
-        );
     }
-    
+
     this.init = function() {
         this.canvas.html(this.get_template('intro')());
 
@@ -234,7 +201,7 @@ function TestContentReviewView(kwargs) {
     var _this = this;
 
     this.main_view = kwargs.main_view;
-        
+
     this.clear = function() {
         this.hide_cfg();
         this.hide_lattice();
@@ -309,11 +276,11 @@ function TestContentReviewView(kwargs) {
                 _this.cfg_view.show_no_points();
                 _this.simulator.sim_code(_this.get_template('review/rd_branch','iloc')());
                 _this.simulator.advance(12);
-                
+
                 _this.cfg_view.add_point(_this.simulator.cfg.nodes[3], DFA.OUT);
                 _this.cfg_view.add_point(_this.simulator.cfg.nodes[5], DFA.OUT);
                 _this.cfg_view.add_point(_this.simulator.cfg.nodes[6], DFA.IN);
-                
+
                 _this.cfg_view.reset_highlight();
                 _this.cfg_view.draw();
             }
@@ -336,7 +303,7 @@ function TestContentReviewView(kwargs) {
                 _this.simulator.sim_code(_this.get_template('review/rd_loop','iloc')());
             }
         },
-                
+
         {
             text: [
                 'Which of the following is a <strong>backward</strong> data-flow analysis?',
@@ -405,7 +372,7 @@ function TestContentReviewView(kwargs) {
             setup_func: function() {
             }
         },
-        
+
         {
             text: [
                 'In a <strong>forward analysis</strong>, which of the following is true?',
@@ -420,7 +387,7 @@ function TestContentReviewView(kwargs) {
             setup_func: function() {
             }
         },
-        
+
         {
             text: [
                 'Which of the following is the <strong>meet</strong> operator (denoted \\(\\land\\)) for <strong>reaching definitions</strong>?',
@@ -454,7 +421,7 @@ function TestContentReviewView(kwargs) {
 
     this.init_children = function() {
         this.left_column = $('#left-column');
-        
+
         this.simulator = new RoundRobinSimulator({
             framework : iloc_reaching_definitions,
             ordering  : DFA.REVERSE_POSTORDER,
@@ -464,11 +431,11 @@ function TestContentReviewView(kwargs) {
 
         this.simulator.init();
 
-        
+
         this.left_column.after('<div id="lattice-container" class="col-xs-4"><div class="row"><div id="lattice-canvas"></div></div></div>');
 
         this.lattice_container = $('#lattice-container');
-        
+
         this.lattice_view = new LatticeView({
             canvas: '#lattice-canvas',
             simulator: this.simulator,
@@ -478,11 +445,11 @@ function TestContentReviewView(kwargs) {
 
         this.show_lattice();
 
-        
+
         this.left_column.after('<div id="cfg-canvas" class="col-xs-4"></div>');
-        
+
         this.cfg_container = $('#cfg-canvas');
-        
+
         this.cfg_view = new CFGView({
             canvas: '#cfg-canvas',
             simulator: this.simulator,
