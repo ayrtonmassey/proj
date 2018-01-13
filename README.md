@@ -3,6 +3,11 @@ An Interactive Learning Platform for Compiler Data-Flow Analysis
 
 **UG4 Honours Project:* Ayrton Massey, *s1208057*
 
+## Application
+
+You can access the application at the following URL:
+
+ - [http://ayrtonmassey.github.io/proj/index.html](http://ayrtonmassey.github.io/proj/index.html)
 
 ## Contents
 
@@ -43,7 +48,7 @@ The following is a list of root directories and their contents:
 
 The application is hosted at the following URL:
 
-    http://ayrtonmassey.com/proj/
+- [http://ayrtonmassey.github.io/proj/index.html](http://ayrtonmassey.github.io/proj/index.html)
 
 If you simply wish to use it, not set one up for yourself, please
 visit it at this address.
@@ -61,7 +66,7 @@ these files, you must navigate to the app/ directory and run the
 It is also possible to view the files on the local filesystem by
 navigating to the following address in your web browser:
 
-    file:///path/to/project/app/index.html
+- [file:///path/to/proj/index.html](file:///path/to/proj/index.html)
 
 At present, external libraries are included via CDN links (with some
 exceptions) so an internet connection is required to use the
@@ -69,8 +74,7 @@ application. All of the necessary library files are included locally,
 but you will have to uncomment the lines in index.html to use these
 files.
 
-If you have any questions, e-mail me @ ayrtonmassey@googlemail.com OR
-s1208057@sms.ed.ac.uk
+If you have any questions, e-mail me @ ayrtonmassey@googlemail.com.
 
 ### Data-Flow Analysis Simulator
 
@@ -100,8 +104,5 @@ into black and white / colour copies is available in dissertation/split.
 
 ## Final Comments
 
-Apologies for the lack of documentation - I'm writing this at 14:52,
-31/03/16.
-
-Again, if you have any questions, e-mail me @ ayrtonmassey@googlemail.com OR
-s1208057@sms.ed.ac.uk
+If you have any questions, e-mail me @ ayrtonmassey@googlemail.com or open an
+issue in this project.
